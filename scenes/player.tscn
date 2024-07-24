@@ -1,0 +1,1381 @@
+[gd_scene load_steps=165 format=3 uid="uid://cgvpmrxms5e4k"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_3jece"]
+[ext_resource type="Texture2D" uid="uid://nrok3hqdeyws" path="res://assets/art/playable character/fighter/fighter_armed_attack/E/fighter_armed_attack_E_0.0_0.png" id="1_gmor3"]
+[ext_resource type="Texture2D" uid="uid://bmfd2hncs2vvl" path="res://assets/art/playable character/fighter/fighter_armed_walk/SE/fighter_armed_walk_SE_315.0_0.png" id="2_5i62d"]
+[ext_resource type="Texture2D" uid="uid://bebj53vs4q066" path="res://assets/art/playable character/fighter/fighter_armed_attack/E/fighter_armed_attack_E_0.0_1.png" id="3_pw0g7"]
+[ext_resource type="Texture2D" uid="uid://btynwl28768fx" path="res://assets/art/playable character/fighter/fighter_armed_walk/SE/fighter_armed_walk_SE_315.0_1.png" id="3_vteao"]
+[ext_resource type="Texture2D" uid="uid://mlaia5l72058" path="res://assets/art/playable character/fighter/fighter_armed_attack/E/fighter_armed_attack_E_0.0_2.png" id="4_f7rkr"]
+[ext_resource type="Texture2D" uid="uid://bwmcl10mq3vtd" path="res://assets/art/playable character/fighter/fighter_armed_walk/SE/fighter_armed_walk_SE_315.0_2.png" id="4_seets"]
+[ext_resource type="Texture2D" uid="uid://co3h0gmy1p6fa" path="res://assets/art/playable character/fighter/fighter_armed_walk/SE/fighter_armed_walk_SE_315.0_3.png" id="5_4gd6u"]
+[ext_resource type="Texture2D" uid="uid://eubva2wkhqsx" path="res://assets/art/playable character/fighter/fighter_armed_attack/E/fighter_armed_attack_E_0.0_3.png" id="5_idlmf"]
+[ext_resource type="Texture2D" uid="uid://d3d8qdbo8f0pf" path="res://assets/art/playable character/fighter/fighter_armed_attack/E/fighter_armed_attack_E_0.0_4.png" id="6_edqni"]
+[ext_resource type="Texture2D" uid="uid://ql1lr4ps68qm" path="res://assets/art/playable character/fighter/fighter_armed_walk/SE/fighter_armed_walk_SE_315.0_4.png" id="6_nmq0d"]
+[ext_resource type="Texture2D" uid="uid://bre1rqgq3q538" path="res://assets/art/playable character/fighter/fighter_armed_attack/E/fighter_armed_attack_E_0.0_5.png" id="7_cfd3s"]
+[ext_resource type="Texture2D" uid="uid://6uus0fns4nsa" path="res://assets/art/playable character/fighter/fighter_armed_walk/SE/fighter_armed_walk_SE_315.0_5.png" id="7_warid"]
+[ext_resource type="Texture2D" uid="uid://by375nh64wa4w" path="res://assets/art/playable character/fighter/fighter_armed_walk/SE/fighter_armed_walk_SE_315.0_6.png" id="8_o6qn2"]
+[ext_resource type="Texture2D" uid="uid://bsaebh7r871qi" path="res://assets/art/playable character/fighter/fighter_armed_attack/E/fighter_armed_attack_E_0.0_6.png" id="8_x8o4c"]
+[ext_resource type="Texture2D" uid="uid://dpj25vd3rxkj4" path="res://assets/art/playable character/fighter/fighter_armed_attack/E/fighter_armed_attack_E_0.0_7.png" id="9_hxb2g"]
+[ext_resource type="Texture2D" uid="uid://bdtv8gjw1dbkn" path="res://assets/art/playable character/fighter/fighter_armed_walk/SE/fighter_armed_walk_SE_315.0_7.png" id="9_rsc3h"]
+[ext_resource type="Texture2D" uid="uid://d0ks76fkqnkyx" path="res://assets/art/playable character/fighter/fighter_armed_attack/N/fighter_armed_attack_N_90.0_0.png" id="10_0ccxq"]
+[ext_resource type="Texture2D" uid="uid://co6fdb5ak526f" path="res://assets/art/playable character/fighter/fighter_armed_attack/SE/fighter_armed_attack_SE_315.0_0.png" id="10_7y5i7"]
+[ext_resource type="Texture2D" uid="uid://b6ft6w7b1wplx" path="res://assets/art/playable character/fighter/fighter_armed_idle/E/fighter_armed_idle_E_0.0_0.png" id="10_xkkwy"]
+[ext_resource type="Texture2D" uid="uid://di08iy52bad66" path="res://assets/art/playable character/fighter/fighter_armed_attack/SE/fighter_armed_attack_SE_315.0_1.png" id="11_5o71q"]
+[ext_resource type="Texture2D" uid="uid://bwfawmodl0ryd" path="res://assets/art/playable character/fighter/fighter_armed_attack/N/fighter_armed_attack_N_90.0_1.png" id="11_eebjp"]
+[ext_resource type="Texture2D" uid="uid://basbgqc2ttngf" path="res://assets/art/playable character/fighter/fighter_armed_walk/E/fighter_armed_walk_E_0.0_0.png" id="11_jjj1t"]
+[ext_resource type="Texture2D" uid="uid://e3hl6o8lqm0o" path="res://assets/art/playable character/fighter/fighter_armed_walk/E/fighter_armed_walk_E_0.0_1.png" id="12_3ap5w"]
+[ext_resource type="Texture2D" uid="uid://bo62k621vm2h3" path="res://assets/art/playable character/fighter/fighter_armed_attack/N/fighter_armed_attack_N_90.0_2.png" id="12_c2yqp"]
+[ext_resource type="Texture2D" uid="uid://c5jpk0868dkor" path="res://assets/art/playable character/fighter/fighter_armed_attack/SE/fighter_armed_attack_SE_315.0_2.png" id="12_dov8r"]
+[ext_resource type="Texture2D" uid="uid://br6j7qfsld8r6" path="res://assets/art/playable character/fighter/fighter_armed_walk/E/fighter_armed_walk_E_0.0_2.png" id="13_kvd64"]
+[ext_resource type="Texture2D" uid="uid://cxm5uet2hqcvc" path="res://assets/art/playable character/fighter/fighter_armed_attack/SE/fighter_armed_attack_SE_315.0_3.png" id="13_mof3s"]
+[ext_resource type="Texture2D" uid="uid://b7owt4k8l7kxl" path="res://assets/art/playable character/fighter/fighter_armed_attack/N/fighter_armed_attack_N_90.0_3.png" id="13_ri3qq"]
+[ext_resource type="Texture2D" uid="uid://clvd1re45ovbh" path="res://assets/art/playable character/fighter/fighter_armed_attack/N/fighter_armed_attack_N_90.0_4.png" id="14_6svfi"]
+[ext_resource type="Texture2D" uid="uid://dksqywcgx7rbe" path="res://assets/art/playable character/fighter/fighter_armed_walk/E/fighter_armed_walk_E_0.0_3.png" id="14_fysu7"]
+[ext_resource type="Texture2D" uid="uid://cljkcdb0vyqha" path="res://assets/art/playable character/fighter/fighter_armed_attack/SE/fighter_armed_attack_SE_315.0_4.png" id="14_lmerb"]
+[ext_resource type="Texture2D" uid="uid://c2u8rgyn2uqnm" path="res://assets/art/playable character/fighter/fighter_armed_attack/SE/fighter_armed_attack_SE_315.0_5.png" id="15_4ddrq"]
+[ext_resource type="Texture2D" uid="uid://bjuodpx7uisos" path="res://assets/art/playable character/fighter/fighter_armed_walk/E/fighter_armed_walk_E_0.0_4.png" id="15_ok2a1"]
+[ext_resource type="Texture2D" uid="uid://b6bou7ur4ct2h" path="res://assets/art/playable character/fighter/fighter_armed_attack/N/fighter_armed_attack_N_90.0_5.png" id="15_x784r"]
+[ext_resource type="Texture2D" uid="uid://bcchs0brvb7he" path="res://assets/art/playable character/fighter/fighter_armed_attack/SE/fighter_armed_attack_SE_315.0_6.png" id="16_5ygin"]
+[ext_resource type="Texture2D" uid="uid://cnkkd36poqiy7" path="res://assets/art/playable character/fighter/fighter_armed_walk/E/fighter_armed_walk_E_0.0_5.png" id="16_jhdqt"]
+[ext_resource type="Texture2D" uid="uid://cnikltc3u2pu4" path="res://assets/art/playable character/fighter/fighter_armed_attack/N/fighter_armed_attack_N_90.0_6.png" id="16_yl7k3"]
+[ext_resource type="Texture2D" uid="uid://crrwgbiomuueg" path="res://assets/art/playable character/fighter/fighter_armed_walk/E/fighter_armed_walk_E_0.0_6.png" id="17_0yhau"]
+[ext_resource type="Texture2D" uid="uid://c7jkx1usnb6wi" path="res://assets/art/playable character/fighter/fighter_armed_attack/SE/fighter_armed_attack_SE_315.0_7.png" id="17_6xftc"]
+[ext_resource type="Texture2D" uid="uid://m5vyru8fke2w" path="res://assets/art/playable character/fighter/fighter_armed_attack/N/fighter_armed_attack_N_90.0_7.png" id="17_860py"]
+[ext_resource type="Texture2D" uid="uid://cw7fjcang73m7" path="res://assets/art/playable character/fighter/fighter_armed_attack/NE/fighter_armed_attack_NE_45.0_0.png" id="18_8q1qi"]
+[ext_resource type="Texture2D" uid="uid://btelopknc42hu" path="res://assets/art/playable character/fighter/fighter_armed_walk/E/fighter_armed_walk_E_0.0_7.png" id="18_jncve"]
+[ext_resource type="Texture2D" uid="uid://c3yijsjvd68me" path="res://assets/art/playable character/fighter/fighter_armed_attack/NE/fighter_armed_attack_NE_45.0_1.png" id="19_anm1p"]
+[ext_resource type="Texture2D" uid="uid://bwxxpdncmoyeh" path="res://assets/art/playable character/fighter/fighter_armed_walk/N/fighter_armed_walk_N_90.0_0.png" id="19_n0fga"]
+[ext_resource type="Texture2D" uid="uid://dictou7euyuun" path="res://assets/art/playable character/fighter/fighter_armed_attack/NE/fighter_armed_attack_NE_45.0_2.png" id="20_hrkkm"]
+[ext_resource type="Texture2D" uid="uid://bpxxgj8gp2pp7" path="res://assets/art/playable character/fighter/fighter_armed_walk/N/fighter_armed_walk_N_90.0_1.png" id="20_jx4n5"]
+[ext_resource type="Texture2D" uid="uid://c67bhg5layjt" path="res://assets/art/playable character/fighter/fighter_armed_attack/NE/fighter_armed_attack_NE_45.0_3.png" id="21_0k785"]
+[ext_resource type="Texture2D" uid="uid://dbk52cta5j2ba" path="res://assets/art/playable character/fighter/fighter_armed_walk/N/fighter_armed_walk_N_90.0_2.png" id="21_s3uod"]
+[ext_resource type="Texture2D" uid="uid://do68x7wxnokqn" path="res://assets/art/playable character/fighter/fighter_armed_attack/NE/fighter_armed_attack_NE_45.0_4.png" id="22_dwtof"]
+[ext_resource type="Texture2D" uid="uid://u7wiusxco3tn" path="res://assets/art/playable character/fighter/fighter_armed_walk/N/fighter_armed_walk_N_90.0_3.png" id="22_r2qu4"]
+[ext_resource type="Texture2D" uid="uid://dmi8nsawd50hg" path="res://assets/art/playable character/fighter/fighter_armed_walk/N/fighter_armed_walk_N_90.0_4.png" id="23_5w5rs"]
+[ext_resource type="Texture2D" uid="uid://csk0p4gq5tec2" path="res://assets/art/playable character/fighter/fighter_armed_attack/NE/fighter_armed_attack_NE_45.0_5.png" id="23_m0m5y"]
+[ext_resource type="Texture2D" uid="uid://x2m4un31vmt7" path="res://assets/art/playable character/fighter/fighter_armed_attack/NE/fighter_armed_attack_NE_45.0_6.png" id="24_267hk"]
+[ext_resource type="Texture2D" uid="uid://db6mgri85cj1c" path="res://assets/art/playable character/fighter/fighter_armed_walk/N/fighter_armed_walk_N_90.0_5.png" id="24_fpjku"]
+[ext_resource type="Texture2D" uid="uid://bdjoeoej5h4ou" path="res://assets/art/playable character/fighter/fighter_armed_attack/NE/fighter_armed_attack_NE_45.0_7.png" id="25_gtnaf"]
+[ext_resource type="Texture2D" uid="uid://bkwfx8kj03eg1" path="res://assets/art/playable character/fighter/fighter_armed_walk/N/fighter_armed_walk_N_90.0_6.png" id="25_hhwk8"]
+[ext_resource type="Texture2D" uid="uid://bbsqcv2rh8lkh" path="res://assets/art/playable character/fighter/fighter_armed_attack/NW/fighter_armed_attack_NW_135.0_0.png" id="26_31kow"]
+[ext_resource type="Texture2D" uid="uid://bba77jim7athh" path="res://assets/art/playable character/fighter/fighter_armed_walk/N/fighter_armed_walk_N_90.0_7.png" id="26_tbhhv"]
+[ext_resource type="Texture2D" uid="uid://cqtv4g7ws3obc" path="res://assets/art/playable character/fighter/fighter_armed_attack/NW/fighter_armed_attack_NW_135.0_1.png" id="27_1iddk"]
+[ext_resource type="Texture2D" uid="uid://cpolc6udu3e5t" path="res://assets/art/playable character/fighter/fighter_armed_walk/NE/fighter_armed_walk_NE_45.0_0.png" id="27_s32o3"]
+[ext_resource type="Texture2D" uid="uid://bxtsalno7krc3" path="res://assets/art/playable character/fighter/fighter_armed_attack/NW/fighter_armed_attack_NW_135.0_2.png" id="28_hv216"]
+[ext_resource type="Texture2D" uid="uid://c851irmdvxfao" path="res://assets/art/playable character/fighter/fighter_armed_walk/NE/fighter_armed_walk_NE_45.0_1.png" id="28_jxjol"]
+[ext_resource type="Texture2D" uid="uid://bqkiutja3pxen" path="res://assets/art/playable character/fighter/fighter_armed_walk/NE/fighter_armed_walk_NE_45.0_2.png" id="29_7bdxe"]
+[ext_resource type="Texture2D" uid="uid://brivnwi066jf4" path="res://assets/art/playable character/fighter/fighter_armed_attack/NW/fighter_armed_attack_NW_135.0_3.png" id="29_bs7ag"]
+[ext_resource type="Texture2D" uid="uid://dl6l5hgy3dwmf" path="res://assets/art/playable character/fighter/fighter_armed_walk/NE/fighter_armed_walk_NE_45.0_3.png" id="30_n5kpy"]
+[ext_resource type="Texture2D" uid="uid://dtxx3kjfyow8" path="res://assets/art/playable character/fighter/fighter_armed_attack/NW/fighter_armed_attack_NW_135.0_4.png" id="30_olil5"]
+[ext_resource type="Texture2D" uid="uid://c7qe5omiotk5m" path="res://assets/art/playable character/fighter/fighter_armed_walk/NE/fighter_armed_walk_NE_45.0_4.png" id="31_ob7np"]
+[ext_resource type="Texture2D" uid="uid://tsrebojupoi4" path="res://assets/art/playable character/fighter/fighter_armed_attack/NW/fighter_armed_attack_NW_135.0_5.png" id="31_p0q8j"]
+[ext_resource type="Texture2D" uid="uid://bj2ghvem3ggac" path="res://assets/art/playable character/fighter/fighter_armed_walk/NE/fighter_armed_walk_NE_45.0_5.png" id="32_1dsy0"]
+[ext_resource type="Texture2D" uid="uid://b2d3otiwe56bg" path="res://assets/art/playable character/fighter/fighter_armed_attack/NW/fighter_armed_attack_NW_135.0_6.png" id="32_rn8nb"]
+[ext_resource type="Texture2D" uid="uid://cxiehrhk8ms48" path="res://assets/art/playable character/fighter/fighter_armed_attack/NW/fighter_armed_attack_NW_135.0_7.png" id="33_jrxeo"]
+[ext_resource type="Texture2D" uid="uid://ctf3i8g0f8yue" path="res://assets/art/playable character/fighter/fighter_armed_walk/NE/fighter_armed_walk_NE_45.0_6.png" id="33_t64h4"]
+[ext_resource type="Texture2D" uid="uid://bhmjbsu8tv8e3" path="res://assets/art/playable character/fighter/fighter_armed_walk/NE/fighter_armed_walk_NE_45.0_7.png" id="34_66wcv"]
+[ext_resource type="Texture2D" uid="uid://cinu4o4o2v2aw" path="res://assets/art/playable character/fighter/fighter_armed_attack/S/fighter_armed_attack_S_270.0_0.png" id="34_jbo2o"]
+[ext_resource type="Texture2D" uid="uid://gwwbgwfpvyr" path="res://assets/art/playable character/fighter/fighter_armed_walk/NW/fighter_armed_walk_NW_135.0_0.png" id="35_6cyu3"]
+[ext_resource type="Texture2D" uid="uid://d00qgq2gpu7sf" path="res://assets/art/playable character/fighter/fighter_armed_attack/S/fighter_armed_attack_S_270.0_1.png" id="35_ix0v3"]
+[ext_resource type="Texture2D" uid="uid://cbcf0q1q10aeo" path="res://assets/art/playable character/fighter/fighter_armed_walk/NW/fighter_armed_walk_NW_135.0_1.png" id="36_q5cmr"]
+[ext_resource type="Texture2D" uid="uid://ebhlqcgk3bvk" path="res://assets/art/playable character/fighter/fighter_armed_attack/S/fighter_armed_attack_S_270.0_2.png" id="36_wcibv"]
+[ext_resource type="Texture2D" uid="uid://bfkrn0nuuxvij" path="res://assets/art/playable character/fighter/fighter_armed_walk/NW/fighter_armed_walk_NW_135.0_2.png" id="37_eubbn"]
+[ext_resource type="Texture2D" uid="uid://1j0xj7n8eecu" path="res://assets/art/playable character/fighter/fighter_armed_attack/S/fighter_armed_attack_S_270.0_3.png" id="37_ix14q"]
+[ext_resource type="Texture2D" uid="uid://bd25r8nxxskvj" path="res://assets/art/playable character/fighter/fighter_armed_walk/NW/fighter_armed_walk_NW_135.0_3.png" id="38_1kj7i"]
+[ext_resource type="Texture2D" uid="uid://cmy2fxoqp5ki2" path="res://assets/art/playable character/fighter/fighter_armed_attack/S/fighter_armed_attack_S_270.0_4.png" id="38_v82uk"]
+[ext_resource type="Texture2D" uid="uid://i2v1tjvrebhf" path="res://assets/art/playable character/fighter/fighter_armed_attack/S/fighter_armed_attack_S_270.0_5.png" id="39_5r2et"]
+[ext_resource type="Texture2D" uid="uid://dneegx2babvfr" path="res://assets/art/playable character/fighter/fighter_armed_walk/NW/fighter_armed_walk_NW_135.0_4.png" id="39_wln5b"]
+[ext_resource type="Texture2D" uid="uid://wjd0l8ukyouk" path="res://assets/art/playable character/fighter/fighter_armed_attack/S/fighter_armed_attack_S_270.0_6.png" id="40_8l6wk"]
+[ext_resource type="Texture2D" uid="uid://dyd86awyvaj8l" path="res://assets/art/playable character/fighter/fighter_armed_walk/NW/fighter_armed_walk_NW_135.0_5.png" id="40_o7r4v"]
+[ext_resource type="Texture2D" uid="uid://chxn7bpkc4ks" path="res://assets/art/playable character/fighter/fighter_armed_attack/S/fighter_armed_attack_S_270.0_7.png" id="41_36v0l"]
+[ext_resource type="Texture2D" uid="uid://bnc8ylpv4eugi" path="res://assets/art/playable character/fighter/fighter_armed_walk/NW/fighter_armed_walk_NW_135.0_6.png" id="41_keuwh"]
+[ext_resource type="Texture2D" uid="uid://cwl612vu0a0yt" path="res://assets/art/playable character/fighter/fighter_armed_walk/NW/fighter_armed_walk_NW_135.0_7.png" id="42_4fx05"]
+[ext_resource type="Texture2D" uid="uid://dakh76s0h3p26" path="res://assets/art/playable character/fighter/fighter_armed_walk/S/fighter_armed_walk_S_270.0_0.png" id="43_qiosw"]
+[ext_resource type="Texture2D" uid="uid://00t6rrq2xlku" path="res://assets/art/playable character/fighter/fighter_armed_walk/S/fighter_armed_walk_S_270.0_1.png" id="44_j6otb"]
+[ext_resource type="Texture2D" uid="uid://dvcenkdkr837v" path="res://assets/art/playable character/fighter/fighter_armed_walk/S/fighter_armed_walk_S_270.0_2.png" id="45_1gast"]
+[ext_resource type="Texture2D" uid="uid://dvmgnq54jfkun" path="res://assets/art/playable character/fighter/fighter_armed_walk/S/fighter_armed_walk_S_270.0_3.png" id="46_ie405"]
+[ext_resource type="Texture2D" uid="uid://r2l83h520ihb" path="res://assets/art/playable character/fighter/fighter_armed_walk/S/fighter_armed_walk_S_270.0_4.png" id="47_uodvi"]
+[ext_resource type="Texture2D" uid="uid://dhm3t8plx5m2f" path="res://assets/art/playable character/fighter/fighter_armed_walk/S/fighter_armed_walk_S_270.0_5.png" id="48_64wpf"]
+[ext_resource type="Texture2D" uid="uid://c0ywifo0u0u3u" path="res://assets/art/playable character/fighter/fighter_armed_walk/S/fighter_armed_walk_S_270.0_6.png" id="49_0g3v2"]
+[ext_resource type="Texture2D" uid="uid://bsxp4il8lbl53" path="res://assets/art/playable character/fighter/fighter_armed_attack/SW/fighter_armed_attack_SW_225.0_0.png" id="50_atavw"]
+[ext_resource type="Texture2D" uid="uid://ck6cwqkkf7p1" path="res://assets/art/playable character/fighter/fighter_armed_walk/S/fighter_armed_walk_S_270.0_7.png" id="50_nm6o6"]
+[ext_resource type="Texture2D" uid="uid://dsfe2820klc6r" path="res://assets/art/playable character/fighter/fighter_armed_attack/SW/fighter_armed_attack_SW_225.0_1.png" id="51_nufjn"]
+[ext_resource type="Texture2D" uid="uid://bors46wudaxfc" path="res://assets/art/playable character/fighter/fighter_armed_attack/SW/fighter_armed_attack_SW_225.0_2.png" id="52_5pavw"]
+[ext_resource type="Texture2D" uid="uid://b2etujlvf7qy" path="res://assets/art/playable character/fighter/fighter_armed_attack/SW/fighter_armed_attack_SW_225.0_3.png" id="53_aimlh"]
+[ext_resource type="Texture2D" uid="uid://h38q1kelibhc" path="res://assets/art/playable character/fighter/fighter_armed_attack/SW/fighter_armed_attack_SW_225.0_4.png" id="54_02f71"]
+[ext_resource type="Texture2D" uid="uid://g5egtiburgid" path="res://assets/art/playable character/fighter/fighter_armed_attack/SW/fighter_armed_attack_SW_225.0_5.png" id="55_ijppm"]
+[ext_resource type="Texture2D" uid="uid://bf1d24a4ri86k" path="res://assets/art/playable character/fighter/fighter_armed_attack/SW/fighter_armed_attack_SW_225.0_6.png" id="56_4u0h3"]
+[ext_resource type="Texture2D" uid="uid://bxwipsxeuwuc1" path="res://assets/art/playable character/fighter/fighter_armed_attack/SW/fighter_armed_attack_SW_225.0_7.png" id="57_hdxap"]
+[ext_resource type="Texture2D" uid="uid://cp25eb626vpj1" path="res://assets/art/playable character/fighter/fighter_armed_attack/W/fighter_armed_attack_W_180.0_0.png" id="58_42lb0"]
+[ext_resource type="Texture2D" uid="uid://bfbpc2jajy2w7" path="res://assets/art/playable character/fighter/fighter_armed_walk/SW/fighter_armed_walk_SW_225.0_0.png" id="59_qh8op"]
+[ext_resource type="Texture2D" uid="uid://bx8h3yob372uv" path="res://assets/art/playable character/fighter/fighter_armed_attack/W/fighter_armed_attack_W_180.0_1.png" id="59_snyes"]
+[ext_resource type="Texture2D" uid="uid://e4khl5yy1w66" path="res://assets/art/playable character/fighter/fighter_armed_attack/W/fighter_armed_attack_W_180.0_2.png" id="60_7gnth"]
+[ext_resource type="Texture2D" uid="uid://dfya0odklsybb" path="res://assets/art/playable character/fighter/fighter_armed_walk/SW/fighter_armed_walk_SW_225.0_1.png" id="60_k76b0"]
+[ext_resource type="Texture2D" uid="uid://26hdjnqvah6l" path="res://assets/art/playable character/fighter/fighter_armed_walk/SW/fighter_armed_walk_SW_225.0_2.png" id="61_2rmom"]
+[ext_resource type="Texture2D" uid="uid://cyw7ubpmvo8nb" path="res://assets/art/playable character/fighter/fighter_armed_attack/W/fighter_armed_attack_W_180.0_3.png" id="61_c7gau"]
+[ext_resource type="Texture2D" uid="uid://byxjfm1m2d030" path="res://assets/art/playable character/fighter/fighter_armed_walk/SW/fighter_armed_walk_SW_225.0_3.png" id="62_ir6uv"]
+[ext_resource type="Texture2D" uid="uid://defitmwlw7b1k" path="res://assets/art/playable character/fighter/fighter_armed_attack/W/fighter_armed_attack_W_180.0_4.png" id="62_t6psd"]
+[ext_resource type="Texture2D" uid="uid://dgykjm54l26id" path="res://assets/art/playable character/fighter/fighter_armed_attack/W/fighter_armed_attack_W_180.0_5.png" id="63_hfjfx"]
+[ext_resource type="Texture2D" uid="uid://d62qulhruue4" path="res://assets/art/playable character/fighter/fighter_armed_walk/SW/fighter_armed_walk_SW_225.0_4.png" id="63_jeecg"]
+[ext_resource type="Texture2D" uid="uid://cke51a26ij5e2" path="res://assets/art/playable character/fighter/fighter_armed_walk/SW/fighter_armed_walk_SW_225.0_5.png" id="64_5m3pm"]
+[ext_resource type="Texture2D" uid="uid://difhe45pu8rok" path="res://assets/art/playable character/fighter/fighter_armed_attack/W/fighter_armed_attack_W_180.0_6.png" id="64_mrvj5"]
+[ext_resource type="Texture2D" uid="uid://ca41q4ros36i4" path="res://assets/art/playable character/fighter/fighter_armed_attack/W/fighter_armed_attack_W_180.0_7.png" id="65_bl0bq"]
+[ext_resource type="Texture2D" uid="uid://twn6pa7s501v" path="res://assets/art/playable character/fighter/fighter_armed_walk/SW/fighter_armed_walk_SW_225.0_6.png" id="65_g3jt2"]
+[ext_resource type="Texture2D" uid="uid://c3cd1j2i40r3y" path="res://assets/art/playable character/fighter/fighter_armed_walk/SW/fighter_armed_walk_SW_225.0_7.png" id="66_7126y"]
+[ext_resource type="Texture2D" uid="uid://dkasvjlcbqmcv" path="res://assets/art/playable character/fighter/fighter_armed_walk/W/fighter_armed_walk_W_180.0_0.png" id="67_4yqis"]
+[ext_resource type="Texture2D" uid="uid://dxjcl5cf45eev" path="res://assets/art/playable character/fighter/fighter_armed_idle/N/fighter_armed_idle_N_90.0_0.png" id="67_nrph4"]
+[ext_resource type="Texture2D" uid="uid://b1l6lilkqnf3p" path="res://assets/art/playable character/fighter/fighter_armed_walk/W/fighter_armed_walk_W_180.0_1.png" id="68_ghfno"]
+[ext_resource type="Texture2D" uid="uid://buhivdpe4djqq" path="res://assets/art/playable character/fighter/fighter_armed_idle/NE/fighter_armed_idle_NE_45.0_0.png" id="68_j58qi"]
+[ext_resource type="Texture2D" uid="uid://cqgjxmtx5ajy" path="res://assets/art/playable character/fighter/fighter_armed_walk/W/fighter_armed_walk_W_180.0_2.png" id="69_81mfk"]
+[ext_resource type="Texture2D" uid="uid://caj38ywn3nr07" path="res://assets/art/playable character/fighter/fighter_armed_idle/NW/fighter_armed_idle_NW_135.0_0.png" id="69_hcb5l"]
+[ext_resource type="Texture2D" uid="uid://c1cy7a4ebxdeh" path="res://assets/art/playable character/fighter/fighter_armed_idle/S/fighter_armed_idle_S_270.0_0.png" id="70_0q3bj"]
+[ext_resource type="Texture2D" uid="uid://cu3quswuhxct8" path="res://assets/art/playable character/fighter/fighter_armed_walk/W/fighter_armed_walk_W_180.0_3.png" id="70_vg3sy"]
+[ext_resource type="Texture2D" uid="uid://biurlsjcqwsyy" path="res://assets/art/playable character/fighter/fighter_armed_idle/SE/fighter_armed_idle_SE_315.0_0.png" id="71_2pytr"]
+[ext_resource type="Texture2D" uid="uid://yf4wacxs54q" path="res://assets/art/playable character/fighter/fighter_armed_walk/W/fighter_armed_walk_W_180.0_4.png" id="71_gkr3m"]
+[ext_resource type="Texture2D" uid="uid://bmyndd3nrrckm" path="res://assets/art/playable character/fighter/fighter_armed_idle/SW/fighter_armed_idle_SW_225.0_0.png" id="72_o08rv"]
+[ext_resource type="Texture2D" uid="uid://blaj8ufgkhr3a" path="res://assets/art/playable character/fighter/fighter_armed_walk/W/fighter_armed_walk_W_180.0_5.png" id="72_t3nj5"]
+[ext_resource type="Texture2D" uid="uid://db1c3b48kqfj0" path="res://assets/art/playable character/fighter/fighter_armed_idle/W/fighter_armed_idle_W_180.0_0.png" id="73_cxkcf"]
+[ext_resource type="Texture2D" uid="uid://7n46r87ty34f" path="res://assets/art/playable character/fighter/fighter_armed_walk/W/fighter_armed_walk_W_180.0_6.png" id="73_njrfa"]
+[ext_resource type="Texture2D" uid="uid://12v5qks5ef8c" path="res://assets/art/playable character/fighter/fighter_armed_walk/W/fighter_armed_walk_W_180.0_7.png" id="74_lho48"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dhxtk"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rd8ew"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_gmor3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_pw0g7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_f7rkr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_idlmf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_edqni")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_cfd3s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_x8o4c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_hxb2g")
+}],
+"loop": false,
+"name": &"warrior_attack_E",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_0ccxq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_eebjp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_c2yqp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_ri3qq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_6svfi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_x784r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_yl7k3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_860py")
+}],
+"loop": false,
+"name": &"warrior_attack_N",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("18_8q1qi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_anm1p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_hrkkm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_0k785")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_dwtof")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_m0m5y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_267hk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_gtnaf")
+}],
+"loop": false,
+"name": &"warrior_attack_NE",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("26_31kow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_1iddk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_hv216")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_bs7ag")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_olil5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_p0q8j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_rn8nb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_jrxeo")
+}],
+"loop": false,
+"name": &"warrior_attack_NW",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("34_jbo2o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_ix0v3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_wcibv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_ix14q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_v82uk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_5r2et")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_8l6wk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_36v0l")
+}],
+"loop": false,
+"name": &"warrior_attack_S",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_7y5i7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_5o71q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_dov8r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_mof3s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_lmerb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_4ddrq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_5ygin")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_6xftc")
+}],
+"loop": false,
+"name": &"warrior_attack_SE",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("50_atavw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_nufjn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_5pavw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_aimlh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_02f71")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_ijppm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_4u0h3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57_hdxap")
+}],
+"loop": false,
+"name": &"warrior_attack_SW",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("58_42lb0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("59_snyes")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_7gnth")
+}, {
+"duration": 1.0,
+"texture": ExtResource("61_c7gau")
+}, {
+"duration": 1.0,
+"texture": ExtResource("62_t6psd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("63_hfjfx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("64_mrvj5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("65_bl0bq")
+}],
+"loop": false,
+"name": &"warrior_attack_W",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_xkkwy")
+}],
+"loop": false,
+"name": &"warrior_idle_E",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("67_nrph4")
+}],
+"loop": false,
+"name": &"warrior_idle_N",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("68_j58qi")
+}],
+"loop": false,
+"name": &"warrior_idle_NE",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("69_hcb5l")
+}],
+"loop": false,
+"name": &"warrior_idle_NW",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("70_0q3bj")
+}],
+"loop": false,
+"name": &"warrior_idle_S",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("71_2pytr")
+}],
+"loop": false,
+"name": &"warrior_idle_SE",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("72_o08rv")
+}],
+"loop": false,
+"name": &"warrior_idle_SW",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("73_cxkcf")
+}],
+"loop": false,
+"name": &"warrior_idle_W",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_jjj1t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_3ap5w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_kvd64")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_fysu7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_ok2a1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_jhdqt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_0yhau")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_jncve")
+}],
+"loop": true,
+"name": &"warrior_running_E",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("19_n0fga")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_jx4n5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_s3uod")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_r2qu4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_5w5rs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_fpjku")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_hhwk8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_tbhhv")
+}],
+"loop": true,
+"name": &"warrior_running_N",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("27_s32o3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_jxjol")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_7bdxe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_n5kpy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_ob7np")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_1dsy0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_t64h4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_66wcv")
+}],
+"loop": true,
+"name": &"warrior_running_NE",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("35_6cyu3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_q5cmr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_eubbn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_1kj7i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_wln5b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_o7r4v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_keuwh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_4fx05")
+}],
+"loop": true,
+"name": &"warrior_running_NW",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("43_qiosw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_j6otb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_1gast")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_ie405")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_uodvi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_64wpf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_0g3v2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_nm6o6")
+}],
+"loop": true,
+"name": &"warrior_running_S",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_5i62d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_vteao")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_seets")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_4gd6u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_nmq0d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_warid")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_o6qn2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_rsc3h")
+}],
+"loop": true,
+"name": &"warrior_running_SE",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("59_qh8op")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_k76b0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("61_2rmom")
+}, {
+"duration": 1.0,
+"texture": ExtResource("62_ir6uv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("63_jeecg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("64_5m3pm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("65_g3jt2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("66_7126y")
+}],
+"loop": true,
+"name": &"warrior_running_SW",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("67_4yqis")
+}, {
+"duration": 1.0,
+"texture": ExtResource("68_ghfno")
+}, {
+"duration": 1.0,
+"texture": ExtResource("69_81mfk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("70_vg3sy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("71_gkr3m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("72_t3nj5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("73_njrfa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("74_lho48")
+}],
+"loop": true,
+"name": &"warrior_running_W",
+"speed": 14.0
+}]
+
+[sub_resource type="Animation" id="Animation_uj4dm"]
+length = 0.666667
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0833333, 0.166667, 0.25, 0.333333, 0.416667, 0.5, 0.583333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_attack_E"]
+}
+
+[sub_resource type="Animation" id="Animation_64tpm"]
+length = 0.666667
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0833333, 0.166667, 0.25, 0.333333, 0.416667, 0.5, 0.583333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_attack_N"]
+}
+
+[sub_resource type="Animation" id="Animation_dqdkg"]
+length = 0.666667
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0833333, 0.166667, 0.25, 0.333333, 0.416667, 0.5, 0.583333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_attack_NE"]
+}
+
+[sub_resource type="Animation" id="Animation_eoymy"]
+length = 0.666667
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0833333, 0.166667, 0.25, 0.333333, 0.416667, 0.5, 0.583333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_attack_NW"]
+}
+
+[sub_resource type="Animation" id="Animation_4um6j"]
+length = 0.666667
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0833333, 0.166667, 0.25, 0.333333, 0.416667, 0.5, 0.583333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_attack_S"]
+}
+
+[sub_resource type="Animation" id="Animation_rf8s2"]
+length = 0.666667
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0833333, 0.166667, 0.25, 0.333333, 0.416667, 0.5, 0.583333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_attack_SE"]
+}
+
+[sub_resource type="Animation" id="Animation_tfyhp"]
+length = 0.666667
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0833333, 0.166667, 0.25, 0.333333, 0.416667, 0.5, 0.583333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_attack_SW"]
+}
+
+[sub_resource type="Animation" id="Animation_6avmq"]
+length = 0.666667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0833333, 0.166667, 0.25, 0.333333, 0.416667, 0.5, 0.583333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_attack_W"]
+}
+
+[sub_resource type="Animation" id="Animation_73gqf"]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_idle_E"]
+}
+
+[sub_resource type="Animation" id="Animation_be666"]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_idle_N"]
+}
+
+[sub_resource type="Animation" id="Animation_8hi3r"]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_idle_NE"]
+}
+
+[sub_resource type="Animation" id="Animation_gxlag"]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_idle_NW"]
+}
+
+[sub_resource type="Animation" id="Animation_hwwlo"]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_idle_S"]
+}
+
+[sub_resource type="Animation" id="Animation_c8vij"]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_idle_SE"]
+}
+
+[sub_resource type="Animation" id="Animation_j2il0"]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_idle_SW"]
+}
+
+[sub_resource type="Animation" id="Animation_gd46x"]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_idle_W"]
+}
+
+[sub_resource type="Animation" id="Animation_qi4c1"]
+length = 0.571429
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0714286, 0.142857, 0.214286, 0.285714, 0.357143, 0.428571, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_running_E"]
+}
+
+[sub_resource type="Animation" id="Animation_ff7ji"]
+length = 0.571429
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0714286, 0.142857, 0.214286, 0.285714, 0.357143, 0.428571, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_running_N"]
+}
+
+[sub_resource type="Animation" id="Animation_uf5p4"]
+length = 0.571429
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0714286, 0.142857, 0.214286, 0.285714, 0.357143, 0.428571, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_running_NE"]
+}
+
+[sub_resource type="Animation" id="Animation_5e1to"]
+length = 0.571429
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0714286, 0.142857, 0.214286, 0.285714, 0.357143, 0.428571, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_running_NW"]
+}
+
+[sub_resource type="Animation" id="Animation_0t1ex"]
+length = 0.571429
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0714286, 0.142857, 0.214286, 0.285714, 0.357143, 0.428571, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_running_S"]
+}
+
+[sub_resource type="Animation" id="Animation_1fqn8"]
+length = 0.571429
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0714286, 0.142857, 0.214286, 0.285714, 0.357143, 0.428571, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_running_SE"]
+}
+
+[sub_resource type="Animation" id="Animation_ixs4k"]
+length = 0.571429
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0714286, 0.142857, 0.214286, 0.285714, 0.357143, 0.428571, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_running_SW"]
+}
+
+[sub_resource type="Animation" id="Animation_ay7bx"]
+length = 0.571429
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0714286, 0.142857, 0.214286, 0.285714, 0.357143, 0.428571, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["warrior_running_W"]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_17pca"]
+_data = {
+"warrior_attack_E": SubResource("Animation_uj4dm"),
+"warrior_attack_N": SubResource("Animation_64tpm"),
+"warrior_attack_NE": SubResource("Animation_dqdkg"),
+"warrior_attack_NW": SubResource("Animation_eoymy"),
+"warrior_attack_S": SubResource("Animation_4um6j"),
+"warrior_attack_SE": SubResource("Animation_rf8s2"),
+"warrior_attack_SW": SubResource("Animation_tfyhp"),
+"warrior_attack_W": SubResource("Animation_6avmq"),
+"warrior_idle_E": SubResource("Animation_73gqf"),
+"warrior_idle_N": SubResource("Animation_be666"),
+"warrior_idle_NE": SubResource("Animation_8hi3r"),
+"warrior_idle_NW": SubResource("Animation_gxlag"),
+"warrior_idle_S": SubResource("Animation_hwwlo"),
+"warrior_idle_SE": SubResource("Animation_c8vij"),
+"warrior_idle_SW": SubResource("Animation_j2il0"),
+"warrior_idle_W": SubResource("Animation_gd46x"),
+"warrior_running_E": SubResource("Animation_qi4c1"),
+"warrior_running_N": SubResource("Animation_ff7ji"),
+"warrior_running_NE": SubResource("Animation_uf5p4"),
+"warrior_running_NW": SubResource("Animation_5e1to"),
+"warrior_running_S": SubResource("Animation_0t1ex"),
+"warrior_running_SE": SubResource("Animation_1fqn8"),
+"warrior_running_SW": SubResource("Animation_ixs4k"),
+"warrior_running_W": SubResource("Animation_ay7bx")
+}
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(0, -3)
+script = ExtResource("1_3jece")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_dhxtk")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_rd8ew")
+animation = &"warrior_attack_N"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_17pca")
+}
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
