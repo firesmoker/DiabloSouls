@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://lr15cpqcai72"]
+[gd_scene load_steps=12 format=3 uid="uid://lr15cpqcai72"]
 
 [ext_resource type="Texture2D" uid="uid://b14lamihq1w8f" path="res://assets/art/environment/ground_stone1.png" id="1_3ng3w"]
 [ext_resource type="Texture2D" uid="uid://bsrx8kbnpdg4d" path="res://assets/art/environment/ground_variation1.png" id="2_clqh1"]
@@ -7,20 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://cgvpmrxms5e4k" path="res://scenes/player.tscn" id="3_33ndh"]
 [ext_resource type="Texture2D" uid="uid://1rke6kppqr3a" path="res://assets/art/environment/light3.png" id="6_eil8b"]
 [ext_resource type="Texture2D" uid="uid://cvdypdgmkr770" path="res://assets/art/environment/light2.png" id="6_lqrod"]
-
-[sub_resource type="GDScript" id="GDScript_ahyvc"]
-script/source = "extends Camera2D
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-"
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_w3c5t"]
 source_geometry_group_name = &"navigation_polygon_source_group"
@@ -324,7 +310,6 @@ texture_scale = 0.6
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(-1, -1)
 zoom = Vector2(2.5, 2.5)
-script = SubResource("GDScript_ahyvc")
 
 [node name="PointLight2D" type="PointLight2D" parent="Player/Camera2D"]
 energy = 0.5
