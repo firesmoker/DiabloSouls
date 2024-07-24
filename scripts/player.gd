@@ -1,17 +1,22 @@
 extends CharacterBody2D
 # test git
+@onready var audio = $AudioStreamPlayer
+@onready var point_light = $Camera2D/PointLight2D
+@onready var camera = $Camera2D
 @onready var animation_player := $AnimationPlayer
 @onready var animation_library : AnimationLibrary = animation_player.get_animation_library("")
+@export var model: String = "warrior"
 @export var speed: float = 121.0
 @export var speed_modifier: float = 1
-@export var model: String = "warrior"
-@export var moving = false
-@export var attacking: bool = false
 @export var attack_frame = 3
 @export var cancel_frame = 2
 @export var attack_again_frame = 4
+@export var shake_time: float = 0.05
+@export var shake_amount: float = 2.5
+@export var moving: bool = false
+@export var attacking: bool = false
 @export var idle := true
-@export var attack_again = true
+@export var attack_again := true
 
 #var update_movement: bool = true
 const FPS = 12.0
@@ -78,15 +83,17 @@ func _ready():
 	#animation_player.add_animation_library("test_library", test_library)
 	#AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
+
 func _physics_process(_delta):
 	if moving and not attacking:
 		if Input.is_action_pressed("mouse_move"):
 			moving = true
+			idle = false
 			destination = get_global_mouse_position()
 			if abs(position.x - destination.x) <= 5 and abs(position.y - destination.y) <= 5:
 				velocity = Vector2(0,0)
 				destination = position
-				idle = true
+				#idle = true
 				#moving = false
 		velocity = calculate_movement_velocity()
 	
@@ -111,7 +118,9 @@ func _physics_process(_delta):
 				animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
 			else:
 				print("normal attack")
+				var current_animation_position = animation_player.current_animation_position
 				animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
+				animation_player.seek(current_animation_position)
 			velocity.x = 0
 			velocity.y = 0
 	
@@ -122,9 +131,9 @@ func _physics_process(_delta):
 	if not attacking:
 		if abs(position.x - destination.x) <= 1 and abs(position.y - destination.y) <= 1:
 			velocity = Vector2(0,0)
-			destination = position
+			#destination = position
 			if not Input.is_action_pressed("mouse_move"):
-				moving = false
+				#moving = false
 				idle = true
 				
 		#if direction_x and direction_y:
@@ -141,11 +150,22 @@ func _physics_process(_delta):
 				#velocity.y = move_toward(0, 0, speed)
 		
 		if velocity:
+			attacking = false
+			attack_again = true
+			var current_animation = animation_player.current_animation
 			if speed_modifier >= 2:
 				animation_player.speed_scale = speed_modifier / 2
 			else:
 				animation_player.speed_scale = speed_modifier
-			animation_player.play(animations[current_direction]["running"])
+			if "running" in current_animation and current_animation != animations[current_direction]["running"]:
+				var current_animation_position = animation_player.current_animation_position
+				animation_player.play(animations[current_direction]["running"])
+				animation_player.seek(current_animation_position)
+				#print(current_animation_position)
+				#print("blending running animation")
+				#print(velocity)
+			else:
+				animation_player.play(animations[current_direction]["running"])
 			#match direction:
 				#Vector2(0,-1):
 					#current_direction = directions.N
@@ -163,11 +183,15 @@ func _physics_process(_delta):
 					#current_direction = directions.SW
 				#Vector2(-1,-1):
 					#current_direction = directions.NW
-		elif idle:
+		else:
 			#animation_player.stop()
+			
+				
 			if "attack" in animation_player.current_animation:
+				moving = false
 				await animation_player.animation_finished
 				#print("waited for attack to finish")
+			print(current_direction)
 			animation_player.play(animations[current_direction]["idle"])
 
 	move_and_slide()
@@ -202,6 +226,10 @@ func calculate_movement_velocity():
 
 func just_attacked():
 	print("pow!")
+	if not audio.playing:
+		audio.stop()
+		audio.play()
+	camera_shake_and_color(false)
 
 func recreate_animations():
 	animations.clear()
@@ -216,8 +244,31 @@ func animation_cancel_ready():
 	attacking = false
 
 func attack_again_ready():
+	
 	attack_again = true
 	print("can attack again")
+
+func camera_shake_and_color(color: bool = true):
+	var timer = Timer.new()
+	
+	camera.add_child(timer)
+	timer.wait_time = shake_time
+	#timer.timeout.connect(_on_timer_timeout)
+	if color:
+		point_light.blend_mode = 0
+		point_light.color = Color.TEAL
+		point_light.energy /= 10000
+	camera.position.x += shake_amount
+	camera.position.y += shake_amount*0.7
+	timer.start()
+	await timer.timeout
+	timer.queue_free()
+	if color:
+		point_light.blend_mode = 1
+		point_light.color = Color.WHITE
+		point_light.energy *= 10000
+	camera.position.x -= shake_amount
+	camera.position.y -= shake_amount*0.7
 	
 
 func _on_animation_player_animation_finished(anim_name):
@@ -226,3 +277,6 @@ func _on_animation_player_animation_finished(anim_name):
 		print("attack finished fully")
 		idle = true
 	#attacking = false
+
+func _on_timer_timeout():
+	pass
