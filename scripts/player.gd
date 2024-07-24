@@ -8,8 +8,10 @@ extends CharacterBody2D
 @export var moving = false
 @export var attacking: bool = false
 @export var attack_frame = 3
-@export var cancel_frame = 5
+@export var cancel_frame = 2
+@export var attack_again_frame = 4
 @export var idle := true
+@export var attack_again = true
 
 #var update_movement: bool = true
 const FPS = 12.0
@@ -50,33 +52,7 @@ var radian_direction: = {
 
 var animations := {}
 
-func _unhandled_input(event):
-	if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack"):
-		print("unhandled input")
-		moving = true
-		destination = get_global_mouse_position()
-		
-		
-func round_to_multiple(number, multiple):
-	return round(number / multiple) * multiple
-	
 
-func calculate_movement_velocity():
-	var radius = speed
-	var angle = position.angle_to_point(destination)
-	
-	var rand = (1.0/4.0 * PI)
-	var rounded = round_to_multiple(angle, rand)
-	current_direction = radian_direction[rounded]
-	
-	var direction_x = cos(angle) * radius
-	var direction_y = sin(angle) * radius
-	var max_velocity_x = direction_x * speed_modifier
-	var max_velocity_y = direction_y * speed_modifier
-	
-	return Vector2(max_velocity_x, max_velocity_y)
-	#velocity.x = max_velocity_x
-	#velocity.y = max_velocity_y
 
 
 func _ready():
@@ -94,8 +70,10 @@ func _ready():
 			#print(animation)
 			var time = attack_frame/FPS
 			var cancel_time = cancel_frame/FPS
-			new_animation.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
+			var attack_again_time = attack_again_frame/FPS
 			new_animation.track_insert_key(track, cancel_time, {"method" : "animation_cancel_ready" , "args" : []}, 1)
+			new_animation.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
+			new_animation.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []}, 1)
 		#test_library.add_animation(animation, new_animation)
 	#animation_player.add_animation_library("test_library", test_library)
 	#AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -125,9 +103,10 @@ func _physics_process(_delta):
 			idle = false
 			moving = false
 			animation_player.speed_scale = speed_modifier
-			if attacking == false:
+			if attack_again:
 				print("first or restarted attack")
 				attacking = true
+				attack_again = false
 				animation_player.stop()
 				animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
 			else:
@@ -193,6 +172,34 @@ func _physics_process(_delta):
 
 	move_and_slide()
 
+func _unhandled_input(event):
+	if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack"):
+		print("unhandled input")
+		moving = true
+		destination = get_global_mouse_position()
+		
+		
+func round_to_multiple(number, multiple):
+	return round(number / multiple) * multiple
+	
+
+func calculate_movement_velocity():
+	var radius = speed
+	var angle = position.angle_to_point(destination)
+	
+	var rand = (1.0/4.0 * PI)
+	var rounded = round_to_multiple(angle, rand)
+	current_direction = radian_direction[rounded]
+	
+	var direction_x = cos(angle) * radius
+	var direction_y = sin(angle) * radius
+	var max_velocity_x = direction_x * speed_modifier
+	var max_velocity_y = direction_y * speed_modifier
+	
+	return Vector2(max_velocity_x, max_velocity_y)
+	#velocity.x = max_velocity_x
+	#velocity.y = max_velocity_y
+
 func just_attacked():
 	print("pow!")
 
@@ -207,6 +214,10 @@ func recreate_animations():
 
 func animation_cancel_ready():
 	attacking = false
+
+func attack_again_ready():
+	attack_again = true
+	print("can attack again")
 	
 
 func _on_animation_player_animation_finished(anim_name):
