@@ -1,11 +1,15 @@
 extends CharacterBody2D
-
+# test git
 @onready var animation_player := $AnimationPlayer
 @onready var animation_library : AnimationLibrary = animation_player.get_animation_library("")
 @export var speed: float = 121.0
 @export var speed_modifier: float = 1
 @export var model: String = "warrior"
 @export var moving = false
+@export var attacking: bool = false
+@export var attack_frame = 3
+@export var cancel_frame = 5
+@export var idle := true
 
 #var update_movement: bool = true
 const FPS = 12.0
@@ -18,7 +22,6 @@ var movement: = Vector2()
 #var test_library = AnimationLibrary.new()
 #AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
-var attacking: bool = false
 var current_direction := directions.E
 
 enum directions{N,NE,E,SE,S,SW,W,NW}
@@ -89,8 +92,10 @@ func _ready():
 		new_animation.track_set_path(track, ".")
 		if "attack" in animation:
 			#print(animation)
-			var time = 3/FPS
+			var time = attack_frame/FPS
+			var cancel_time = cancel_frame/FPS
 			new_animation.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
+			new_animation.track_insert_key(track, cancel_time, {"method" : "animation_cancel_ready" , "args" : []}, 1)
 		#test_library.add_animation(animation, new_animation)
 	#animation_player.add_animation_library("test_library", test_library)
 	#AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -103,6 +108,7 @@ func _physics_process(_delta):
 			if abs(position.x - destination.x) <= 5 and abs(position.y - destination.y) <= 5:
 				velocity = Vector2(0,0)
 				destination = position
+				idle = true
 				#moving = false
 		velocity = calculate_movement_velocity()
 	
@@ -116,11 +122,17 @@ func _physics_process(_delta):
 			var rand = (1.0/4.0 * PI)
 			var rounded = round_to_multiple(angle, rand)
 			current_direction = radian_direction[rounded]
-			
-			attacking = true
+			idle = false
 			moving = false
 			animation_player.speed_scale = speed_modifier
-			animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
+			if attacking == false:
+				print("first or restarted attack")
+				attacking = true
+				animation_player.stop()
+				animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
+			else:
+				print("normal attack")
+				animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
 			velocity.x = 0
 			velocity.y = 0
 	
@@ -134,6 +146,8 @@ func _physics_process(_delta):
 			destination = position
 			if not Input.is_action_pressed("mouse_move"):
 				moving = false
+				idle = true
+				
 		#if direction_x and direction_y:
 			#velocity.x = direction_x * speed * 0.7 * speed_modifier
 			#velocity.y = direction_y * speed * 0.7 * speed_modifier
@@ -170,8 +184,11 @@ func _physics_process(_delta):
 					#current_direction = directions.SW
 				#Vector2(-1,-1):
 					#current_direction = directions.NW
-		else:
+		elif idle:
 			#animation_player.stop()
+			if "attack" in animation_player.current_animation:
+				await animation_player.animation_finished
+				#print("waited for attack to finish")
 			animation_player.play(animations[current_direction]["idle"])
 
 	move_and_slide()
@@ -188,6 +205,13 @@ func recreate_animations():
 			"running" : model+ "_running_" + direction_name[key],
 		}
 
-
-func _on_animation_player_animation_finished(_anim_name):
+func animation_cancel_ready():
 	attacking = false
+	
+
+func _on_animation_player_animation_finished(anim_name):
+	#print(anim_name)
+	if "attack" in anim_name:
+		print("attack finished fully")
+		idle = true
+	#attacking = false
