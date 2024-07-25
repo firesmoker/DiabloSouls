@@ -1,4 +1,5 @@
 extends Node
+
 @onready var player = $"../Player"
 @onready var camera = $"../Player/Camera2D"
 @onready var point_light = $"../Player/Camera2D/PointLight2D"
@@ -16,15 +17,18 @@ func _process(delta):
 	#camera.position.x += 15
 	pass
 
+
 func camera_shake_and_color(color: bool = true):
 	var timer = Timer.new()
 	camera.add_child(timer)
+	
 	timer.wait_time = shake_time
 	#timer.timeout.connect(_on_timer_timeout)
 	if color:
 		#point_light.blend_mode = 0
 		#point_light.color = Color.TEAL
 		point_light.energy -= 0.3
+	#freeze_display()
 	camera.position.x += shake_amount
 	camera.position.y += shake_amount*0.7
 	timer.start()
@@ -53,3 +57,16 @@ func _on_player_attack_success(body):
 	#print(sprite)
 	body.get_hit()
 	camera_shake_and_color()
+
+func freeze_display(duration = 0.5 / 12.0, delay = 0.05):
+	# Disable rendering
+	
+	await get_tree().create_timer(delay).timeout
+	RenderingServer.set_render_loop_enabled(false)
+	
+	# Create a timer for the specified duration
+	await get_tree().create_timer(duration).timeout
+	
+	# Enable rendering
+	RenderingServer.set_render_loop_enabled(true)
+
