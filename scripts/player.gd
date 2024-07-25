@@ -74,7 +74,7 @@ func _ready():
 			var attack_again_time = attack_again_frame/FPS
 			new_animation.track_insert_key(track, cancel_time, {"method" : "animation_cancel_ready" , "args" : []}, 1)
 			new_animation.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
-			new_animation.track_insert_key(track, time + 0.1, {"method" : "disable_attack_zone" , "args" : []}, 1)
+			#new_animation.track_insert_key(track, time + 0.1, {"method" : "disable_attack_zone" , "args" : []}, 1)
 			new_animation.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []}, 1)
 
 
@@ -195,6 +195,7 @@ func just_attacked():
 	print("pow!")
 	attack_collider.disabled = false
 	emit_signal("attack_effects")
+	disable_attack_zone()
 	
 	
 
