@@ -1,4 +1,4 @@
-[gd_scene load_steps=165 format=3 uid="uid://cgvpmrxms5e4k"]
+[gd_scene load_steps=166 format=3 uid="uid://cgvpmrxms5e4k"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_3jece"]
 [ext_resource type="Texture2D" uid="uid://nrok3hqdeyws" path="res://assets/art/playable character/fighter/fighter_armed_attack/E/fighter_armed_attack_E_0.0_0.png" id="1_gmor3"]
@@ -1362,20 +1362,32 @@ _data = {
 "warrior_running_W": SubResource("Animation_ay7bx")
 }
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2gqxe"]
+radius = 13.0
+height = 34.0
+
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(0, -3)
 script = ExtResource("1_3jece")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CircleShape2D_dhxtk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rd8ew")
 animation = &"warrior_attack_E"
+frame = 7
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_17pca")
 }
+
+[node name="AttackZone" type="CollisionShape2D" parent="."]
+position = Vector2(17, -10)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_2gqxe")
+disabled = true
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
