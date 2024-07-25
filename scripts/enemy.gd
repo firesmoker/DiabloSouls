@@ -8,7 +8,7 @@ var sprite_material: Material
 signal under_mouse_hover
 signal stopped_mouse_hover
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
 	#pass # Replace with function body.
 	sprite_material = animated_sprite_2d.material
@@ -17,11 +17,8 @@ func _ready():
 		stopped_mouse_hover.connect(game_manager.enemy_mouse_hover_stopped)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	#print(game_manager)
-	#print(sprite_material.blend_mode)
-	pass
+#func _process(delta):
+	#pass
 	
 func get_hit():
 	print("blend mode changed")
