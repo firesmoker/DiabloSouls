@@ -4,6 +4,8 @@ extends CharacterBody2D
 @onready var point_light = $Camera2D/PointLight2D
 @onready var camera = $Camera2D
 @onready var animation_player := $AnimationPlayer
+@onready var attack_zone = $Attack/AttackZone
+@onready var attack_collider = $Attack/AttackZone/AttackCollider
 @onready var animation_library : AnimationLibrary = animation_player.get_animation_library("")
 @export var model: String = "warrior"
 @export var speed: float = 121.0
@@ -17,6 +19,8 @@ extends CharacterBody2D
 @export var attacking: bool = false
 @export var idle := true
 @export var attack_again := true
+
+signal attack_effects
 
 var destination: = Vector2()
 var movement: = Vector2()
@@ -60,14 +64,17 @@ func _ready():
 		new_animation.track_set_path(track, ".")
 		if "attack" in animation:
 			var time = attack_frame/FPS
+			#var disable_attack_zone = time + 1/FPS
 			var cancel_time = cancel_frame/FPS
 			var attack_again_time = attack_again_frame/FPS
 			new_animation.track_insert_key(track, cancel_time, {"method" : "animation_cancel_ready" , "args" : []}, 1)
 			new_animation.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
+			new_animation.track_insert_key(track, time + 0.1, {"method" : "disable_attack_zone" , "args" : []}, 1)
 			new_animation.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []}, 1)
 
 
 func _physics_process(delta):
+	#attack_collider.disabled = true
 	if moving and not attacking:
 		if Input.is_action_pressed("mouse_move"):
 			moving = true
@@ -132,7 +139,7 @@ func _physics_process(delta):
 				moving = false
 				await animation_player.animation_finished
 				#print("waited for attack to finish")
-			print(current_direction)
+			#print(current_direction)
 			animation_player.play(animations[current_direction]["idle"])
 
 	move_and_slide()
@@ -167,13 +174,12 @@ func calculate_movement_velocity():
 
 func just_attacked():
 	print("pow!")
-	if not audio.playing:
-		audio.stop()
-		audio.pitch_scale = 1
-		audio.pitch_scale += randf_range(-0.03, 0.03)
-		audio.play()
-	camera_shake_and_color()
+	attack_collider.disabled = false
+	emit_signal("attack_effects")
+	
+	
 
+	
 
 func recreate_animations():
 	animations.clear()
@@ -193,6 +199,16 @@ func attack_again_ready():
 	attack_again = true
 	print("can attack again")
 
+func disable_attack_zone():
+	var timer = Timer.new()
+	attack_collider.add_child(timer)
+	timer.wait_time = 0.06
+	timer.start()
+	await timer.timeout
+	timer.queue_free()
+	attack_collider.disabled = true
+	
+	
 
 func camera_shake_and_color(color: bool = true):
 	var timer = Timer.new()
@@ -223,3 +239,19 @@ func _on_animation_player_animation_finished(anim_name):
 
 func _on_timer_timeout():
 	pass
+
+
+func _on_attack_zone_body_entered(body):
+	print("colliding with something in the attack zone! it';s " + str(body))
+	camera_shake_and_color()
+
+
+func _on_attack_effects():
+	if not audio.playing:
+		audio.stop()
+		audio.pitch_scale = 1
+		audio.pitch_scale += randf_range(-0.03, 0.03)
+		audio.play()
+	
+	
+	pass # Replace with function body.
