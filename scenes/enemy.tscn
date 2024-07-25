@@ -19,7 +19,7 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ud6ys"]
-radius = 9.0
+radius = 13.0
 height = 38.0
 
 [node name="Enemy" type="RigidBody2D"]

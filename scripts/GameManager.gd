@@ -49,4 +49,4 @@ func _on_player_attack_success(body):
 	#var sprite = body.get_node("AnimatedSprite2D")
 	#print(sprite)
 	body.get_hit()
-	camera_shake_and_color(false)
+	camera_shake_and_color()
