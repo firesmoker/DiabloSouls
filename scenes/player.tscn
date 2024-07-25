@@ -1367,6 +1367,8 @@ radius = 13.0
 height = 34.0
 
 [node name="Player" type="CharacterBody2D"]
+z_index = 8
+y_sort_enabled = true
 position = Vector2(0, -3)
 collision_layer = 2
 script = ExtResource("1_3jece")
@@ -1377,8 +1379,6 @@ shape = SubResource("CircleShape2D_dhxtk")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rd8ew")
 animation = &"warrior_attack_E"
-frame = 7
-frame_progress = 1.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

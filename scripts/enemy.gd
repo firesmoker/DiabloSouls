@@ -1,6 +1,8 @@
 extends RigidBody2D
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var game_manager = %GameManager
+@onready var highlight_circle = $HighlightCircle
+
 var sprite_material: Material
 
 signal under_mouse_hover
@@ -37,9 +39,13 @@ func get_hit():
 
 func highlight():
 	sprite_material.blend_mode = 1
+	highlight_circle.visible = false
+	highlight_circle.material.blend_mode = 0
 
 func highlight_stop():
 	sprite_material.blend_mode = 0
+	highlight_circle.material.blend_mode = 0
+	highlight_circle.visible = false
 
 func _on_mouse_entered():
 	print("mouse entered - emitting under_mouse_hover (in enemy)")

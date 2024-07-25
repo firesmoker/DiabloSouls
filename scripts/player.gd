@@ -2,6 +2,7 @@ extends CharacterBody2D
 # test git
 
 @onready var game_manager = %GameManager
+@onready var attack = $Attack
 
 @onready var audio = $AudioStreamPlayer
 #@onready var point_light = $Camera2D/PointLight2D
@@ -77,8 +78,12 @@ func _ready():
 			new_animation.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []}, 1)
 
 
+
 func _physics_process(delta):
 	#attack_collider.disabled = true
+	#if Input.is_action_pressed("mouse_move") and game_manager.enemies_under_mouse > 0:
+		#print("player should attack")
+	
 	if moving and not attacking:
 		if Input.is_action_pressed("mouse_move"):
 			moving = true
@@ -99,6 +104,7 @@ func _physics_process(delta):
 			var rand = (1.0/4.0 * PI)
 			var rounded = round_to_multiple(angle, rand)
 			current_direction = radian_direction[rounded]
+			attack.rotation = angle
 			idle = false
 			moving = false
 			animation_player.speed_scale = speed_modifier
@@ -149,11 +155,20 @@ func _physics_process(delta):
 	move_and_slide()
 
 
+#func _input(event):
+	#if event.is_action_pressed("mouse_move") and game_manager.enemies_under_mouse > 0:
+		#print("should attack")
+
+
 func _unhandled_input(event):
 	if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack"):
-		print("unhandled input")
-		moving = true
-		destination = get_global_mouse_position()
+		if game_manager.enemies_under_mouse > 0:
+			moving = false
+			print("should attack")
+		else:
+			print("unhandled input")
+			moving = true
+			destination = get_global_mouse_position()
 		
 		
 func round_to_multiple(number, multiple):

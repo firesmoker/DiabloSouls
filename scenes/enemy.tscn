@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://b1hcswr77ft67"]
+[gd_scene load_steps=9 format=3 uid="uid://b1hcswr77ft67"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_vs0td"]
 [ext_resource type="Texture2D" uid="uid://dih8qcag7ojye" path="res://assets/art/enemy/skeleton/skeleton_default_idle/S/skeleton_default_idle_S_270.0_0.png" id="1_xcnut"]
+[ext_resource type="Texture2D" uid="uid://bqp4tcluyjuh8" path="res://assets/art/user interface/highlight/highlight_white.png" id="3_n1wcj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6vimf"]
 
@@ -22,6 +23,8 @@ animations = [{
 radius = 13.0
 height = 38.0
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nvcc2"]
+
 [node name="Enemy" type="RigidBody2D"]
 collision_mask = 2
 input_pickable = true
@@ -33,12 +36,23 @@ visible = false
 shape = SubResource("CircleShape2D_6vimf")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
+y_sort_enabled = true
 material = SubResource("CanvasItemMaterial_mwj6m")
 sprite_frames = SubResource("SpriteFrames_e0icc")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+y_sort_enabled = true
 position = Vector2(0, -14)
 shape = SubResource("CapsuleShape2D_ud6ys")
+
+[node name="HighlightCircle" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.788235, 0.788235, 0.788235, 0.717647)
+show_behind_parent = true
+y_sort_enabled = true
+material = SubResource("CanvasItemMaterial_nvcc2")
+texture = ExtResource("3_n1wcj")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

@@ -4,6 +4,7 @@ extends Node
 @onready var point_light = $"../Player/Camera2D/PointLight2D"
 @export var shake_time: float = 0.05
 @export var shake_amount: float = 1.5
+@export var enemies_under_mouse: int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -38,10 +39,12 @@ func camera_shake_and_color(color: bool = true):
 
 func enemy_mouse_hover(enemy):
 	print("enemy mouse hover function (in gamemanager)")
+	enemies_under_mouse += 1
 	enemy.highlight()
 
 func enemy_mouse_hover_stopped(enemy):
-	print("enemy mouse hover function (in gamemanager)")
+	print("enemy mouse hover STOPPED (in gamemanager)")
+	enemies_under_mouse -= 1
 	enemy.highlight_stop()
 
 func _on_player_attack_success(body):
