@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://b1hcswr77ft67"]
+[gd_scene load_steps=6 format=3 uid="uid://b1hcswr77ft67"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_vs0td"]
 [ext_resource type="Texture2D" uid="uid://dih8qcag7ojye" path="res://assets/art/enemy/skeleton/skeleton_default_idle/S/skeleton_default_idle_S_270.0_0.png" id="1_xcnut"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6vimf"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_mwj6m"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_e0icc"]
 animations = [{
@@ -25,4 +27,5 @@ script = ExtResource("1_vs0td")
 shape = SubResource("CircleShape2D_6vimf")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_mwj6m")
 sprite_frames = SubResource("SpriteFrames_e0icc")

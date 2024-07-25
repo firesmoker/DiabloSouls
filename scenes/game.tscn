@@ -1,5 +1,6 @@
-[gd_scene load_steps=14 format=3 uid="uid://lr15cpqcai72"]
+[gd_scene load_steps=15 format=3 uid="uid://lr15cpqcai72"]
 
+[ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_h602i"]
 [ext_resource type="TileSet" uid="uid://ole373wdh4an" path="res://tilesets/basicblocks.tres" id="1_om826"]
 [ext_resource type="Script" path="res://scripts/TileMap.gd" id="2_orhwb"]
 [ext_resource type="PackedScene" uid="uid://cgvpmrxms5e4k" path="res://scenes/player.tscn" id="3_gcy3d"]
@@ -284,6 +285,10 @@ sources/1 = SubResource("TileSetAtlasSource_ltl66")
 
 [node name="Game" type="Node2D"]
 
+[node name="GameManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("1_h602i")
+
 [node name="TileMap" type="TileMap" parent="."]
 process_mode = 4
 visible = false
@@ -349,3 +354,5 @@ script = ExtResource("2_orhwb")
 z_index = 5
 y_sort_enabled = true
 position = Vector2(260, 0)
+
+[connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]

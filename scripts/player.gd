@@ -1,8 +1,11 @@
 extends CharacterBody2D
 # test git
+
+@onready var game_manager = %GameManager
+
 @onready var audio = $AudioStreamPlayer
-@onready var point_light = $Camera2D/PointLight2D
-@onready var camera = $Camera2D
+#@onready var point_light = $Camera2D/PointLight2D
+#@onready var camera = $Camera2D
 @onready var animation_player := $AnimationPlayer
 @onready var attack_zone = $Attack/AttackZone
 @onready var attack_collider = $Attack/AttackZone/AttackCollider
@@ -13,14 +16,15 @@ extends CharacterBody2D
 @export var attack_frame = 3
 @export var cancel_frame = 2
 @export var attack_again_frame = 4
-@export var shake_time: float = 0.05
-@export var shake_amount: float = 2.5
+#@export var shake_time: float = 0.05
+#@export var shake_amount: float = 2.5
 @export var moving: bool = false
 @export var attacking: bool = false
 @export var idle := true
 @export var attack_again := true
 
 signal attack_effects
+signal attack_success
 
 var destination: = Vector2()
 var movement: = Vector2()
@@ -210,26 +214,26 @@ func disable_attack_zone():
 	
 	
 
-func camera_shake_and_color(color: bool = true):
-	var timer = Timer.new()
-	camera.add_child(timer)
-	timer.wait_time = shake_time
-	#timer.timeout.connect(_on_timer_timeout)
-	if color:
-		#point_light.blend_mode = 0
-		#point_light.color = Color.TEAL
-		point_light.energy -= 0.3
-	camera.position.x += shake_amount
-	camera.position.y += shake_amount*0.7
-	timer.start()
-	await timer.timeout
-	timer.queue_free()
-	if color:
-		#point_light.blend_mode = 1
-		#point_light.color = Color.WHITE
-		point_light.energy += 0.3
-	camera.position.x -= shake_amount
-	camera.position.y -= shake_amount*0.7
+#func camera_shake_and_color(color: bool = true):
+	#var timer = Timer.new()
+	#camera.add_child(timer)
+	#timer.wait_time = shake_time
+	##timer.timeout.connect(_on_timer_timeout)
+	#if color:
+		##point_light.blend_mode = 0
+		##point_light.color = Color.TEAL
+		#point_light.energy -= 0.3
+	#camera.position.x += shake_amount
+	#camera.position.y += shake_amount*0.7
+	#timer.start()
+	#await timer.timeout
+	#timer.queue_free()
+	#if color:
+		##point_light.blend_mode = 1
+		##point_light.color = Color.WHITE
+		#point_light.energy += 0.3
+	#camera.position.x -= shake_amount
+	#camera.position.y -= shake_amount*0.7
 	
 
 func _on_animation_player_animation_finished(anim_name):
@@ -242,8 +246,9 @@ func _on_timer_timeout():
 
 
 func _on_attack_zone_body_entered(body):
-	print("colliding with something in the attack zone! it';s " + str(body))
-	camera_shake_and_color()
+	#print("colliding with something in the attack zone! it';s " + str(body))
+	emit_signal("attack_success", body)
+	#camera_shake_and_color()
 
 
 func _on_attack_effects():
