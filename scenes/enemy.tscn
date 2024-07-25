@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://b1hcswr77ft67"]
+[gd_scene load_steps=7 format=3 uid="uid://b1hcswr77ft67"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_vs0td"]
 [ext_resource type="Texture2D" uid="uid://dih8qcag7ojye" path="res://assets/art/enemy/skeleton/skeleton_default_idle/S/skeleton_default_idle_S_270.0_0.png" id="1_xcnut"]
@@ -18,14 +18,27 @@ animations = [{
 "speed": 12.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ud6ys"]
+radius = 9.0
+height = 38.0
+
 [node name="Enemy" type="RigidBody2D"]
 collision_mask = 2
+input_pickable = true
 gravity_scale = 0.0
 script = ExtResource("1_vs0td")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CircleShape2D_6vimf")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("CanvasItemMaterial_mwj6m")
 sprite_frames = SubResource("SpriteFrames_e0icc")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(0, -14)
+shape = SubResource("CapsuleShape2D_ud6ys")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

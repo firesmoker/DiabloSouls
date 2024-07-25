@@ -36,6 +36,13 @@ func camera_shake_and_color(color: bool = true):
 	camera.position.x -= shake_amount
 	camera.position.y -= shake_amount*0.7
 
+func enemy_mouse_hover(enemy):
+	print("enemy mouse hover function (in gamemanager)")
+	enemy.highlight()
+
+func enemy_mouse_hover_stopped(enemy):
+	print("enemy mouse hover function (in gamemanager)")
+	enemy.highlight_stop()
 
 func _on_player_attack_success(body):
 	print("kuku!" + str(body))
