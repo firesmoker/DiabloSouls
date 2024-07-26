@@ -2,11 +2,11 @@ extends CharacterBody2D
 # test git
 
 @onready var game_manager = %GameManager
-@onready var attack = $Attack
+@onready var attack_axis = $AttackAxis
 @onready var audio = $AudioStreamPlayer
 @onready var animation_player := $AnimationPlayer
-@onready var attack_zone = $Attack/AttackZone
-@onready var attack_collider = $Attack/AttackZone/AttackCollider
+@onready var attack_zone = $AttackAxis/AttackZone
+@onready var attack_collider = $AttackAxis/AttackZone/AttackCollider
 @onready var animation_library : AnimationLibrary = animation_player.get_animation_library("")
 
 @export var model: String = "warrior"
@@ -92,29 +92,9 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("recreate_animations"):
 		velocity = Vector2(0,0)
 			
-	if Input.is_action_just_pressed("attack"):
+	if Input.is_action_just_pressed("attack_in_place"):
 		var face_destination = get_global_mouse_position()
-		var angle = position.angle_to_point(face_destination)
-		var rand = (1.0/4.0 * PI)
-		var rounded = round_to_multiple(angle, rand)
-		current_direction = radian_direction[rounded]
-		attack.rotation = angle
-		idle = false
-		moving = false
-		animation_player.speed_scale = speed_modifier
-		if attack_again:
-			print("first or restarted attack")
-			attacking = true
-			attack_again = false
-			animation_player.stop()
-			animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
-		else:
-			print("normal attack")
-			var current_animation_position = animation_player.current_animation_position
-			animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
-			animation_player.seek(current_animation_position)
-		velocity.x = 0
-		velocity.y = 0
+		attack(face_destination)
 	
 	if not attacking:
 		if abs(position.x - destination.x) <= 1 and abs(position.y - destination.y) <= 1:
@@ -154,6 +134,32 @@ func _unhandled_input(event):
 			print("unhandled input")
 			moving = true
 			destination = get_global_mouse_position()
+
+func attack(attack_destination):
+		is_chasing_enemy = false
+		targeted_enemy = null
+		var angle = position.angle_to_point(attack_destination)
+		var rand = (1.0/4.0 * PI)
+		var rounded = round_to_multiple(angle, rand)
+		current_direction = radian_direction[rounded]
+		attack_axis.rotation = angle
+		idle = false
+		moving = false
+		animation_player.speed_scale = speed_modifier
+		if attack_again:
+			print("first or restarted attack")
+			attacking = true
+			attack_again = false
+			animation_player.stop()
+			animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
+		else:
+			print("normal attack")
+			var current_animation_position = animation_player.current_animation_position
+			animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
+			animation_player.seek(current_animation_position)
+		velocity.x = 0
+		velocity.y = 0
+
 		
 func move_to_enemy():
 	print("should attack:" + str(game_manager.enemy_in_focus))

@@ -1385,17 +1385,17 @@ libraries = {
 "": SubResource("AnimationLibrary_17pca")
 }
 
-[node name="Attack" type="Node2D" parent="."]
+[node name="AttackAxis" type="Node2D" parent="."]
 
-[node name="AttackZone" type="Area2D" parent="Attack"]
+[node name="AttackZone" type="Area2D" parent="AttackAxis"]
 position = Vector2(17, 0)
 rotation = 1.5708
 collision_layer = 2
 
-[node name="AttackCollider" type="CollisionShape2D" parent="Attack/AttackZone"]
+[node name="AttackCollider" type="CollisionShape2D" parent="AttackAxis/AttackZone"]
 shape = SubResource("CapsuleShape2D_2gqxe")
 disabled = true
 
 [connection signal="attack_effects" from="." to="." method="_on_attack_effects"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
-[connection signal="body_entered" from="Attack/AttackZone" to="." method="_on_attack_zone_body_entered"]
+[connection signal="body_entered" from="AttackAxis/AttackZone" to="." method="_on_attack_zone_body_entered"]

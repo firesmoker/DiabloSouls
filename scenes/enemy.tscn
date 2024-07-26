@@ -19,11 +19,11 @@ animations = [{
 "speed": 12.0
 }]
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nvcc2"]
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ud6ys"]
 radius = 19.0
 height = 54.0
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nvcc2"]
 
 [node name="Enemy" type="RigidBody2D"]
 collision_mask = 2
@@ -41,11 +41,6 @@ y_sort_enabled = true
 material = SubResource("CanvasItemMaterial_mwj6m")
 sprite_frames = SubResource("SpriteFrames_e0icc")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-y_sort_enabled = true
-position = Vector2(0, -14)
-shape = SubResource("CapsuleShape2D_ud6ys")
-
 [node name="HighlightCircle" type="Sprite2D" parent="."]
 visible = false
 modulate = Color(0.788235, 0.788235, 0.788235, 0.717647)
@@ -54,5 +49,14 @@ y_sort_enabled = true
 material = SubResource("CanvasItemMaterial_nvcc2")
 texture = ExtResource("3_n1wcj")
 
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[node name="HoverZone" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="HoverZone"]
+y_sort_enabled = true
+position = Vector2(0, -14)
+shape = SubResource("CapsuleShape2D_ud6ys")
+
+[connection signal="body_entered" from="HoverZone" to="." method="_on_hover_zone_body_entered"]
+[connection signal="mouse_entered" from="HoverZone" to="." method="_on_hover_zone_mouse_entered"]
+[connection signal="mouse_exited" from="HoverZone" to="." method="_on_hover_zone_mouse_exited"]

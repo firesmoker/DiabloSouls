@@ -44,12 +44,24 @@ func highlight_stop():
 	highlight_circle.material.blend_mode = 0
 	highlight_circle.visible = false
 
-func _on_mouse_entered():
+
+
+func _on_hover_zone_body_entered(body):
+	if body == game_manager.player:
+		print("yay")
+		if game_manager.player.is_chasing_enemy:
+			game_manager.player.attack(position)
+	#print(body)
+	#print(game_manager.player)
+	pass # Replace with function body.
+
+
+func _on_hover_zone_mouse_entered():
 	print("mouse entered - emitting under_mouse_hover (in enemy)")
 	emit_signal("under_mouse_hover", self)
 	pass # Replace with function body.
 
 
-func _on_mouse_exited():
+func _on_hover_zone_mouse_exited():
 	emit_signal("stopped_mouse_hover", self)
 	pass # Replace with function body.
