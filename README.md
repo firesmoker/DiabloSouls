@@ -1,3 +1,7 @@
+-----------------------
+TO DO
+-----------------------
+
 # Refactoring and cleaning
 
 
@@ -26,3 +30,16 @@ signals trigger call functions on the game objects themselves so they can all ru
 * enemy - yes
 
 update player scene to include some changes from the game scene - no
+
+
+--------------------------
+IDEAS
+--------------------------
+
+* Way to balance ranged builds:
+	Monsters are stronger in the dark, affected by your light radius.
+	It also means you can't cheese enemies away from too long.
+	What exactly is stronger?:
+		chance to dodge?
+		resistance to damge?
+		Spells that light areas?

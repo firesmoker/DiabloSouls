@@ -3,26 +3,24 @@ extends CharacterBody2D
 
 @onready var game_manager = %GameManager
 @onready var attack = $Attack
-
 @onready var audio = $AudioStreamPlayer
-#@onready var point_light = $Camera2D/PointLight2D
-#@onready var camera = $Camera2D
 @onready var animation_player := $AnimationPlayer
 @onready var attack_zone = $Attack/AttackZone
 @onready var attack_collider = $Attack/AttackZone/AttackCollider
 @onready var animation_library : AnimationLibrary = animation_player.get_animation_library("")
+
 @export var model: String = "warrior"
 @export var speed: float = 121.0
 @export var speed_modifier: float = 1
 @export var attack_frame = 3
 @export var cancel_frame = 2
 @export var attack_again_frame = 4
-#@export var shake_time: float = 0.05
-#@export var shake_amount: float = 2.5
 @export var moving: bool = false
 @export var attacking: bool = false
 @export var idle := true
 @export var attack_again := true
+@export var is_chasing_enemy := false
+var targeted_enemy = null
 
 signal attack_effects
 signal attack_success
@@ -69,21 +67,16 @@ func _ready():
 		new_animation.track_set_path(track, ".")
 		if "attack" in animation:
 			var time = attack_frame/FPS
-			#var disable_attack_zone = time + 1/FPS
 			var cancel_time = cancel_frame/FPS
 			var attack_again_time = attack_again_frame/FPS
 			new_animation.track_insert_key(track, cancel_time, {"method" : "animation_cancel_ready" , "args" : []}, 1)
 			new_animation.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
-			#new_animation.track_insert_key(track, time + 0.1, {"method" : "disable_attack_zone" , "args" : []}, 1)
 			new_animation.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []}, 1)
 
 
 
 func _physics_process(delta):
-	#attack_collider.disabled = true
-	#if Input.is_action_pressed("mouse_move") and game_manager.enemies_under_mouse > 0:
-		#print("player should attack")
-	
+
 	if moving and not attacking:
 		if Input.is_action_pressed("mouse_move"):
 			moving = true
@@ -92,42 +85,41 @@ func _physics_process(delta):
 			if abs(position.x - destination.x) <= 5 and abs(position.y - destination.y) <= 5:
 				velocity = Vector2(0,0)
 				destination = position
+		if is_chasing_enemy and targeted_enemy != null:
+			destination = targeted_enemy.position
 		velocity = calculate_movement_velocity() * delta / average_delta
 	
 	if Input.is_action_just_pressed("recreate_animations"):
 		velocity = Vector2(0,0)
 			
 	if Input.is_action_just_pressed("attack"):
-		if 1 == 1:
-			var face_destination = get_global_mouse_position()
-			var angle = position.angle_to_point(face_destination)
-			var rand = (1.0/4.0 * PI)
-			var rounded = round_to_multiple(angle, rand)
-			current_direction = radian_direction[rounded]
-			attack.rotation = angle
-			idle = false
-			moving = false
-			animation_player.speed_scale = speed_modifier
-			if attack_again:
-				print("first or restarted attack")
-				attacking = true
-				attack_again = false
-				animation_player.stop()
-				animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
-			else:
-				print("normal attack")
-				var current_animation_position = animation_player.current_animation_position
-				animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
-				animation_player.seek(current_animation_position)
-			velocity.x = 0
-			velocity.y = 0
+		var face_destination = get_global_mouse_position()
+		var angle = position.angle_to_point(face_destination)
+		var rand = (1.0/4.0 * PI)
+		var rounded = round_to_multiple(angle, rand)
+		current_direction = radian_direction[rounded]
+		attack.rotation = angle
+		idle = false
+		moving = false
+		animation_player.speed_scale = speed_modifier
+		if attack_again:
+			print("first or restarted attack")
+			attacking = true
+			attack_again = false
+			animation_player.stop()
+			animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
+		else:
+			print("normal attack")
+			var current_animation_position = animation_player.current_animation_position
+			animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
+			animation_player.seek(current_animation_position)
+		velocity.x = 0
+		velocity.y = 0
 	
 	if not attacking:
 		if abs(position.x - destination.x) <= 1 and abs(position.y - destination.y) <= 1:
 			velocity = Vector2(0,0)
-			#destination = position
 			if not Input.is_action_pressed("mouse_move"):
-				#moving = false
 				idle = true
 		
 		if velocity:
@@ -148,28 +140,29 @@ func _physics_process(delta):
 			if "attack" in animation_player.current_animation:
 				moving = false
 				await animation_player.animation_finished
-				#print("waited for attack to finish")
-			#print(current_direction)
 			animation_player.play(animations[current_direction]["idle"])
 
 	move_and_slide()
-
-
-#func _input(event):
-	#if event.is_action_pressed("mouse_move") and game_manager.enemies_under_mouse > 0:
-		#print("should attack")
 
 
 func _unhandled_input(event):
 	if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack"):
 		if game_manager.enemies_under_mouse > 0:
 			moving = false
-			print("should attack")
+			move_to_enemy()
 		else:
 			print("unhandled input")
 			moving = true
 			destination = get_global_mouse_position()
 		
+func move_to_enemy():
+	print("should attack:" + str(game_manager.enemy_in_focus))
+	is_chasing_enemy = true
+	targeted_enemy = game_manager.enemy_in_focus
+	destination = targeted_enemy.position
+	moving = true
+	
+
 		
 func round_to_multiple(number, multiple):
 	return round(number / multiple) * multiple
@@ -196,9 +189,6 @@ func just_attacked():
 	attack_collider.disabled = false
 	emit_signal("attack_effects")
 	disable_attack_zone()
-	
-	
-
 	
 
 func recreate_animations():
@@ -227,30 +217,7 @@ func disable_attack_zone():
 	await timer.timeout
 	timer.queue_free()
 	attack_collider.disabled = true
-	
-	
-
-#func camera_shake_and_color(color: bool = true):
-	#var timer = Timer.new()
-	#camera.add_child(timer)
-	#timer.wait_time = shake_time
-	##timer.timeout.connect(_on_timer_timeout)
-	#if color:
-		##point_light.blend_mode = 0
-		##point_light.color = Color.TEAL
-		#point_light.energy -= 0.3
-	#camera.position.x += shake_amount
-	#camera.position.y += shake_amount*0.7
-	#timer.start()
-	#await timer.timeout
-	#timer.queue_free()
-	#if color:
-		##point_light.blend_mode = 1
-		##point_light.color = Color.WHITE
-		#point_light.energy += 0.3
-	#camera.position.x -= shake_amount
-	#camera.position.y -= shake_amount*0.7
-	
+		
 
 func _on_animation_player_animation_finished(anim_name):
 	if "attack" in anim_name:
@@ -262,9 +229,7 @@ func _on_timer_timeout():
 
 
 func _on_attack_zone_body_entered(body):
-	#print("colliding with something in the attack zone! it';s " + str(body))
 	emit_signal("attack_success", body)
-	#camera_shake_and_color()
 
 
 func _on_attack_effects():
@@ -273,6 +238,3 @@ func _on_attack_effects():
 		audio.pitch_scale = 1
 		audio.pitch_scale += randf_range(-0.03, 0.03)
 		audio.play()
-	
-	
-	pass # Replace with function body.

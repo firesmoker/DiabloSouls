@@ -5,7 +5,9 @@ extends Node
 @onready var point_light = $"../Player/Camera2D/PointLight2D"
 @export var shake_time: float = 0.05
 @export var shake_amount: float = 1.5
+@export var lightning_amount: float = 0.12
 @export var enemies_under_mouse: int = 0
+var enemy_in_focus
 
 
 #func _ready():
@@ -25,7 +27,7 @@ func camera_shake_and_color(color: bool = true):
 	if color:
 		#point_light.blend_mode = 0
 		#point_light.color = Color.TEAL
-		point_light.energy -= 0.3
+		point_light.energy -= lightning_amount
 	#freeze_display()
 	camera.position.x += shake_amount
 	camera.position.y += shake_amount*0.7
@@ -35,19 +37,23 @@ func camera_shake_and_color(color: bool = true):
 	if color:
 		#point_light.blend_mode = 1
 		#point_light.color = Color.WHITE
-		point_light.energy += 0.3
+		point_light.energy += lightning_amount
 	camera.position.x -= shake_amount
 	camera.position.y -= shake_amount*0.7
 
 func enemy_mouse_hover(enemy):
 	print("enemy mouse hover function (in gamemanager)")
 	enemies_under_mouse += 1
-	enemy.highlight()
+	if enemy_in_focus:
+		enemy_in_focus.highlight()
+	enemy_in_focus = enemy
+	enemy_in_focus.highlight()
 
 func enemy_mouse_hover_stopped(enemy):
 	print("enemy mouse hover STOPPED (in gamemanager)")
 	enemies_under_mouse -= 1
-	enemy.highlight_stop()
+	enemy_in_focus.highlight_stop()
+	enemy_in_focus = null
 
 func _on_player_attack_success(body):
 	print("kuku!" + str(body))
