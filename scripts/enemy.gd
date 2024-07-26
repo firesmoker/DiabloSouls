@@ -47,10 +47,10 @@ func highlight_stop():
 
 
 func _on_hover_zone_body_entered(body):
-	if body == game_manager.player:
-		print("yay")
-		if game_manager.player.is_chasing_enemy and game_manager.player.targeted_enemy == self:
-			game_manager.player.attack(position)
+	#if body == game_manager.player:
+		#print("yay")
+		#if game_manager.player.is_chasing_enemy and game_manager.player.targeted_enemy == self:
+			#game_manager.player.attack(position)
 	#print(body)
 	#print(game_manager.player)
 	pass # Replace with function body.
@@ -64,4 +64,12 @@ func _on_hover_zone_mouse_entered():
 
 func _on_hover_zone_mouse_exited():
 	emit_signal("stopped_mouse_hover", self)
+	pass # Replace with function body.
+
+
+func _on_melee_zone_body_entered(body):
+	if body == game_manager.player:
+		print("yay")
+		if game_manager.player.is_chasing_enemy and game_manager.player.targeted_enemy == self:
+			game_manager.player.attack(position)
 	pass # Replace with function body.

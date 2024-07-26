@@ -2,11 +2,18 @@ extends CharacterBody2D
 # test git
 
 @onready var game_manager = %GameManager
-@onready var attack_axis = $AttackAxis
 @onready var audio = $AudioStreamPlayer
-@onready var animation_player := $AnimationPlayer
-@onready var attack_zone = $AttackAxis/AttackZone
-@onready var attack_collider = $AttackAxis/AttackZone/AttackCollider
+
+#@onready var attack_axis = $AttackAxis
+#@onready var animation_player := $AnimationPlayer
+#@onready var attack_zone = $AttackAxis/AttackZone
+#@onready var attack_collider = $AttackAxis/AttackZone/AttackCollider
+
+@export var attack_axis: Node2D
+@export var animation_player: AnimationPlayer
+@export var attack_zone: Area2D
+@export var attack_collider: CollisionShape2D
+
 @onready var animation_library : AnimationLibrary = animation_player.get_animation_library("")
 
 @export var model: String = "warrior"
@@ -64,7 +71,11 @@ func _ready():
 
 
 func _physics_process(delta):
-	
+
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		print("Collided with: ", collision.get_collider().name)
+
 	
 	if moving and not attacking:
 		if Input.is_action_pressed("mouse_move"):

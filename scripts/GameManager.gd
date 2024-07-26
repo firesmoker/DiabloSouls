@@ -23,7 +23,6 @@ func camera_shake_and_color(color: bool = true):
 	camera.add_child(timer)
 	
 	timer.wait_time = shake_time
-	#timer.timeout.connect(_on_timer_timeout)
 	if color:
 		#point_light.blend_mode = 0
 		#point_light.color = Color.TEAL
@@ -56,21 +55,13 @@ func enemy_mouse_hover_stopped(enemy):
 	enemy_in_focus = null
 
 func _on_player_attack_success(body):
-	print("kuku!" + str(body))
-	#var sprite = body.get_node("AnimatedSprite2D")
-	#print(sprite)
 	body.get_hit()
 	camera_shake_and_color()
 
 func freeze_display(duration = 0.5 / 12.0, delay = 0.05):
-	# Disable rendering
-	
 	await get_tree().create_timer(delay).timeout
 	RenderingServer.set_render_loop_enabled(false)
 	
-	# Create a timer for the specified duration
 	await get_tree().create_timer(duration).timeout
-	
-	# Enable rendering
 	RenderingServer.set_render_loop_enabled(true)
 

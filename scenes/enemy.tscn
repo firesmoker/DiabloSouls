@@ -4,8 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://dih8qcag7ojye" path="res://assets/art/enemy/skeleton/skeleton_default_idle/S/skeleton_default_idle_S_270.0_0.png" id="1_xcnut"]
 [ext_resource type="Texture2D" uid="uid://bqp4tcluyjuh8" path="res://assets/art/user interface/highlight/highlight_white.png" id="3_n1wcj"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_6vimf"]
-
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_mwj6m"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_e0icc"]
@@ -19,11 +17,15 @@ animations = [{
 "speed": 12.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o5f0a"]
+radius = 4.0
+height = 16.0
+
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nvcc2"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ud6ys"]
-radius = 19.0
-height = 48.0
+radius = 21.0
+height = 42.0
 
 [node name="Enemy" type="RigidBody2D"]
 collision_mask = 2
@@ -31,15 +33,15 @@ input_pickable = true
 gravity_scale = 0.0
 script = ExtResource("1_vs0td")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-shape = SubResource("CircleShape2D_6vimf")
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1
 y_sort_enabled = true
 material = SubResource("CanvasItemMaterial_mwj6m")
 sprite_frames = SubResource("SpriteFrames_e0icc")
+
+[node name="PhysicalCollider" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_o5f0a")
 
 [node name="HighlightCircle" type="Sprite2D" parent="."]
 visible = false
@@ -52,11 +54,20 @@ texture = ExtResource("3_n1wcj")
 [node name="HoverZone" type="Area2D" parent="."]
 collision_mask = 2
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="HoverZone"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HoverZone"]
 y_sort_enabled = true
 position = Vector2(0, -14)
+shape = SubResource("CapsuleShape2D_ud6ys")
+
+[node name="MeleeZone" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeZone"]
+y_sort_enabled = true
+position = Vector2(0, -1)
 shape = SubResource("CapsuleShape2D_ud6ys")
 
 [connection signal="body_entered" from="HoverZone" to="." method="_on_hover_zone_body_entered"]
 [connection signal="mouse_entered" from="HoverZone" to="." method="_on_hover_zone_mouse_entered"]
 [connection signal="mouse_exited" from="HoverZone" to="." method="_on_hover_zone_mouse_exited"]
+[connection signal="body_entered" from="MeleeZone" to="." method="_on_melee_zone_body_entered"]
