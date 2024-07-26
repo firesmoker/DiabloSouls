@@ -13,7 +13,7 @@ ENEMY:  PATHFINDING and NAVIGATION ZONES
 
 
 # 26.7
-PLAYER: go and attack enemy function - MAIN THING
+PLAYER: go and attack enemy function - MAIN THING - YES YES YES
 	include going after a moving enemy
 ENEMY: enemy movement
 ENEMY: enemy animation - build from code with assets?

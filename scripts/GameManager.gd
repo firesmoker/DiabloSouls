@@ -17,6 +17,17 @@ var enemy_in_focus
 #func _process(delta):
 	#pass
 
+func player_in_melee(enemy):
+	print("MELEE!! (gamemanager) with " + str(enemy))
+	player.in_melee.append(enemy)
+	print(player.in_melee)
+	if player.is_chasing_enemy and player.targeted_enemy == enemy:
+			player.attack(enemy.position)
+
+func player_left_melee(enemy):
+	print("LEFT MELEE!! (gamemanager) with " + str(enemy))
+	player.in_melee.erase(enemy)
+	print(player.in_melee)
 
 func camera_shake_and_color(color: bool = true):
 	var timer = Timer.new()

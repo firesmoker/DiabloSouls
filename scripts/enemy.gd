@@ -4,13 +4,19 @@ extends RigidBody2D
 @onready var highlight_circle = $HighlightCircle
 
 var sprite_material: Material
+var player
 
 signal under_mouse_hover
 signal stopped_mouse_hover
+signal player_in_melee
+signal player_left_melee
 
 
 func _ready():
 	#pass # Replace with function body.
+	player_in_melee.connect(game_manager.player_in_melee)
+	player_left_melee.connect(game_manager.player_left_melee)
+	player = game_manager.player
 	sprite_material = animated_sprite_2d.material
 	if game_manager != null:
 		under_mouse_hover.connect(game_manager.enemy_mouse_hover)
@@ -47,12 +53,12 @@ func highlight_stop():
 
 
 func _on_hover_zone_body_entered(body):
-	#if body == game_manager.player:
+	#if body == player:
 		#print("yay")
-		#if game_manager.player.is_chasing_enemy and game_manager.player.targeted_enemy == self:
-			#game_manager.player.attack(position)
+		#if player.is_chasing_enemy and player.targeted_enemy == self:
+			#player.attack(position)
 	#print(body)
-	#print(game_manager.player)
+	#print(player)
 	pass # Replace with function body.
 
 
@@ -68,8 +74,16 @@ func _on_hover_zone_mouse_exited():
 
 
 func _on_melee_zone_body_entered(body):
-	if body == game_manager.player:
-		print("yay")
-		if game_manager.player.is_chasing_enemy and game_manager.player.targeted_enemy == self:
-			game_manager.player.attack(position)
+	if body == player:
+		emit_signal("player_in_melee", self)
+		print("player in melee")
+		#if player.is_chasing_enemy and player.targeted_enemy == self:
+			#player.attack(position)
+	pass # Replace with function body.
+
+
+func _on_melee_zone_body_exited(body):
+	if body == player:
+		emit_signal("player_left_melee", self)
+		print("player left melee")
 	pass # Replace with function body.

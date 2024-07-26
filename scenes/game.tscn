@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://lr15cpqcai72"]
+[gd_scene load_steps=16 format=3 uid="uid://lr15cpqcai72"]
 
 [ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_h602i"]
 [ext_resource type="Script" path="res://scripts/TileMap.gd" id="2_orhwb"]
@@ -282,6 +282,27 @@ use_texture_padding = false
 sources/0 = SubResource("TileSetAtlasSource_gos0m")
 sources/1 = SubResource("TileSetAtlasSource_ltl66")
 
+[sub_resource type="Animation" id="Animation_pj2bu"]
+resource_name = "move_enemy"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 9.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(260, 0), Vector2(400, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2jl8m"]
+_data = {
+"move_enemy": SubResource("Animation_pj2bu")
+}
+
 [node name="Game" type="Node2D"]
 
 [node name="GameManager" type="Node" parent="."]
@@ -337,5 +358,11 @@ bus = &"SFX"
 z_index = 5
 y_sort_enabled = true
 position = Vector2(260, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Enemy"]
+libraries = {
+"": SubResource("AnimationLibrary_2jl8m")
+}
+autoplay = "move_enemy"
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]

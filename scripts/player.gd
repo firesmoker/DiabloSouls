@@ -28,6 +28,7 @@ extends CharacterBody2D
 @export var attack_again := true
 @export var is_chasing_enemy := false
 var targeted_enemy = null
+var in_melee = []
 
 signal attack_effects
 signal attack_success
@@ -71,10 +72,9 @@ func _ready():
 
 
 func _physics_process(delta):
-
-	for i in get_slide_collision_count():
-		var collision = get_slide_collision(i)
-		print("Collided with: ", collision.get_collider().name)
+	#for i in get_slide_collision_count():
+		#var collision = get_slide_collision(i)
+		#print("Collided with: ", collision.get_collider().name)
 
 	
 	if moving and not attacking:
@@ -129,8 +129,12 @@ func _unhandled_input(event):
 	
 	if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place"):
 		if game_manager.enemies_under_mouse > 0:
+			targeted_enemy = game_manager.enemy_in_focus
 			#moving = false
-			move_to_enemy()
+			if targeted_enemy not in in_melee:
+				move_to_enemy()
+			else:
+				attack(targeted_enemy.position)
 		else:
 			print("unhandled input")
 			moving = true
@@ -164,7 +168,7 @@ func attack(attack_destination):
 func move_to_enemy():
 	print("should attack:" + str(game_manager.enemy_in_focus))
 	is_chasing_enemy = true
-	targeted_enemy = game_manager.enemy_in_focus
+	#targeted_enemy = game_manager.enemy_in_focus
 	destination = targeted_enemy.position
 	moving = true
 	
