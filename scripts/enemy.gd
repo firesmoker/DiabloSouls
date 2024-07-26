@@ -49,7 +49,7 @@ func highlight_stop():
 func _on_hover_zone_body_entered(body):
 	if body == game_manager.player:
 		print("yay")
-		if game_manager.player.is_chasing_enemy:
+		if game_manager.player.is_chasing_enemy and game_manager.player.targeted_enemy == self:
 			game_manager.player.attack(position)
 	#print(body)
 	#print(game_manager.player)

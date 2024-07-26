@@ -17,7 +17,7 @@ extends CharacterBody2D
 @export var attack_again_frame = 4
 @export var moving: bool = false
 @export var attacking: bool = false
-@export var idle := true
+@export var ready_for_idle := true
 @export var attack_again := true
 @export var is_chasing_enemy := false
 var targeted_enemy = null
@@ -58,29 +58,21 @@ var radian_direction: = {
 
 
 func _ready():
-	recreate_animations()
 	destination = position
-	var animation_list = animation_library.get_animation_list()
-	for animation in animation_list:
-		var new_animation = animation_library.get_animation(animation)
-		var track = new_animation.add_track(Animation.TYPE_METHOD)
-		new_animation.track_set_path(track, ".")
-		if "attack" in animation:
-			var time = attack_frame/FPS
-			var cancel_time = cancel_frame/FPS
-			var attack_again_time = attack_again_frame/FPS
-			new_animation.track_insert_key(track, cancel_time, {"method" : "animation_cancel_ready" , "args" : []}, 1)
-			new_animation.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
-			new_animation.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []}, 1)
-
+	construct_animation_library()
+	add_animation_method_calls()
 
 
 func _physics_process(delta):
-
+	
+	
 	if moving and not attacking:
 		if Input.is_action_pressed("mouse_move"):
+			if game_manager.enemies_under_mouse <= 0:
+				is_chasing_enemy = false
+				targeted_enemy = null
 			moving = true
-			idle = false
+			ready_for_idle = false
 			destination = get_global_mouse_position()
 			if abs(position.x - destination.x) <= 5 and abs(position.y - destination.y) <= 5:
 				velocity = Vector2(0,0)
@@ -89,18 +81,12 @@ func _physics_process(delta):
 			destination = targeted_enemy.position
 		velocity = calculate_movement_velocity() * delta / average_delta
 	
-	if Input.is_action_just_pressed("recreate_animations"):
-		velocity = Vector2(0,0)
 			
-	if Input.is_action_just_pressed("attack_in_place"):
-		var face_destination = get_global_mouse_position()
-		attack(face_destination)
-	
 	if not attacking:
 		if abs(position.x - destination.x) <= 1 and abs(position.y - destination.y) <= 1:
 			velocity = Vector2(0,0)
 			if not Input.is_action_pressed("mouse_move"):
-				idle = true
+				ready_for_idle = true
 		
 		if velocity:
 			attacking = false
@@ -120,15 +106,19 @@ func _physics_process(delta):
 			if "attack" in animation_player.current_animation:
 				moving = false
 				await animation_player.animation_finished
-			animation_player.play(animations[current_direction]["idle"])
+			animation_player.play(animations[current_direction]["ready_for_idle"])
 
 	move_and_slide()
 
 
 func _unhandled_input(event):
-	if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack"):
+	if event.is_action_pressed("attack_in_place"):
+		var face_destination = get_global_mouse_position()
+		attack(face_destination)
+	
+	if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place"):
 		if game_manager.enemies_under_mouse > 0:
-			moving = false
+			#moving = false
 			move_to_enemy()
 		else:
 			print("unhandled input")
@@ -143,7 +133,7 @@ func attack(attack_destination):
 		var rounded = round_to_multiple(angle, rand)
 		current_direction = radian_direction[rounded]
 		attack_axis.rotation = angle
-		idle = false
+		ready_for_idle = false
 		moving = false
 		animation_player.speed_scale = speed_modifier
 		if attack_again:
@@ -157,8 +147,7 @@ func attack(attack_destination):
 			var current_animation_position = animation_player.current_animation_position
 			animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
 			animation_player.seek(current_animation_position)
-		velocity.x = 0
-		velocity.y = 0
+		velocity = Vector2(0, 0)
 
 		
 func move_to_enemy():
@@ -197,15 +186,28 @@ func just_attacked():
 	disable_attack_zone()
 	
 
-func recreate_animations():
+func construct_animation_library():
 	animations.clear()
 	for key in direction_name:
 		animations[key] = {
 			"attack" : model + "_attack_" + direction_name[key],
-			"idle" : model+ "_idle_" + direction_name[key],
+			"ready_for_idle" : model+ "_idle_" + direction_name[key],
 			"running" : model+ "_running_" + direction_name[key],
 		}
 
+func add_animation_method_calls():
+	var animation_list = animation_library.get_animation_list()
+	for animation in animation_list:
+		var animation_to_modify = animation_library.get_animation(animation)
+		var track = animation_to_modify.add_track(Animation.TYPE_METHOD)
+		animation_to_modify.track_set_path(track, ".")
+		if "attack" in animation:
+			var time = attack_frame/FPS
+			var cancel_time = cancel_frame/FPS
+			var attack_again_time = attack_again_frame/FPS
+			animation_to_modify.track_insert_key(track, cancel_time, {"method" : "animation_cancel_ready" , "args" : []}, 1)
+			animation_to_modify.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
+			animation_to_modify.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []}, 1)
 
 func animation_cancel_ready():
 	attacking = false
@@ -228,7 +230,7 @@ func disable_attack_zone():
 func _on_animation_player_animation_finished(anim_name):
 	if "attack" in anim_name:
 		print("attack finished fully")
-		idle = true
+		ready_for_idle = true
 
 func _on_timer_timeout():
 	pass
