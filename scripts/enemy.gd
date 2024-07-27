@@ -1,10 +1,13 @@
 extends RigidBody2D
 @onready var animated_sprite_2d := $AnimatedSprite2D
 @onready var game_manager := %GameManager
-@onready var highlight_circle := $HighlightCircle
 
+@export var highlight_circle: Sprite2D
+
+@export var is_under_mouse: bool = false
 var sprite_material: Material
 var player: CharacterBody2D
+
 
 signal under_mouse_hover
 signal stopped_mouse_hover
@@ -23,8 +26,28 @@ func _ready() -> void:
 		stopped_mouse_hover.connect(game_manager.enemy_mouse_hover_stopped)
 
 
-#func _process(delta):
+#func _process(delta: float) -> void:
+	#if is_under_mouse:
+		##print("emitting under mouse")
+		#emit_signal("under_mouse_hover", self)
+	#elif not is_under_mouse:
+		##print("emitting NOT under mouse")
+		#emit_signal("stopped_mouse_hover", self)
 	#pass
+	
+func _on_hover_zone_mouse_entered() -> void:
+	print("mouse entered")
+	is_under_mouse = true
+	#print("mouse entered - emitting under_mouse_hover (in enemy)")
+	emit_signal("under_mouse_hover", self)
+	pass # Replace with function body.
+
+
+func _on_hover_zone_mouse_exited() -> void:
+	print("mouse exited")
+	is_under_mouse = false
+	emit_signal("stopped_mouse_hover", self)
+	pass # Replace with function body.
 	
 func get_hit() -> void:
 	#print("blend mode changed")
@@ -41,13 +64,13 @@ func get_hit() -> void:
 	#sprite_material.blend_mode = 0
 
 func highlight() -> void:
-	sprite_material.blend_mode = 1
-	highlight_circle.visible = false
-	highlight_circle.material.blend_mode = 0
+	#sprite_material.blend_mode = 1
+	highlight_circle.visible = true
+	#highlight_circle.material.blend_mode = 0
 
 func highlight_stop() -> void:
-	sprite_material.blend_mode = 0
-	highlight_circle.material.blend_mode = 0
+	#sprite_material.blend_mode = 0
+	#highlight_circle.material.blend_mode = 0
 	highlight_circle.visible = false
 
 
@@ -62,15 +85,6 @@ func highlight_stop() -> void:
 	#pass # Replace with function body.
 
 
-func _on_hover_zone_mouse_entered() -> void:
-	#print("mouse entered - emitting under_mouse_hover (in enemy)")
-	emit_signal("under_mouse_hover", self)
-	pass # Replace with function body.
-
-
-func _on_hover_zone_mouse_exited() -> void:
-	emit_signal("stopped_mouse_hover", self)
-	pass # Replace with function body.
 
 
 func _on_melee_zone_body_entered(body: CollisionObject2D) -> void:

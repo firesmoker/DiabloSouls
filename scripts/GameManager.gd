@@ -6,7 +6,7 @@ extends Node
 @export var shake_time: float = 0.05
 @export var shake_amount: float = 1.5
 @export var lightning_amount: float = 0.12
-@export var enemies_under_mouse: int = 0
+@export var enemies_under_mouse := []
 var enemy_in_focus: RigidBody2D
 
 
@@ -14,7 +14,7 @@ var enemy_in_focus: RigidBody2D
 	#pass # Replace with function body.
 #
 #
-#func _process(delta):
+#func _process(delta: float) -> void:
 	#pass
 
 func player_in_melee(enemy: RigidBody2D) -> void:
@@ -55,18 +55,24 @@ func camera_shake_and_color(color: bool = true) -> void:
 
 func enemy_mouse_hover(enemy: RigidBody2D) -> void:
 	#print("enemy mouse hover function (in gamemanager)")
-	enemies_under_mouse += 1
-	#if enemy_in_focus:
-		#enemy_in_focus.highlight()
+	if enemy not in enemies_under_mouse:
+		enemies_under_mouse.append(enemy)
+		print("added enemy under mouse: " + str(enemy.name))
+	if enemy_in_focus != null:
+		enemy_in_focus.highlight_stop()	
 	enemy_in_focus = enemy
 	enemy_in_focus.highlight()
 
 func enemy_mouse_hover_stopped(enemy: RigidBody2D) -> void:
-	#print("enemy mouse hover STOPPED (in gamemanager)")
-	enemies_under_mouse -= 1
-	enemy_in_focus = enemy
-	enemy_in_focus.highlight_stop()
-	enemy_in_focus = null
+	if enemy in enemies_under_mouse:
+		enemies_under_mouse.erase(enemy)
+		print("removed enemy under mouse: " + str(enemy.name))
+	enemy.highlight_stop()
+	if enemies_under_mouse.size() > 0:
+		print("switched to other enemy under mouse")
+		enemy_in_focus = enemies_under_mouse[0]
+	else:
+		enemy_in_focus = null
 
 func _on_player_attack_success(enemy: RigidBody2D) -> void:
 	enemy.get_hit()

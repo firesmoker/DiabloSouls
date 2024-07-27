@@ -27,11 +27,12 @@ height = 16.0
 radius = 24.0
 height = 48.0
 
-[node name="Enemy" type="RigidBody2D"]
+[node name="Enemy" type="RigidBody2D" node_paths=PackedStringArray("highlight_circle")]
 collision_mask = 2
 input_pickable = true
 gravity_scale = 0.0
 script = ExtResource("1_vs0td")
+highlight_circle = NodePath("HighlightCircle")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1
@@ -47,6 +48,7 @@ shape = SubResource("CapsuleShape2D_o5f0a")
 visible = false
 modulate = Color(0.788235, 0.788235, 0.788235, 0.717647)
 show_behind_parent = true
+z_index = 5
 y_sort_enabled = true
 material = SubResource("CanvasItemMaterial_nvcc2")
 texture = ExtResource("3_n1wcj")

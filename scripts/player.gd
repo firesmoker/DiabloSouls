@@ -79,7 +79,7 @@ func _physics_process(delta: float) -> void:
 	
 	if moving and not attacking:
 		if Input.is_action_pressed("mouse_move"):
-			if game_manager.enemies_under_mouse <= 0:
+			if game_manager.enemies_under_mouse.size() <= 0:
 				is_chasing_enemy = false
 				targeted_enemy = null
 			moving = true
@@ -128,7 +128,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		attack(face_destination)
 	
 	if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place"):
-		if game_manager.enemies_under_mouse > 0:
+		if game_manager.enemy_in_focus != null:
 			targeted_enemy = game_manager.enemy_in_focus
 			#moving = false
 			if targeted_enemy not in in_melee:
@@ -169,12 +169,22 @@ func attack(attack_destination: Vector2) -> void:
 			if current_animation_position < attack_frame/FPS or current_animation_position >= attack_again_frame/FPS:
 				animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
 				animation_player.seek(current_animation_position)
+			#else:
+				#print("kukukukuku")
+				#await animation_player.animation_changed
+				#print("waited for animation")
+				#animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
+				#animation_player.seek(current_animation_position)
 		velocity = Vector2(0, 0)
 
 		
 func move_to_enemy() -> void:
 	if targeted_enemy == null:
-		return
+		targeted_enemy = game_manager.enemy_in_focus
+		if targeted_enemy == null:
+			print("enemy null")
+			return
+		
 	is_chasing_enemy = true
 	#targeted_enemy = game_manager.enemy_in_focus
 	destination = targeted_enemy.position
