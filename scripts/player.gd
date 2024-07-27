@@ -73,16 +73,14 @@ func _ready() -> void:
 	destination = position
 	construct_animation_library()
 	add_animation_method_calls()
-	#test_ability.name = "test_ability"
 
 
 func _physics_process(delta: float) -> void:	
-	pressed_mouse_movement(delta)
+	handle_movement(delta)
+	
 	if not is_executing:
-		if abs(position.x - destination.x) <= 1 and abs(position.y - destination.y) <= 1:
-			velocity = Vector2(0,0)
-			if not Input.is_action_pressed("mouse_move"):
-				ready_for_idle = true
+		stop_on_destination()
+		
 		if velocity:
 			running_state()
 		else:
@@ -113,6 +111,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			is_moving = true
 			destination = get_global_mouse_position()
 
+
+func stop_on_destination() -> void:
+	if abs(position.x - destination.x) <= 1 and abs(position.y - destination.y) <= 1:
+		velocity = Vector2(0,0)
+		if not Input.is_action_pressed("mouse_move"):
+			ready_for_idle = true
+
+
 func running_state() -> void:
 	var current_animation: String = animation_player.current_animation
 	is_executing = false
@@ -134,7 +140,7 @@ func standing_state() -> void:
 		await animation_player.animation_finished
 	animation_player.play(animations[current_direction]["idle"])
 
-func pressed_mouse_movement(delta: float) -> void:
+func handle_movement(delta: float) -> void:
 	if is_moving and not is_executing:
 		if Input.is_action_pressed("mouse_move"):
 			if game_manager.enemies_under_mouse.size() <= 0:
@@ -159,12 +165,13 @@ func set_direction_by_angle(angle: float) -> void:
 func attack(attack_destination: Vector2) -> void:
 	is_chasing_enemy = false
 	targeted_enemy = null
+	ready_for_idle = false
+	is_moving = false
 	
+	velocity = Vector2(0, 0)
 	var angle: float = position.angle_to_point(attack_destination)
 	set_direction_by_angle(angle)
 	
-	ready_for_idle = false
-	is_moving = false
 	animation_player.speed_scale = speed_modifier
 	if ready_to_attack_again:
 		attack_axis.rotation = angle
@@ -182,7 +189,6 @@ func attack(attack_destination: Vector2) -> void:
 			animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
 			animation_player.seek(current_animation_position)
 	
-	velocity = Vector2(0, 0)
 
 
 func move_to_enemy() -> void:
@@ -294,10 +300,12 @@ func execute(ability: Ability, target: Vector2 = Vector2(0,0)) -> void:
 class Ability:
 	var name: String
 	var range_type: String
+	var standing: bool
 	
-	func _init(name: String, range_type: String) -> void:
+	func _init(name: String, range_type: String, standing: bool = true) -> void:
 		self.name = name
 		self.range_type = range_type
+		self.standing = standing
 		
 	func execute(target: Vector2 = Vector2(0,0)) -> void:
 		print("executing " + name)
