@@ -56,14 +56,15 @@ func camera_shake_and_color(color: bool = true) -> void:
 func enemy_mouse_hover(enemy: RigidBody2D) -> void:
 	#print("enemy mouse hover function (in gamemanager)")
 	enemies_under_mouse += 1
-	if enemy_in_focus:
-		enemy_in_focus.highlight()
+	#if enemy_in_focus:
+		#enemy_in_focus.highlight()
 	enemy_in_focus = enemy
 	enemy_in_focus.highlight()
 
 func enemy_mouse_hover_stopped(enemy: RigidBody2D) -> void:
 	#print("enemy mouse hover STOPPED (in gamemanager)")
 	enemies_under_mouse -= 1
+	enemy_in_focus = enemy
 	enemy_in_focus.highlight_stop()
 	enemy_in_focus = null
 

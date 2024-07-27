@@ -17,7 +17,7 @@ extends CharacterBody2D
 @onready var animation_library : AnimationLibrary = animation_player.get_animation_library("")
 
 @export var model: String = "warrior"
-@export var speed: float = 121.0
+@export var speed_fps_ratio: float = 121.0
 @export var speed_modifier: float = 1
 @export var attack_frame := 3
 @export var cancel_frame := 2
@@ -147,25 +147,34 @@ func attack(attack_destination: Vector2) -> void:
 		var rand := (1.0/4.0 * PI)
 		var rounded := round_to_multiple(angle, rand)
 		current_direction = radian_direction[rounded]
-		attack_axis.rotation = angle
+		#if attack_collider.disabled == true:
+			#attack_axis.rotation = angle
+		#else:
+			#print("cheater")
 		ready_for_idle = false
 		moving = false
 		animation_player.speed_scale = speed_modifier
 		if attack_again:
+			attack_axis.rotation = angle
 			print("first or restarted attack")
 			attacking = true
 			attack_again = false
 			animation_player.stop()
 			animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
-		else:
+		elif attack_collider.disabled == true:
+			attack_axis.rotation = angle
 			print("normal attack")
 			var current_animation_position := animation_player.current_animation_position
-			animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
-			animation_player.seek(current_animation_position)
+			
+			if current_animation_position < attack_frame/FPS or current_animation_position >= attack_again_frame/FPS:
+				animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
+				animation_player.seek(current_animation_position)
 		velocity = Vector2(0, 0)
 
 		
 func move_to_enemy() -> void:
+	if targeted_enemy == null:
+		return
 	is_chasing_enemy = true
 	#targeted_enemy = game_manager.enemy_in_focus
 	destination = targeted_enemy.position
@@ -178,7 +187,7 @@ func round_to_multiple(number: float, multiple: float) -> float:
 	
 
 func calculate_movement_velocity() -> Vector2:
-	var radius := speed
+	var radius := speed_fps_ratio
 	var angle := position.angle_to_point(destination)
 	
 	var rand := (1.0/4.0 * PI)

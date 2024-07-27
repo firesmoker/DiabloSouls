@@ -363,6 +363,8 @@ position = Vector2(260, 0)
 libraries = {
 "": SubResource("AnimationLibrary_2jl8m")
 }
-autoplay = "move_enemy"
+
+[node name="Enemy2" parent="." instance=ExtResource("9_t2e8k")]
+position = Vector2(201, 0)
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
