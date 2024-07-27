@@ -1,6 +1,6 @@
-extends RigidBody2D
-@onready var animated_sprite_2d := $AnimatedSprite2D
-@onready var game_manager := %GameManager
+class_name Enemy extends RigidBody2D
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var game_manager: GameManager = %GameManager
 
 @export var highlight_circle: Sprite2D
 

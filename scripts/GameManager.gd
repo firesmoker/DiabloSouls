@@ -1,30 +1,30 @@
-extends Node
+class_name GameManager extends Node
 
-@onready var player := $"../Player"
-@onready var camera := $"../Player/Camera2D"
-@onready var point_light := $"../Player/Camera2D/PointLight2D"
+@onready var player: Player = $"../Player"
+@onready var camera: Camera2D = $"../Player/Camera2D"
+@onready var point_light: PointLight2D = $"../Player/Camera2D/PointLight2D"
 @export var shake_time: float = 0.05
 @export var shake_amount: float = 1.5
 @export var lightning_amount: float = 0.12
 @export var enemies_under_mouse := []
-var enemy_in_focus: RigidBody2D
+var enemy_in_focus: Enemy
 
 
 func _process(delta: float) -> void:
-	print(enemy_in_focus)
+	#print(enemy_in_focus)
 	if enemy_in_focus != null:
 		enemy_in_focus.highlight()
 
-func player_in_melee(enemy: RigidBody2D) -> void:
+func player_in_melee(enemy: Enemy) -> void:
 	print("MELEE!! (gamemanager) with " + str(enemy))
-	player.in_melee.append(enemy)
+	player.enemies_in_melee.append(enemy)
 	if player.is_chasing_enemy and player.targeted_enemy == enemy:
 			player.attack(enemy.position)
 
-func player_left_melee(enemy: RigidBody2D) -> void:
+func player_left_melee(enemy: Enemy) -> void:
 	print("LEFT MELEE!! (gamemanager) with " + str(enemy))
-	if enemy in player.in_melee:
-		player.in_melee.erase(enemy)
+	if enemy in player.enemies_in_melee:
+		player.enemies_in_melee.erase(enemy)
 
 func camera_shake_and_color(color: bool = true) -> void:
 	var timer := Timer.new()
@@ -48,7 +48,7 @@ func camera_shake_and_color(color: bool = true) -> void:
 	camera.position.x -= shake_amount
 	camera.position.y -= shake_amount*0.7
 
-func enemy_mouse_hover(enemy: RigidBody2D) -> void:
+func enemy_mouse_hover(enemy: Enemy) -> void:
 	if enemy not in enemies_under_mouse:
 		enemies_under_mouse.append(enemy)
 		print("added enemy under mouse: " + str(enemy.name))
@@ -56,7 +56,7 @@ func enemy_mouse_hover(enemy: RigidBody2D) -> void:
 		enemy_in_focus.highlight_stop()	
 	enemy_in_focus = enemy
 
-func enemy_mouse_hover_stopped(enemy: RigidBody2D) -> void:
+func enemy_mouse_hover_stopped(enemy: Enemy) -> void:
 	if enemy in enemies_under_mouse:
 		enemies_under_mouse.erase(enemy)
 		print("removed enemy under mouse: " + str(enemy.name))
@@ -67,7 +67,7 @@ func enemy_mouse_hover_stopped(enemy: RigidBody2D) -> void:
 	else:
 		enemy_in_focus = null
 
-func _on_player_attack_success(enemy: RigidBody2D) -> void:
+func _on_player_attack_success(enemy: Enemy) -> void:
 	enemy.get_hit()
 	camera_shake_and_color()
 
