@@ -4,6 +4,38 @@ TO DO
 
 # Refactoring and cleaning
 
+should i remove the feature when he starts swinging he continues the swing?
+
+abilities queue = attack and other abillities will inherit from ability class.
+each time ability including normal attack is pressed it will be added to the queue
+each time ability is executed it will be removed from the queue
+the array will purge its items starting from the earliest based on timing
+some stuff will call for "animation_cancel" which will purge the queue and execute immediatly
+
+
+for example:
+	I press 1 and then 2 fast
+	queue is [ability1, ability2]
+
+TWO TYPES of cancellations:
+	next in queue
+	move
+	dodge
+	parry/counter	
+	
+ability animation should have "cant be canceled" period in the middle, many times starts in 0
+for example:
+	basic attack - swings up still can be cancelled,
+	when he swings down, it starts can't be cancelled,
+	followed by can be cancelled right after that
+when trying to cancel animation, check if same ability?:
+	if yes, checks if it's the same animation:
+		if its "post effect" -> it will start again
+		else -> add to queue
+if not:
+	cancel animation
+	
+
 
 
 # 27.7

@@ -1,5 +1,4 @@
 extends CharacterBody2D
-# test git
 
 @onready var game_manager := %GameManager
 @onready var audio := $AudioStreamPlayer
@@ -29,6 +28,8 @@ extends CharacterBody2D
 @export var is_chasing_enemy := false
 var targeted_enemy: RigidBody2D = null
 var in_melee := []
+var abilities_queue := []
+
 
 signal attack_effects
 signal attack_success
@@ -71,12 +72,7 @@ func _ready() -> void:
 	add_animation_method_calls()
 
 
-func _physics_process(delta: float) -> void:
-	#for i in get_slide_collision_count():
-		#var collision = get_slide_collision(i)
-		#print("Collided with: ", collision.get_collider().name)
-
-	
+func _physics_process(delta: float) -> void:	
 	if moving and not attacking:
 		if Input.is_action_pressed("mouse_move"):
 			if game_manager.enemies_under_mouse.size() <= 0:
@@ -169,12 +165,6 @@ func attack(attack_destination: Vector2) -> void:
 			if current_animation_position < attack_frame/FPS or current_animation_position >= attack_again_frame/FPS:
 				animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
 				animation_player.seek(current_animation_position)
-			#else:
-				#print("kukukukuku")
-				#await animation_player.animation_changed
-				#print("waited for animation")
-				#animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
-				#animation_player.seek(current_animation_position)
 		velocity = Vector2(0, 0)
 
 		
@@ -186,7 +176,6 @@ func move_to_enemy() -> void:
 			return
 		
 	is_chasing_enemy = true
-	#targeted_enemy = game_manager.enemy_in_focus
 	destination = targeted_enemy.position
 	moving = true
 	

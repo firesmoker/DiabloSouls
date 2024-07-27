@@ -10,26 +10,21 @@ extends Node
 var enemy_in_focus: RigidBody2D
 
 
-#func _ready():
-	#pass # Replace with function body.
-#
-#
-#func _process(delta: float) -> void:
-	#pass
+func _process(delta: float) -> void:
+	print(enemy_in_focus)
+	if enemy_in_focus != null:
+		enemy_in_focus.highlight()
 
 func player_in_melee(enemy: RigidBody2D) -> void:
 	print("MELEE!! (gamemanager) with " + str(enemy))
 	player.in_melee.append(enemy)
-	#print(player.in_melee)
 	if player.is_chasing_enemy and player.targeted_enemy == enemy:
 			player.attack(enemy.position)
 
 func player_left_melee(enemy: RigidBody2D) -> void:
-	#if enemy != RigidBody2D:
-		#return
 	print("LEFT MELEE!! (gamemanager) with " + str(enemy))
-	player.in_melee.erase(enemy)
-	#print(player.in_melee)
+	if enemy in player.in_melee:
+		player.in_melee.erase(enemy)
 
 func camera_shake_and_color(color: bool = true) -> void:
 	var timer := Timer.new()
@@ -54,14 +49,12 @@ func camera_shake_and_color(color: bool = true) -> void:
 	camera.position.y -= shake_amount*0.7
 
 func enemy_mouse_hover(enemy: RigidBody2D) -> void:
-	#print("enemy mouse hover function (in gamemanager)")
 	if enemy not in enemies_under_mouse:
 		enemies_under_mouse.append(enemy)
 		print("added enemy under mouse: " + str(enemy.name))
 	if enemy_in_focus != null:
 		enemy_in_focus.highlight_stop()	
 	enemy_in_focus = enemy
-	enemy_in_focus.highlight()
 
 func enemy_mouse_hover_stopped(enemy: RigidBody2D) -> void:
 	if enemy in enemies_under_mouse:
