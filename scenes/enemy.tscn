@@ -24,8 +24,8 @@ height = 16.0
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nvcc2"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ud6ys"]
-radius = 21.0
-height = 42.0
+radius = 24.0
+height = 48.0
 
 [node name="Enemy" type="RigidBody2D"]
 collision_mask = 2

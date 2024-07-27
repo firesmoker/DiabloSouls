@@ -1,10 +1,10 @@
 extends RigidBody2D
-@onready var animated_sprite_2d = $AnimatedSprite2D
-@onready var game_manager = %GameManager
-@onready var highlight_circle = $HighlightCircle
+@onready var animated_sprite_2d := $AnimatedSprite2D
+@onready var game_manager := %GameManager
+@onready var highlight_circle := $HighlightCircle
 
 var sprite_material: Material
-var player
+var player: CharacterBody2D
 
 signal under_mouse_hover
 signal stopped_mouse_hover
@@ -12,7 +12,7 @@ signal player_in_melee
 signal player_left_melee
 
 
-func _ready():
+func _ready() -> void:
 	#pass # Replace with function body.
 	player_in_melee.connect(game_manager.player_in_melee)
 	player_left_melee.connect(game_manager.player_left_melee)
@@ -26,64 +26,64 @@ func _ready():
 #func _process(delta):
 	#pass
 	
-func get_hit():
-	print("blend mode changed")
+func get_hit() -> void:
+	#print("blend mode changed")
 	#sprite_material.blend_mode = 1
 	animated_sprite_2d.modulate = Color.RED
-	var timer = Timer.new()
+	var timer := Timer.new()
 	self.add_child(timer)
 	timer.wait_time = 0.07
 	timer.start()
 	await timer.timeout
 	timer.queue_free()
-	print("blend mode reverted")
+	#print("blend mode reverted")
 	animated_sprite_2d.modulate = Color.WHITE
 	#sprite_material.blend_mode = 0
 
-func highlight():
+func highlight() -> void:
 	sprite_material.blend_mode = 1
 	highlight_circle.visible = false
 	highlight_circle.material.blend_mode = 0
 
-func highlight_stop():
+func highlight_stop() -> void:
 	sprite_material.blend_mode = 0
 	highlight_circle.material.blend_mode = 0
 	highlight_circle.visible = false
 
 
 
-func _on_hover_zone_body_entered(body):
+#func _on_hover_zone_body_entered(body) -> void:
 	#if body == player:
 		#print("yay")
 		#if player.is_chasing_enemy and player.targeted_enemy == self:
 			#player.attack(position)
 	#print(body)
 	#print(player)
-	pass # Replace with function body.
+	#pass # Replace with function body.
 
 
-func _on_hover_zone_mouse_entered():
-	print("mouse entered - emitting under_mouse_hover (in enemy)")
+func _on_hover_zone_mouse_entered() -> void:
+	#print("mouse entered - emitting under_mouse_hover (in enemy)")
 	emit_signal("under_mouse_hover", self)
 	pass # Replace with function body.
 
 
-func _on_hover_zone_mouse_exited():
+func _on_hover_zone_mouse_exited() -> void:
 	emit_signal("stopped_mouse_hover", self)
 	pass # Replace with function body.
 
 
-func _on_melee_zone_body_entered(body):
+func _on_melee_zone_body_entered(body: CollisionObject2D) -> void:
 	if body == player:
 		emit_signal("player_in_melee", self)
-		print("player in melee")
+		#print("player in melee")
 		#if player.is_chasing_enemy and player.targeted_enemy == self:
 			#player.attack(position)
 	pass # Replace with function body.
 
 
-func _on_melee_zone_body_exited(body):
+func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 	if body == player:
 		emit_signal("player_left_melee", self)
-		print("player left melee")
+		#print("player left melee")
 	pass # Replace with function body.

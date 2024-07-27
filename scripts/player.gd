@@ -1,8 +1,8 @@
 extends CharacterBody2D
 # test git
 
-@onready var game_manager = %GameManager
-@onready var audio = $AudioStreamPlayer
+@onready var game_manager := %GameManager
+@onready var audio := $AudioStreamPlayer
 
 #@onready var attack_axis = $AttackAxis
 #@onready var animation_player := $AnimationPlayer
@@ -19,16 +19,16 @@ extends CharacterBody2D
 @export var model: String = "warrior"
 @export var speed: float = 121.0
 @export var speed_modifier: float = 1
-@export var attack_frame = 3
-@export var cancel_frame = 2
-@export var attack_again_frame = 4
+@export var attack_frame := 3
+@export var cancel_frame := 2
+@export var attack_again_frame := 4
 @export var moving: bool = false
 @export var attacking: bool = false
 @export var ready_for_idle := true
 @export var attack_again := true
 @export var is_chasing_enemy := false
-var targeted_enemy = null
-var in_melee = []
+var targeted_enemy: RigidBody2D = null
+var in_melee := []
 
 signal attack_effects
 signal attack_success
@@ -65,13 +65,13 @@ var radian_direction: = {
 }
 
 
-func _ready():
+func _ready() -> void:
 	destination = position
 	construct_animation_library()
 	add_animation_method_calls()
 
 
-func _physics_process(delta):
+func _physics_process(delta: float) -> void:
 	#for i in get_slide_collision_count():
 		#var collision = get_slide_collision(i)
 		#print("Collided with: ", collision.get_collider().name)
@@ -102,13 +102,13 @@ func _physics_process(delta):
 		if velocity:
 			attacking = false
 			attack_again = true
-			var current_animation = animation_player.current_animation
+			var current_animation := animation_player.current_animation
 			if speed_modifier >= 2:
 				animation_player.speed_scale = speed_modifier / 2
 			else:
 				animation_player.speed_scale = speed_modifier
 			if "running" in current_animation and current_animation != animations[current_direction]["running"]:
-				var current_animation_position = animation_player.current_animation_position
+				var current_animation_position := animation_player.current_animation_position
 				animation_player.play(animations[current_direction]["running"])
 				animation_player.seek(current_animation_position)
 			else:
@@ -122,9 +122,9 @@ func _physics_process(delta):
 	move_and_slide()
 
 
-func _unhandled_input(event):
+func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("attack_in_place"):
-		var face_destination = get_global_mouse_position()
+		var face_destination := get_global_mouse_position()
 		attack(face_destination)
 	
 	if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place"):
@@ -140,12 +140,12 @@ func _unhandled_input(event):
 			moving = true
 			destination = get_global_mouse_position()
 
-func attack(attack_destination):
+func attack(attack_destination: Vector2) -> void:
 		is_chasing_enemy = false
 		targeted_enemy = null
-		var angle = position.angle_to_point(attack_destination)
-		var rand = (1.0/4.0 * PI)
-		var rounded = round_to_multiple(angle, rand)
+		var angle := position.angle_to_point(attack_destination)
+		var rand := (1.0/4.0 * PI)
+		var rounded := round_to_multiple(angle, rand)
 		current_direction = radian_direction[rounded]
 		attack_axis.rotation = angle
 		ready_for_idle = false
@@ -159,14 +159,13 @@ func attack(attack_destination):
 			animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
 		else:
 			print("normal attack")
-			var current_animation_position = animation_player.current_animation_position
+			var current_animation_position := animation_player.current_animation_position
 			animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
 			animation_player.seek(current_animation_position)
 		velocity = Vector2(0, 0)
 
 		
-func move_to_enemy():
-	print("should attack:" + str(game_manager.enemy_in_focus))
+func move_to_enemy() -> void:
 	is_chasing_enemy = true
 	#targeted_enemy = game_manager.enemy_in_focus
 	destination = targeted_enemy.position
@@ -174,66 +173,66 @@ func move_to_enemy():
 	
 
 		
-func round_to_multiple(number, multiple):
-	return round(number / multiple) * multiple
+func round_to_multiple(number: float, multiple: float) -> float:
+	return float(round(number / multiple) * multiple)
 	
 
-func calculate_movement_velocity():
-	var radius = speed
-	var angle = position.angle_to_point(destination)
+func calculate_movement_velocity() -> Vector2:
+	var radius := speed
+	var angle := position.angle_to_point(destination)
 	
-	var rand = (1.0/4.0 * PI)
-	var rounded = round_to_multiple(angle, rand)
+	var rand := (1.0/4.0 * PI)
+	var rounded := round_to_multiple(angle, rand)
 	current_direction = radian_direction[rounded]
 	
-	var direction_x = cos(angle) * radius
-	var direction_y = sin(angle) * radius
-	var max_velocity_x = direction_x * speed_modifier
-	var max_velocity_y = direction_y * speed_modifier
+	var direction_x: float = cos(angle) * radius
+	var direction_y: float = sin(angle) * radius
+	var max_velocity_x: float = direction_x * speed_modifier
+	var max_velocity_y: float = direction_y * speed_modifier
 	
 	return Vector2(max_velocity_x, max_velocity_y)
 	
 
-func just_attacked():
+func just_attacked() -> void:
 	print("pow!")
 	attack_collider.disabled = false
 	emit_signal("attack_effects")
 	disable_attack_zone()
 	
 
-func construct_animation_library():
+func construct_animation_library() -> void:
 	animations.clear()
-	for key in direction_name:
+	for key: int in direction_name:
 		animations[key] = {
 			"attack" : model + "_attack_" + direction_name[key],
 			"ready_for_idle" : model+ "_idle_" + direction_name[key],
 			"running" : model+ "_running_" + direction_name[key],
 		}
 
-func add_animation_method_calls():
-	var animation_list = animation_library.get_animation_list()
+func add_animation_method_calls() -> void:
+	var animation_list := animation_library.get_animation_list()
 	for animation in animation_list:
-		var animation_to_modify = animation_library.get_animation(animation)
-		var track = animation_to_modify.add_track(Animation.TYPE_METHOD)
+		var animation_to_modify := animation_library.get_animation(animation)
+		var track := animation_to_modify.add_track(Animation.TYPE_METHOD)
 		animation_to_modify.track_set_path(track, ".")
 		if "attack" in animation:
-			var time = attack_frame/FPS
-			var cancel_time = cancel_frame/FPS
-			var attack_again_time = attack_again_frame/FPS
+			var time := attack_frame/FPS
+			var cancel_time := cancel_frame/FPS
+			var attack_again_time := attack_again_frame/FPS
 			animation_to_modify.track_insert_key(track, cancel_time, {"method" : "animation_cancel_ready" , "args" : []}, 1)
 			animation_to_modify.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
 			animation_to_modify.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []}, 1)
 
-func animation_cancel_ready():
+func animation_cancel_ready() -> void:
 	attacking = false
 
 
-func attack_again_ready():
+func attack_again_ready() -> void:
 	attack_again = true
 	print("can attack again")
 
-func disable_attack_zone():
-	var timer = Timer.new()
+func disable_attack_zone() -> void:
+	var timer := Timer.new()
 	attack_collider.add_child(timer)
 	timer.wait_time = 0.06
 	timer.start()
@@ -242,20 +241,20 @@ func disable_attack_zone():
 	attack_collider.disabled = true
 		
 
-func _on_animation_player_animation_finished(anim_name):
+func _on_animation_player_animation_finished(anim_name: String) -> void:
 	if "attack" in anim_name:
 		print("attack finished fully")
 		ready_for_idle = true
 
-func _on_timer_timeout():
+func _on_timer_timeout() -> void:
 	pass
 
 
-func _on_attack_zone_body_entered(body):
+func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
 	emit_signal("attack_success", body)
 
 
-func _on_attack_effects():
+func _on_attack_effects() -> void:
 	if not audio.playing:
 		audio.stop()
 		audio.pitch_scale = 1
