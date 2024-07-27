@@ -77,47 +77,16 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:	
-	if is_moving and not is_executing:
-		if Input.is_action_pressed("mouse_move"):
-			if game_manager.enemies_under_mouse.size() <= 0:
-				is_chasing_enemy = false
-				targeted_enemy = null
-			is_moving = true
-			ready_for_idle = false
-			destination = get_global_mouse_position()
-			if abs(position.x - destination.x) <= 5 and abs(position.y - destination.y) <= 5:
-				velocity = Vector2(0,0)
-				destination = position
-		if is_chasing_enemy and targeted_enemy != null:
-			destination = targeted_enemy.position
-		velocity = calculate_movement_velocity() * delta / average_delta
-	
-			
+	pressed_mouse_movement(delta)
 	if not is_executing:
 		if abs(position.x - destination.x) <= 1 and abs(position.y - destination.y) <= 1:
 			velocity = Vector2(0,0)
 			if not Input.is_action_pressed("mouse_move"):
 				ready_for_idle = true
-		
 		if velocity:
-			is_executing = false
-			ready_to_attack_again = true
-			var current_animation: String = animation_player.current_animation
-			if speed_modifier >= 2:
-				animation_player.speed_scale = speed_modifier / 2
-			else:
-				animation_player.speed_scale = speed_modifier
-			if "running" in current_animation and current_animation != animations[current_direction]["running"]:
-				var current_animation_position: float = animation_player.current_animation_position
-				animation_player.play(animations[current_direction]["running"])
-				animation_player.seek(current_animation_position)
-			else:
-				animation_player.play(animations[current_direction]["running"])
+			running_state()
 		else:
-			if "attack" in animation_player.current_animation:
-				is_moving = false
-				await animation_player.animation_finished
-			animation_player.play(animations[current_direction]["ready_for_idle"])
+			standing_state()
 
 	move_and_slide()
 
@@ -144,7 +113,45 @@ func _unhandled_input(event: InputEvent) -> void:
 			is_moving = true
 			destination = get_global_mouse_position()
 
-func set_direction(angle: float, new_destination: Vector2) -> void:
+func running_state() -> void:
+	var current_animation: String = animation_player.current_animation
+	is_executing = false
+	ready_to_attack_again = true
+	if speed_modifier >= 2:
+		animation_player.speed_scale = speed_modifier / 2
+	else:
+		animation_player.speed_scale = speed_modifier
+	if "running" in current_animation and current_animation != animations[current_direction]["running"]:
+		var current_animation_position: float = animation_player.current_animation_position
+		animation_player.play(animations[current_direction]["running"])
+		animation_player.seek(current_animation_position)
+	else:
+		animation_player.play(animations[current_direction]["running"])
+
+func standing_state() -> void:
+	if "attack" in animation_player.current_animation:
+		is_moving = false
+		await animation_player.animation_finished
+	animation_player.play(animations[current_direction]["idle"])
+
+func pressed_mouse_movement(delta: float) -> void:
+	if is_moving and not is_executing:
+		if Input.is_action_pressed("mouse_move"):
+			if game_manager.enemies_under_mouse.size() <= 0:
+				is_chasing_enemy = false
+				targeted_enemy = null
+			is_moving = true
+			ready_for_idle = false
+			destination = get_global_mouse_position()
+			if abs(position.x - destination.x) <= 5 and abs(position.y - destination.y) <= 5:
+				velocity = Vector2(0,0)
+				destination = position
+		if is_chasing_enemy and targeted_enemy != null:
+			destination = targeted_enemy.position
+		velocity = calculate_movement_velocity() * delta / average_delta
+
+
+func set_direction_by_angle(angle: float) -> void:
 	var rand: float = (1.0/4.0 * PI)
 	var rounded_rand: float = round_to_multiple(angle, rand)
 	current_direction = radian_direction[rounded_rand]
@@ -154,7 +161,7 @@ func attack(attack_destination: Vector2) -> void:
 	targeted_enemy = null
 	
 	var angle: float = position.angle_to_point(attack_destination)
-	set_direction(angle, attack_destination)
+	set_direction_by_angle(angle)
 	
 	ready_for_idle = false
 	is_moving = false
@@ -196,7 +203,7 @@ func round_to_multiple(number: float, multiple: float) -> float:
 
 func calculate_movement_velocity() -> Vector2:
 	var angle: float = position.angle_to_point(destination)
-	set_direction(angle, destination)
+	set_direction_by_angle(angle)
 	
 	var radius := speed_fps_ratio
 	var direction_x: float = cos(angle) * radius
@@ -219,7 +226,7 @@ func construct_animation_library() -> void:
 	for key: int in direction_name:
 		animations[key] = {
 			"attack" : model + "_attack_" + direction_name[key],
-			"ready_for_idle" : model+ "_idle_" + direction_name[key],
+			"idle" : model+ "_idle_" + direction_name[key],
 			"running" : model+ "_running_" + direction_name[key],
 		}
 
