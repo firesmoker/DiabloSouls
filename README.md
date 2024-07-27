@@ -2,8 +2,33 @@
 TO DO
 -----------------------
 
-# Refactoring and cleaning
+# 28.7
+* ENEMY: enemy movement
+* ENEMY: enemy animation - build from code with assets?
 
+
+A TIER
+------------------------------------
+* PLAYER: build animations from code with assets as well? can use differnet model for variation.
+* PLAYER: fix ordering with enemies. understand this better.
+* player - fix bug when walking too close to enemy and it keeps running
+* PLAYER: PATHFINDING and NAVIGATION ZONES
+* ENEMY:  PATHFINDING and NAVIGATION ZONES
+
+
+B TIER
+------------------------------------
+Convert attack to ability
+Ability queue
+
+
+C TIER
+--------------------------
+Refactoring and cleaning
+move audio to gamemanager or seperate from player, audio listener etc.
+update player scene to include some changes from the game scene
+
+Others:
 should i remove the feature when he starts swinging he continues the swing?
 
 abilities queue = attack and other abillities will inherit from ability class.
@@ -24,6 +49,7 @@ TWO TYPES of cancellations:
 	parry/counter	
 	
 ability animation should have "cant be canceled" period in the middle, many times starts in 0
+
 for example:
 	basic attack - swings up still can be cancelled,
 	when he swings down, it starts can't be cancelled,
@@ -39,18 +65,12 @@ if not:
 
 
 # 27.7
-player - fix bug when walking too close to enemy and it keeps running
-PLAYER: PATHFINDING and NAVIGATION ZONES
-ENEMY:  PATHFINDING and NAVIGATION ZONES
-
+Refactoring mainly
 
 # 26.7
 PLAYER: go and attack enemy function - MAIN THING - YES YES YES
 	include going after a moving enemy
-ENEMY: enemy movement
-ENEMY: enemy animation - build from code with assets?
-PLAYER: build animations from code with assets as well? can use differnet model for variation.
-PLAYER: fix ordering with enemies. understand this better.
+
 
 
 # 25.7
@@ -58,10 +78,9 @@ PLAYER: fix ordering with enemies. understand this better.
 player: change stuff to signals to gamemanager script - yes
 signals trigger call functions on the game objects themselves so they can all run in parallel even with timers:
 * camera - yes
-* audio - not critical now
 * enemy - yes
 
-update player scene to include some changes from the game scene - no
+
 
 
 --------------------------
