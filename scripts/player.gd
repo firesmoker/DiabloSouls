@@ -174,10 +174,10 @@ func attack(attack_destination: Vector2) -> void:
 	
 	animation_player.speed_scale = speed_modifier
 	if ready_to_attack_again:
-		attack_axis.rotation = angle
-		print("first or restarted attack")
 		is_executing = true
 		ready_to_attack_again = false
+		attack_axis.rotation = angle
+		print("first or restarted attack")
 		animation_player.stop()
 		animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
 	elif attack_collider.disabled == true:

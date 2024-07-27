@@ -55,7 +55,7 @@ PLAYER: fix ordering with enemies. understand this better.
 
 # 25.7
 
-player: change stuff to signals to gamemanager script
+player: change stuff to signals to gamemanager script - yes
 signals trigger call functions on the game objects themselves so they can all run in parallel even with timers:
 * camera - yes
 * audio - not critical now
