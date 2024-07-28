@@ -1383,7 +1383,7 @@ shape = SubResource("CircleShape2D_dhxtk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rd8ew")
-animation = &"warrior_attack_E"
+animation = &"warrior_attack_NE"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

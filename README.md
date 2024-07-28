@@ -1,11 +1,25 @@
+
+construct relevant asset path to folder:
+	creature_type: enemy
+	model: skeleton_default
+	animation_type: attack, then idle, then walk
+	direction name (iterate the direction_name[])
+get number of files in there
+add track to animationplayer that targets AnimatedSprite2D
+on each frame (each one is 1 / FPS):
+	add image from path
+
+
+
+
+
 -----------------------
 TO DO
 -----------------------
 
 # 28.7
-* ENEMY: enemy movement
-* ENEMY: enemy animation - build from code with assets?
-
+* ENEMY: enemy movement (A)
+* ENEMY: enemy animation - build from code with assets? (A)
 
 A TIER
 ------------------------------------
@@ -18,15 +32,15 @@ A TIER
 
 B TIER
 ------------------------------------
-Convert attack to ability
-Ability queue
+* Convert attack to ability
+* Ability queue
 
 
 C TIER
 --------------------------
-Refactoring and cleaning
-move audio to gamemanager or seperate from player, audio listener etc.
-update player scene to include some changes from the game scene
+* Refactoring and cleaning
+* move audio to gamemanager or seperate from player, audio listener etc.
+* update player scene to include some changes from the game scene
 
 Others:
 should i remove the feature when he starts swinging he continues the swing?
