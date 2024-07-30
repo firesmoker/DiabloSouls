@@ -30,12 +30,12 @@ func camera_shake_and_color(color: bool = true) -> void:
 	var timer := Timer.new()
 	camera.add_child(timer)
 	
+	freeze_display()
 	timer.wait_time = shake_time
 	if color:
 		#point_light.blend_mode = 0
 		#point_light.color = Color.TEAL
 		point_light.energy -= lightning_amount
-	#freeze_display()
 	camera.position.x += shake_amount
 	camera.position.y += shake_amount*0.7
 	timer.start()
@@ -68,13 +68,55 @@ func enemy_mouse_hover_stopped(enemy: Enemy) -> void:
 		enemy_in_focus = null
 
 func _on_player_attack_success(enemy: Enemy) -> void:
-	enemy.get_hit()
 	camera_shake_and_color()
+	enemy.get_hit()
 
-func freeze_display(duration := 0.5 / 12.0, delay := 0.05) -> void:
+func freeze_display(duration := 0.3 / 12.0, delay := 0.05) -> void:
 	await get_tree().create_timer(delay).timeout
 	RenderingServer.set_render_loop_enabled(false)
 	
 	await get_tree().create_timer(duration).timeout
 	RenderingServer.set_render_loop_enabled(true)
 
+
+func dir_contents(path: String) -> void:
+	var dir: = DirAccess.open(path)
+	if dir:
+		dir.list_dir_begin()
+		var file_name: String = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir():
+				print("Found directory: " + file_name)
+			else:
+				print("Found file: " + file_name)
+			file_name = dir.get_next()
+		dir.list_dir_end()
+	else:
+		print("An error occurred when trying to access the path.")
+
+func dir_contents_filter(path: String, extension: String) -> Array:
+	var dir: = DirAccess.open(path)
+	var fixed_path: String
+	var file_list: Array = []
+	if dir:
+		dir.list_dir_begin()
+		fixed_path = dir.get_current_dir()
+		#print("fixed path is " + fixed_path)
+		var file_name: String = dir.get_next()
+		while file_name != "":
+			if not dir.current_is_dir():
+				if file_name.ends_with(extension):
+					#print("Found a " + extension + " file: " + file_name)
+					var file_name_path: String = fixed_path + "/" + file_name
+					file_list.append(file_name_path)
+					print("added to file list: " + file_name_path)
+					
+				#print("Found directory: " + file_name)
+			#else:
+				#print("Found file: " + file_name)
+				
+			file_name = dir.get_next()
+		dir.list_dir_end()
+	else:
+		print("An error occurred when trying to access the path.")
+	return file_list
