@@ -333,9 +333,6 @@ stream = ExtResource("6_d01bm")
 volume_db = -11.0
 bus = &"SFX"
 
-[node name="Enemy2" parent="." instance=ExtResource("9_t2e8k")]
-position = Vector2(228, 1)
-
 [node name="Enemy" parent="." instance=ExtResource("9_t2e8k")]
 position = Vector2(265, 0)
 

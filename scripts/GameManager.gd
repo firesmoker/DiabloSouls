@@ -94,7 +94,7 @@ func dir_contents(path: String) -> void:
 	else:
 		print("An error occurred when trying to access the path.")
 
-func dir_contents_filter(path: String, extension: String) -> Array:
+func dir_contents_filter(path: String, extension: String, print: bool = false) -> Array:
 	var dir: = DirAccess.open(path)
 	var fixed_path: String
 	var file_list: Array = []
@@ -109,7 +109,8 @@ func dir_contents_filter(path: String, extension: String) -> Array:
 					#print("Found a " + extension + " file: " + file_name)
 					var file_name_path: String = fixed_path + "/" + file_name
 					file_list.append(file_name_path)
-					#print("added to file list: " + file_name_path)
+					if print:
+						print("added to file list: " + file_name_path)
 					
 				#print("Found directory: " + file_name)
 			#else:

@@ -2,6 +2,7 @@ class_name Player extends CharacterBody2D
 
 @onready var game_manager: GameManager = %GameManager
 @onready var audio: AudioStreamPlayer = $AudioStreamPlayer
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 #@onready var attack_axis = $AttackAxis
 #@onready var animation_player := $AnimationPlayer
@@ -15,7 +16,7 @@ class_name Player extends CharacterBody2D
 
 @onready var animation_library: AnimationLibrary = animation_player.get_animation_library("")
 
-@export var model: String = "warrior"
+@export var model: String = "warrior_armed"
 @export var speed_fps_ratio: float = 121.0
 @export var speed_modifier: float = 1
 @export var attack_frame: int = 3
@@ -136,12 +137,12 @@ func running_state() -> void:
 		animation_player.speed_scale = speed_modifier / 2
 	else:
 		animation_player.speed_scale = speed_modifier
-	if "running" in current_animation and current_animation != animations[current_direction]["running"]:
+	if "walk" in current_animation and current_animation != animations[current_direction]["walk"]:
 		var current_animation_position: float = animation_player.current_animation_position
-		animation_player.play(animations[current_direction]["running"])
+		animation_player.play(animations[current_direction]["walk"])
 		animation_player.seek(current_animation_position)
 	else:
-		animation_player.play(animations[current_direction]["running"])
+		animation_player.play(animations[current_direction]["walk"])
 
 func standing_state() -> void:
 	if "attack" in animation_player.current_animation:
@@ -242,12 +243,60 @@ func construct_animation_library() -> void:
 		animations[key] = {
 			"attack" : model + "_attack_" + direction_name[key],
 			"idle" : model+ "_idle_" + direction_name[key],
-			"running" : model+ "_running_" + direction_name[key],
+			"walk" : model+ "_walk_" + direction_name[key],
 		}
+		create_animated2d_animations_from_assets(animations[key]["attack"], key)
+		create_animated2d_animations_from_assets(animations[key]["idle"], key)
+		create_animated2d_animations_from_assets(animations[key]["walk"], key)
 
+func create_animated2d_animations_from_assets(animation_name: String, direction: int = directions.N) -> void:
+	var frames: SpriteFrames = animated_sprite_2d.sprite_frames
+	
+	var action_type: String
+	if "attack" in animation_name:
+		action_type = "attack"
+	elif "idle" in animation_name:
+		action_type = "idle"
+	elif "walk" in animation_name:
+		action_type = "walk"
+	else:
+		print("unknown action type to construct")
+		return
+	
+	frames.add_animation(animation_name)
+	frames.set_animation_speed(animation_name, 10.0)
+	frames.set_animation_loop(animation_name, true)
+	
+	#get all pngs to add to each frame of the animation
+	var assets_path: String = model + "/" + model + "_" + action_type + "/" + direction_name[direction]
+	var png_list: Array = game_manager.dir_contents_filter("res://assets/art/playable character/" + assets_path,"png", false)
+	
+	# add new frames to the spriteframes resource
+	for png_path: String in png_list:
+		var frame_png: Texture2D  = load(png_path)
+		frames.add_frame(animation_name,frame_png)
+	print("animation: " + animation_name + " created in AnimatedSprite2D")
+	
+	# create the same for AnimationPlayer
+	var new_animation: Animation = Animation.new()
+	var frames_track := new_animation.add_track(Animation.TYPE_VALUE)
+	new_animation.track_set_path(frames_track,"AnimatedSprite2D:frame")
+	new_animation.loop_mode = Animation.LOOP_NONE
+	new_animation.length = png_list.size()/FPS
+	var name_track := new_animation.add_track(Animation.TYPE_VALUE)
+	new_animation.track_set_path(name_track,"AnimatedSprite2D:animation")
+	new_animation.track_insert_key(name_track,0,animation_name)
+	var frame_number: float = 0
+	for png_path: String in png_list:
+		new_animation.track_insert_key(frames_track,frame_number/FPS, frame_number)
+		frame_number += 1
+	print("frame number length: " + str(frame_number))
+	print("animation: " + animation_name + " created in AnimatedSprite2D")
+	animation_library.add_animation(animation_name, new_animation)
 
 func add_animation_method_calls() -> void:
 	var animation_list := animation_library.get_animation_list()
+	print(animation_list)
 	for animation in animation_list:
 		var animation_to_modify := animation_library.get_animation(animation)
 		var track := animation_to_modify.add_track(Animation.TYPE_METHOD)

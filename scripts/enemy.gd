@@ -95,7 +95,7 @@ func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 func construct_animation_library() -> void:
 	animations.clear()
 	for key: int in direction_name:
-		print(direction_name[key])
+		#print(direction_name[key])
 		animations[key] = {
 			"attack" : model + "_attack_" + direction_name[key],
 			"idle" : model+ "_idle_" + direction_name[key],
@@ -129,7 +129,7 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	elif "walk" in animation_name:
 		action_type = "walk"
 	else:
-		print("unknown action type to construct")
+		#print("unknown action type to construct")
 		return
 	
 	frames.add_animation(animation_name)
@@ -144,5 +144,5 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	for png_path: String in png_list:
 		var frame_png: Texture2D  = load(png_path)
 		frames.add_frame(animation_name,frame_png)
-	print("animation: " + animation_name + " created")
+	#print("animation: " + animation_name + " created")
 	animated_sprite_2d.play(animation_name) # just testing
