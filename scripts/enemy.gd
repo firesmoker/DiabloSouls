@@ -3,7 +3,7 @@ class_name Enemy extends RigidBody2D
 @onready var game_manager: GameManager = %GameManager
 @export var highlight_circle: Sprite2D
 @export var animation_player: AnimationPlayer
-@onready var animation_library: AnimationLibrary = animation_player.get_animation_library("")
+@onready var animation_library: AnimationLibrary
 @export var attack_axis: Node2D
 @export var attack_zone: Area2D
 @export var attack_collider: CollisionShape2D
@@ -40,6 +40,7 @@ signal player_left_melee
 
 
 func _ready() -> void:
+	animation_library = animation_player.get_animation_library("")
 	construct_animation_library()
 	player_in_melee.connect(game_manager.player_in_melee)
 	player_left_melee.connect(game_manager.player_left_melee)

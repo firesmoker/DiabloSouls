@@ -16,7 +16,7 @@ class_name Player extends CharacterBody2D
 
 @onready var animation_library: AnimationLibrary = animation_player.get_animation_library("")
 
-@export var model: String = "warrior_armed"
+@export_enum("warrior_armed", "fighter_armed", "knight_armed") var model: String = "warrior_armed"
 @export var speed_fps_ratio: float = 121.0
 @export var speed_modifier: float = 1
 @export var attack_frame: int = 3
@@ -65,14 +65,22 @@ var direction_name: Dictionary = {
 }
 var radian_direction: Dictionary = {
 	-2.0/4 * PI: directions.N,
+	-1.5/4 * PI: directions.NNE, #
 	-1.0/4 * PI: directions.NE,
+	-0.5/4 * PI: directions.NEE, #
 	0.0/4 * PI: directions.E,
+	0.5/4 * PI: directions.SEE, #
 	1.0/4 * PI: directions.SE,
+	1.5/4 * PI: directions.SSE, #
 	2.0/4 * PI: directions.S,
+	2.5/4 * PI: directions.SSW, #
 	3.0/4 * PI: directions.SW,
+	3.5/4 * PI: directions.SWW, #
 	4.0/4 * PI: directions.W,
 	-4.0/4 * PI: directions.W,
+	-3.5/4 * PI: directions.NWW, #
 	-3.0/4 * PI: directions.NW,
+	-2.5/4 * PI: directions.NNW, #
 }
 
 var test_ability: Ability = Ability.new("test_ability", "melee")
@@ -168,8 +176,8 @@ func handle_movement(delta: float) -> void:
 
 
 func set_direction_by_angle(angle: float) -> void:
-	var rand: float = (1.0/4.0 * PI)
-	var rounded_rand: float = round_to_multiple(angle, rand)
+	var half_rand: float = (0.5/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
+	var rounded_rand: float = round_to_multiple(angle, half_rand)
 	current_direction = radian_direction[rounded_rand]
 
 func attack(attack_destination: Vector2) -> void:
@@ -264,7 +272,7 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 		return
 	
 	frames.add_animation(animation_name)
-	frames.set_animation_speed(animation_name, 10.0)
+	frames.set_animation_speed(animation_name, 12.0)
 	frames.set_animation_loop(animation_name, true)
 	
 	#get all pngs to add to each frame of the animation

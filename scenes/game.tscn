@@ -336,4 +336,12 @@ bus = &"SFX"
 [node name="Enemy" parent="." instance=ExtResource("9_t2e8k")]
 position = Vector2(265, 0)
 
+[node name="Enemy2" parent="." node_paths=PackedStringArray("highlight_circle", "animation_player", "attack_axis", "attack_zone", "attack_collider") instance=ExtResource("9_t2e8k")]
+position = Vector2(184, 1)
+highlight_circle = NodePath("../Enemy/HighlightCircle")
+animation_player = NodePath("../Enemy/AnimationPlayer")
+attack_axis = NodePath("../Enemy/AttackAxis")
+attack_zone = NodePath("../Enemy/AttackAxis/AttackZone")
+attack_collider = NodePath("../Enemy/AttackAxis/AttackZone/AttackCollider")
+
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
