@@ -40,18 +40,27 @@ var movement: Vector2 = Vector2()
 const FPS: float = 12.0
 const average_delta: float = 0.01666666666667
 
-enum directions{N,NE,E,SE,S,SW,W,NW}
+#enum directions{N,NE,E,SE,S,SW,W,NW}
+enum directions{N,NNE,NE,NEE,E,SEE,SE,SSE,S,SSW,SW,SWW,W,NWW,NW,NNW}
 var current_direction: int = directions.E
 var animations: Dictionary = {}
 var direction_name: Dictionary = {
 	directions.N : "N",
+	directions.NNE : "NNE", # extra
 	directions.NE : "NE",
+	directions.NEE : "NEE", # extra
 	directions.E : "E",
+	directions.SEE : "SEE", # extra
 	directions.SE : "SE",
+	directions.SSE : "SSE", # extra
 	directions.S : "S",
+	directions.SSW : "SSW", # extra
 	directions.SW : "SW",
+	directions.SWW : "SWW", # extra
 	directions.W : "W",
+	directions.NWW : "NWW", # extra
 	directions.NW : "NW",
+	directions.NNW : "NNW", # extra
 }
 var radian_direction: Dictionary = {
 	-2.0/4 * PI: directions.N,
