@@ -95,14 +95,15 @@ func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 func construct_animation_library() -> void:
 	animations.clear()
 	for key: int in direction_name:
+		print(direction_name[key])
 		animations[key] = {
 			"attack" : model + "_attack_" + direction_name[key],
 			"idle" : model+ "_idle_" + direction_name[key],
 			"walk" : model+ "_walk_" + direction_name[key],
 		}
-		create_animated2d_animations_from_assets(animations[key]["attack"])
-		create_animated2d_animations_from_assets(animations[key]["idle"])
-		create_animated2d_animations_from_assets(animations[key]["walk"])
+		create_animated2d_animations_from_assets(animations[key]["attack"], key)
+		create_animated2d_animations_from_assets(animations[key]["idle"], key)
+		create_animated2d_animations_from_assets(animations[key]["walk"], key)
 	
 
 func add_animation_method_calls() -> void:
@@ -117,7 +118,7 @@ func add_animation_method_calls() -> void:
 
 
 
-func create_animated2d_animations_from_assets(animation_name: String) -> void:
+func create_animated2d_animations_from_assets(animation_name: String, direction: int = directions.N) -> void:
 	var frames: SpriteFrames = animated_sprite_2d.sprite_frames
 	
 	var action_type: String
@@ -136,12 +137,12 @@ func create_animated2d_animations_from_assets(animation_name: String) -> void:
 	frames.set_animation_loop(animation_name, true)
 	
 	#get all pngs to add to each frame of the animation
-	var assets_path: String = model + "/" + model + "_" + action_type + "/" + direction_name[directions.N]
+	var assets_path: String = model + "/" + model + "_" + action_type + "/" + direction_name[direction]
 	var png_list: Array = game_manager.dir_contents_filter("res://assets/art/enemy/" + assets_path,"png")
 	
 	# add new frames to the spriteframes resource
 	for png_path: String in png_list:
 		var frame_png: Texture2D  = load(png_path)
 		frames.add_frame(animation_name,frame_png)
-	
+	print("animation: " + animation_name + " created")
 	animated_sprite_2d.play(animation_name) # just testing
