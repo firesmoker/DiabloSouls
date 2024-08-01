@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://lr15cpqcai72"]
+[gd_scene load_steps=12 format=3 uid="uid://lr15cpqcai72"]
 
 [ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_h602i"]
 [ext_resource type="Script" path="res://scripts/TileMap.gd" id="2_orhwb"]
 [ext_resource type="PackedScene" uid="uid://cgvpmrxms5e4k" path="res://scenes/player.tscn" id="3_gcy3d"]
 [ext_resource type="Texture2D" uid="uid://b14lamihq1w8f" path="res://assets/art/environment/ground_stone1.png" id="6_6dfq4"]
 [ext_resource type="Texture2D" uid="uid://bsrx8kbnpdg4d" path="res://assets/art/environment/ground_variation1.png" id="7_5uejp"]
+[ext_resource type="PackedScene" uid="uid://brlvroq1a2p0i" path="res://scenes/skeleton.tscn" id="7_fmbge"]
 [ext_resource type="PackedScene" uid="uid://b1hcswr77ft67" path="res://scenes/enemy.tscn" id="9_t2e8k"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_w3c5t"]
@@ -305,13 +306,13 @@ script = ExtResource("2_orhwb")
 
 [node name="Player" parent="." instance=ExtResource("3_gcy3d")]
 z_index = 5
-position = Vector2(246, 45)
+position = Vector2(37, 49)
 model = "knight_armed"
 
-[node name="Enemy" parent="." instance=ExtResource("9_t2e8k")]
-position = Vector2(283, 84)
-
 [node name="Enemy2" parent="." instance=ExtResource("9_t2e8k")]
-position = Vector2(141, 63)
+position = Vector2(-251, 50)
+
+[node name="Skeleton" parent="." instance=ExtResource("7_fmbge")]
+position = Vector2(-26, -20)
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]

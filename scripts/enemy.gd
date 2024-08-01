@@ -42,25 +42,32 @@ signal player_left_melee
 func _ready() -> void:
 	animation_library = animation_player.get_animation_library("")
 	construct_animation_library()
-	player_in_melee.connect(game_manager.player_in_melee)
-	player_left_melee.connect(game_manager.player_left_melee)
-	player = game_manager.player
 	sprite_material = animated_sprite_2d.material
 	if game_manager != null:
+		player = game_manager.player
+		player_in_melee.connect(game_manager.player_in_melee)
+		player_left_melee.connect(game_manager.player_left_melee)
 		under_mouse_hover.connect(game_manager.enemy_mouse_hover)
 		stopped_mouse_hover.connect(game_manager.enemy_mouse_hover_stopped)
-	animation_player.play(animations[current_direction]["idle"])
+	animation_player.play(animations[current_direction]["idle"]) # just testing
 
 	
 func _on_hover_zone_mouse_entered() -> void:
 	#print("mouse entered")
 	emit_signal("under_mouse_hover", self)
 
-
 func _on_hover_zone_mouse_exited() -> void:
 	#print("mouse exited")
 	emit_signal("stopped_mouse_hover", self)
 	
+func _on_melee_zone_body_entered(body: CollisionObject2D) -> void:
+	if body == player:
+		emit_signal("player_in_melee", self)
+
+func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
+	if body == player:
+		emit_signal("player_left_melee", self)
+		
 func get_hit() -> void:
 	#sprite_material.blend_mode = 1
 	animated_sprite_2d.modulate = Color.RED
@@ -82,16 +89,6 @@ func highlight_stop() -> void:
 	sprite_material.blend_mode = 0
 	#highlight_circle.material.blend_mode = 0
 	highlight_circle.visible = false
-
-
-func _on_melee_zone_body_entered(body: CollisionObject2D) -> void:
-	if body == player:
-		emit_signal("player_in_melee", self)
-
-
-func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
-	if body == player:
-		emit_signal("player_left_melee", self)
 
 
 func construct_animation_library() -> void:

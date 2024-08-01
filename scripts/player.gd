@@ -130,6 +130,24 @@ func _unhandled_input(event: InputEvent) -> void:
 			destination = get_global_mouse_position()
 
 
+
+func _on_animation_player_animation_finished(anim_name: String) -> void:
+	if "attack" in anim_name:
+		print("attack finished fully")
+		ready_for_idle = true
+
+func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
+	emit_signal("attack_success", body)
+
+
+func _on_attack_effects() -> void:
+	if not audio.playing:
+		audio.stop()
+		audio.pitch_scale = 1
+		audio.pitch_scale += randf_range(-0.03, 0.03)
+		audio.play()
+
+
 func stop_on_destination() -> void:
 	if abs(position.x - destination.x) <= 1 and abs(position.y - destination.y) <= 1:
 		velocity = Vector2(0,0)
@@ -337,26 +355,11 @@ func disable_attack_zone() -> void:
 	attack_collider.disabled = true
 
 
-func _on_animation_player_animation_finished(anim_name: String) -> void:
-	if "attack" in anim_name:
-		print("attack finished fully")
-		ready_for_idle = true
-
 
 func _on_timer_timeout() -> void:
 	pass
 
 
-func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
-	emit_signal("attack_success", body)
-
-
-func _on_attack_effects() -> void:
-	if not audio.playing:
-		audio.stop()
-		audio.pitch_scale = 1
-		audio.pitch_scale += randf_range(-0.03, 0.03)
-		audio.play()
 
 
 func execute(ability: Ability, target: Vector2 = Vector2(0,0)) -> void:

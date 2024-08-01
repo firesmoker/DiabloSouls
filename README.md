@@ -23,6 +23,7 @@ B TIER
 ------------------------------------
 * Ability queue
 * Convert attack to ability
+* Set enemy animation types and only construct for them with iteration
 
 
 C TIER
