@@ -1,29 +1,18 @@
 
-construct relevant asset path to folder:
-	creature_type: enemy
-	model: skeleton_default
-	animation_type: attack, then idle, then walk
-	direction name (iterate the direction_name[])
-get number of files in there
-add track to animationplayer that targets AnimatedSprite2D
-on each frame (each one is 1 / FPS):
-	add image from path
-
-
-
 
 
 -----------------------
 TO DO
 -----------------------
 
-# 28.7
-* ENEMY: enemy movement (A)
-* ENEMY: enemy animation - build from code with assets? (A)
+* ENEMY: enemy movement (S)
+* ENEMY: basic AI: go to player, attack player (S)
+* PLAYER: health and dying (S)
+
 
 A TIER
 ------------------------------------
-* PLAYER: build animations from code with assets as well? can use differnet model for variation.
+
 * PLAYER: fix ordering with enemies. understand this better.
 * player - fix bug when walking too close to enemy and it keeps running
 * PLAYER: PATHFINDING and NAVIGATION ZONES
@@ -32,8 +21,8 @@ A TIER
 
 B TIER
 ------------------------------------
-* Convert attack to ability
 * Ability queue
+* Convert attack to ability
 
 
 C TIER
@@ -41,6 +30,7 @@ C TIER
 * Refactoring and cleaning
 * move audio to gamemanager or seperate from player, audio listener etc.
 * update player scene to include some changes from the game scene
+
 
 Others:
 should i remove the feature when he starts swinging he continues the swing?
@@ -74,9 +64,12 @@ when trying to cancel animation, check if same ability?:
 		else -> add to queue
 if not:
 	cancel animation
+
+==============================================================================
 	
-
-
+# 28-31.7
+* PLAYER: build animations from code with assets as well? can use differnet model for variation.
+* ENEMY: enemy animation - build from code with assets? (A)
 
 # 27.7
 Refactoring mainly

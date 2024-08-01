@@ -259,8 +259,8 @@ func construct_animation_library() -> void:
 
 func create_animated2d_animations_from_assets(animation_name: String, direction: int = directions.N) -> void:
 	var frames: SpriteFrames = animated_sprite_2d.sprite_frames
-	
 	var action_type: String
+	
 	if "attack" in animation_name:
 		action_type = "attack"
 	elif "idle" in animation_name:
@@ -285,7 +285,7 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 		frames.add_frame(animation_name,frame_png)
 	print("animation: " + animation_name + " created in AnimatedSprite2D")
 	
-	# create the same for AnimationPlayer
+	# create the matching animations in AnimationPlayer
 	var new_animation: Animation = Animation.new()
 	var frames_track := new_animation.add_track(Animation.TYPE_VALUE)
 	new_animation.track_set_path(frames_track,"AnimatedSprite2D:frame")
