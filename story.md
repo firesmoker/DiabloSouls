@@ -138,7 +138,8 @@ That's when he decided on his plan. He managed to contact Death through servants
 
 Duriel killed God (by himself? other plan? made him die by something else? someone else killed him by his order?)
 
-He later charged against Death in order to meet with him. He was his master, and he wished to serve him.
+He later charged against Death in order to meet with him, and deliver the stone of creation to him.
+He was his master, and he wished to serve him.
 Over centuries he amassed an army, that its entire purpose was to serve his old God.
 
 He served Death for a long time, and because of his blind obidience, he didn't see him for what he has become.
@@ -173,3 +174,34 @@ Abel finally used his and his followers powers, with the Stone of Creation to di
 This weakened Kayne tremendously, and they binded him to reincarnate the souls back into living creatures, never letting him re-assemble himself.
 
 This is why Kayne, now Death, feels the "right" to the souls of all living creatures, as they were created from him without his consent.
+
+
+He slowly transormed the stone of creation into the Soulstone, brutally clumping souls together to be merged into his old power.
+
+COOL IDEA THE SOULSTONE IMAGE WILL SHOW SOULS AS THEY ARE GETTING ABSORBED WHEN YOU KILL ENEMIES
+
+
+but what about all the "leftover" angels?
+should I care about the 3rd, 4th, etc. children?
+
+What rank was Duriel? When was she born?
+Duriel is the 3rd, and she's a woman
+
+
+
+Because of their limited powers, they only provide powers slowly, based on merit. They are very conservative about giving one individual lots of power.
+
+Their main doing is overall keeping the human race and other living beings.
+
+Half of Aurora's power was given to the children, 32 overall.
+Kayne was 1/3 as powerful as Aurora, and each consecutive child was 1/3 as powerful as the one before.
+
+The third child is Raguel, angel of kindness and love. He was naive. He was close friend of Abel.
+Duriel is a girl! She loved Raguel.
+Abel used Duriel's love for Raguel to distract her, distancing her from the moment he and his followers confronted Kayne and transformed him.
+
+Raguel then disappeared. Later found out he gave birth to 30 children. They are the second divine order.
+They are the one that gives the hero the blessing.
+
+
+https://docs.google.com/spreadsheets/d/1vdtiEPIiRXRks1ZyDKFnLEZOnb-AIDzJlS-1r5ORhu4/edit?gid=0#gid=0
