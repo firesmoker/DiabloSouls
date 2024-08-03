@@ -281,12 +281,14 @@ sources/0 = SubResource("TileSetAtlasSource_gos0m")
 sources/1 = SubResource("TileSetAtlasSource_ltl66")
 
 [node name="Game" type="Node2D"]
+y_sort_enabled = true
 
 [node name="GameManager" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("1_h602i")
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+z_as_relative = false
 position = Vector2(-4, 0)
 navigation_polygon = SubResource("NavigationPolygon_w3c5t")
 
@@ -322,6 +324,5 @@ position = Vector2(-55, 62)
 position = Vector2(130, -31)
 
 [node name="Slime" parent="." instance=ExtResource("7_n77mo")]
-position = Vector2(66, 128)
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
