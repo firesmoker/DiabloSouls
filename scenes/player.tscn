@@ -1375,6 +1375,7 @@ z_index = 8
 y_sort_enabled = true
 position = Vector2(0, -3)
 collision_layer = 2
+motion_mode = 1
 safe_margin = 5.0
 script = ExtResource("1_3jece")
 attack_axis = NodePath("AttackAxis")

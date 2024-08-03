@@ -4,9 +4,7 @@
 -----------------------
 TO DO
 -----------------------
-
-* ENEMY: enemy movement (S)
-* ENEMY: basic AI: go to player, attack player (S)
+* ENEMY: basic AI: attack player when in range (S)
 * PLAYER: health and dying (S)
 
 
@@ -67,6 +65,9 @@ if not:
 	cancel animation
 
 ==============================================================================
+
+# 03.8
+* ENEMY: basic AI: go to player	
 	
 # 28-31.7
 * PLAYER: build animations from code with assets as well? can use differnet model for variation.

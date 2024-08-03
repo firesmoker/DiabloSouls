@@ -12,6 +12,7 @@ class_name Enemy extends RigidBody2D
 @export var speed: float = 0.35
 @export var speed_modifier: float = 1
 @export var attack_frame: int = 3
+var move_offset: Vector2 = Vector2(0,0)
 
 const FPS: float = 12.0
 const average_delta: float = 0.01666666666667
@@ -73,7 +74,7 @@ func _process(delta: float) -> void:
 	move_and_collide(calculate_movement() * speed * delta)
 
 func calculate_movement() -> Vector2:
-	var angle: float = position.angle_to_point(destination)
+	var angle: float = position.angle_to_point(destination + move_offset)
 	var rand: float = (1/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
 	var rounded_rand: float = float(round(angle / rand) * rand)
 	current_direction = radian_direction[rounded_rand]
@@ -86,6 +87,8 @@ func calculate_movement() -> Vector2:
 	
 	return Vector2(max_velocity_x, max_velocity_y)
 
+func _on_body_entered(body: RigidBody2D) -> void:
+	pass
 	
 func _on_hover_zone_mouse_entered() -> void:
 	#print("mouse entered")
@@ -98,10 +101,16 @@ func _on_hover_zone_mouse_exited() -> void:
 func _on_melee_zone_body_entered(body: CollisionObject2D) -> void:
 	if body == player:
 		emit_signal("player_in_melee", self)
+	elif body != self:
+		print("hurrary")
+		move_offset += position - body.position
 
 func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 	if body == player:
 		emit_signal("player_left_melee", self)
+	elif body != self:
+		print("fixxx")
+		move_offset -= position - body.position
 		
 func get_hit() -> void:
 	#sprite_material.blend_mode = 1
@@ -196,3 +205,13 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	print("frame number length: " + str(frame_number))
 	print("animation: " + animation_name + " created in AnimatedSprite2D")
 	animation_library.add_animation(animation_name, new_animation)
+
+
+#func allow_animation_refresh() -> void:
+	#var timer := Timer.new()
+	#attack_collider.add_child(timer)
+	#timer.wait_time = 0.06
+	#timer.start()
+	#await timer.timeout
+	#timer.queue_free()
+	#attack_collider.disabled = true

@@ -81,7 +81,7 @@ position = Vector2(0, -14)
 shape = SubResource("CapsuleShape2D_ud6ys")
 
 [node name="MeleeZone" type="Area2D" parent="."]
-collision_mask = 2
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeZone"]
 y_sort_enabled = true
@@ -99,6 +99,7 @@ collision_layer = 2
 shape = SubResource("CapsuleShape2D_5pav5")
 disabled = true
 
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="mouse_entered" from="HoverZone" to="." method="_on_hover_zone_mouse_entered"]
 [connection signal="mouse_exited" from="HoverZone" to="." method="_on_hover_zone_mouse_exited"]
 [connection signal="body_entered" from="MeleeZone" to="." method="_on_melee_zone_body_entered"]

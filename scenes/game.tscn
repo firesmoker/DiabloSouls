@@ -315,4 +315,10 @@ collision_mask = 2
 position = Vector2(210, 46)
 collision_mask = 2
 
+[node name="Skeleton3" parent="." instance=ExtResource("7_fmbge")]
+position = Vector2(-55, 62)
+
+[node name="Skeleton4" parent="." instance=ExtResource("7_fmbge")]
+position = Vector2(130, -31)
+
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
