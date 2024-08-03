@@ -22,12 +22,6 @@ animations = [{
 resource_local_to_scene = true
 
 [node name="Skeleton" instance=ExtResource("1_mhxew")]
-model = null
-speed_fps_ratio = null
-speed = null
-speed_modifier = null
-attack_frame = null
-hitpoints = null
 animation_types = ["idle", "walk", "attack", "death"]
 
 [node name="AnimatedSprite2D" parent="." index="1"]

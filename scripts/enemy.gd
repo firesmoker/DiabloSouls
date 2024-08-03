@@ -19,6 +19,8 @@ class_name Enemy extends RigidBody2D
 var move_offset: Vector2 = Vector2(0,0)
 var moving: bool = true
 var dying: bool = false
+var can_attack: bool = true
+var attacking: bool = false
 
 const FPS: float = 12.0
 const average_delta: float = 0.01666666666667
@@ -26,6 +28,8 @@ const average_delta: float = 0.01666666666667
 var sprite_material: Material
 var player: CharacterBody2D
 var destination: Vector2
+var player_in_range: bool = false
+var attack_range: float = 35
 
 var animations: Dictionary = {}
 var current_direction: int = directions.E
@@ -73,12 +77,20 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	destination = player.position
-	
-	if moving and not dying:
-		move_and_collide(calculate_movement() * speed * delta)
-		animation_player.play(animations[current_direction]["walk"])
-	elif not dying:
-		animation_player.play(animations[current_direction]["idle"])
+	if position.distance_to(player.position) <= attack_range and not dying:
+		can_attack = true
+		attacking = true
+		animation_player.play(animations[current_direction]["attack"])
+		print("can attack")
+	else:
+		can_attack = false
+		attacking = false
+	if not attacking:
+		if moving and not dying:
+			move_and_collide(calculate_movement() * speed * delta)
+			animation_player.play(animations[current_direction]["walk"])
+		elif not dying:
+			animation_player.play(animations[current_direction]["idle"])
 
 func calculate_movement() -> Vector2:
 	var angle: float = position.angle_to_point(destination + move_offset)
@@ -110,7 +122,7 @@ func _on_melee_zone_body_entered(body: CollisionObject2D) -> void:
 		emit_signal("player_in_melee", self)
 		moving = false
 	elif body != self:
-		print("hurrary")
+		#print("hurrary")
 		move_offset += position - body.position
 
 func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
@@ -118,7 +130,7 @@ func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 		emit_signal("player_left_melee", self)
 		moving = true
 	elif body != self:
-		print("fixxx")
+		#print("fixxx")
 		move_offset -= position - body.position
 		
 func get_hit() -> void:
@@ -134,11 +146,30 @@ func get_hit() -> void:
 	hitpoints -= 1
 	if hitpoints <= 0:
 		emit_signal("stopped_mouse_hover", self)
-		dying = true
-		animation_player.play(animations[current_direction]["death"])
+		emit_signal("player_left_melee", self)
+		die()
 		#await Timer.new().timeout
 		#queue_free()
 	#sprite_material.blend_mode = 0
+
+func die() -> void:
+	dying = true
+	animation_player.play(animations[current_direction]["death"])
+	$PhysicalCollider.disabled = true
+	highlight_circle.visible = false
+	$HoverZone.DISABLE_MODE_REMOVE
+	$MeleeZone.DISABLE_MODE_REMOVE
+	attack_zone.DISABLE_MODE_REMOVE
+	player_in_melee.disconnect(game_manager.player_in_melee)
+	player_left_melee.disconnect(game_manager.player_left_melee)
+	under_mouse_hover.disconnect(game_manager.enemy_mouse_hover)
+	stopped_mouse_hover.disconnect(game_manager.enemy_mouse_hover_stopped)
+	var timer := Timer.new()
+	add_child(timer)
+	timer.wait_time = 8
+	timer.start()
+	await timer.timeout
+	queue_free()
 
 func highlight() -> void:
 	sprite_material.blend_mode = 1
@@ -209,7 +240,7 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	for png_path: String in png_list:
 		var frame_png: Texture2D  = load(png_path)
 		frames.add_frame(animation_name,frame_png)
-	print("animation: " + animation_name + " created in AnimatedSprite2D")
+	#print("animation: " + animation_name + " created in AnimatedSprite2D")
 	
 	# create the matching animations in AnimationPlayer
 	var new_animation: Animation = Animation.new()
@@ -224,8 +255,8 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	for png_path: String in png_list:
 		new_animation.track_insert_key(frames_track,frame_number/FPS, frame_number)
 		frame_number += 1
-	print("frame number length: " + str(frame_number))
-	print("animation: " + animation_name + " created in AnimatedSprite2D")
+	#print("frame number length: " + str(frame_number))
+	#print("animation: " + animation_name + " created in AnimatedSprite2D")
 	animation_library.add_animation(animation_name, new_animation)
 
 

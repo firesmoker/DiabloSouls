@@ -6,6 +6,7 @@ TO DO
 -----------------------
 * ENEMY: basic AI: attack player when in range (S)
 * PLAYER: health and dying (S)
+player fix stopping bug with distance_to
 
 
 A TIER
