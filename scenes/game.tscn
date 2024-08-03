@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://lr15cpqcai72"]
+[gd_scene load_steps=12 format=3 uid="uid://lr15cpqcai72"]
 
 [ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_h602i"]
 [ext_resource type="Script" path="res://scripts/TileMap.gd" id="2_orhwb"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://b14lamihq1w8f" path="res://assets/art/environment/ground_stone1.png" id="6_6dfq4"]
 [ext_resource type="Texture2D" uid="uid://bsrx8kbnpdg4d" path="res://assets/art/environment/ground_variation1.png" id="7_5uejp"]
 [ext_resource type="PackedScene" uid="uid://brlvroq1a2p0i" path="res://scenes/skeleton.tscn" id="7_fmbge"]
+[ext_resource type="PackedScene" uid="uid://bx722w57mqme2" path="res://scenes/slime.tscn" id="7_n77mo"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_w3c5t"]
 source_geometry_group_name = &"navigation_polygon_source_group"
@@ -314,5 +315,12 @@ y_sort_enabled = true
 
 [node name="Skeleton" parent="Enemies" instance=ExtResource("7_fmbge")]
 collision_mask = 2
+
+[node name="Skeleton2" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(-84, 66)
+
+[node name="Slime" parent="Enemies" instance=ExtResource("7_n77mo")]
+position = Vector2(81, -4)
+move_speed_modifier = 0.8
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]

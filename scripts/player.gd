@@ -21,7 +21,7 @@ class_name Player extends CharacterBody2D
 @export var speed_modifier: float = 1
 @export var attack_frame: int = 3
 @export var cancel_frame: int = 2
-@export var attack_again_frame: int = 4
+@export var attack_again_frame: int = 5
 @export var hitpoints: int = 5
 @export var is_moving: bool = false
 @export var is_executing: bool = false
@@ -350,8 +350,9 @@ func add_animation_method_calls() -> void:
 		animation_to_modify.track_set_path(track, ".")
 		if "attack" in animation:
 			var time : float = attack_frame/FPS
-			var cancel_time : float = cancel_frame/FPS
 			var attack_again_time : float = attack_again_frame/FPS
+			var cancel_time : float = cancel_frame / FPS
+			#var cancel_time : float = attack_again_time + 1/FPS
 			animation_to_modify.track_insert_key(track, cancel_time, {"method" : "animation_cancel_ready" , "args" : []}, 1)
 			animation_to_modify.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
 			animation_to_modify.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []}, 1)

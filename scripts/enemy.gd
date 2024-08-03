@@ -9,9 +9,9 @@ class_name Enemy extends RigidBody2D
 @onready var attack_zone: Area2D = $AttackAxis/AttackZone
 @onready var attack_collider: CollisionShape2D = $AttackAxis/AttackZone/AttackCollider
 @export_enum("skeleton_default", "slime") var model: String = "skeleton_default"
-@export var speed_fps_ratio: float = 121.0
-@export var speed: float = 0.35
-@export var speed_modifier: float = 1
+@export var speed_fps_ratio: float = 42.35
+@export var move_speed_modifier: float = 1
+@export var attack_speed_modifier: float = 0.7
 @export var attack_frame: int = 3
 @export var hitpoints: int = 2
 @export var has_attack: bool = false
@@ -86,7 +86,7 @@ func _process(delta: float) -> void:
 		print("attacking, please hold")
 		await animation_player.animation_finished
 	if not dying:
-		animation_player.speed_scale = speed_modifier
+		animation_player.speed_scale = attack_speed_modifier
 		if position.distance_to(player.position) <= attack_range and has_attack:
 			can_attack = true
 			attacking = true
@@ -96,10 +96,11 @@ func _process(delta: float) -> void:
 			attacking = false
 		if not attacking:
 			if moving:
-				move_and_collide(calculate_movement() * speed * delta)
+				move_and_collide(calculate_movement() * move_speed_modifier * delta)
 				#if ready_to_switch_direction:
 
 				var animation_before_change: String = animation_player.current_animation
+				animation_player.speed_scale = move_speed_modifier
 				animation_player.play(animations[current_direction]["walk"])
 				if animation_player.current_animation != animation_before_change:
 					print("animation changed!")
@@ -116,8 +117,8 @@ func calculate_movement() -> Vector2:
 	var radius := speed_fps_ratio
 	var direction_x: float = cos(angle) * radius
 	var direction_y: float = sin(angle) * radius
-	var max_velocity_x: float = direction_x * speed_modifier
-	var max_velocity_y: float = direction_y * speed_modifier
+	var max_velocity_x: float = direction_x
+	var max_velocity_y: float = direction_y
 	
 	return Vector2(max_velocity_x, max_velocity_y)
 

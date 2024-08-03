@@ -23,6 +23,8 @@ resource_local_to_scene = true
 
 [node name="Slime" instance=ExtResource("1_h6qdv")]
 model = "slime"
+speed_fps_ratio = 30.0
+move_speed_modifier = 0.8
 hitpoints = 1
 animation_types = ["idle", "walk", "death"]
 
