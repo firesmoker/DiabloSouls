@@ -200,8 +200,45 @@ The third child is Raguel, angel of kindness and love. He was naive. He was clos
 Duriel is a girl! She loved Raguel.
 Abel used Duriel's love for Raguel to distract her, distancing her from the moment he and his followers confronted Kayne and transformed him.
 
+Raguel stayed with Abel, but was more distanced. He felt he can't tell right from wrong anymore. Abel, as the new God, ordered him and all angels to never reveal the truth to the human race.
+He said it's better for them to percieve the divine order this way. The knowledge that they're part of Death could create chaos, and will lead to their ultimate self destruction.
+
+
+
 Raguel then disappeared. Later found out he gave birth to 30 children. They are the second divine order.
 They are the one that gives the hero the blessing.
+
+
+When Abel and his followers ambushed Kayne and used their and the creation stone power to transform him, he used all of his powers to resist.
+
+The stone of creation, itself weaker than Kayne's pure power, shattered in the process. Its center, its core, was the most dense, and it stayed intact, but the rest shattered into shards.
+
+How did they kill God Abel?
+Duriel stuck the shards, thousands of them, into herself, and took the core.
+It amplified her strength, and in one swift move, when Abel's guard was completely down, she decapitated him.
+
+Death later had to surgically remove all shards from her. It left her with hideous scars all over her body.
+
+After turning the stone into the Soulstone:
+Death, obssessed with loyalty and control, used some of the biggest shards into his most powerful followers, augmenting their powers with the powers of the stone and himself. It included Duriel.
+
+
+Death's creatures are part of himself just like the normal living beings, but as he made them himself, and not them being taken out of him by force, he has complete control and loyalty by them.
+
+Maybe part of the transformation was making him vulnerable to light, to keep him in the Underworld. Even though he broke his contract, this condition is something that takes lots of time and power to heal?
+
+
+Are there other worlds? what about the sun? did aurora create the entire universe, or just the known world? did he create the sun and the moon?
+
+Maybe Aurora created the entire universe with 90 percent of their essence.
+
+They only sacrificed one tenth to create the children?
+
+gives me more options in the future and sets up the power levels better.
+
+
+
+
 
 
 https://docs.google.com/spreadsheets/d/1vdtiEPIiRXRks1ZyDKFnLEZOnb-AIDzJlS-1r5ORhu4/edit?gid=0#gid=0

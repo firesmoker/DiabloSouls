@@ -49,7 +49,10 @@ func _ready() -> void:
 		player_left_melee.connect(game_manager.player_left_melee)
 		under_mouse_hover.connect(game_manager.enemy_mouse_hover)
 		stopped_mouse_hover.connect(game_manager.enemy_mouse_hover_stopped)
-	animation_player.play(animations[current_direction]["idle"]) # just testing
+
+func _process(_delta: float) -> void:
+	animation_player.play(animations[current_direction]["walk"]) # just testing
+	
 
 	
 func _on_hover_zone_mouse_entered() -> void:
