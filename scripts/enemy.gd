@@ -1,4 +1,5 @@
 class_name Enemy extends RigidBody2D
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var game_manager: GameManager = %GameManager
 @onready var highlight_circle: Sprite2D = $HighlightCircle
@@ -12,7 +13,11 @@ class_name Enemy extends RigidBody2D
 @export var speed: float = 0.35
 @export var speed_modifier: float = 1
 @export var attack_frame: int = 3
+@export var hitpoints: int = 2
+
 var move_offset: Vector2 = Vector2(0,0)
+var moving: bool = true
+
 
 const FPS: float = 12.0
 const average_delta: float = 0.01666666666667
@@ -67,11 +72,13 @@ func _ready() -> void:
 		stopped_mouse_hover.connect(game_manager.enemy_mouse_hover_stopped)
 
 func _process(delta: float) -> void:
-	animation_player.play(animations[current_direction]["walk"]) # just testing
 	destination = player.position
 	
-	
-	move_and_collide(calculate_movement() * speed * delta)
+	if moving:
+		move_and_collide(calculate_movement() * speed * delta)
+		animation_player.play(animations[current_direction]["walk"])
+	else:
+		animation_player.play(animations[current_direction]["idle"])
 
 func calculate_movement() -> Vector2:
 	var angle: float = position.angle_to_point(destination + move_offset)
@@ -101,6 +108,7 @@ func _on_hover_zone_mouse_exited() -> void:
 func _on_melee_zone_body_entered(body: CollisionObject2D) -> void:
 	if body == player:
 		emit_signal("player_in_melee", self)
+		moving = false
 	elif body != self:
 		print("hurrary")
 		move_offset += position - body.position
@@ -108,6 +116,7 @@ func _on_melee_zone_body_entered(body: CollisionObject2D) -> void:
 func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 	if body == player:
 		emit_signal("player_left_melee", self)
+		moving = true
 	elif body != self:
 		print("fixxx")
 		move_offset -= position - body.position
@@ -122,6 +131,10 @@ func get_hit() -> void:
 	await timer.timeout
 	timer.queue_free()
 	animated_sprite_2d.modulate = Color.WHITE
+	hitpoints -= 1
+	if hitpoints <= 0:
+		emit_signal("stopped_mouse_hover", self)
+		queue_free()
 	#sprite_material.blend_mode = 0
 
 func highlight() -> void:
