@@ -14,6 +14,7 @@ class_name Enemy extends RigidBody2D
 @export var speed_modifier: float = 1
 @export var attack_frame: int = 3
 @export var hitpoints: int = 2
+@export var has_attack: bool = false
 @export var animation_types: Array = ["idle", "walk"]
 
 var move_offset: Vector2 = Vector2(0,0)
@@ -67,6 +68,7 @@ func _ready() -> void:
 	gravity_scale = 0
 	animation_library = animation_player.get_animation_library("")
 	construct_animation_library()
+	add_animation_method_calls()
 	sprite_material = animated_sprite_2d.material
 	if game_manager != null:
 		player = game_manager.player
@@ -77,20 +79,20 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	destination = player.position
-	if position.distance_to(player.position) <= attack_range and not dying:
-		can_attack = true
-		attacking = true
-		animation_player.play(animations[current_direction]["attack"])
-		print("can attack")
-	else:
-		can_attack = false
-		attacking = false
-	if not attacking:
-		if moving and not dying:
-			move_and_collide(calculate_movement() * speed * delta)
-			animation_player.play(animations[current_direction]["walk"])
-		elif not dying:
-			animation_player.play(animations[current_direction]["idle"])
+	if not dying:
+		if position.distance_to(player.position) <= attack_range and has_attack:
+			can_attack = true
+			attacking = true
+			animation_player.play(animations[current_direction]["attack"])
+		else:
+			can_attack = false
+			attacking = false
+		if not attacking:
+			if moving:
+				move_and_collide(calculate_movement() * speed * delta)
+				animation_player.play(animations[current_direction]["walk"])
+			else:
+				animation_player.play(animations[current_direction]["idle"])
 
 func calculate_movement() -> Vector2:
 	var angle: float = position.angle_to_point(destination + move_offset)
@@ -208,8 +210,11 @@ func add_animation_method_calls() -> void:
 		animation_to_modify.track_set_path(track, ".")
 		if "attack" in animation:
 			var time := attack_frame/FPS
-			animation_to_modify.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
+			animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : []}, 1)
 
+func attack_effect() -> void:
+	print("pow!")
+	game_manager.player_gets_hit()
 
 
 func create_animated2d_animations_from_assets(animation_name: String, direction: int = directions.N) -> void:

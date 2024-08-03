@@ -22,6 +22,7 @@ class_name Player extends CharacterBody2D
 @export var attack_frame: int = 3
 @export var cancel_frame: int = 2
 @export var attack_again_frame: int = 4
+@export var hitpoints: int = 5
 @export var is_moving: bool = false
 @export var is_executing: bool = false
 @export var is_chasing_enemy: bool = false
@@ -354,7 +355,11 @@ func disable_attack_zone() -> void:
 	timer.queue_free()
 	attack_collider.disabled = true
 
-
+func get_hit(damage: float = 1) -> void:
+	hitpoints -= damage
+	print("ouch!")
+	if hitpoints <= 0:
+		print("player died")
 
 func _on_timer_timeout() -> void:
 	pass
