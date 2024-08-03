@@ -43,6 +43,9 @@ radius = 13.0
 height = 34.0
 
 [node name="Enemy" type="RigidBody2D"]
+z_index = 5
+z_as_relative = false
+y_sort_enabled = true
 collision_mask = 3
 input_pickable = true
 gravity_scale = 0.0
@@ -54,12 +57,12 @@ libraries = {
 }
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-z_index = 1
-y_sort_enabled = true
 material = SubResource("CanvasItemMaterial_mwj6m")
 sprite_frames = SubResource("SpriteFrames_e0icc")
 
 [node name="PhysicalCollider" type="CollisionShape2D" parent="."]
+z_index = -1
+z_as_relative = false
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_o5f0a")
 
@@ -67,12 +70,14 @@ shape = SubResource("CapsuleShape2D_o5f0a")
 visible = false
 modulate = Color(0.788235, 0.788235, 0.788235, 0.717647)
 show_behind_parent = true
-z_index = 5
-y_sort_enabled = true
+z_index = -1
+z_as_relative = false
 material = SubResource("CanvasItemMaterial_nvcc2")
 texture = ExtResource("3_n1wcj")
 
 [node name="HoverZone" type="Area2D" parent="."]
+z_index = -1
+z_as_relative = false
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HoverZone"]
@@ -81,6 +86,8 @@ position = Vector2(0, -14)
 shape = SubResource("CapsuleShape2D_ud6ys")
 
 [node name="MeleeZone" type="Area2D" parent="."]
+z_index = -1
+z_as_relative = false
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeZone"]
@@ -89,13 +96,19 @@ position = Vector2(0, -1)
 shape = SubResource("CapsuleShape2D_ud6ys")
 
 [node name="AttackAxis" type="Node2D" parent="."]
+z_index = -1
+z_as_relative = false
 
 [node name="AttackZone" type="Area2D" parent="AttackAxis"]
+z_index = -1
+z_as_relative = false
 position = Vector2(17, 0)
 rotation = 1.5708
 collision_layer = 2
 
 [node name="AttackCollider" type="CollisionShape2D" parent="AttackAxis/AttackZone"]
+z_index = -1
+z_as_relative = false
 shape = SubResource("CapsuleShape2D_5pav5")
 disabled = true
 
