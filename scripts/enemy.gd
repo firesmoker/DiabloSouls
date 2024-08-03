@@ -9,6 +9,7 @@ class_name Enemy extends RigidBody2D
 @onready var attack_collider: CollisionShape2D = $AttackAxis/AttackZone/AttackCollider
 @export_enum("skeleton_default", "slime") var model: String = "skeleton_default"
 @export var speed_fps_ratio: float = 121.0
+@export var speed: float = 0.35
 @export var speed_modifier: float = 1
 @export var attack_frame: int = 3
 
@@ -17,6 +18,7 @@ const average_delta: float = 0.01666666666667
 
 var sprite_material: Material
 var player: CharacterBody2D
+var destination: Vector2
 
 
 var animations: Dictionary = {}
@@ -33,6 +35,18 @@ var direction_name: Dictionary = {
 	directions.NW : "NW",
 }
 
+var radian_direction: Dictionary = {
+	-2.0/4 * PI: directions.N,
+	-1.0/4 * PI: directions.NE,
+	0.0/4 * PI: directions.E,
+	1.0/4 * PI: directions.SE,
+	2.0/4 * PI: directions.S,
+	3.0/4 * PI: directions.SW,
+	4.0/4 * PI: directions.W,
+	-4.0/4 * PI: directions.W,
+	-3.0/4 * PI: directions.NW,
+}
+
 signal under_mouse_hover
 signal stopped_mouse_hover
 signal player_in_melee
@@ -40,6 +54,7 @@ signal player_left_melee
 
 
 func _ready() -> void:
+	gravity_scale = 0
 	animation_library = animation_player.get_animation_library("")
 	construct_animation_library()
 	sprite_material = animated_sprite_2d.material
@@ -50,9 +65,26 @@ func _ready() -> void:
 		under_mouse_hover.connect(game_manager.enemy_mouse_hover)
 		stopped_mouse_hover.connect(game_manager.enemy_mouse_hover_stopped)
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	animation_player.play(animations[current_direction]["walk"]) # just testing
+	destination = player.position
 	
+	
+	move_and_collide(calculate_movement() * speed * delta)
+
+func calculate_movement() -> Vector2:
+	var angle: float = position.angle_to_point(destination)
+	var rand: float = (1/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
+	var rounded_rand: float = float(round(angle / rand) * rand)
+	current_direction = radian_direction[rounded_rand]
+	
+	var radius := speed_fps_ratio
+	var direction_x: float = cos(angle) * radius
+	var direction_y: float = sin(angle) * radius
+	var max_velocity_x: float = direction_x * speed_modifier
+	var max_velocity_y: float = direction_y * speed_modifier
+	
+	return Vector2(max_velocity_x, max_velocity_y)
 
 	
 func _on_hover_zone_mouse_entered() -> void:

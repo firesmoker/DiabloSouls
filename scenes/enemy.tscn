@@ -43,7 +43,7 @@ radius = 13.0
 height = 34.0
 
 [node name="Enemy" type="RigidBody2D"]
-collision_mask = 2
+collision_mask = 3
 input_pickable = true
 gravity_scale = 0.0
 script = ExtResource("1_vs0td")
