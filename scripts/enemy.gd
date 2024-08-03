@@ -81,7 +81,12 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	destination = player.position
+	if "attack" in animation_player.current_animation:
+		moving = false
+		print("attacking, please hold")
+		await animation_player.animation_finished
 	if not dying:
+		animation_player.speed_scale = speed_modifier
 		if position.distance_to(player.position) <= attack_range and has_attack:
 			can_attack = true
 			attacking = true
@@ -93,7 +98,12 @@ func _process(delta: float) -> void:
 			if moving:
 				move_and_collide(calculate_movement() * speed * delta)
 				#if ready_to_switch_direction:
+
+				var animation_before_change: String = animation_player.current_animation
 				animation_player.play(animations[current_direction]["walk"])
+				if animation_player.current_animation != animation_before_change:
+					print("animation changed!")
+					animation_player.seek(randi_range(0, 3) / FPS)
 			else:
 				animation_player.play(animations[current_direction]["idle"])
 
@@ -110,6 +120,11 @@ func calculate_movement() -> Vector2:
 	var max_velocity_y: float = direction_y * speed_modifier
 	
 	return Vector2(max_velocity_x, max_velocity_y)
+
+func _on_animation_player_animation_finished(anim_name: String) -> void:
+	if not attacking:
+		moving = true
+
 
 func _on_body_entered(body: RigidBody2D) -> void:
 	pass
@@ -159,6 +174,7 @@ func get_hit() -> void:
 
 func die() -> void:
 	dying = true
+	animation_player.speed_scale = 1
 	animation_player.play(animations[current_direction]["death"])
 	$PhysicalCollider.disabled = true
 	highlight_circle.visible = false
@@ -216,18 +232,20 @@ func add_animation_method_calls() -> void:
 			animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : []}, 1)
 
 func attack_effect() -> void:
-	print("pow!")
+	#print("pow!")
 	game_manager.player_gets_hit()
 
 
 func create_animated2d_animations_from_assets(animation_name: String, direction: int = directions.N) -> void:
 	var frames: SpriteFrames = animated_sprite_2d.sprite_frames
 	var action_type: String
-	
 	for type: String in animation_types:
 		if type in animation_name:
 			action_type = type
 			break
+	if action_type == null:
+		print("no animation type found for this entity: " + name)
+		return
 	#elif "idle" in animation_name:
 		#action_type = "idle"
 	#elif "walk" in animation_name:
@@ -276,3 +294,4 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	#await timer.timeout
 	#timer.queue_free()
 	#attack_collider.disabled = true
+

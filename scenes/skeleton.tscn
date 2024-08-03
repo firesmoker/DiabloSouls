@@ -22,6 +22,9 @@ animations = [{
 resource_local_to_scene = true
 
 [node name="Skeleton" instance=ExtResource("1_mhxew")]
+speed = 0.45
+speed_modifier = 0.5
+has_attack = true
 animation_types = ["idle", "walk", "attack", "death"]
 
 [node name="AnimatedSprite2D" parent="." index="1"]

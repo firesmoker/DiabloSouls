@@ -4,15 +4,16 @@
 -----------------------
 TO DO
 -----------------------
-* ENEMY: basic AI: attack player when in range (S)
-* PLAYER: health and dying (S)
-player fix stopping bug with distance_to
+
+* enemy anti clumb in new safe zone and not melee zone
+* melee zone for player instead of enemy
+* convert enemy melee zone to actual melee zone of enemy. keep stopping functionality. change melee attacks to be based on melee zone instead of range
 
 
 A TIER
 ------------------------------------
 
-* PLAYER: fix ordering with enemies. understand this better.
+
 * player - fix bug when walking too close to enemy and it keeps running
 * PLAYER: PATHFINDING and NAVIGATION ZONES
 * ENEMY:  PATHFINDING and NAVIGATION ZONES
@@ -30,6 +31,7 @@ C TIER
 * Refactoring and cleaning
 * move audio to gamemanager or seperate from player, audio listener etc.
 * update player scene to include some changes from the game scene
+player fix stopping bug with distance_to
 
 
 Others:
@@ -68,7 +70,11 @@ if not:
 ==============================================================================
 
 # 03.8
+* PLAYER: health and dying (S)
 * ENEMY: basic AI: go to player	
+* ENEMY: hitpoints and dying
+* PLAYER: fix ordering with enemies. understand this better.
+* ENEMY: basic AI: attack player when in range (S)
 	
 # 28-31.7
 * PLAYER: build animations from code with assets as well? can use differnet model for variation.

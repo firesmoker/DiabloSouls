@@ -27,7 +27,7 @@ func player_left_melee(enemy: Enemy) -> void:
 		player.enemies_in_melee.erase(enemy)
 
 func player_gets_hit(damage: float = 1) -> void:
-	player.get_hit()
+	player.get_hit(damage)
 
 func camera_shake_and_color(color: bool = true) -> void:
 	var timer := Timer.new()
