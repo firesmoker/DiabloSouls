@@ -14,10 +14,11 @@ class_name Enemy extends RigidBody2D
 @export var speed_modifier: float = 1
 @export var attack_frame: int = 3
 @export var hitpoints: int = 2
+@export var animation_types: Array = ["idle", "walk"]
 
 var move_offset: Vector2 = Vector2(0,0)
 var moving: bool = true
-
+var dying: bool = false
 
 const FPS: float = 12.0
 const average_delta: float = 0.01666666666667
@@ -25,7 +26,6 @@ const average_delta: float = 0.01666666666667
 var sprite_material: Material
 var player: CharacterBody2D
 var destination: Vector2
-
 
 var animations: Dictionary = {}
 var current_direction: int = directions.E
@@ -74,10 +74,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	destination = player.position
 	
-	if moving:
+	if moving and not dying:
 		move_and_collide(calculate_movement() * speed * delta)
 		animation_player.play(animations[current_direction]["walk"])
-	else:
+	elif not dying:
 		animation_player.play(animations[current_direction]["idle"])
 
 func calculate_movement() -> Vector2:
@@ -134,7 +134,10 @@ func get_hit() -> void:
 	hitpoints -= 1
 	if hitpoints <= 0:
 		emit_signal("stopped_mouse_hover", self)
-		queue_free()
+		dying = true
+		animation_player.play(animations[current_direction]["death"])
+		#await Timer.new().timeout
+		#queue_free()
 	#sprite_material.blend_mode = 0
 
 func highlight() -> void:
@@ -152,14 +155,18 @@ func construct_animation_library() -> void:
 	animations.clear()
 	for key: int in direction_name:
 		#print(direction_name[key])
-		animations[key] = {
-			"attack" : model + "_attack_" + direction_name[key],
-			"idle" : model+ "_idle_" + direction_name[key],
-			"walk" : model+ "_walk_" + direction_name[key],
-		}
-		create_animated2d_animations_from_assets(animations[key]["attack"], key)
-		create_animated2d_animations_from_assets(animations[key]["idle"], key)
-		create_animated2d_animations_from_assets(animations[key]["walk"], key)
+		var animation_dictionary_for_key: Dictionary = {}
+		for type: String in animation_types:
+			animation_dictionary_for_key[type] = model + "_" + type + "_" + direction_name[key]
+				#"attack" : model + "_attack_" + direction_name[key],
+				#"idle" : model+ "_idle_" + direction_name[key],
+				#"walk" : model+ "_walk_" + direction_name[key],
+		animations[key] = animation_dictionary_for_key
+		for type: String in animation_types:
+			create_animated2d_animations_from_assets(animations[key][type], key)
+		#create_animated2d_animations_from_assets(animations[key]["attack"], key)
+		#create_animated2d_animations_from_assets(animations[key]["idle"], key)
+		#create_animated2d_animations_from_assets(animations[key]["walk"], key)
 	
 
 func add_animation_method_calls() -> void:
@@ -178,15 +185,17 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	var frames: SpriteFrames = animated_sprite_2d.sprite_frames
 	var action_type: String
 	
-	if "attack" in animation_name:
-		action_type = "attack"
-	elif "idle" in animation_name:
-		action_type = "idle"
-	elif "walk" in animation_name:
-		action_type = "walk"
-	else:
-		print("unknown action type to construct")
-		return
+	for type: String in animation_types:
+		if type in animation_name:
+			action_type = type
+			break
+	#elif "idle" in animation_name:
+		#action_type = "idle"
+	#elif "walk" in animation_name:
+		#action_type = "walk"
+	#else:
+		#print("unknown action type to construct")
+		#return
 	
 	frames.add_animation(animation_name)
 	frames.set_animation_speed(animation_name, 12.0)
