@@ -31,6 +31,7 @@ var player: CharacterBody2D
 var destination: Vector2
 var player_in_range: bool = false
 var attack_range: float = 35
+var ready_to_switch_direction: bool = true
 
 var animations: Dictionary = {}
 var current_direction: int = directions.E
@@ -62,6 +63,7 @@ signal under_mouse_hover
 signal stopped_mouse_hover
 signal player_in_melee
 signal player_left_melee
+signal switch_direction_animation
 
 
 func _ready() -> void:
@@ -90,6 +92,7 @@ func _process(delta: float) -> void:
 		if not attacking:
 			if moving:
 				move_and_collide(calculate_movement() * speed * delta)
+				#if ready_to_switch_direction:
 				animation_player.play(animations[current_direction]["walk"])
 			else:
 				animation_player.play(animations[current_direction]["idle"])
