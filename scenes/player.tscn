@@ -1383,6 +1383,7 @@ attack_axis = NodePath("AttackAxis")
 animation_player = NodePath("AnimationPlayer")
 attack_zone = NodePath("AttackAxis/AttackZone")
 attack_collider = NodePath("AttackAxis/AttackZone/AttackCollider")
+model = "fighter_armed"
 hitpoints = 50
 
 [node name="PhysicalCollider" type="CollisionShape2D" parent="."]
@@ -1390,7 +1391,7 @@ shape = SubResource("CircleShape2D_dhxtk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rd8ew")
-animation = &"warrior_attack_E"
+animation = &"warrior_attack_NE"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

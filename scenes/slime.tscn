@@ -32,5 +32,12 @@ animation_types = ["idle", "walk", "death"]
 material = SubResource("CanvasItemMaterial_pfpan")
 sprite_frames = SubResource("SpriteFrames_iyag3")
 
+[node name="PhysicalCollider" parent="." index="2"]
+scale = Vector2(1.93, 1.765)
+
 [node name="HighlightCircle" parent="." index="3"]
 material = SubResource("CanvasItemMaterial_0i3qh")
+
+[node name="CollisionShape2D" parent="HoverZone" index="0"]
+position = Vector2(0, -6.075)
+scale = Vector2(0.655, 0.655)

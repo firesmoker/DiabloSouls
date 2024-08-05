@@ -22,6 +22,7 @@ var moving: bool = true
 var dying: bool = false
 var can_attack: bool = true
 var attacking: bool = false
+var switch_animation_timer: Timer
 
 const FPS: float = 12.0
 const average_delta: float = 0.01666666666667
@@ -67,6 +68,8 @@ signal switch_direction_animation
 
 
 func _ready() -> void:
+	switch_animation_timer = Timer.new()
+	self.add_child(switch_animation_timer)
 	gravity_scale = 0
 	animation_library = animation_player.get_animation_library("")
 	construct_animation_library()
@@ -83,7 +86,7 @@ func _process(delta: float) -> void:
 	destination = player.position
 	if "attack" in animation_player.current_animation:
 		moving = false
-		print("attacking, please hold")
+		#print("attacking, please hold")
 		await animation_player.animation_finished
 	if not dying:
 		animation_player.speed_scale = attack_speed_modifier
@@ -103,24 +106,16 @@ func _process(delta: float) -> void:
 				animation_player.speed_scale = move_speed_modifier
 				animation_player.play(animations[current_direction]["walk"])
 				if animation_player.current_animation != animation_before_change:
-					print("animation changed!")
+					#print("animation changed!")
 					animation_player.seek(randi_range(0, 3) / FPS)
 			else:
 				animation_player.play(animations[current_direction]["idle"])
 
-func calculate_movement() -> Vector2:
-	var angle: float = position.angle_to_point(destination + move_offset)
-	var rand: float = (1/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
-	var rounded_rand: float = float(round(angle / rand) * rand)
-	current_direction = radian_direction[rounded_rand]
-	
-	var radius := speed_fps_ratio
-	var direction_x: float = cos(angle) * radius
-	var direction_y: float = sin(angle) * radius
-	var max_velocity_x: float = direction_x
-	var max_velocity_y: float = direction_y
-	
-	return Vector2(max_velocity_x, max_velocity_y)
+func switch_direction() -> void:
+	print("awaiting animation timer")
+	await switch_animation_timer.timeout
+	print("ready to switch")
+	ready_to_switch_direction = true
 
 func _on_animation_player_animation_finished(anim_name: String) -> void:
 	if not attacking:
@@ -137,22 +132,35 @@ func _on_hover_zone_mouse_entered() -> void:
 func _on_hover_zone_mouse_exited() -> void:
 	#print("mouse exited")
 	emit_signal("stopped_mouse_hover", self)
-	
+
+
+
+func _on_clump_zone_body_entered(body: CollisionObject2D) -> void: 
+	if body != player and body != self:
+		move_offset += position - body.position
+		#print("offsetting")
+
+
+func _on_clump_zone_body_exited(body: CollisionObject2D) -> void:
+	if body != player and body != self:
+		move_offset -= position - body.position
+		#print("reducing offsetting")
+
 func _on_melee_zone_body_entered(body: CollisionObject2D) -> void:
 	if body == player:
 		emit_signal("player_in_melee", self)
 		moving = false
-	elif body != self:
-		#print("hurrary")
-		move_offset += position - body.position
+	#elif body != self:
+		##print("hurrary")
+		#move_offset += position - body.position
 
 func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 	if body == player:
 		emit_signal("player_left_melee", self)
 		moving = true
-	elif body != self:
-		#print("fixxx")
-		move_offset -= position - body.position
+	#elif body != self:
+		##print("fixxx")
+		#move_offset -= position - body.position
 		
 func get_hit() -> void:
 	#sprite_material.blend_mode = 1
@@ -172,6 +180,26 @@ func get_hit() -> void:
 		#await Timer.new().timeout
 		#queue_free()
 	#sprite_material.blend_mode = 0
+func calculate_movement() -> Vector2:
+	var angle: float = position.angle_to_point(destination + move_offset)
+	var rand: float = (1/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
+	var rounded_rand: float = float(round(angle / rand) * rand)
+	if ready_to_switch_direction:
+		ready_to_switch_direction = false
+		current_direction = radian_direction[rounded_rand]
+		print("starting animation timer")
+		switch_animation_timer.paused = false
+		switch_animation_timer.start(0.2)
+		#emit_signal("switch_direction_animation")
+		switch_direction()
+	
+	var radius := speed_fps_ratio
+	var direction_x: float = cos(angle) * radius
+	var direction_y: float = sin(angle) * radius
+	var max_velocity_x: float = direction_x
+	var max_velocity_y: float = direction_y
+	
+	return Vector2(max_velocity_x, max_velocity_y)
 
 func die() -> void:
 	dying = true
@@ -296,3 +324,4 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	#timer.queue_free()
 	#attack_collider.disabled = true
 
+pass # Replace with function body.

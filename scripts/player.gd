@@ -182,7 +182,7 @@ func standing_state() -> void:
 	if "attack" in animation_player.current_animation:
 		is_moving = false
 		await animation_player.animation_finished
-	print("going idle!")
+	#print("going idle!")
 	if not dying:
 		animation_player.play(animations[current_direction]["idle"])
 
