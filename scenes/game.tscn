@@ -317,24 +317,25 @@ y_sort_enabled = true
 collision_mask = 2
 
 [node name="Skeleton2" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(-84, 66)
+position = Vector2(126, -1)
+collision_mask = 2
 
 [node name="Skeleton3" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(-70, 96)
+position = Vector2(125, 88)
+collision_mask = 2
 
 [node name="Skeleton4" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(-99, 100)
+position = Vector2(-53, 103)
+collision_mask = 2
 
 [node name="Skeleton5" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(-31, -4)
+position = Vector2(-79, -9)
+collision_mask = 2
 
-[node name="Skeleton6" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(25, -54)
+[node name="Slime" parent="Enemies" instance=ExtResource("7_n77mo")]
+position = Vector2(-109, 38)
 
-[node name="Skeleton7" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(81, 25)
-
-[node name="Slime" parent="." instance=ExtResource("7_n77mo")]
-position = Vector2(129, 67)
+[node name="Slime2" parent="Enemies" instance=ExtResource("7_n77mo")]
+position = Vector2(202, 41)
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]

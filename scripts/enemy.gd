@@ -23,6 +23,7 @@ var dying: bool = false
 var can_attack: bool = true
 var attacking: bool = false
 var switch_animation_timer: Timer
+var adjacent_enemies: Array = []
 
 const FPS: float = 12.0
 const average_delta: float = 0.01666666666667
@@ -112,9 +113,9 @@ func _process(delta: float) -> void:
 				animation_player.play(animations[current_direction]["idle"])
 
 func switch_direction() -> void:
-	print("awaiting animation timer")
+	#print("awaiting animation timer")
 	await switch_animation_timer.timeout
-	print("ready to switch")
+	#print("ready to switch")
 	ready_to_switch_direction = true
 
 func _on_animation_player_animation_finished(anim_name: String) -> void:
@@ -137,30 +138,24 @@ func _on_hover_zone_mouse_exited() -> void:
 
 func _on_clump_zone_body_entered(body: CollisionObject2D) -> void: 
 	if body != player and body != self:
-		move_offset += position - body.position
-		#print("offsetting")
+		print("enemy entered HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
+		adjacent_enemies.append(body)
 
 
 func _on_clump_zone_body_exited(body: CollisionObject2D) -> void:
 	if body != player and body != self:
-		move_offset -= position - body.position
-		#print("reducing offsetting")
+		print("clump exit")
+		adjacent_enemies.erase(body)
 
 func _on_melee_zone_body_entered(body: CollisionObject2D) -> void:
 	if body == player:
 		emit_signal("player_in_melee", self)
 		moving = false
-	#elif body != self:
-		##print("hurrary")
-		#move_offset += position - body.position
 
 func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 	if body == player:
 		emit_signal("player_left_melee", self)
 		moving = true
-	#elif body != self:
-		##print("fixxx")
-		#move_offset -= position - body.position
 		
 func get_hit() -> void:
 	#sprite_material.blend_mode = 1
@@ -181,13 +176,13 @@ func get_hit() -> void:
 		#queue_free()
 	#sprite_material.blend_mode = 0
 func calculate_movement() -> Vector2:
-	var angle: float = position.angle_to_point(destination + move_offset)
+	var angle: float = position.angle_to_point(destination)
 	var rand: float = (1/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
 	var rounded_rand: float = float(round(angle / rand) * rand)
 	if ready_to_switch_direction:
 		ready_to_switch_direction = false
 		current_direction = radian_direction[rounded_rand]
-		print("starting animation timer")
+		#print("starting animation timer")
 		switch_animation_timer.paused = false
 		switch_animation_timer.start(0.2)
 		#emit_signal("switch_direction_animation")
@@ -199,7 +194,11 @@ func calculate_movement() -> Vector2:
 	var max_velocity_x: float = direction_x
 	var max_velocity_y: float = direction_y
 	
-	return Vector2(max_velocity_x, max_velocity_y)
+	move_offset = Vector2(0,0)
+	for enemy: CollisionObject2D in adjacent_enemies:
+		move_offset += position - enemy.position
+	
+	return Vector2(max_velocity_x + move_offset.x, max_velocity_y + move_offset.y)
 
 func die() -> void:
 	dying = true
