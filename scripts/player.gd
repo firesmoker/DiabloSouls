@@ -137,6 +137,18 @@ func _unhandled_input(event: InputEvent) -> void:
 				destination = get_global_mouse_position()
 
 
+func _on_melee_zone_body_entered(enemy: CollisionObject2D) -> void:
+	print("body entered " + str(enemy))
+	enemies_in_melee.append(enemy)
+	if is_chasing_enemy and targeted_enemy == enemy:
+		attack(enemy.position)
+
+
+func _on_melee_zone_body_exited(enemy: CollisionObject2D) -> void:
+	print("body exited " + str(enemy))
+	if enemy in enemies_in_melee:
+		enemies_in_melee.erase(enemy)
+
 
 func _on_animation_player_animation_finished(anim_name: String) -> void:
 	if "attack" in anim_name:
@@ -407,3 +419,4 @@ class Ability:
 		print("executing " + name)
 		if self.range_type != "self":
 			print("execute on: " + str(target))
+

@@ -17,14 +17,14 @@ func _process(delta: float) -> void:
 
 func player_in_melee(enemy: Enemy) -> void:
 	print("MELEE!! (gamemanager) with " + str(enemy))
-	player.enemies_in_melee.append(enemy)
-	if player.is_chasing_enemy and player.targeted_enemy == enemy:
-			player.attack(enemy.position)
+	#player.enemies_in_melee.append(enemy)
+	#if player.is_chasing_enemy and player.targeted_enemy == enemy:
+			#player.attack(enemy.position)
 
 func player_left_melee(enemy: Enemy) -> void:
 	print("LEFT MELEE!! (gamemanager) with " + str(enemy))
-	if enemy in player.enemies_in_melee:
-		player.enemies_in_melee.erase(enemy)
+	#if enemy in player.enemies_in_melee:
+		#player.enemies_in_melee.erase(enemy)
 
 func player_gets_hit(damage: float = 1) -> void:
 	player.get_hit(damage)

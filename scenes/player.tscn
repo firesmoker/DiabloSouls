@@ -1,4 +1,4 @@
-[gd_scene load_steps=169 format=3 uid="uid://cgvpmrxms5e4k"]
+[gd_scene load_steps=170 format=3 uid="uid://cgvpmrxms5e4k"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_3jece"]
 [ext_resource type="Texture2D" uid="uid://nrok3hqdeyws" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/E/fighter_armed_attack_E_0.0_0.png" id="2_sf5aj"]
@@ -142,6 +142,11 @@
 [ext_resource type="AudioStream" uid="uid://djhoydj4vr7ct" path="res://assets/audio/hit_2.wav" id="140_mpi84"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dhxtk"]
+resource_local_to_scene = true
+radius = 9.48683
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ysxni"]
+radius = 29.0172
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rd8ew"]
 animations = [{
@@ -1389,6 +1394,12 @@ hitpoints = 50
 [node name="PhysicalCollider" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_dhxtk")
 
+[node name="MeleeZone" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeZone"]
+shape = SubResource("CircleShape2D_ysxni")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rd8ew")
 animation = &"warrior_attack_NE"
@@ -1419,7 +1430,7 @@ position = Vector2(-1, -1)
 zoom = Vector2(5, 5)
 
 [node name="PointLight2D" type="PointLight2D" parent="Camera2D"]
-position = Vector2(-203, 63)
+position = Vector2(-220, 92)
 energy = 0.5
 blend_mode = 1
 texture = ExtResource("139_ftsq4")
@@ -1432,5 +1443,7 @@ volume_db = -11.0
 bus = &"SFX"
 
 [connection signal="attack_effects" from="." to="." method="_on_attack_effects"]
+[connection signal="body_entered" from="MeleeZone" to="." method="_on_melee_zone_body_entered"]
+[connection signal="body_exited" from="MeleeZone" to="." method="_on_melee_zone_body_exited"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="AttackAxis/AttackZone" to="." method="_on_attack_zone_body_entered"]

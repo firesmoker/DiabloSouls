@@ -119,7 +119,7 @@ func switch_direction() -> void:
 	ready_to_switch_direction = true
 
 func _on_animation_player_animation_finished(anim_name: String) -> void:
-	if not attacking:
+	if not attacking and has_attack:
 		moving = true
 
 
@@ -138,23 +138,24 @@ func _on_hover_zone_mouse_exited() -> void:
 
 func _on_clump_zone_body_entered(body: CollisionObject2D) -> void: 
 	if body != player and body != self:
-		print("enemy entered HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
+		#print("enemy entered HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
 		adjacent_enemies.append(body)
 
 
 func _on_clump_zone_body_exited(body: CollisionObject2D) -> void:
 	if body != player and body != self:
-		print("clump exit")
+		#print("clump exit")
 		adjacent_enemies.erase(body)
 
 func _on_melee_zone_body_entered(body: CollisionObject2D) -> void:
 	if body == player:
-		emit_signal("player_in_melee", self)
+		print("player in melee")
+		#emit_signal("player_in_melee", self)
 		moving = false
 
 func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 	if body == player:
-		emit_signal("player_left_melee", self)
+		#emit_signal("player_left_melee", self)
 		moving = true
 		
 func get_hit() -> void:
@@ -279,7 +280,7 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	#elif "walk" in animation_name:
 		#action_type = "walk"
 	#else:
-		#print("unknown action type to construct")
+		print("unknown action type to construct")
 		#return
 	
 	frames.add_animation(animation_name)

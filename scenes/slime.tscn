@@ -38,6 +38,15 @@ scale = Vector2(1.93, 1.765)
 [node name="HighlightCircle" parent="." index="3"]
 material = SubResource("CanvasItemMaterial_0i3qh")
 
+[node name="ClumpZone" parent="." index="4"]
+visible = false
+
+[node name="HoverZone" parent="." index="5"]
+visible = false
+
 [node name="CollisionShape2D" parent="HoverZone" index="0"]
 position = Vector2(0, -6.075)
 scale = Vector2(0.655, 0.655)
+
+[node name="CollisionShape2D" parent="MeleeZone" index="0"]
+position = Vector2(0, 0)

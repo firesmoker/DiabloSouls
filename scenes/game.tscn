@@ -314,26 +314,27 @@ speed_fps_ratio = 108.0
 y_sort_enabled = true
 
 [node name="Skeleton" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(-385, 31)
 collision_mask = 2
 
 [node name="Skeleton2" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(126, -1)
+position = Vector2(-259, 30)
 collision_mask = 2
 
 [node name="Skeleton3" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(125, 88)
+position = Vector2(-260, 119)
 collision_mask = 2
 
 [node name="Skeleton4" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(-53, 103)
+position = Vector2(-438, 134)
 collision_mask = 2
 
 [node name="Skeleton5" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(-79, -9)
+position = Vector2(-464, 22)
 collision_mask = 2
 
 [node name="Slime" parent="Enemies" instance=ExtResource("7_n77mo")]
-position = Vector2(-109, 38)
+position = Vector2(-494, 69)
 
 [node name="Slime2" parent="Enemies" instance=ExtResource("7_n77mo")]
 position = Vector2(202, 41)
