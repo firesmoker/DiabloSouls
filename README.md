@@ -4,9 +4,6 @@
 -----------------------
 TO DO
 -----------------------
-
-* enemy anti clumb in new safe zone and not melee zone
-* melee zone for player instead of enemy
 * convert enemy melee zone to actual melee zone of enemy. keep stopping functionality. change melee attacks to be based on melee zone instead of range
 
 
@@ -24,6 +21,7 @@ B TIER
 * Ability queue
 * Convert attack to ability
 * Set enemy animation types and only construct for them with iteration
+* outline shader for highlighted enemy
 
 
 C TIER
@@ -68,8 +66,11 @@ if not:
 	cancel animation
 
 ==============================================================================
+# 5.8
+* enemy anti clumb in new safe zone and not melee zone
+* melee zone for player instead of enemy
 
-# 03.8
+# 3.8
 * PLAYER: health and dying (S)
 * ENEMY: basic AI: go to player	
 * ENEMY: hitpoints and dying

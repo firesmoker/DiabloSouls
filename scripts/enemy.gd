@@ -94,6 +94,8 @@ func _process(delta: float) -> void:
 		if position.distance_to(player.position) <= attack_range and has_attack:
 			can_attack = true
 			attacking = true
+			var angle: float = position.angle_to_point(player.position)
+			attack_axis.rotation = angle
 			animation_player.play(animations[current_direction]["attack"])
 		else:
 			can_attack = false
@@ -262,7 +264,20 @@ func add_animation_method_calls() -> void:
 
 func attack_effect() -> void:
 	#print("pow!")
-	game_manager.player_gets_hit()
+	print("pow!")
+	attack_collider.disabled = false
+	#emit_signal("attack_effects")
+	disable_attack_zone()
+	
+func disable_attack_zone() -> void:
+	var timer := Timer.new()
+	attack_collider.add_child(timer)
+	timer.wait_time = 0.06
+	timer.start()
+	await timer.timeout
+	timer.queue_free()
+	attack_collider.disabled = true
+
 
 
 func create_animated2d_animations_from_assets(animation_name: String, direction: int = directions.N) -> void:
@@ -324,4 +339,12 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	#timer.queue_free()
 	#attack_collider.disabled = true
 
-pass # Replace with function body.
+
+
+func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
+	if body == player:
+		game_manager.player_gets_hit()
+		print("player supposed to get hit")
+	else:
+		print(body)
+		print("not player")
