@@ -1,16 +1,30 @@
+free thinking.
 
+I now have a prototype that the player moves very good, enemies move pretty good. the player attacks the enemies and the enemies attack in melee.
 
+Things that are very missing:
+	Pathfinding is non existent for both player and enemies
+	When player gets hit there are no effects
+	Sound is not good and responsive
+	Enemy highlight makes them transparent and the highlight is not clear enough. I want outline.
+	Combat is boring and needs to get the parry / counter ability
+	enemy retaliation animations (lower priority)
+	Artstyle is lacking
+	no music
+	player light is a bit awkard, and the dark is not dark enough
+
+Do I want attack rating?
+It's not really fun, and not very "actiony"
+I could do enemies that actually "dodge", using dodge abillity the moves them away.
 
 -----------------------
 TO DO
 -----------------------
-* convert enemy melee zone to actual melee zone of enemy. keep stopping functionality. change melee attacks to be based on melee zone instead of range
-
+  2404
+ 
 
 A TIER
 ------------------------------------
-
-
 * player - fix bug when walking too close to enemy and it keeps running
 * PLAYER: PATHFINDING and NAVIGATION ZONES
 * ENEMY:  PATHFINDING and NAVIGATION ZONES
@@ -18,9 +32,6 @@ A TIER
 
 B TIER
 ------------------------------------
-* Ability queue
-* Convert attack to ability
-* Set enemy animation types and only construct for them with iteration
 * outline shader for highlighted enemy
 
 
@@ -30,7 +41,9 @@ C TIER
 * move audio to gamemanager or seperate from player, audio listener etc.
 * update player scene to include some changes from the game scene
 player fix stopping bug with distance_to
-
+* animation and sound when gets hit (animation only for enemy)
+* Convert attack to ability
+* Ability queue
 
 Others:
 should i remove the feature when he starts swinging he continues the swing?
@@ -66,9 +79,16 @@ if not:
 	cancel animation
 
 ==============================================================================
+# 6.8
+* convert enemy melee zone to actual melee zone of enemy. keep stopping functionality. change melee attacks to be based on melee zone instead of range
+* enemy retaliation on melee hit (by stopping thus restarting the attack animation)
+
 # 5.8
 * enemy anti clumb in new safe zone and not melee zone
 * melee zone for player instead of enemy
+
+# 4.8
+* Set enemy animation types and only construct for them with iteration
 
 # 3.8
 * PLAYER: health and dying (S)

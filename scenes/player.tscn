@@ -1402,7 +1402,7 @@ shape = SubResource("CircleShape2D_ysxni")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rd8ew")
-animation = &"warrior_attack_NE"
+animation = &"warrior_attack_E"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -1431,8 +1431,7 @@ zoom = Vector2(5, 5)
 
 [node name="PointLight2D" type="PointLight2D" parent="Camera2D"]
 position = Vector2(-220, 92)
-energy = 0.5
-blend_mode = 1
+energy = 0.0
 texture = ExtResource("139_ftsq4")
 texture_scale = 16.28
 height = 500.0

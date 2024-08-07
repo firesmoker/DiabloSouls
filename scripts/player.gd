@@ -160,11 +160,11 @@ func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
 
 
 func _on_attack_effects() -> void:
-	if not audio.playing:
-		audio.stop()
-		audio.pitch_scale = 1
-		audio.pitch_scale += randf_range(-0.03, 0.03)
-		audio.play()
+	#if not audio.playing:
+		#audio.stop()
+	audio.pitch_scale = 1
+	audio.pitch_scale += randf_range(-0.03, 0.03)
+	audio.play()
 
 
 func stop_on_destination() -> void:
@@ -389,11 +389,26 @@ func disable_attack_zone() -> void:
 	attack_collider.disabled = true
 
 func get_hit(damage: float = 1) -> void:
-	hitpoints -= damage
-	print("ouch!")
-	if hitpoints <= 0:
+	#if not audio.playing:
+	#audio.stop()
+	if hitpoints > 0:
+		hitpoints -= damage
+		print("ouch!")
+		audio.pitch_scale = 0.90
+		audio.pitch_scale += randf_range(-0.03, 0.03)
+		audio.play()
+		animated_sprite_2d.modulate = Color.RED
+		var timer := Timer.new()
+		self.add_child(timer)
+		timer.wait_time = 0.07
+		timer.start()
+		await timer.timeout
+		timer.queue_free()
+		animated_sprite_2d.modulate = Color.WHITE
+	else:
 		print("player died")
 		dying = true
+		
 
 func _on_timer_timeout() -> void:
 	pass

@@ -14,6 +14,10 @@ func _process(delta: float) -> void:
 	#print(enemy_in_focus)
 	if enemy_in_focus != null:
 		enemy_in_focus.highlight()
+	if player.dead:
+		point_light.color = Color.RED
+		point_light.energy = 1
+		
 
 func player_in_melee(enemy: Enemy) -> void:
 	print("MELEE!! (gamemanager) with " + str(enemy))
@@ -28,17 +32,31 @@ func player_left_melee(enemy: Enemy) -> void:
 
 func player_gets_hit(damage: float = 1) -> void:
 	player.get_hit(damage)
+	if not player.dead:
+		var timer := Timer.new()
+		timer.wait_time = shake_time
+		camera.add_child(timer)
+		
+		point_light.color = Color.RED
+		point_light.energy += 0.5
+		
+		timer.start()
+		await timer.timeout
+		timer.queue_free()
+		
+		point_light.color = Color.WHITE
+		point_light.energy -= 0.5
 
 func camera_shake_and_color(color: bool = true) -> void:
 	var timer := Timer.new()
 	camera.add_child(timer)
 	
-	freeze_display()
+	#freeze_display()
 	timer.wait_time = shake_time
 	if color:
 		#point_light.blend_mode = 0
 		#point_light.color = Color.TEAL
-		point_light.energy -= lightning_amount
+		point_light.energy += lightning_amount
 	camera.position.x += shake_amount
 	camera.position.y += shake_amount*0.7
 	timer.start()
@@ -47,7 +65,7 @@ func camera_shake_and_color(color: bool = true) -> void:
 	if color:
 		#point_light.blend_mode = 1
 		#point_light.color = Color.WHITE
-		point_light.energy += lightning_amount
+		point_light.energy -= lightning_amount
 	camera.position.x -= shake_amount
 	camera.position.y -= shake_amount*0.7
 
@@ -55,9 +73,10 @@ func enemy_mouse_hover(enemy: Enemy) -> void:
 	if enemy not in enemies_under_mouse:
 		enemies_under_mouse.append(enemy)
 		print("added enemy under mouse: " + str(enemy.name))
-	if enemy_in_focus != null:
-		enemy_in_focus.highlight_stop()	
-	enemy_in_focus = enemy
+	#if enemy_in_focus != null:
+		#enemy_in_focus.highlight_stop()	
+	if enemy_in_focus == null:
+		enemy_in_focus = enemy
 
 func enemy_mouse_hover_stopped(enemy: Enemy) -> void:
 	if enemy in enemies_under_mouse:

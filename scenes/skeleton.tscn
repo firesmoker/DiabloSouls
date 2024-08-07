@@ -22,6 +22,7 @@ animations = [{
 resource_local_to_scene = true
 
 [node name="Skeleton" instance=ExtResource("1_mhxew")]
+attack_frame = 5
 has_attack = true
 animation_types = ["idle", "walk", "attack", "death"]
 

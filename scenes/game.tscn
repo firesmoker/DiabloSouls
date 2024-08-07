@@ -315,15 +315,24 @@ y_sort_enabled = true
 [node name="Skeleton" parent="Enemies" instance=ExtResource("7_fmbge")]
 
 [node name="Skeleton2" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(-72, 38)
+position = Vector2(157, -36)
 
 [node name="Skeleton3" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(-75, 134)
+position = Vector2(265, 66)
 
 [node name="Skeleton4" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(128, 175)
+position = Vector2(218, 165)
 
 [node name="Skeleton5" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(139, 41)
+position = Vector2(10, 187)
+
+[node name="Skeleton6" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(-167, 69)
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
+[connection signal="body_entered" from="Enemies/Skeleton" to="Enemies/Skeleton" method="_on_body_entered"]
+[connection signal="body_entered" from="Enemies/Skeleton2" to="Enemies/Skeleton2" method="_on_body_entered"]
+[connection signal="body_entered" from="Enemies/Skeleton3" to="Enemies/Skeleton3" method="_on_body_entered"]
+[connection signal="body_entered" from="Enemies/Skeleton4" to="Enemies/Skeleton4" method="_on_body_entered"]
+[connection signal="body_entered" from="Enemies/Skeleton5" to="Enemies/Skeleton5" method="_on_body_entered"]
+[connection signal="body_entered" from="Enemies/Skeleton6" to="Enemies/Skeleton6" method="_on_body_entered"]

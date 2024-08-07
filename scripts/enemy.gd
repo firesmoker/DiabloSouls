@@ -95,6 +95,11 @@ func _process(delta: float) -> void:
 			can_attack = true
 			attacking = true
 			var angle: float = position.angle_to_point(player.position)
+			
+			var rand: float = (1/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
+			var rounded_rand: float = float(round(angle / rand) * rand)
+			current_direction = radian_direction[rounded_rand]
+			
 			attack_axis.rotation = angle
 			animation_player.play(animations[current_direction]["attack"])
 		else:
@@ -124,9 +129,6 @@ func _on_animation_player_animation_finished(anim_name: String) -> void:
 	if not attacking and has_attack:
 		moving = true
 
-
-func _on_body_entered(body: RigidBody2D) -> void:
-	pass
 	
 func _on_hover_zone_mouse_entered() -> void:
 	#print("mouse entered")
@@ -160,6 +162,14 @@ func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 		#emit_signal("player_left_melee", self)
 		moving = true
 		
+func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
+	if body == player:
+		game_manager.player_gets_hit()
+		print("player supposed to get hit")
+	else:
+		print(body)
+		print("not player")
+		
 func get_hit() -> void:
 	#sprite_material.blend_mode = 1
 	animated_sprite_2d.modulate = Color.RED
@@ -175,6 +185,11 @@ func get_hit() -> void:
 		emit_signal("stopped_mouse_hover", self)
 		emit_signal("player_left_melee", self)
 		die()
+	else:
+		animation_player.stop()
+		attack_collider.disabled = true
+		#animated_sprite_2d.play("new_animation")
+		pass
 		#await Timer.new().timeout
 		#queue_free()
 	#sprite_material.blend_mode = 0
@@ -235,7 +250,7 @@ func highlight_stop() -> void:
 
 
 func construct_animation_library() -> void:
-	animations.clear()
+	#animations.clear()
 	for key: int in direction_name:
 		#print(direction_name[key])
 		var animation_dictionary_for_key: Dictionary = {}
@@ -266,6 +281,7 @@ func attack_effect() -> void:
 	#print("pow!")
 	print("pow!")
 	attack_collider.disabled = false
+	print(attack_collider.disabled)
 	#emit_signal("attack_effects")
 	disable_attack_zone()
 	
@@ -276,7 +292,10 @@ func disable_attack_zone() -> void:
 	timer.start()
 	await timer.timeout
 	timer.queue_free()
+	print("enemey got hit")
 	attack_collider.disabled = true
+	print(attack_collider.disabled)
+	
 
 
 
@@ -310,7 +329,7 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	for png_path: String in png_list:
 		var frame_png: Texture2D  = load(png_path)
 		frames.add_frame(animation_name,frame_png)
-	#print("animation: " + animation_name + " created in AnimatedSprite2D")
+	print("animation: " + animation_name + " created in AnimatedSprite2D")
 	
 	# create the matching animations in AnimationPlayer
 	var new_animation: Animation = Animation.new()
@@ -325,26 +344,6 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	for png_path: String in png_list:
 		new_animation.track_insert_key(frames_track,frame_number/FPS, frame_number)
 		frame_number += 1
-	#print("frame number length: " + str(frame_number))
-	#print("animation: " + animation_name + " created in AnimatedSprite2D")
 	animation_library.add_animation(animation_name, new_animation)
 
 
-#func allow_animation_refresh() -> void:
-	#var timer := Timer.new()
-	#attack_collider.add_child(timer)
-	#timer.wait_time = 0.06
-	#timer.start()
-	#await timer.timeout
-	#timer.queue_free()
-	#attack_collider.disabled = true
-
-
-
-func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
-	if body == player:
-		game_manager.player_gets_hit()
-		print("player supposed to get hit")
-	else:
-		print(body)
-		print("not player")
