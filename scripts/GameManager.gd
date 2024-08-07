@@ -116,10 +116,10 @@ func dir_contents(path: String) -> void:
 	else:
 		print("An error occurred when trying to access the path.")
 
-func dir_contents_filter(path: String, extension: String, print: bool = false) -> Array:
+func dir_contents_filter(path: String, extension: String, print: bool = false) -> Array[String]:
 	var dir: = DirAccess.open(path)
 	var fixed_path: String
-	var file_list: Array = []
+	var file_list: Array[String] = []
 	if dir:
 		dir.list_dir_begin()
 		fixed_path = dir.get_current_dir()

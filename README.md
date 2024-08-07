@@ -3,6 +3,8 @@ free thinking.
 I now have a prototype that the player moves very good, enemies move pretty good. the player attacks the enemies and the enemies attack in melee.
 
 Things that are very missing:
+	No player health indication
+	No enemy health indication
 	Pathfinding is non existent for both player and enemies
 	Sound is not good and responsive
 	Enemy highlight makes them transparent and the highlight is not clear enough. I want outline.

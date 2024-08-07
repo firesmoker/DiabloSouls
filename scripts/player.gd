@@ -20,10 +20,10 @@ class_name Player extends CharacterBody2D
 @export var is_chasing_enemy: bool = false
 @export var ready_for_idle: bool= true
 @export var ready_to_attack_again: bool= true
-@export var animation_types: Array = ["idle", "walk", "attack", "death"]
+@export var animation_types: Array[String] = ["idle", "walk", "attack", "death"]
 
 var targeted_enemy: RigidBody2D = null
-var enemies_in_melee: Array = [Enemy]
+var enemies_in_melee: Array[Enemy]
 var abilities_queue: Array[Ability]
 var dying: bool = false
 var dead: bool = false
@@ -312,7 +312,7 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	
 	#get all pngs to add to each frame of the animation
 	var assets_path: String = model + "/" + model + "_" + action_type + "/" + direction_name[direction]
-	var png_list: Array = game_manager.dir_contents_filter("res://assets/art/playable character/" + assets_path,"png", false)
+	var png_list: Array[String] = game_manager.dir_contents_filter("res://assets/art/playable character/" + assets_path,"png", false)
 	
 	# add new frames to the spriteframes resource
 	for png_path: String in png_list:

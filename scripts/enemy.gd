@@ -15,7 +15,7 @@ class_name Enemy extends RigidBody2D
 @export var attack_frame: int = 3
 @export var hitpoints: int = 2
 @export var has_attack: bool = false
-@export var animation_types: Array = ["idle", "walk"]
+@export var animation_types: Array[String] = ["idle", "walk"]
 
 var move_offset: Vector2 = Vector2(0,0)
 var moving: bool = true
@@ -234,12 +234,14 @@ func die() -> void:
 	player_left_melee.disconnect(game_manager.player_left_melee)
 	under_mouse_hover.disconnect(game_manager.enemy_mouse_hover)
 	stopped_mouse_hover.disconnect(game_manager.enemy_mouse_hover_stopped)
-	var timer := Timer.new()
-	add_child(timer)
-	timer.wait_time = 8
-	timer.start()
-	await timer.timeout
-	queue_free()
+	z_index = 4
+	y_sort_enabled = false
+	#var timer := Timer.new()
+	#add_child(timer)
+	#timer.wait_time = 8
+	#timer.start()
+	#await timer.timeout
+	#queue_free()
 
 func highlight() -> void:
 	sprite_material.blend_mode = 1
@@ -319,7 +321,7 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	
 	#get all pngs to add to each frame of the animation
 	var assets_path: String = model + "/" + model + "_" + action_type + "/" + direction_name[direction]
-	var png_list: Array = game_manager.dir_contents_filter("res://assets/art/enemy/" + assets_path,"png")
+	var png_list: Array[String] = game_manager.dir_contents_filter("res://assets/art/enemy/" + assets_path,"png")
 	
 	# add new frames to the spriteframes resource
 	for png_path: String in png_list:
