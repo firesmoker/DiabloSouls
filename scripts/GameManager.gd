@@ -38,14 +38,14 @@ func player_gets_hit(damage: float = 1) -> void:
 		camera.add_child(timer)
 		
 		point_light.color = Color.RED
-		point_light.energy += 0.5
+		point_light.energy += 0.25
 		
 		timer.start()
 		await timer.timeout
 		timer.queue_free()
 		
 		point_light.color = Color.WHITE
-		point_light.energy -= 0.5
+		point_light.energy -= 0.25
 
 func camera_shake_and_color(color: bool = true) -> void:
 	var timer := Timer.new()

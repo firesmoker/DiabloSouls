@@ -119,11 +119,6 @@ func _process(delta: float) -> void:
 			else:
 				animation_player.play(animations[current_direction]["idle"])
 
-func switch_direction() -> void:
-	#print("awaiting animation timer")
-	await switch_animation_timer.timeout
-	#print("ready to switch")
-	ready_to_switch_direction = true
 
 func _on_animation_player_animation_finished(anim_name: String) -> void:
 	if not attacking and has_attack:
@@ -169,7 +164,15 @@ func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
 	else:
 		print(body)
 		print("not player")
-		
+
+
+func switch_direction() -> void:
+	#print("awaiting animation timer")
+	await switch_animation_timer.timeout
+	#print("ready to switch")
+	ready_to_switch_direction = true
+
+
 func get_hit() -> void:
 	#sprite_material.blend_mode = 1
 	animated_sprite_2d.modulate = Color.RED
@@ -250,21 +253,14 @@ func highlight_stop() -> void:
 
 
 func construct_animation_library() -> void:
-	#animations.clear()
+	animations.clear()
 	for key: int in direction_name:
-		#print(direction_name[key])
 		var animation_dictionary_for_key: Dictionary = {}
 		for type: String in animation_types:
 			animation_dictionary_for_key[type] = model + "_" + type + "_" + direction_name[key]
-				#"attack" : model + "_attack_" + direction_name[key],
-				#"idle" : model+ "_idle_" + direction_name[key],
-				#"walk" : model+ "_walk_" + direction_name[key],
 		animations[key] = animation_dictionary_for_key
 		for type: String in animation_types:
 			create_animated2d_animations_from_assets(animations[key][type], key)
-		#create_animated2d_animations_from_assets(animations[key]["attack"], key)
-		#create_animated2d_animations_from_assets(animations[key]["idle"], key)
-		#create_animated2d_animations_from_assets(animations[key]["walk"], key)
 	
 
 func add_animation_method_calls() -> void:

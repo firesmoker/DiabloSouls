@@ -4,7 +4,6 @@ I now have a prototype that the player moves very good, enemies move pretty good
 
 Things that are very missing:
 	Pathfinding is non existent for both player and enemies
-	When player gets hit there are no effects
 	Sound is not good and responsive
 	Enemy highlight makes them transparent and the highlight is not clear enough. I want outline.
 	Combat is boring and needs to get the parry / counter ability
@@ -79,6 +78,9 @@ if not:
 	cancel animation
 
 ==============================================================================
+# 7.8
+When player gets hit there are no effects
+
 # 6.8
 * convert enemy melee zone to actual melee zone of enemy. keep stopping functionality. change melee attacks to be based on melee zone instead of range
 * enemy retaliation on melee hit (by stopping thus restarting the attack animation)

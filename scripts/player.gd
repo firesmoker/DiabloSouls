@@ -3,19 +3,11 @@ class_name Player extends CharacterBody2D
 @onready var game_manager: GameManager = %GameManager
 @onready var audio: AudioStreamPlayer = $AudioStreamPlayer
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
-
-#@onready var attack_axis = $AttackAxis
-#@onready var animation_player := $AnimationPlayer
-#@onready var attack_zone = $AttackAxis/AttackZone
-#@onready var attack_collider = $AttackAxis/AttackZone/AttackCollider
-
 @export var attack_axis: Node2D
 @export var animation_player: AnimationPlayer
 @export var attack_zone: Area2D
 @export var attack_collider: CollisionShape2D
-
 @onready var animation_library: AnimationLibrary = animation_player.get_animation_library("")
-
 @export_enum("warrior_armed", "fighter_armed", "knight_armed") var model: String = "warrior_armed"
 @export var speed_fps_ratio: float = 121.0
 @export var speed_modifier: float = 1
@@ -29,9 +21,10 @@ class_name Player extends CharacterBody2D
 @export var ready_for_idle: bool= true
 @export var ready_to_attack_again: bool= true
 @export var animation_types: Array = ["idle", "walk", "attack", "death"]
+
 var targeted_enemy: RigidBody2D = null
 var enemies_in_melee: Array = [Enemy]
-var abilities_queue: Array = [Ability]
+var abilities_queue: Array[Ability]
 var dying: bool = false
 var dead: bool = false
 
@@ -86,9 +79,7 @@ var radian_direction: Dictionary = {
 	-2.5/4 * PI: directions.NNW, #
 }
 
-var test_ability: Ability = Ability.new("test_ability", "melee")
-var test_ability2: Ability = Ability.new("test_ability2", "melee")
-
+var attack_ability: Ability = Ability.new("attack", "melee")
 
 func _ready() -> void:
 	destination = position
@@ -117,7 +108,7 @@ func _physics_process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not dying:
 		if event.is_action_pressed("test_button"):
-			execute(test_ability)
+			execute(attack_ability)
 		
 		if event.is_action_pressed("attack_in_place"):
 			var face_destination: Vector2 = get_global_mouse_position()
@@ -155,6 +146,7 @@ func _on_animation_player_animation_finished(anim_name: String) -> void:
 		print("attack finished fully")
 		ready_for_idle = true
 
+
 func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
 	emit_signal("attack_success", body)
 
@@ -190,6 +182,7 @@ func running_state() -> void:
 	else:
 		animation_player.play(animations[current_direction]["walk"])
 
+
 func standing_state() -> void:
 	if "attack" in animation_player.current_animation:
 		is_moving = false
@@ -197,6 +190,7 @@ func standing_state() -> void:
 	#print("going idle!")
 	if not dying:
 		animation_player.play(animations[current_direction]["idle"])
+
 
 func handle_movement(delta: float) -> void:
 	if is_moving and not is_executing:
@@ -221,12 +215,17 @@ func set_direction_by_angle(angle: float) -> void:
 	var rounded_rand: float = round_to_multiple(angle, half_rand)
 	current_direction = radian_direction[rounded_rand]
 
+
 func attack(attack_destination: Vector2) -> void:
+	abilities_queue.append(attack_ability)
 	is_chasing_enemy = false
 	targeted_enemy = null
 	ready_for_idle = false
-	is_moving = false
-	
+	if abilities_queue[0].range_type == "melee":
+		print("melee attack!")
+		is_moving = false
+	else:
+		print("not melee")
 	velocity = Vector2(0, 0)
 	var angle: float = position.angle_to_point(attack_destination)
 	set_direction_by_angle(angle)
@@ -238,17 +237,18 @@ func attack(attack_destination: Vector2) -> void:
 			attack_axis.rotation = angle
 			print("first or restarted attack")
 			animation_player.stop()
-			animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
+			#animation_player.play(animations[current_direction][attack_ability.animation_name])
+			execute(attack_ability)
 		elif attack_collider.disabled == true:
 			attack_axis.rotation = angle
 			print("normal attack")
 			var current_animation_position: float = animation_player.current_animation_position
 			
 			if current_animation_position < attack_frame/FPS or current_animation_position >= attack_again_frame/FPS:
-				animation_player.play(animations[current_direction]["attack"]) # "test_library/" plays from test_library
+				#animation_player.play(animations[current_direction][attack_ability.animation_name])
+				execute(attack_ability)
 				animation_player.seek(current_animation_position)
 	
-
 
 func move_to_enemy() -> void:
 	if targeted_enemy == null:
@@ -279,7 +279,7 @@ func calculate_movement_velocity() -> Vector2:
 	return Vector2(max_velocity_x, max_velocity_y)
 
 
-func just_attacked() -> void:
+func just_attacked() -> void: # THIS
 	print("pow!")
 	attack_collider.disabled = false
 	emit_signal("attack_effects")
@@ -296,6 +296,7 @@ func construct_animation_library() -> void:
 		for type: String in animation_types:
 			create_animated2d_animations_from_assets(animations[key][type], key)
 
+
 func create_animated2d_animations_from_assets(animation_name: String, direction: int = directions.N) -> void:
 	var frames: SpriteFrames = animated_sprite_2d.sprite_frames
 	var action_type: String
@@ -308,23 +309,6 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	frames.add_animation(animation_name)
 	frames.set_animation_speed(animation_name, 12.0)
 	frames.set_animation_loop(animation_name, true)
-	
-	
-	
-	
-	#var frames: SpriteFrames = animated_sprite_2d.sprite_frames
-	#var action_type: String
-	#
-	#if "attack" in animation_name:
-		#action_type = "attack"
-	#elif "idle" in animation_name:
-		#action_type = "idle"
-	#elif "walk" in animation_name:
-		#action_type = "walk"
-	#else:
-		#print("unknown action type to construct")
-		#return
-	
 	
 	#get all pngs to add to each frame of the animation
 	var assets_path: String = model + "/" + model + "_" + action_type + "/" + direction_name[direction]
@@ -352,6 +336,7 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	print("frame number length: " + str(frame_number))
 	print("animation: " + animation_name + " created in AnimatedSprite2D")
 	animation_library.add_animation(animation_name, new_animation)
+
 
 func add_animation_method_calls() -> void:
 	var animation_list := animation_library.get_animation_list()
@@ -388,6 +373,7 @@ func disable_attack_zone() -> void:
 	timer.queue_free()
 	attack_collider.disabled = true
 
+
 func get_hit(damage: float = 1) -> void:
 	#if not audio.playing:
 	#audio.stop()
@@ -414,24 +400,25 @@ func _on_timer_timeout() -> void:
 	pass
 
 
-
-
 func execute(ability: Ability, target: Vector2 = Vector2(0,0)) -> void:
-	ability.execute(target)
+	animation_player.play(animations[current_direction][ability.animation_name])
+	#ability.execute(target)
 
 
 class Ability:
 	var name: String
 	var range_type: String
 	var standing: bool
+	var animation_name: String
 	
 	func _init(name: String, range_type: String, standing: bool = true) -> void:
 		self.name = name
 		self.range_type = range_type
 		self.standing = standing
+		self.animation_name = self.name
 		
 	func execute(target: Vector2 = Vector2(0,0)) -> void:
 		print("executing " + name)
 		if self.range_type != "self":
 			print("execute on: " + str(target))
-
+		
