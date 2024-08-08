@@ -1,4 +1,4 @@
-[gd_scene load_steps=170 format=3 uid="uid://cgvpmrxms5e4k"]
+[gd_scene load_steps=171 format=3 uid="uid://cgvpmrxms5e4k"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_3jece"]
 [ext_resource type="Texture2D" uid="uid://nrok3hqdeyws" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/E/fighter_armed_attack_E_0.0_0.png" id="2_sf5aj"]
@@ -679,6 +679,35 @@ animations = [{
 "speed": 14.0
 }]
 
+[sub_resource type="Animation" id="Animation_fmkf4"]
+resource_name = "warrior_armed_parry_E"
+length = 0.333342
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0833333, 0.166667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [3, 2, 1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"warrior_attack_E"]
+}
+
 [sub_resource type="Animation" id="Animation_uj4dm"]
 length = 0.666667
 step = 0.0833333
@@ -1345,6 +1374,7 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_17pca"]
 _data = {
+"warrior_armed_parry_E": SubResource("Animation_fmkf4"),
 "warrior_attack_E": SubResource("Animation_uj4dm"),
 "warrior_attack_N": SubResource("Animation_64tpm"),
 "warrior_attack_NE": SubResource("Animation_dqdkg"),
@@ -1388,8 +1418,7 @@ attack_axis = NodePath("AttackAxis")
 animation_player = NodePath("AnimationPlayer")
 attack_zone = NodePath("AttackAxis/AttackZone")
 attack_collider = NodePath("AttackAxis/AttackZone/AttackCollider")
-model = "fighter_armed"
-hitpoints = 50
+model = "knight_armed"
 
 [node name="PhysicalCollider" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_dhxtk")
@@ -1403,6 +1432,7 @@ shape = SubResource("CircleShape2D_ysxni")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rd8ew")
 animation = &"warrior_attack_E"
+frame = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

@@ -1,3 +1,18 @@
+abilities queue
+if I press an enemy, I do several things.
+I'm entering chasing mode on him.
+if my left click ability:
+If it's melee, I'll walk until he is the melee zone. Then I'll execute the attack.
+If it's ranged, I'll walk until he is in range, then I'll execute the attack.
+If it's self, I'll immediatly execute the ability. It might have a direction.
+
+parry should work like attack in place I guess
+at first at least
+
+
+
+
+
 free thinking.
 
 I now have a prototype that the player moves very good, enemies move pretty good. the player attacks the enemies and the enemies attack in melee.

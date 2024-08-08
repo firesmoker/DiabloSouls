@@ -20,11 +20,11 @@ class_name Player extends CharacterBody2D
 @export var is_chasing_enemy: bool = false
 @export var ready_for_idle: bool= true
 @export var ready_to_attack_again: bool= true
-@export var animation_types: Array[String] = ["idle", "walk", "attack", "death"]
+@export var animation_types: Array[String] = ["idle", "walk", "attack", "death", "parry"]
 
 var targeted_enemy: RigidBody2D = null
 var enemies_in_melee: Array[Enemy]
-var abilities_queue: Array[Ability]
+#var abilities_queue: Array[Ability]
 var dying: bool = false
 var dead: bool = false
 
@@ -80,6 +80,7 @@ var radian_direction: Dictionary = {
 }
 
 var attack_ability: Ability = Ability.new("attack", "melee")
+var parry_ability: Ability = Ability.new("parry", "melee")
 
 func _ready() -> void:
 	destination = position
@@ -107,12 +108,18 @@ func _physics_process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not dying:
-		if event.is_action_pressed("test_button"):
-			execute(attack_ability)
+		if event.is_action_pressed("bobo"):
+			print("test button pressed")
+			print("KUKUK")
+			execute(parry_ability)
 		
 		if event.is_action_pressed("attack_in_place"):
 			var face_destination: Vector2 = get_global_mouse_position()
 			attack(face_destination)
+		
+		if event.is_action_pressed("parry"):
+			var face_destination: Vector2 = get_global_mouse_position()
+			attack(face_destination, parry_ability)
 		
 		if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place"):
 			if game_manager.enemy_in_focus != null:
@@ -184,7 +191,7 @@ func running_state() -> void:
 
 
 func standing_state() -> void:
-	if "attack" in animation_player.current_animation:
+	if "attack" in animation_player.current_animation or "parry" in animation_player.current_animation:
 		is_moving = false
 		await animation_player.animation_finished
 	#print("going idle!")
@@ -216,16 +223,16 @@ func set_direction_by_angle(angle: float) -> void:
 	current_direction = radian_direction[rounded_rand]
 
 
-func attack(attack_destination: Vector2) -> void:
-	abilities_queue.append(attack_ability)
+func attack(attack_destination: Vector2, ability: Ability = attack_ability) -> void:
+	#abilities_queue.append(attack_ability)
 	is_chasing_enemy = false
 	targeted_enemy = null
 	ready_for_idle = false
-	if abilities_queue[0].range_type == "melee":
+	is_moving = false
+	if ability.range_type == "melee":
 		print("melee attack!")
-		is_moving = false
-	else:
-		print("not melee")
+	#else:
+		#print("not melee")
 	velocity = Vector2(0, 0)
 	var angle: float = position.angle_to_point(attack_destination)
 	set_direction_by_angle(angle)
@@ -238,7 +245,7 @@ func attack(attack_destination: Vector2) -> void:
 			print("first or restarted attack")
 			animation_player.stop()
 			#animation_player.play(animations[current_direction][attack_ability.animation_name])
-			execute(attack_ability)
+			execute(ability)
 		elif attack_collider.disabled == true:
 			attack_axis.rotation = angle
 			print("normal attack")
@@ -246,7 +253,7 @@ func attack(attack_destination: Vector2) -> void:
 			
 			if current_animation_position < attack_frame/FPS or current_animation_position >= attack_again_frame/FPS:
 				#animation_player.play(animations[current_direction][attack_ability.animation_name])
-				execute(attack_ability)
+				execute(ability)
 				animation_player.seek(current_animation_position)
 	
 
@@ -304,6 +311,9 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	for type: String in animation_types:
 		if type in animation_name:
 			action_type = type
+			if action_type == "parry": # TEMPORARY
+				action_type = "attack" # TEMPORARY
+				print("forcing parry to use attack assets") # TEMPORARY
 			break
 	
 	frames.add_animation(animation_name)
@@ -322,11 +332,11 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	
 	# create the matching animations in AnimationPlayer
 	var new_animation: Animation = Animation.new()
-	var frames_track := new_animation.add_track(Animation.TYPE_VALUE)
+	var frames_track: int = new_animation.add_track(Animation.TYPE_VALUE)
 	new_animation.track_set_path(frames_track,"AnimatedSprite2D:frame")
 	new_animation.loop_mode = Animation.LOOP_NONE
 	new_animation.length = png_list.size()/FPS
-	var name_track := new_animation.add_track(Animation.TYPE_VALUE)
+	var name_track : int = new_animation.add_track(Animation.TYPE_VALUE)
 	new_animation.track_set_path(name_track,"AnimatedSprite2D:animation")
 	new_animation.track_insert_key(name_track,0,animation_name)
 	var frame_number: float = 0
@@ -339,11 +349,11 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 
 
 func add_animation_method_calls() -> void:
-	var animation_list := animation_library.get_animation_list()
+	var animation_list: Array[StringName] = animation_library.get_animation_list()
 	print(animation_list)
-	for animation in animation_list:
-		var animation_to_modify := animation_library.get_animation(animation)
-		var track := animation_to_modify.add_track(Animation.TYPE_METHOD)
+	for animation: StringName in animation_list:
+		var animation_to_modify: Animation = animation_library.get_animation(animation)
+		var track: int = animation_to_modify.add_track(Animation.TYPE_METHOD)
 		animation_to_modify.track_set_path(track, ".")
 		if "attack" in animation:
 			var time : float = attack_frame/FPS
@@ -352,6 +362,14 @@ func add_animation_method_calls() -> void:
 			#var cancel_time : float = attack_again_time + 1/FPS
 			animation_to_modify.track_insert_key(track, cancel_time, {"method" : "animation_cancel_ready" , "args" : []}, 1)
 			animation_to_modify.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
+			animation_to_modify.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []}, 1)
+		elif "parry" in animation:
+			var time : float = attack_frame/FPS
+			var attack_again_time : float = attack_again_frame/FPS
+			var cancel_time : float = cancel_frame / FPS
+			#var cancel_time : float = attack_again_time + 1/FPS
+			animation_to_modify.track_insert_key(track, cancel_time, {"method" : "animation_cancel_ready" , "args" : []}, 1)
+			#animation_to_modify.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
 			animation_to_modify.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []}, 1)
 
 
@@ -365,7 +383,7 @@ func attack_again_ready() -> void:
 
 
 func disable_attack_zone() -> void:
-	var timer := Timer.new()
+	var timer: Timer = Timer.new()
 	attack_collider.add_child(timer)
 	timer.wait_time = 0.06
 	timer.start()
@@ -374,7 +392,7 @@ func disable_attack_zone() -> void:
 	attack_collider.disabled = true
 
 
-func get_hit(damage: float = 1) -> void:
+func get_hit(damage: int = 1) -> void:
 	#if not audio.playing:
 	#audio.stop()
 	if hitpoints > 0:
@@ -384,7 +402,7 @@ func get_hit(damage: float = 1) -> void:
 		audio.pitch_scale += randf_range(-0.03, 0.03)
 		audio.play()
 		animated_sprite_2d.modulate = Color.RED
-		var timer := Timer.new()
+		var timer: Timer = Timer.new()
 		self.add_child(timer)
 		timer.wait_time = 0.07
 		timer.start()
