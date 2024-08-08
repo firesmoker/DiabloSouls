@@ -97,7 +97,10 @@ func _on_player_attack_success(enemy: Enemy) -> void:
 
 func _on_player_parry_success(enemy: Enemy) -> void:
 	#camera_shake_and_color()
-	enemy.get_parried()
+	if enemy.can_be_parried == true:
+		enemy.get_parried()
+	else:
+		print("enemy can't be parried")
 
 func freeze_display(duration := 0.3 / 12.0, delay := 0.05) -> void:
 	await get_tree().create_timer(delay).timeout

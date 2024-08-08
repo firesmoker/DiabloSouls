@@ -70,8 +70,6 @@ shape = SubResource("CapsuleShape2D_o5f0a")
 visible = false
 modulate = Color(0.788235, 0.788235, 0.788235, 0.717647)
 show_behind_parent = true
-z_index = -1
-z_as_relative = false
 material = SubResource("CanvasItemMaterial_nvcc2")
 texture = ExtResource("3_n1wcj")
 

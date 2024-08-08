@@ -1458,6 +1458,7 @@ collision_layer = 2
 
 [node name="ParryCollider" type="CollisionShape2D" parent="AttackAxis/ParryZone"]
 shape = SubResource("CapsuleShape2D_2gqxe")
+disabled = true
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(-1, -3)

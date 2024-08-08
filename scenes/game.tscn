@@ -315,6 +315,7 @@ hitpoints = 500
 y_sort_enabled = true
 
 [node name="Skeleton" parent="Enemies" instance=ExtResource("7_fmbge")]
+hitpoints = 40
 
 [node name="Skeleton2" parent="Enemies" instance=ExtResource("7_fmbge")]
 process_mode = 4

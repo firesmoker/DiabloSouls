@@ -338,7 +338,12 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	var png_list: Array[String] = game_manager.dir_contents_filter("res://assets/art/playable character/" + assets_path,"png", false)
 	
 	# add new frames to the spriteframes resource
+	var count: int = 0
 	for png_path: String in png_list:
+		if "parry" in animation_name:
+			count += 1
+			if count >= 3:
+				break
 		var frame_png: Texture2D  = load(png_path)
 		frames.add_frame(animation_name,frame_png)
 	#print("animation: " + animation_name + " created in AnimatedSprite2D")
@@ -348,7 +353,10 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	var frames_track: int = new_animation.add_track(Animation.TYPE_VALUE)
 	new_animation.track_set_path(frames_track,"AnimatedSprite2D:frame")
 	new_animation.loop_mode = Animation.LOOP_NONE
-	new_animation.length = png_list.size()/FPS
+	if count <= 0:
+		new_animation.length = png_list.size()/FPS
+	else:
+		new_animation.length = count/FPS
 	var name_track : int = new_animation.add_track(Animation.TYPE_VALUE)
 	new_animation.track_set_path(name_track,"AnimatedSprite2D:animation")
 	new_animation.track_insert_key(name_track,0,animation_name)
@@ -377,9 +385,9 @@ func add_animation_method_calls() -> void:
 			animation_to_modify.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
 			animation_to_modify.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []}, 1)
 		elif "parry" in animation:
-			var time : float = 1/FPS
-			var attack_again_time : float = 3/FPS
-			var cancel_time : float = 2 / FPS
+			var time : float = 0/FPS
+			var attack_again_time : float = 2/FPS
+			var cancel_time : float = 1 / FPS
 			#var cancel_time : float = attack_again_time + 1/FPS
 			animation_to_modify.track_insert_key(track, cancel_time, {"method" : "animation_cancel_ready" , "args" : []}, 1)
 			animation_to_modify.track_insert_key(track, time, {"method" : "just_parried" , "args" : []}, 1)

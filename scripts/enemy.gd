@@ -24,6 +24,10 @@ var can_attack: bool = true
 var attacking: bool = false
 var switch_animation_timer: Timer
 var adjacent_enemies: Array = []
+var can_be_countered: bool = false
+var can_be_parried: bool = false
+var stunned: bool = false
+var stun_time: float = 1.5
 
 const FPS: float = 12.0
 const average_delta: float = 0.01666666666667
@@ -69,6 +73,7 @@ signal switch_direction_animation
 
 
 func _ready() -> void:
+	highlight_circle.visible = false
 	switch_animation_timer = Timer.new()
 	self.add_child(switch_animation_timer)
 	gravity_scale = 0
@@ -89,7 +94,7 @@ func _process(delta: float) -> void:
 		moving = false
 		#print("attacking, please hold")
 		await animation_player.animation_finished
-	if not dying:
+	if not dying and not stunned:
 		animation_player.speed_scale = attack_speed_modifier
 		if position.distance_to(player.position) <= attack_range and has_attack:
 			can_attack = true
@@ -172,13 +177,33 @@ func switch_direction() -> void:
 	#print("ready to switch")
 	ready_to_switch_direction = true
 
+func get_stunned() -> void:
+	highlight_circle.visible = false
+	highlight_circle.modulate = Color.WHITE
+	stunned = true
+	print("got stunned")
+	var stun_timer := Timer.new()
+	self.add_child(stun_timer)
+	stun_timer.wait_time = stun_time
+	stun_timer.start()
+	await stun_timer.timeout
+	stunned = false
+	print("not stunned")
+	stun_timer.queue_free()
 
 func get_parried() -> void:
+	can_be_parried = false
+	can_be_countered = false
+	highlight_circle.modulate = Color.WHITE
+	highlight_circle.visible = false
 	animated_sprite_2d.modulate = Color.BLUE
+	get_stunned()
+
 	var timer := Timer.new()
 	self.add_child(timer)
 	timer.wait_time = 0.07
 	timer.start()
+	
 	await timer.timeout
 	timer.queue_free()
 	animated_sprite_2d.modulate = Color.WHITE
@@ -187,6 +212,9 @@ func get_parried() -> void:
 
 func get_hit() -> void:
 	#sprite_material.blend_mode = 1
+	can_be_parried = false
+	can_be_countered = false
+	highlight_circle.modulate = Color.WHITE
 	animated_sprite_2d.modulate = Color.RED
 	var timer := Timer.new()
 	self.add_child(timer)
@@ -201,7 +229,11 @@ func get_hit() -> void:
 		emit_signal("player_left_melee", self)
 		die()
 	else:
-		animation_player.stop()
+		if randi() % 100 + 1 > 50:
+			print("lucky! stopping animation")
+			animation_player.stop()
+		else:
+			print("unlucky, not stopping")
 		attack_collider.disabled = true
 		#animated_sprite_2d.play("new_animation")
 		pass
@@ -257,13 +289,13 @@ func die() -> void:
 
 func highlight() -> void:
 	sprite_material.blend_mode = 1
-	highlight_circle.visible = true
+	#highlight_circle.visible = true
 	#highlight_circle.material.blend_mode = 0
 
 func highlight_stop() -> void:
 	sprite_material.blend_mode = 0
 	#highlight_circle.material.blend_mode = 0
-	highlight_circle.visible = false
+	#highlight_circle.visible = false
 
 
 func construct_animation_library() -> void:
@@ -285,11 +317,19 @@ func add_animation_method_calls() -> void:
 		animation_to_modify.track_set_path(track, ".")
 		if "attack" in animation:
 			var time := attack_frame/FPS
+			var parried_time: float = 0.5/FPS
+			var countered_time: float = 3/FPS
+			animation_to_modify.track_insert_key(track, parried_time, {"method" : "ready_to_be_parried" , "args" : []}, 1)
+			animation_to_modify.track_insert_key(track, countered_time, {"method" : "ready_to_be_countered" , "args" : []}, 1)
 			animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : []}, 1)
 
 func attack_effect() -> void:
 	print("enemy attacked succesfuly")
 	attack_collider.disabled = false
+	highlight_circle.visible = false
+	highlight_circle.modulate = Color.WHITE
+	can_be_countered = false
+	can_be_parried = false
 	#print(attack_collider.disabled)
 	#emit_signal("attack_effects")
 	disable_attack_zone()
@@ -305,6 +345,19 @@ func disable_attack_zone() -> void:
 	attack_collider.disabled = true
 	#print(attack_collider.disabled)
 	
+func ready_to_be_parried() -> void:
+	if not stunned:
+		highlight_circle.visible = true
+		can_be_parried = true
+		print("can be parried")
+
+func ready_to_be_countered() -> void:
+	if not stunned:
+		highlight_circle.visible = true
+		highlight_circle.modulate = Color.BLUE
+		can_be_countered = true
+		print("can be countered")
+
 
 
 
