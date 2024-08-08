@@ -148,7 +148,7 @@ func _on_clump_zone_body_exited(body: CollisionObject2D) -> void:
 
 func _on_melee_zone_body_entered(body: CollisionObject2D) -> void:
 	if body == player:
-		print("player in melee")
+		#print("player in melee")
 		#emit_signal("player_in_melee", self)
 		moving = false
 
@@ -160,7 +160,7 @@ func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
 	if body == player:
 		game_manager.player_gets_hit()
-		print("player supposed to get hit")
+		#print("player supposed to get hit")
 	else:
 		print(body)
 		print("not player")
@@ -172,6 +172,18 @@ func switch_direction() -> void:
 	#print("ready to switch")
 	ready_to_switch_direction = true
 
+
+func get_parried() -> void:
+	animated_sprite_2d.modulate = Color.BLUE
+	var timer := Timer.new()
+	self.add_child(timer)
+	timer.wait_time = 0.07
+	timer.start()
+	await timer.timeout
+	timer.queue_free()
+	animated_sprite_2d.modulate = Color.WHITE
+	animation_player.stop()
+	attack_collider.disabled = true
 
 func get_hit() -> void:
 	#sprite_material.blend_mode = 1
@@ -276,10 +288,9 @@ func add_animation_method_calls() -> void:
 			animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : []}, 1)
 
 func attack_effect() -> void:
-	#print("pow!")
-	print("pow!")
+	print("enemy attacked succesfuly")
 	attack_collider.disabled = false
-	print(attack_collider.disabled)
+	#print(attack_collider.disabled)
 	#emit_signal("attack_effects")
 	disable_attack_zone()
 	
@@ -290,9 +301,9 @@ func disable_attack_zone() -> void:
 	timer.start()
 	await timer.timeout
 	timer.queue_free()
-	print("enemey got hit")
+	#print("enemey got hit")
 	attack_collider.disabled = true
-	print(attack_collider.disabled)
+	#print(attack_collider.disabled)
 	
 
 
@@ -327,7 +338,7 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	for png_path: String in png_list:
 		var frame_png: Texture2D  = load(png_path)
 		frames.add_frame(animation_name,frame_png)
-	print("animation: " + animation_name + " created in AnimatedSprite2D")
+	#print("animation: " + animation_name + " created in AnimatedSprite2D")
 	
 	# create the matching animations in AnimationPlayer
 	var new_animation: Animation = Animation.new()

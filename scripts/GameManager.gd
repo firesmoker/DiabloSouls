@@ -20,13 +20,15 @@ func _process(delta: float) -> void:
 		
 
 func player_in_melee(enemy: Enemy) -> void:
-	print("MELEE!! (gamemanager) with " + str(enemy))
+	pass
+	#print("MELEE!! (gamemanager) with " + str(enemy))
 	#player.enemies_in_melee.append(enemy)
 	#if player.is_chasing_enemy and player.targeted_enemy == enemy:
 			#player.attack(enemy.position)
 
 func player_left_melee(enemy: Enemy) -> void:
-	print("LEFT MELEE!! (gamemanager) with " + str(enemy))
+	pass
+	#print("LEFT MELEE!! (gamemanager) with " + str(enemy))
 	#if enemy in player.enemies_in_melee:
 		#player.enemies_in_melee.erase(enemy)
 
@@ -72,7 +74,7 @@ func camera_shake_and_color(color: bool = true) -> void:
 func enemy_mouse_hover(enemy: Enemy) -> void:
 	if enemy not in enemies_under_mouse:
 		enemies_under_mouse.append(enemy)
-		print("added enemy under mouse: " + str(enemy.name))
+		#print("added enemy under mouse: " + str(enemy.name))
 	#if enemy_in_focus != null:
 		#enemy_in_focus.highlight_stop()	
 	if enemy_in_focus == null:
@@ -81,10 +83,10 @@ func enemy_mouse_hover(enemy: Enemy) -> void:
 func enemy_mouse_hover_stopped(enemy: Enemy) -> void:
 	if enemy in enemies_under_mouse:
 		enemies_under_mouse.erase(enemy)
-		print("removed enemy under mouse: " + str(enemy.name))
+		#print("removed enemy under mouse: " + str(enemy.name))
 	enemy.highlight_stop()
 	if enemies_under_mouse.size() > 0:
-		print("switched to other enemy under mouse")
+		#print("switched to other enemy under mouse")
 		enemy_in_focus = enemies_under_mouse[0]
 	else:
 		enemy_in_focus = null
@@ -92,6 +94,10 @@ func enemy_mouse_hover_stopped(enemy: Enemy) -> void:
 func _on_player_attack_success(enemy: Enemy) -> void:
 	camera_shake_and_color()
 	enemy.get_hit()
+
+func _on_player_parry_success(enemy: Enemy) -> void:
+	#camera_shake_and_color()
+	enemy.get_parried()
 
 func freeze_display(duration := 0.3 / 12.0, delay := 0.05) -> void:
 	await get_tree().create_timer(delay).timeout

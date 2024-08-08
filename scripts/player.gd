@@ -7,6 +7,7 @@ class_name Player extends CharacterBody2D
 @export var animation_player: AnimationPlayer
 @export var attack_zone: Area2D
 @export var attack_collider: CollisionShape2D
+@export var parry_collider: CollisionShape2D
 @onready var animation_library: AnimationLibrary = animation_player.get_animation_library("")
 @export_enum("warrior_armed", "fighter_armed", "knight_armed") var model: String = "warrior_armed"
 @export var speed_fps_ratio: float = 121.0
@@ -30,6 +31,7 @@ var dead: bool = false
 
 signal attack_effects
 signal attack_success
+signal parry_success
 
 var destination: Vector2 = Vector2()
 var movement: Vector2 = Vector2()
@@ -130,33 +132,37 @@ func _unhandled_input(event: InputEvent) -> void:
 				else:
 					attack(targeted_enemy.position)
 			else:
-				print("unhandled input")
+				#print("unhandled input")
 				is_moving = true
 				destination = get_global_mouse_position()
 
 
 func _on_melee_zone_body_entered(enemy: CollisionObject2D) -> void:
-	print("body entered " + str(enemy))
+	#print("body entered " + str(enemy))
 	enemies_in_melee.append(enemy)
 	if is_chasing_enemy and targeted_enemy == enemy:
 		attack(enemy.position)
 
 
 func _on_melee_zone_body_exited(enemy: CollisionObject2D) -> void:
-	print("body exited " + str(enemy))
+	#print("body exited " + str(enemy))
 	if enemy in enemies_in_melee:
 		enemies_in_melee.erase(enemy)
 
 
 func _on_animation_player_animation_finished(anim_name: String) -> void:
 	if "attack" in anim_name:
-		print("attack finished fully")
+		#print("attack finished fully")
 		ready_for_idle = true
 
 
 func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
 	emit_signal("attack_success", body)
 
+
+func _on_parry_zone_body_entered(body: CollisionObject2D) -> void:
+	emit_signal("parry_success", body)
+	print("parrying" + str(body) + "(in player.gd)")
 
 func _on_attack_effects() -> void:
 	#if not audio.playing:
@@ -230,7 +236,8 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability) -> v
 	ready_for_idle = false
 	is_moving = false
 	if ability.range_type == "melee":
-		print("melee attack!")
+		#print("melee attack!")
+		pass
 	#else:
 		#print("not melee")
 	velocity = Vector2(0, 0)
@@ -242,13 +249,13 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability) -> v
 			is_executing = true
 			ready_to_attack_again = false
 			attack_axis.rotation = angle
-			print("first or restarted attack")
+			#print("first or restarted attack")
 			animation_player.stop()
 			#animation_player.play(animations[current_direction][attack_ability.animation_name])
 			execute(ability)
 		elif attack_collider.disabled == true:
 			attack_axis.rotation = angle
-			print("normal attack")
+			#print("normal attack")
 			var current_animation_position: float = animation_player.current_animation_position
 			
 			if current_animation_position < attack_frame/FPS or current_animation_position >= attack_again_frame/FPS:
@@ -292,6 +299,12 @@ func just_attacked() -> void: # THIS
 	emit_signal("attack_effects")
 	disable_attack_zone()
 
+func just_parried() -> void: # THIS
+	print("PARRY!")
+	parry_collider.disabled = false
+	emit_signal("attack_effects")
+	disable_parry_zone()
+
 
 func construct_animation_library() -> void:
 	animations.clear()
@@ -313,7 +326,7 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 			action_type = type
 			if action_type == "parry": # TEMPORARY
 				action_type = "attack" # TEMPORARY
-				print("forcing parry to use attack assets") # TEMPORARY
+				#print("forcing parry to use attack assets") # TEMPORARY
 			break
 	
 	frames.add_animation(animation_name)
@@ -328,7 +341,7 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	for png_path: String in png_list:
 		var frame_png: Texture2D  = load(png_path)
 		frames.add_frame(animation_name,frame_png)
-	print("animation: " + animation_name + " created in AnimatedSprite2D")
+	#print("animation: " + animation_name + " created in AnimatedSprite2D")
 	
 	# create the matching animations in AnimationPlayer
 	var new_animation: Animation = Animation.new()
@@ -343,14 +356,14 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	for png_path: String in png_list:
 		new_animation.track_insert_key(frames_track,frame_number/FPS, frame_number)
 		frame_number += 1
-	print("frame number length: " + str(frame_number))
-	print("animation: " + animation_name + " created in AnimatedSprite2D")
+	#print("frame number length: " + str(frame_number))
+	#print("animation: " + animation_name + " created in AnimatedSprite2D")
 	animation_library.add_animation(animation_name, new_animation)
 
 
 func add_animation_method_calls() -> void:
 	var animation_list: Array[StringName] = animation_library.get_animation_list()
-	print(animation_list)
+	#print(animation_list)
 	for animation: StringName in animation_list:
 		var animation_to_modify: Animation = animation_library.get_animation(animation)
 		var track: int = animation_to_modify.add_track(Animation.TYPE_METHOD)
@@ -364,12 +377,12 @@ func add_animation_method_calls() -> void:
 			animation_to_modify.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
 			animation_to_modify.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []}, 1)
 		elif "parry" in animation:
-			var time : float = attack_frame/FPS
-			var attack_again_time : float = attack_again_frame/FPS
-			var cancel_time : float = cancel_frame / FPS
+			var time : float = 1/FPS
+			var attack_again_time : float = 3/FPS
+			var cancel_time : float = 2 / FPS
 			#var cancel_time : float = attack_again_time + 1/FPS
 			animation_to_modify.track_insert_key(track, cancel_time, {"method" : "animation_cancel_ready" , "args" : []}, 1)
-			#animation_to_modify.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
+			animation_to_modify.track_insert_key(track, time, {"method" : "just_parried" , "args" : []}, 1)
 			animation_to_modify.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []}, 1)
 
 
@@ -379,7 +392,7 @@ func animation_cancel_ready() -> void:
 
 func attack_again_ready() -> void:
 	ready_to_attack_again = true
-	print("can attack again")
+	#print("can attack again")
 
 
 func disable_attack_zone() -> void:
@@ -391,13 +404,22 @@ func disable_attack_zone() -> void:
 	timer.queue_free()
 	attack_collider.disabled = true
 
+func disable_parry_zone() -> void:
+	var timer: Timer = Timer.new()
+	parry_collider.add_child(timer)
+	timer.wait_time = 0.06
+	timer.start()
+	await timer.timeout
+	timer.queue_free()
+	parry_collider.disabled = true
+
 
 func get_hit(damage: int = 1) -> void:
 	#if not audio.playing:
 	#audio.stop()
 	if hitpoints > 0:
 		hitpoints -= damage
-		print("ouch!")
+		#print("ouch!")
 		audio.pitch_scale = 0.90
 		audio.pitch_scale += randf_range(-0.03, 0.03)
 		audio.play()
@@ -410,7 +432,7 @@ func get_hit(damage: int = 1) -> void:
 		timer.queue_free()
 		animated_sprite_2d.modulate = Color.WHITE
 	else:
-		print("player died")
+		#print("player died")
 		dying = true
 		
 
@@ -436,7 +458,10 @@ class Ability:
 		self.animation_name = self.name
 		
 	func execute(target: Vector2 = Vector2(0,0)) -> void:
-		print("executing " + name)
+		#print("executing " + name)
 		if self.range_type != "self":
-			print("execute on: " + str(target))
+			#print("execute on: " + str(target))
+			pass
 		
+
+
