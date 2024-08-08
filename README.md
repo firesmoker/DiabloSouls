@@ -13,17 +13,30 @@ so interruption plus fast attack speed could be a psuedo stun, as it keeps inter
 
 think about stats.
 
+battle mage equipment?
+one that requires both strength / dexterity and magic?
+the mana shield from D1 is pretty cool, but I think it would be cooler if it was a property of a battle mage armor.
+
 Strength could be:
 	Damage:
 		melee attack damage (and some ranged damaged?)
+		higher bleeding damage?
+		higher bleeding chance?
 	Counter:
-		counter stronger attacks (minimum required for some attacks?)
+		counter stronger attacks (minimum required for some attacks)
+	Block:
+		Higher block damage reduction
 	Stun:
 		longer stun duration (bigger boink!)
 		higher stun chance
 	Stamina:
 		Lower stamina cost for melee weapons
 		lower heavy armor stamina modifier
+	Tiredness:
+		Lower tiredness from parrying and countering
+		Lower tiredness from taking damage
+		Lower tiredness from blocking
+		Lower tiredness from melee attacks
 	Equipment:
 		equip heavier weapons and armor
 	
@@ -32,18 +45,26 @@ Agility could be:
 	Damage:
 		ranged attack damage (and some melee?)
 	Counter:
-		counter faster attacks (minimum required for some attacks?)
+		counter faster attacks (minimum required for some attacks)
 		bigger counter window
+	Interruption:
+		higher interruption chance
 	Speed:
 		Move Speed
-		Attack speed
+		Attack (and Casting) speed
 	Stamina:
-		Lower stamina cost for ranged weapons and dodge
+		Lower stamina cost for ranged weapons
+		Lower stamina cost for dodge
+	Tiredness:
+		Lower tiredness from parrying and countering
+		Lower tiredness from dodging
+		Lower tiredness from ranged attacks
 	Equipment:
 		equip better ranged weapons
+		equip better "medium" armor
 		
 
-Intellect / Wisdom:
+Intellect:
 	Damage:
 		spell damage
 		elemental/magic damage?
@@ -54,6 +75,8 @@ Intellect / Wisdom:
 	Equipment:
 		equip better magical weapons?
 		equip better magical equipment
+	Tiredness:
+		Lower tiredness from casting spells
 
 
 Constitution:
@@ -61,6 +84,8 @@ Constitution:
 		higher health
 	Stamina:
 		higher stamina
+	Tiredness:
+		Lower tiredness modifier
 
 	
 

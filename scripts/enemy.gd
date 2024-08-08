@@ -232,7 +232,7 @@ func get_parried(counter: bool = false) -> void:
 			animation_player.stop()
 		attack_collider.disabled = true
 
-func get_hit(damage: int = 1) -> void:
+func get_hit(damage: int = randi_range(1,2)) -> void:
 	#sprite_material.blend_mode = 1
 	can_be_parried = false
 	can_be_countered = false

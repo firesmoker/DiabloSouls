@@ -1,3 +1,8 @@
+TO DO
+	Expand and fix the Gabriel - Raguel thing
+	Continue the post vengeance story that takes place during the game.
+
+===============
 I. Aurora Creates the Universe
 In the beginning, there was Aurora, the primal deity. Aurora had no shape or form. Aurora sacrificed some of its essence to create the angels, also known as the divines. They, too, had no form.
 
@@ -28,36 +33,34 @@ Abel and the other followers used their power to forcefully bind him into a cont
 This was the Dread Contract, anointing Kayne to serve as Death for all eternity, in the void of souls known as the Underworld.
 
 V. The New Order
-Duriel, arriving too late to the scene, was horrified to learn of what has transpired. She confronted Abel to reverse this betrayal. Abel, grinning, reminded her that her loyalty lies with God, which he now is.
-Duriel's spirit shattered, and she spent more than a hundred years in solitude.
+Duriel, arriving too late to the scene, was horrified to learn what had transpired. She confronted Abel, demanding he reverse this betrayal. Abel, grinning, reminded her that her loyalty lies with God, which he now was. Duriel's spirit shattered, and she spent more than a hundred years in solitude.
 
-In the coming days, the heavens split, as many would not acknowledge Abel's legitimacy. Many have left, headed by none other than Raguel, the angel of kindness himself. Despite his good nature he was very powerful as the third angel to be created.
+In the coming days, the heavens split, as many would not acknowledge Abel's legitimacy. Many left, led by none other than Raguel, the angel of kindness himself. Despite his good nature, he was very powerful as the third angel to be created.
 
-Another powerful angel, Gabriel, one Abel's most trusted followers, decided to join Raguel. Even though he played a central part of Abel's plan, he has shown remorse and asked for forgivness. He said that witnessing Abel's victory have revealed his true colors.
-Raguel accepted Gabriel forgivness, and welcomed him into his service.
+Another powerful angel, Gabriel, one of Abel's most trusted followers, decided to join Raguel. Even though he played a central part in Abel's plan, he showed remorse and asked for forgiveness. He said that witnessing Abel's victory had revealed his true colors. Raguel accepted Gabriel's forgiveness and welcomed him into his service.
 
-It was later found out, that Gabriel took the pieces of the shattered Stone of Creation in secret, to prevent Abel to gain more power. It was surprisingly easy, as Abel was so drunk with the taste of victory and his newfound superiority, he completely lowered his guard.
+It was later found out that Gabriel took the pieces of the shattered Stone of Creation in secret, to prevent Abel from gaining more power. It was surprisingly easy, as Abel was so drunk with the taste of victory and his newfound superiority, he completely lowered his guard.
 
 Raguel and his followers created the Second Divine Order, also known as the Congregation.
 
-Duriel did finally return from her solitude. Raguel tried to convince her to join the Congregation and create the divine order of the future. Surprisingly, Duriel rejected him. She said that unfortunately, Abel was right, as he is now the only God and his word is Law. He was always meant to become the second God to rule with Kayne.
-Duriel kissed Raguel goodbye, and swore to never love again. She would never be weak again.
+Duriel finally returned from her solitude. Raguel tried to convince her to join the Congregation and create the divine order of the future. Surprisingly, Duriel rejected him. She said that, unfortunately, Abel was right, as he is now the only God and his word is law. He was always meant to become the second God to rule with Kayne. Duriel kissed Raguel goodbye and swore to never love again. She would never be weak again.
 
 Duriel came to Abel, surrendering herself to his service. She became the captain of the guard.
 
+VI. The Death of God
+Two hundred years later, the horizon darkened. Thousands of twisted angels attacked the heavens, approaching Abel's hall. The attack was led by none other than Gabriel, who was glittering with the shards of the Stone inserted into his flesh. Many of the other attacking angels had a tiny shard in them as well.
 
-VII. The Death of God
-200 years later, the horizon darkened. Thousands of twisted angels attacked the heavens, approaching Abel's hall. The attack was led by none other than Gabriel, who was glittering with the shards of the Stone inserted into his flesh. Many of the other attacking angels had a tiny shard in them as well.
+A battle took place in Abel's hall between Duriel, Abel, and Gabriel. In the end, Gabriel fell, Duriel barely survived, but Abel was decapitated. The heavens managed to repel Gabriel's forces, suffering terrible losses. But there was no more God, and Death's contract was finally over. Strange, dark creatures quickly started to emerge and attack the heavens, and the souls of the dead were no longer joining the reincarnation cycle.
 
-A battle took place in Abel's hall, between Duriel, Abel and Gabriel. In the end, Gabriel fell, Duriel barley survived, but Abel was decapitated.
-The heavens managed to repel Gabriel's forces, suffering terrible loses.
-But there was no more God. And Death's contract was finaly over.
-Strange, dark creatures quickly started to emerge and attack the heavens, and the souls of the dead were no longer joining the reincranation cycle.
+Duriel, now the highest-ranking angel, consulted with her followers. They realized the main culprit behind the attack was Death himself, who had somehow managed to influence Gabriel.
 
-Duriel, now the highest ranking angel, consulted with her followers. They realized the main culprit behind the attack was Death himself, that somehow managed to influence Gabriel.
+After witnessing the power of the stone, the heavens decided that Duriel should be the one to hold its power. Together with Duriel, they augmented her body with all the remains of the stone.
 
-After witnessing the power of the stone, the heavens decided that Duriel should be the one to hold its power. Together with Duriel they augmented Duriel's body with all remains of the stone.
-Duriel and an army of elite warriors mounted an attack on 
+Duriel and an army of elite warriors mounted a final attack on the Underworld to finish the ancient feud.
+
+However, it seemed that Death wasn't truly defeated, as the attacks on the living continued, and Duriel and her army were never heard from again.
+
+
 
 
 
