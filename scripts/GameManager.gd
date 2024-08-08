@@ -3,17 +3,35 @@ class_name GameManager extends Node
 @onready var player: Player = $"../Player"
 @onready var camera: Camera2D = $"../Player/Camera2D"
 @onready var point_light: PointLight2D = $"../Player/Camera2D/PointLight2D"
+@onready var hud: CanvasLayer = %HUD
+@onready var enemy_label: Label = %HUD/EnemyLabel
+@onready var enemy_health: ProgressBar = %HUD/EnemyHealth
+@onready var player_health: ProgressBar = %HUD/PlayerHealth
 @export var shake_time: float = 0.05
 @export var shake_amount: float = 1.5
 @export var lightning_amount: float = 0.12
 @export var enemies_under_mouse := []
+
 var enemy_in_focus: Enemy
 
+func _ready() -> void:
+	enemy_label.visible = false
+	enemy_label.visible = true
+	player_health.max_value = player.hitpoints
+	#enemy_label.text = "tuuukaaa"
 
 func _process(delta: float) -> void:
 	#print(enemy_in_focus)
+	player_health.value = player.hitpoints
 	if enemy_in_focus != null:
 		enemy_in_focus.highlight()
+		enemy_label.visible = true
+		enemy_health.visible = true
+		enemy_label.text = enemy_in_focus.id
+		enemy_health.value = enemy_in_focus.hitpoints
+	else:
+		enemy_label.visible = false
+		enemy_health.visible = false
 	if player.dead:
 		point_light.color = Color.RED
 		point_light.energy = 1

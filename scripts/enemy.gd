@@ -8,6 +8,7 @@ class_name Enemy extends RigidBody2D
 @onready var attack_axis: Node2D = $AttackAxis
 @onready var attack_zone: Area2D = $AttackAxis/AttackZone
 @onready var attack_collider: CollisionShape2D = $AttackAxis/AttackZone/AttackCollider
+@export var id: String = "Enemy"
 @export_enum("skeleton_default", "slime") var model: String = "skeleton_default"
 @export var speed_fps_ratio: float = 42.35
 @export var move_speed_modifier: float = 1
@@ -197,7 +198,7 @@ func get_parried(counter: bool = false) -> void:
 		print("COUNTER!")
 		
 		game_manager.camera_shake_and_color()
-		get_hit()
+		get_hit(2)
 		#return
 	else:
 		animated_sprite_2d.modulate = Color.BLUE
@@ -220,7 +221,7 @@ func get_parried(counter: bool = false) -> void:
 			animation_player.stop()
 		attack_collider.disabled = true
 
-func get_hit() -> void:
+func get_hit(damage: int = 1) -> void:
 	#sprite_material.blend_mode = 1
 	can_be_parried = false
 	can_be_countered = false
@@ -233,7 +234,7 @@ func get_hit() -> void:
 	await timer.timeout
 	timer.queue_free()
 	animated_sprite_2d.modulate = Color.WHITE
-	hitpoints -= 1
+	hitpoints -= damage
 	if hitpoints <= 0:
 		die()
 	elif not dying:

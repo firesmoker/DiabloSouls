@@ -6,16 +6,13 @@ If it's melee, I'll walk until he is the melee zone. Then I'll execute the attac
 If it's ranged, I'll walk until he is in range, then I'll execute the attack.
 If it's self, I'll immediatly execute the ability. It might have a direction.
 
-parry should work like attack in place I guess
-at first at least
-
-
-
 
 
 free thinking.
 
 I now have a prototype that the player moves very good, enemies move pretty good. the player attacks the enemies and the enemies attack in melee.
+
+strange bug when slime appears no counter highlight
 
 Things that are very missing:
 	No player health indication
@@ -23,8 +20,12 @@ Things that are very missing:
 	Pathfinding is non existent for both player and enemies
 	Sound is not good and responsive
 	Enemy highlight makes them transparent and the highlight is not clear enough. I want outline.
-	Combat is boring and needs to get the parry / counter ability
+	no abilities in combat other than basic attack, parry, counter
+	no dodge
+	parry / counter is not optimized for multiple enemies
+	no counter and parry animations
 	enemy retaliation animations (lower priority)
+	no decals like blood and bones flying in the air (very very low priority)
 	Artstyle is lacking
 	no music
 	player light is a bit awkard, and the dark is not dark enough
@@ -36,8 +37,6 @@ I could do enemies that actually "dodge", using dodge abillity the moves them aw
 -----------------------
 TO DO
 -----------------------
-  2404
- 
 
 A TIER
 ------------------------------------
@@ -55,8 +54,6 @@ C TIER
 --------------------------
 * Refactoring and cleaning
 * move audio to gamemanager or seperate from player, audio listener etc.
-* update player scene to include some changes from the game scene
-player fix stopping bug with distance_to
 * animation and sound when gets hit (animation only for enemy)
 * Convert attack to ability
 * Ability queue

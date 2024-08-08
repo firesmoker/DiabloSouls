@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://lr15cpqcai72"]
+[gd_scene load_steps=12 format=3 uid="uid://lr15cpqcai72"]
 
 [ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_h602i"]
 [ext_resource type="Script" path="res://scripts/TileMap.gd" id="2_orhwb"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://b14lamihq1w8f" path="res://assets/art/environment/ground_stone1.png" id="6_6dfq4"]
 [ext_resource type="Texture2D" uid="uid://bsrx8kbnpdg4d" path="res://assets/art/environment/ground_variation1.png" id="7_5uejp"]
 [ext_resource type="PackedScene" uid="uid://brlvroq1a2p0i" path="res://scenes/skeleton.tscn" id="7_fmbge"]
+[ext_resource type="PackedScene" uid="uid://crbwettm152r0" path="res://scenes/hud.tscn" id="7_luld2"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_w3c5t"]
 source_geometry_group_name = &"navigation_polygon_source_group"
@@ -286,6 +287,9 @@ y_sort_enabled = true
 unique_name_in_owner = true
 script = ExtResource("1_h602i")
 
+[node name="HUD" parent="." instance=ExtResource("7_luld2")]
+unique_name_in_owner = true
+
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 z_as_relative = false
 position = Vector2(-4, 0)
@@ -317,71 +321,54 @@ y_sort_enabled = true
 [node name="Skeleton" parent="Enemies" instance=ExtResource("7_fmbge")]
 
 [node name="Skeleton2" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(157, -36)
 
 [node name="Skeleton3" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(265, 66)
 
 [node name="Skeleton4" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(218, 165)
 
 [node name="Skeleton5" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(10, 187)
 
 [node name="Skeleton6" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(-167, 69)
 
 [node name="Skeleton7" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(-164, 137)
 
 [node name="Skeleton8" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(-134, 186)
 
 [node name="Skeleton9" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(-79, 224)
 
 [node name="Skeleton10" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(143, 192)
 
 [node name="Skeleton11" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(347, 180)
 
 [node name="Skeleton12" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(288, -11)
 
 [node name="Skeleton13" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(211, -147)
 
 [node name="Skeleton14" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(24, -150)
 
 [node name="Skeleton15" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(-130, -141)
 
 [node name="Skeleton16" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(-150, -36)
 
 [node name="Skeleton17" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(-32, -70)
 
 [node name="Skeleton18" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(-300, -9)
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]

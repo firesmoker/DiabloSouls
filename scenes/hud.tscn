@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://crbwettm152r0"]
+
+[node name="HUD" type="CanvasLayer"]
+
+[node name="EnemyLabel" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -324.0
+offset_right = 324.0
+offset_bottom = 315.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 71
+text = "TUSIK"
+horizontal_alignment = 1
+
+[node name="EnemyHealth" type="ProgressBar" parent="."]
+modulate = Color(1, 0, 0, 1)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -227.5
+offset_top = 102.0
+offset_right = 227.5
+offset_bottom = 129.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+max_value = 2.0
+show_percentage = false
+
+[node name="PlayerHealth" type="ProgressBar" parent="."]
+modulate = Color(1, 0, 0, 1)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -455.0
+offset_top = -133.0
+offset_right = 455.0
+offset_bottom = -79.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 46
+max_value = 2.0
+show_percentage = false

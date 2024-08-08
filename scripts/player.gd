@@ -85,6 +85,7 @@ var attack_ability: Ability = Ability.new("attack", "melee")
 var parry_ability: Ability = Ability.new("parry", "melee")
 
 func _ready() -> void:
+	#animation_player.playback_default_blend_time
 	destination = position
 	construct_animation_library()
 	add_animation_method_calls()

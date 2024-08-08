@@ -22,6 +22,7 @@ animations = [{
 resource_local_to_scene = true
 
 [node name="Slime" instance=ExtResource("1_h6qdv")]
+id = "Slime"
 model = "slime"
 speed_fps_ratio = 30.0
 move_speed_modifier = 0.8
@@ -37,9 +38,6 @@ scale = Vector2(1.93, 1.765)
 
 [node name="HighlightCircle" parent="." index="3"]
 material = SubResource("CanvasItemMaterial_0i3qh")
-
-[node name="ClumpZone" parent="." index="4"]
-visible = false
 
 [node name="CollisionShape2D" parent="HoverZone" index="0"]
 position = Vector2(0, -6.075)
