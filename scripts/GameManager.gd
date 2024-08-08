@@ -35,7 +35,7 @@ func player_left_melee(enemy: Enemy) -> void:
 func player_gets_hit(damage: float = 1) -> void:
 	player.get_hit(damage)
 	if not player.dead:
-		var timer := Timer.new()
+		var timer: Timer = Timer.new()
 		timer.wait_time = shake_time
 		camera.add_child(timer)
 		
@@ -50,7 +50,7 @@ func player_gets_hit(damage: float = 1) -> void:
 		point_light.energy -= 0.25
 
 func camera_shake_and_color(color: bool = true) -> void:
-	var timer := Timer.new()
+	var timer: Timer = Timer.new()
 	camera.add_child(timer)
 	
 	#freeze_display()
@@ -97,7 +97,9 @@ func _on_player_attack_success(enemy: Enemy) -> void:
 
 func _on_player_parry_success(enemy: Enemy) -> void:
 	#camera_shake_and_color()
-	if enemy.can_be_parried == true:
+	if enemy.can_be_countered:
+		enemy.get_parried(true)
+	elif enemy.can_be_parried:
 		enemy.get_parried()
 	else:
 		print("enemy can't be parried")

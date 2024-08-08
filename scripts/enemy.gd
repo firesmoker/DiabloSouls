@@ -178,6 +178,7 @@ func switch_direction() -> void:
 	ready_to_switch_direction = true
 
 func get_stunned() -> void:
+	animation_player.stop()
 	highlight_circle.visible = false
 	highlight_circle.modulate = Color.WHITE
 	stunned = true
@@ -191,24 +192,33 @@ func get_stunned() -> void:
 	print("not stunned")
 	stun_timer.queue_free()
 
-func get_parried() -> void:
-	can_be_parried = false
-	can_be_countered = false
-	highlight_circle.modulate = Color.WHITE
-	highlight_circle.visible = false
-	animated_sprite_2d.modulate = Color.BLUE
-	get_stunned()
+func get_parried(counter: bool = false) -> void:
+	if counter:
+		print("COUNTER!")
+		
+		game_manager.camera_shake_and_color()
+		get_hit()
+		#return
+	else:
+		animated_sprite_2d.modulate = Color.BLUE
+	if not dying:
+		can_be_parried = false
+		can_be_countered = false
+		highlight_circle.modulate = Color.WHITE
+		highlight_circle.visible = false
+		get_stunned()
 
-	var timer := Timer.new()
-	self.add_child(timer)
-	timer.wait_time = 0.07
-	timer.start()
-	
-	await timer.timeout
-	timer.queue_free()
-	animated_sprite_2d.modulate = Color.WHITE
-	animation_player.stop()
-	attack_collider.disabled = true
+		var timer := Timer.new()
+		self.add_child(timer)
+		timer.wait_time = 0.07
+		timer.start()
+		
+		await timer.timeout
+		timer.queue_free()
+		animated_sprite_2d.modulate = Color.WHITE
+		if not dying:
+			animation_player.stop()
+		attack_collider.disabled = true
 
 func get_hit() -> void:
 	#sprite_material.blend_mode = 1
@@ -225,10 +235,8 @@ func get_hit() -> void:
 	animated_sprite_2d.modulate = Color.WHITE
 	hitpoints -= 1
 	if hitpoints <= 0:
-		emit_signal("stopped_mouse_hover", self)
-		emit_signal("player_left_melee", self)
 		die()
-	else:
+	elif not dying:
 		if randi() % 100 + 1 > 50:
 			print("lucky! stopping animation")
 			animation_player.stop()
@@ -266,6 +274,8 @@ func calculate_movement() -> Vector2:
 	return Vector2(max_velocity_x + move_offset.x, max_velocity_y + move_offset.y)
 
 func die() -> void:
+	emit_signal("stopped_mouse_hover", self)
+	emit_signal("player_left_melee", self)
 	dying = true
 	animation_player.speed_scale = 1
 	animation_player.play(animations[current_direction]["death"])
