@@ -6,7 +6,63 @@ If it's melee, I'll walk until he is the melee zone. Then I'll execute the attac
 If it's ranged, I'll walk until he is in range, then I'll execute the attack.
 If it's self, I'll immediatly execute the ability. It might have a direction.
 
+interruption could be a thing.
+the same interruption when you hit an enemy.
+the chance could be higher for some weapons
+so interruption plus fast attack speed could be a psuedo stun, as it keeps interruping all the time
 
+think about stats.
+
+Strength could be:
+	Damage:
+		melee attack damage (and some ranged damaged?)
+	Counter:
+		counter stronger attacks (minimum required for some attacks?)
+	Stun:
+		longer stun duration (bigger boink!)
+		higher stun chance
+	Stamina:
+		Lower stamina cost for melee weapons
+		lower heavy armor stamina modifier
+	Equipment:
+		equip heavier weapons and armor
+	
+
+Agility could be:
+	Damage:
+		ranged attack damage (and some melee?)
+	Counter:
+		counter faster attacks (minimum required for some attacks?)
+		bigger counter window
+	Speed:
+		Move Speed
+		Attack speed
+	Stamina:
+		Lower stamina cost for ranged weapons and dodge
+	Equipment:
+		equip better ranged weapons
+		
+
+Intellect / Wisdom:
+	Damage:
+		spell damage
+		elemental/magic damage?
+	Counter:
+		counter spell?
+	Mana:
+		higher mana
+	Equipment:
+		equip better magical weapons?
+		equip better magical equipment
+
+
+Constitution:
+	Health:
+		higher health
+	Stamina:
+		higher stamina
+
+	
 
 free thinking.
 

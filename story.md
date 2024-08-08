@@ -1,3 +1,56 @@
+# I Aurora creates the universe
+In the beginning there was Aurora, the primal deity.
+Aurora had no shape or form.
+Aurora sacrificed some of its essence to create the angels, also known as the divines. They too had no form.
+The first, Kayne, was the mightiest of them all. He was annnoited as God by Aurora.
+The second, Abel, was only lesser to Kayne.
+Aurora acknowledged Kayne superiority, but saw potential in Abel.
+Aurora gave the order for Kayne and Abel, that on the day Abel would be ready, Kayne would transfer some of his power to Abel, so they would rule together as the joint Gods. This divine order was later become known as the Godkin Prophecy.
+
+Each consecuite angel that was born was lesser in power than its predecessor.
+
+Aurora created a holy device, called the Stone of Creation, allowing him to transform holy essence into matter.
+Using the stone, he sacrificed all of his remaining essence to create the material universe and most living creatures. This act became known as the Dawn of the Earth.
+
+# II Kayne and Abel conflict
+Many eons later, Kayne never accepted Abel as being ready to rule with him. Abel and many of his followers began to question Kayne's intentions, and accused him of betraying Aurora's orders.
+Kayne didn't budge, as he was more powerful than all of the other divines combined.
+
+Abel planned a scheme to dethrone Kayne and become God. He, together with many of his followers, will use the Stone of Creation to catch Kayne by surprise and overpower him.
+
+The main problem was the fourth angel - Duriel. She was extremely loyal to God Kayne, and was revered by many of the divines.
+
+III Duriel, the legendary angel warrior
+A few thousands years back, one of Abel's followers, the fifth angel named Astaroth, betrayed the heavens and mounted a surprise attack on Duriel. He has murdered many angels in secret, preparing for this attack. When an angel kills another, they absorb the victim's power.
+Astaroth became stronger than Duriel, and was convinced of his victory. However, Duriel was the most skilled warrior among the divines, and she managed to defeat him in an epic battle, despite the overwhelming odds. Thus, she became much more powerful, approaching Abel's own power.
+This is one of the reasons Abel was eager to dethrone Kayne and become God - Duriel becoming stronger than himself, as Kayne's right hand, would mean eternal servitude. Kayne would most likely make Duriel the joint God, if at all.
+
+# IV The Fall of Kayne
+The third angel, Raguel, was known for his kindness. But also for his naivity. Duriel fell in love with him, admiring his peaceful ways, and the way he was the only angel to be loved by all.
+Abel recognized this fact as the only weakness Duriel might have. He encouraged Raguel to accept Duriel's love (which Raguel was not entirely aware of) and to spend time alone with her. Raguel, who trusted Abel more than any other, was extremely happy to learn of this fact and followed Abel's advice.
+
+The time was ripe for Abel's plan.
+On the day Raguel and Duriel spent time together, Abel took the Stone of Creation. He and his followers managed to surprise Kayne. They channeled all of their power into the Stone of Creation, to tear Kayne apart into matter. Those parts created the humans, and other unique creatures.
+Kayne was slighlty stronger than them when they attacked, and his resistance shattered the stone in the middle of the proccess.
+He became a shell of his former self, much weaker than what he was, and finally weaker than Abel.
+
+Abel and the other followers used their power to forcefully bound him into a contract (more of a curse) to never absorb the souls of the dead creations made out of him - the humans and other fantastical creatures. He will be the one to return those souls into the reincarnation cycle, so they will be born again.
+This was the Dread Contract, annoiting Kayne to serve as Death for all eternity.
+
+
+
+Basic Premise:
+God is dead, and Death has broken loose, no longer bound by his contract.
+The legendary angel of war, Duriel, led an army of angels to avenge God's demise and defeat Death, but they have all disappeared.
+In the next few hundred years, dark creatures began to roam the earth but were mostly contained by the divine order of clerics and other brave warriors.
+
+But now, an attack on a scale never seen before has ravaged much of of humanity.
+You are one of the few survivors of the attack, in the small village named Firstlight.
+You begin by helping other survivors to eliminate some of the leftover demons around the ruined village.
+=========================================================================================
+
+	
+	
 The main villain: Death
 His power was always kept in check by the [divines]
 He has managed to break free of their checks and go rogue
