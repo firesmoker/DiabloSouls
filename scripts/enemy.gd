@@ -29,6 +29,7 @@ var can_be_countered: bool = false
 var can_be_parried: bool = false
 var stunned: bool = false
 var stun_time: float = 1.5
+var in_melee: bool = false
 
 const FPS: float = 12.0
 const average_delta: float = 0.01666666666667
@@ -90,14 +91,21 @@ func _ready() -> void:
 		stopped_mouse_hover.connect(game_manager.enemy_mouse_hover_stopped)
 
 func _process(delta: float) -> void:
-	destination = player.position
+	if player.dead and in_melee:
+		in_melee = false
+	elif !player.dead:
+		destination = player.position
+	else:
+		destination = position
+		moving = false
 	if "attack" in animation_player.current_animation:
 		moving = false
 		#print("attacking, please hold")
 		await animation_player.animation_finished
 	if not dying and not stunned:
 		animation_player.speed_scale = attack_speed_modifier
-		if position.distance_to(player.position) <= attack_range and has_attack:
+		#if position.distance_to(player.position) <= attack_range and has_attack:
+		if in_melee and has_attack:
 			can_attack = true
 			attacking = true
 			var angle: float = position.angle_to_point(player.position)
@@ -154,6 +162,7 @@ func _on_clump_zone_body_exited(body: CollisionObject2D) -> void:
 
 func _on_melee_zone_body_entered(body: CollisionObject2D) -> void:
 	if body == player:
+		in_melee = true
 		#print("player in melee")
 		#emit_signal("player_in_melee", self)
 		moving = false
@@ -161,6 +170,8 @@ func _on_melee_zone_body_entered(body: CollisionObject2D) -> void:
 func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 	if body == player:
 		#emit_signal("player_left_melee", self)
+		in_melee = false
+		highlight_circle.visible = false
 		moving = true
 		
 func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
@@ -358,13 +369,15 @@ func disable_attack_zone() -> void:
 	
 func ready_to_be_parried() -> void:
 	if not stunned:
-		highlight_circle.visible = true
+		if in_melee:
+			highlight_circle.visible = true
 		can_be_parried = true
 		print("can be parried")
 
 func ready_to_be_countered() -> void:
 	if not stunned:
-		highlight_circle.visible = true
+		if in_melee:
+			highlight_circle.visible = true
 		highlight_circle.modulate = Color.BLUE
 		can_be_countered = true
 		print("can be countered")

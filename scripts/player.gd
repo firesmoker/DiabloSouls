@@ -426,7 +426,10 @@ func disable_parry_zone() -> void:
 func get_hit(damage: int = 1) -> void:
 	#if not audio.playing:
 	#audio.stop()
-	if hitpoints > 0:
+	if hitpoints - damage <= 0:
+		hitpoints -= damage
+		dying = true
+	elif hitpoints > 0:
 		hitpoints -= damage
 		#print("ouch!")
 		audio.pitch_scale = 0.90
@@ -440,9 +443,10 @@ func get_hit(damage: int = 1) -> void:
 		await timer.timeout
 		timer.queue_free()
 		animated_sprite_2d.modulate = Color.WHITE
-	else:
+	#else:
 		#print("player died")
-		dying = true
+		#animation_player.stop()
+		
 		
 
 func _on_timer_timeout() -> void:
