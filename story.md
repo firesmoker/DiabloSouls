@@ -1,41 +1,63 @@
-# I Aurora creates the universe
-In the beginning there was Aurora, the primal deity.
-Aurora had no shape or form.
-Aurora sacrificed some of its essence to create the angels, also known as the divines. They too had no form.
-The first, Kayne, was the mightiest of them all. He was annnoited as God by Aurora.
-The second, Abel, was only lesser to Kayne.
-Aurora acknowledged Kayne superiority, but saw potential in Abel.
-Aurora gave the order for Kayne and Abel, that on the day Abel would be ready, Kayne would transfer some of his power to Abel, so they would rule together as the joint Gods. This divine order was later become known as the Godkin Prophecy.
+I. Aurora Creates the Universe
+In the beginning, there was Aurora, the primal deity. Aurora had no shape or form. Aurora sacrificed some of its essence to create the angels, also known as the divines. They, too, had no form.
 
-Each consecuite angel that was born was lesser in power than its predecessor.
+The first, Kayne, was the mightiest of them all. He was anointed as God by Aurora. The second, Abel, was only lesser to Kayne. Aurora acknowledged Kayne's superiority but saw potential in Abel. Aurora gave the order to Kayne and Abel that on the day Abel would be ready, Kayne would transfer some of his power to Abel, so they would rule together as the joint Gods. This divine order later became known as the Godkin Prophecy.
 
-Aurora created a holy device, called the Stone of Creation, allowing him to transform holy essence into matter.
-Using the stone, he sacrificed all of his remaining essence to create the material universe and most living creatures. This act became known as the Dawn of the Earth.
+Each successive angel that was born was lesser in power than its predecessor.
 
-# II Kayne and Abel conflict
-Many eons later, Kayne never accepted Abel as being ready to rule with him. Abel and many of his followers began to question Kayne's intentions, and accused him of betraying Aurora's orders.
-Kayne didn't budge, as he was more powerful than all of the other divines combined.
+Aurora created a holy device called the Stone of Creation, allowing it to transform holy essence into matter. Using the stone, it sacrificed all of its remaining essence to create the material universe and most living creatures. This act became known as the Dawn of the Earth.
 
-Abel planned a scheme to dethrone Kayne and become God. He, together with many of his followers, will use the Stone of Creation to catch Kayne by surprise and overpower him.
+II. The Conflict Between Kayne and Abel
+Many eons later, Kayne never accepted that Abel was ready to rule with him. Abel and many of his followers began to question Kayne's intentions and accused him of betraying Aurora's orders. Kayne didn't budge, as he was more powerful than all of the other divines combined.
 
-The main problem was the fourth angel - Duriel. She was extremely loyal to God Kayne, and was revered by many of the divines.
+Abel planned a scheme to dethrone Kayne and become God. He and many of his followers would use the Stone of Creation to catch Kayne by surprise and overpower him.
 
-III Duriel, the legendary angel warrior
-A few thousands years back, one of Abel's followers, the fifth angel named Astaroth, betrayed the heavens and mounted a surprise attack on Duriel. He has murdered many angels in secret, preparing for this attack. When an angel kills another, they absorb the victim's power.
-Astaroth became stronger than Duriel, and was convinced of his victory. However, Duriel was the most skilled warrior among the divines, and she managed to defeat him in an epic battle, despite the overwhelming odds. Thus, she became much more powerful, approaching Abel's own power.
-This is one of the reasons Abel was eager to dethrone Kayne and become God - Duriel becoming stronger than himself, as Kayne's right hand, would mean eternal servitude. Kayne would most likely make Duriel the joint God, if at all.
+The main problem was the fourth angel, Duriel. She was extremely loyal to God Kayne and was revered by many of the divines.
 
-# IV The Fall of Kayne
-The third angel, Raguel, was known for his kindness. But also for his naivity. Duriel fell in love with him, admiring his peaceful ways, and the way he was the only angel to be loved by all.
-Abel recognized this fact as the only weakness Duriel might have. He encouraged Raguel to accept Duriel's love (which Raguel was not entirely aware of) and to spend time alone with her. Raguel, who trusted Abel more than any other, was extremely happy to learn of this fact and followed Abel's advice.
+III. Duriel, the Legendary Angel Warrior
+A few thousand years back, one of Abel's followers, the fifth angel named Astaroth, betrayed the heavens and mounted a surprise attack on Duriel. He had murdered many angels in secret, preparing for this attack. When an angel kills another, they absorb the victim's power. Astaroth became stronger than Duriel and was convinced of his victory, already planning how he would challenge Abel next.
+However, Duriel was the most skilled warrior among the divines, and she managed to defeat him in an epic battle despite the overwhelming odds. Thus, she became much more powerful, approaching Abel's own power. This is one of the reasons Abel was eager to dethrone Kayne and become God — Duriel becoming stronger than himself, while she served Kayne's right hand, would mean eternal servitude. Kayne would most likely make Duriel the joint God, if at all.
 
-The time was ripe for Abel's plan.
-On the day Raguel and Duriel spent time together, Abel took the Stone of Creation. He and his followers managed to surprise Kayne. They channeled all of their power into the Stone of Creation, to tear Kayne apart into matter. Those parts created the humans, and other unique creatures.
-Kayne was slighlty stronger than them when they attacked, and his resistance shattered the stone in the middle of the proccess.
-He became a shell of his former self, much weaker than what he was, and finally weaker than Abel.
+IV. The Fall of Kayne
+The third angel, Raguel, was known for his kindness but also for his naivety. Duriel fell in love with him, admiring his peaceful ways and how he was the only angel loved by all. Abel recognized this fact as the only weakness Duriel might have. He encouraged Raguel to accept Duriel's love (which Raguel was not entirely aware of) and to spend time alone with her. Raguel, who trusted Abel more than any other, was extremely happy to learn of this fact and followed Abel's advice.
 
-Abel and the other followers used their power to forcefully bound him into a contract (more of a curse) to never absorb the souls of the dead creations made out of him - the humans and other fantastical creatures. He will be the one to return those souls into the reincarnation cycle, so they will be born again.
-This was the Dread Contract, annoiting Kayne to serve as Death for all eternity.
+The time was ripe for Abel's plan. On the day Raguel and Duriel spent time together, Abel took the Stone of Creation. He and his followers managed to surprise Kayne. They channeled all of their power into the Stone of Creation to tear Kayne apart into matter. Those parts created the humans and other unique creatures. Kayne was slightly stronger than them when they attacked, and his resistance shattered the stone in the middle of the process. He became a shell of his former self, much weaker than he was, and finally weaker than Abel.
+
+Abel and the other followers used their power to forcefully bind him into a contract (more of a curse) to never absorb the souls of the dead creations made out of him — the humans and other fantastical creatures. This meant he would never be able to regain his power. He would be the one to return those souls into the reincarnation cycle so they would be born again.
+
+This was the Dread Contract, anointing Kayne to serve as Death for all eternity, in the void of souls known as the Underworld.
+
+V. The New Order
+Duriel, arriving too late to the scene, was horrified to learn of what has transpired. She confronted Abel to reverse this betrayal. Abel, grinning, reminded her that her loyalty lies with God, which he now is.
+Duriel's spirit shattered, and she spent more than a hundred years in solitude.
+
+In the coming days, the heavens split, as many would not acknowledge Abel's legitimacy. Many have left, headed by none other than Raguel, the angel of kindness himself. Despite his good nature he was very powerful as the third angel to be created.
+
+Another powerful angel, Gabriel, one Abel's most trusted followers, decided to join Raguel. Even though he played a central part of Abel's plan, he has shown remorse and asked for forgivness. He said that witnessing Abel's victory have revealed his true colors.
+Raguel accepted Gabriel forgivness, and welcomed him into his service.
+
+It was later found out, that Gabriel took the pieces of the shattered Stone of Creation in secret, to prevent Abel to gain more power. It was surprisingly easy, as Abel was so drunk with the taste of victory and his newfound superiority, he completely lowered his guard.
+
+Raguel and his followers created the Second Divine Order, also known as the Congregation.
+
+Duriel did finally return from her solitude. Raguel tried to convince her to join the Congregation and create the divine order of the future. Surprisingly, Duriel rejected him. She said that unfortunately, Abel was right, as he is now the only God and his word is Law. He was always meant to become the second God to rule with Kayne.
+Duriel kissed Raguel goodbye, and swore to never love again. She would never be weak again.
+
+Duriel came to Abel, surrendering herself to his service. She became the captain of the guard.
+
+
+VII. The Death of God
+200 years later, the horizon darkened. Thousands of twisted angels attacked the heavens, approaching Abel's hall. The attack was led by none other than Gabriel, who was glittering with the shards of the Stone inserted into his flesh. Many of the other attacking angels had a tiny shard in them as well.
+
+A battle took place in Abel's hall, between Duriel, Abel and Gabriel. In the end, Gabriel fell, Duriel barley survived, but Abel was decapitated.
+The heavens managed to repel Gabriel's forces, suffering terrible loses.
+But there was no more God. And Death's contract was finaly over.
+Strange, dark creatures quickly started to emerge and attack the heavens, and the souls of the dead were no longer joining the reincranation cycle.
+
+Duriel, now the highest ranking angel, consulted with her followers. They realized the main culprit behind the attack was Death himself, that somehow managed to influence Gabriel.
+
+After witnessing the power of the stone, the heavens decided that Duriel should be the one to hold its power. Together with Duriel they augmented Duriel's body with all remains of the stone.
+Duriel and an army of elite warriors mounted an attack on 
 
 
 
