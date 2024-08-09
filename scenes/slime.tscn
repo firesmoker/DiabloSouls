@@ -29,14 +29,14 @@ move_speed_modifier = 0.8
 hitpoints = 1
 animation_types = Array[String](["idle", "walk", "death"])
 
-[node name="AnimatedSprite2D" parent="." index="1"]
+[node name="AnimatedSprite2D" parent="." index="2"]
 material = SubResource("CanvasItemMaterial_pfpan")
 sprite_frames = SubResource("SpriteFrames_iyag3")
 
-[node name="PhysicalCollider" parent="." index="2"]
+[node name="PhysicalCollider" parent="." index="3"]
 scale = Vector2(1.93, 1.765)
 
-[node name="HighlightCircle" parent="." index="3"]
+[node name="HighlightCircle" parent="." index="4"]
 material = SubResource("CanvasItemMaterial_0i3qh")
 
 [node name="CollisionShape2D" parent="HoverZone" index="0"]

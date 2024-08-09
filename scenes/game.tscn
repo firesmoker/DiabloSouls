@@ -321,6 +321,7 @@ invlunerable = true
 y_sort_enabled = true
 
 [node name="Skeleton" parent="Enemies" instance=ExtResource("7_fmbge")]
+body_color = Color(1, 0, 1, 1)
 hitpoints = 50
 
 [node name="Skeleton2" parent="Enemies" instance=ExtResource("7_fmbge")]

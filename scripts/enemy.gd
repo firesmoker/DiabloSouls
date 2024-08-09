@@ -10,6 +10,7 @@ class_name Enemy extends RigidBody2D
 @onready var attack_collider: CollisionShape2D = $AttackAxis/AttackZone/AttackCollider
 @onready var health_bar: ProgressBar = $HealthBar
 
+@export var body_color: Color = Color.WHITE
 @export var id: String = "Enemy"
 @export_enum("skeleton_default", "slime") var model: String = "skeleton_default"
 @export var speed_fps_ratio: float = 42.35
@@ -79,6 +80,7 @@ signal switch_direction_animation
 
 
 func _ready() -> void:
+	animated_sprite_2d.modulate = body_color
 	health_bar.max_value = hitpoints
 	health_bar.value = hitpoints
 	health_bar.visible = false

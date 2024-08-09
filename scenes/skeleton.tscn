@@ -27,9 +27,9 @@ attack_frame = 5
 has_attack = true
 animation_types = Array[String](["idle", "walk", "attack", "death"])
 
-[node name="AnimatedSprite2D" parent="." index="1"]
+[node name="AnimatedSprite2D" parent="." index="2"]
 material = SubResource("CanvasItemMaterial_4xdfl")
 sprite_frames = SubResource("SpriteFrames_ckd27")
 
-[node name="HighlightCircle" parent="." index="3"]
+[node name="HighlightCircle" parent="." index="4"]
 material = SubResource("CanvasItemMaterial_ury82")
