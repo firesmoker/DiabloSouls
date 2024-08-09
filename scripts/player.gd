@@ -12,21 +12,23 @@ class_name Player extends CharacterBody2D
 @export_enum("warrior_armed", "fighter_armed", "knight_armed") var model: String = "warrior_armed"
 @export var speed_fps_ratio: float = 121.0
 @export var speed_modifier: float = 1
+@export var dodge_speed_bonus: float = 3.5
 @export var attack_frame: int = 3
 @export var cancel_frame: int = 2
 @export var attack_again_frame: int = 5
 @export var hitpoints: int = 5
-@export var is_moving: bool = false
-@export var is_executing: bool = false
-@export var is_chasing_enemy: bool = false
-@export var ready_for_idle: bool= true
-@export var ready_to_attack_again: bool= true
 @export var animation_types: Array[String] = ["idle", "walk", "attack", "death", "parry"]
+var is_moving: bool = false
+var is_executing: bool = false
+var is_chasing_enemy: bool = false
+var is_dodging: bool = false
+var ready_for_idle: bool= true
+var ready_to_attack_again: bool= true
 
 var targeted_enemy: RigidBody2D = null
 var enemies_in_melee: Array[Enemy]
 #var abilities_queue: Array[Ability]
-var dying: bool = false
+var is_dying: bool = false
 var dead: bool = false
 
 signal attack_effects
@@ -92,7 +94,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:	
-	if not dying:
+	if not is_dying:
 		handle_movement(delta)
 		
 		if not is_executing:
@@ -108,13 +110,30 @@ func _physics_process(delta: float) -> void:
 		animation_player.play(animations[current_direction]["death"])
 		dead = true
 
+func dodge(dodge_destination: Vector2) -> void:
+	print("dodging to " + str(dodge_destination))
+	is_moving = true
+	destination = dodge_destination
+	is_dodging = true
+	var timer: Timer = Timer.new()
+	add_child(timer)
+	timer.wait_time = 0.1
+	timer.start()
+	await timer.timeout
+	if is_dodging != false:
+		is_dodging = false
+		#is_moving = false
+		velocity = Vector2(0,0)
+		destination = position
+	#is_moving = true
+	#velocity += dodge_destination
+	
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not dying:
-		if event.is_action_pressed("bobo"):
-			print("test button pressed")
-			print("KUKUK")
-			execute(parry_ability)
+	if not is_dying:
+		if event.is_action_pressed("dodge"):
+			var face_destination: Vector2 = get_global_mouse_position()
+			dodge(face_destination)
 		
 		if event.is_action_pressed("attack_in_place"):
 			var face_destination: Vector2 = get_global_mouse_position()
@@ -176,6 +195,7 @@ func _on_attack_effects() -> void:
 func stop_on_destination() -> void:
 	if abs(position.x - destination.x) <= 1 and abs(position.y - destination.y) <= 1:
 	#if position.distance_to(destination) <= 1:
+		is_dodging = false
 		velocity = Vector2(0,0)
 		if not Input.is_action_pressed("mouse_move"):
 			ready_for_idle = true
@@ -202,7 +222,7 @@ func standing_state() -> void:
 		is_moving = false
 		await animation_player.animation_finished
 	#print("going idle!")
-	if not dying:
+	if not is_dying:
 		animation_player.play(animations[current_direction]["idle"])
 
 
@@ -244,7 +264,7 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability) -> v
 	velocity = Vector2(0, 0)
 	var angle: float = position.angle_to_point(attack_destination)
 	set_direction_by_angle(angle)
-	if not dying:
+	if not is_dying:
 		animation_player.speed_scale = speed_modifier
 		if ready_to_attack_again:
 			is_executing = true
@@ -290,7 +310,9 @@ func calculate_movement_velocity() -> Vector2:
 	var direction_y: float = sin(angle) * radius
 	var max_velocity_x: float = direction_x * speed_modifier
 	var max_velocity_y: float = direction_y * speed_modifier
-	
+	if is_dodging:
+		print("dodge calculation")
+		return Vector2(max_velocity_x * dodge_speed_bonus, max_velocity_y * dodge_speed_bonus)
 	return Vector2(max_velocity_x, max_velocity_y)
 
 
@@ -428,7 +450,7 @@ func get_hit(damage: int = 1) -> void:
 	#audio.stop()
 	if hitpoints - damage <= 0:
 		hitpoints -= damage
-		dying = true
+		is_dying = true
 	elif hitpoints > 0:
 		hitpoints -= damage
 		#print("ouch!")

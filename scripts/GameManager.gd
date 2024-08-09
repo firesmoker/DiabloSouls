@@ -23,14 +23,16 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("zoom_out"):
 		print("zoom out")
-		camera.zoom.x -= 1
-		camera.zoom.y -= 1
+		var zoom_in_amount:float = 115.0 / 100.0
+		camera.zoom.x *= zoom_in_amount
+		camera.zoom.y *= zoom_in_amount
 		pass
 		
 	elif event.is_action_pressed("zoom_in"):
 		print("zoom in")
-		camera.zoom.x += 1
-		camera.zoom.y += 1
+		var zoom_out_amount:float = 100.0 / 115.0
+		camera.zoom.x *= zoom_out_amount
+		camera.zoom.y *= zoom_out_amount
 		pass
 
 func _process(delta: float) -> void:
