@@ -17,6 +17,7 @@ class_name Player extends CharacterBody2D
 @export var cancel_frame: int = 2
 @export var attack_again_frame: int = 5
 @export var hitpoints: int = 5
+@export var invlunerable: bool = false
 @export var animation_types: Array[String] = ["idle", "walk", "attack", "death", "parry"]
 var is_moving: bool = false
 var is_executing: bool = false
@@ -115,11 +116,19 @@ func dodge(dodge_destination: Vector2) -> void:
 	is_moving = true
 	destination = dodge_destination
 	is_dodging = true
+	invlunerable = true
+	#set_collision_mask_value(1, false)
+	#set_collision_layer_value(2, false)
+	#set_collision_layer_value(3, true)
 	var timer: Timer = Timer.new()
 	add_child(timer)
 	timer.wait_time = 0.1
 	timer.start()
 	await timer.timeout
+	#set_collision_mask_value(1, true)
+	#set_collision_layer_value(2, true)
+	#set_collision_layer_value(3, false)
+	invlunerable = false
 	if is_dodging != false:
 		is_dodging = false
 		#is_moving = false
@@ -448,6 +457,8 @@ func disable_parry_zone() -> void:
 func get_hit(damage: int = 1) -> void:
 	#if not audio.playing:
 	#audio.stop()
+	if invlunerable:
+		damage = 0
 	if hitpoints - damage <= 0:
 		hitpoints -= damage
 		is_dying = true

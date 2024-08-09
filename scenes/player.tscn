@@ -1420,6 +1420,7 @@ attack_zone = NodePath("AttackAxis/AttackZone")
 attack_collider = NodePath("AttackAxis/AttackZone/AttackCollider")
 parry_collider = NodePath("AttackAxis/ParryZone/ParryCollider")
 model = "knight_armed"
+invlunerable = true
 
 [node name="PhysicalCollider" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_dhxtk")
