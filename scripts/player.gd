@@ -12,11 +12,20 @@ class_name Player extends CharacterBody2D
 @export_enum("warrior_armed", "fighter_armed", "knight_armed") var model: String = "warrior_armed"
 @export var speed_fps_ratio: float = 121.0
 @export var speed_modifier: float = 1
+@export var attack_speed_modifier: float = 0.8
 @export var dodge_speed_bonus: float = 3.5
 @export var attack_frame: int = 3
-@export var cancel_frame: int = 2
+@export var re_attack_frame: int = 3
+@export var no_cancel_frame: float = 2.9
 @export var attack_again_frame: int = 5
-@export var hitpoints: int = 5
+@export var max_hitpoints: float = 5
+@export var hitpoints: float = 5
+@export var stamina: float = 5
+@export var max_stamina: float = 5
+@export var mana: int = 5
+@export var health_regen_amount: float = 0.006
+@export var stamina_regen_amount: float = 0.08
+@export var max_mana: int = 5
 @export var invlunerable: bool = false
 @export var animation_types: Array[String] = ["idle", "walk", "attack", "death", "parry"]
 var is_moving: bool = false
@@ -24,7 +33,15 @@ var is_executing: bool = false
 var is_chasing_enemy: bool = false
 var is_dodging: bool = false
 var ready_for_idle: bool= true
-var ready_to_attack_again: bool= true
+var ready_to_attack_again: bool = true
+
+var stamina_regen_rate: float = 0.1
+var stamina_regen_time: float = 0.0
+
+var health_regen_rate: float = 0.1
+var health_regen_time: float = 0.0
+
+var dodge_cost: float = 2
 
 var targeted_enemy: RigidBody2D = null
 var enemies_in_melee: Array[Enemy]
@@ -32,9 +49,12 @@ var enemies_in_melee: Array[Enemy]
 var is_dying: bool = false
 var dead: bool = false
 
+signal ready_to_attack_again_signal
 signal attack_effects
 signal attack_success
 signal parry_success
+signal execution_started
+signal execution_aborted
 
 var destination: Vector2 = Vector2()
 var movement: Vector2 = Vector2()
@@ -88,13 +108,21 @@ var attack_ability: Ability = Ability.new("attack", "melee")
 var parry_ability: Ability = Ability.new("parry", "melee")
 
 func _ready() -> void:
+	hitpoints = max_hitpoints
+	stamina = max_stamina
+	mana = max_mana
 	#animation_player.playback_default_blend_time
 	destination = position
 	construct_animation_library()
 	add_animation_method_calls()
+	if game_manager != null:
+		pass
 
 
 func _physics_process(delta: float) -> void:	
+	stamina_regen(delta)
+	health_regen(delta)
+	
 	if not is_dying:
 		handle_movement(delta)
 		
@@ -111,31 +139,56 @@ func _physics_process(delta: float) -> void:
 		animation_player.play(animations[current_direction]["death"])
 		dead = true
 
+
+func stamina_regen(delta_time: float) -> void:
+	if stamina < max_stamina:
+		stamina_regen_time += delta_time
+		if stamina_regen_time >= stamina_regen_rate:
+			stamina_regen_time = 0
+			stamina += stamina_regen_amount
+	else:
+		stamina = 5
+		stamina_regen_time = 0
+
+func health_regen(delta_time: float) -> void:
+	if hitpoints < max_hitpoints:
+		health_regen_time += delta_time
+		if health_regen_time >= health_regen_rate:
+			health_regen_time = 0
+			hitpoints += health_regen_amount
+	else:
+		hitpoints = 5
+		health_regen_time = 0
+
 func dodge(dodge_destination: Vector2) -> void:
-	print("dodging to " + str(dodge_destination))
-	is_moving = true
-	destination = dodge_destination
-	is_dodging = true
-	invlunerable = true
-	#set_collision_mask_value(1, false)
-	#set_collision_layer_value(2, false)
-	#set_collision_layer_value(3, true)
-	var timer: Timer = Timer.new()
-	add_child(timer)
-	timer.wait_time = 0.1
-	timer.start()
-	await timer.timeout
-	#set_collision_mask_value(1, true)
-	#set_collision_layer_value(2, true)
-	#set_collision_layer_value(3, false)
-	invlunerable = false
-	if is_dodging != false:
-		is_dodging = false
-		#is_moving = false
-		velocity = Vector2(0,0)
-		destination = position
-	#is_moving = true
-	#velocity += dodge_destination
+	if stamina - dodge_cost < 0:
+		print("not enough stamina")
+	else:
+		stamina -= dodge_cost
+		print("dodging to " + str(dodge_destination))
+		is_moving = true
+		destination = dodge_destination
+		is_dodging = true
+		invlunerable = true
+		#set_collision_mask_value(1, false)
+		#set_collision_layer_value(2, false)
+		#set_collision_layer_value(3, true)
+		var timer: Timer = Timer.new()
+		add_child(timer)
+		timer.wait_time = 0.1
+		timer.start()
+		await timer.timeout
+		#set_collision_mask_value(1, true)
+		#set_collision_layer_value(2, true)
+		#set_collision_layer_value(3, false)
+		invlunerable = false
+		if is_dodging != false:
+			is_dodging = false
+			#is_moving = false
+			velocity = Vector2(0,0)
+			destination = position
+		#is_moving = true
+		#velocity += dodge_destination
 	
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -169,6 +222,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_melee_zone_body_entered(enemy: CollisionObject2D) -> void:
 	#print("body entered " + str(enemy))
 	enemies_in_melee.append(enemy)
+	game_manager.enemy_in_player_melee_zone(enemy)
 	if is_chasing_enemy and targeted_enemy == enemy:
 		attack(enemy.position)
 
@@ -177,6 +231,7 @@ func _on_melee_zone_body_exited(enemy: CollisionObject2D) -> void:
 	#print("body exited " + str(enemy))
 	if enemy in enemies_in_melee:
 		enemies_in_melee.erase(enemy)
+		game_manager.enemy_in_player_melee_zone(enemy, false)
 
 
 func _on_animation_player_animation_finished(anim_name: String) -> void:
@@ -275,8 +330,17 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability) -> v
 	set_direction_by_angle(angle)
 	if not is_dying:
 		animation_player.speed_scale = speed_modifier
+		if not ready_to_attack_again and animation_player.current_animation_position >= re_attack_frame/FPS and ability != parry_ability:
+			print("waiting for attack again ready")
+			await ready_to_attack_again_signal
+			print("thinking can attack again and it is: " + str(ready_to_attack_again))
+			ready_to_attack_again = false
+			#is_executing = true
+			attack_axis.rotation = angle
+			animation_player.stop()
+			execute(ability)
 		if ready_to_attack_again:
-			is_executing = true
+			#is_executing = true
 			ready_to_attack_again = false
 			attack_axis.rotation = angle
 			#print("first or restarted attack")
@@ -292,6 +356,20 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability) -> v
 				#animation_player.play(animations[current_direction][attack_ability.animation_name])
 				execute(ability)
 				animation_player.seek(current_animation_position)
+			#else:
+				#print("trying to queue attack whil attack collider is disabled")
+				#await attack_again_ready()
+				#print(ready_to_attack_again)
+				#print("re-attack")	
+				#animation_player.stop()
+				#execute(ability)
+		#elif not ready_to_attack_again:
+			#print("trying to queue attack! while attack collider is EXACTLY ENABLED")
+			#await attack_again_ready()
+			#print(ready_to_attack_again)
+			#print("re-attack")
+			#animation_player.stop()
+			#execute(ability)
 	
 
 func move_to_enemy() -> void:
@@ -411,27 +489,30 @@ func add_animation_method_calls() -> void:
 		if "attack" in animation:
 			var time : float = attack_frame/FPS
 			var attack_again_time : float = attack_again_frame/FPS
-			var cancel_time : float = cancel_frame / FPS
+			var no_cancel_time : float = no_cancel_frame / FPS
 			#var cancel_time : float = attack_again_time + 1/FPS
-			animation_to_modify.track_insert_key(track, cancel_time, {"method" : "animation_cancel_ready" , "args" : []}, 1)
-			animation_to_modify.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []}, 1)
-			animation_to_modify.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []}, 1)
+			animation_to_modify.track_insert_key(track, no_cancel_time, {"method" : "animation_cancel_disabled" , "args" : []})
+			animation_to_modify.track_insert_key(track, time, {"method" : "just_attacked" , "args" : []})
+			animation_to_modify.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []})
 		elif "parry" in animation:
 			var time : float = 0/FPS
 			var attack_again_time : float = 2/FPS
-			var cancel_time : float = 1 / FPS
+			var no_cancel_time : float = 1 / FPS
 			#var cancel_time : float = attack_again_time + 1/FPS
-			animation_to_modify.track_insert_key(track, cancel_time, {"method" : "animation_cancel_ready" , "args" : []}, 1)
-			animation_to_modify.track_insert_key(track, time, {"method" : "just_parried" , "args" : []}, 1)
-			animation_to_modify.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []}, 1)
+			animation_to_modify.track_insert_key(track, no_cancel_time, {"method" : "animation_cancel_disabled" , "args" : []})
+			animation_to_modify.track_insert_key(track, time, {"method" : "just_parried" , "args" : []})
+			animation_to_modify.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []})
 
 
-func animation_cancel_ready() -> void:
-	is_executing = false
+func animation_cancel_disabled() -> void:
+	is_executing = true
 
 
 func attack_again_ready() -> void:
+	print("attack again ready")
+	is_executing = false
 	ready_to_attack_again = true
+	emit_signal("ready_to_attack_again_signal")
 	#print("can attack again")
 
 
@@ -487,6 +568,7 @@ func _on_timer_timeout() -> void:
 
 
 func execute(ability: Ability, target: Vector2 = Vector2(0,0)) -> void:
+	animation_player.speed_scale = 1 * attack_speed_modifier
 	animation_player.play(animations[current_direction][ability.animation_name])
 	#ability.execute(target)
 

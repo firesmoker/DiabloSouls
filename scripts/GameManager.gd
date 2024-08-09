@@ -7,6 +7,9 @@ class_name GameManager extends Node
 @onready var enemy_label: Label = %HUD/EnemyLabel
 @onready var enemy_health: ProgressBar = %HUD/EnemyHealth
 @onready var player_health: ProgressBar = %HUD/PlayerHealth
+@onready var player_stamina: ProgressBar = %HUD/PlayerStamina
+@onready var player_mana: ProgressBar = %HUD/PlayerMana
+
 @export var shake_time: float = 0.05
 @export var shake_amount: float = 1.5
 @export var lightning_amount: float = 0.12
@@ -18,6 +21,8 @@ func _ready() -> void:
 	enemy_label.visible = false
 	enemy_label.visible = true
 	player_health.max_value = player.hitpoints
+	player_stamina.max_value = player.stamina
+	player_mana.max_value = player.mana
 	#enemy_label.text = "tuuukaaa"
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -38,6 +43,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func _process(delta: float) -> void:
 	#print(enemy_in_focus)
 	player_health.value = player.hitpoints
+	player_stamina.value = player.stamina
+	player_mana.value = player.mana
 	if enemy_in_focus != null:
 		enemy_in_focus.highlight()
 		enemy_label.visible = true
@@ -51,6 +58,9 @@ func _process(delta: float) -> void:
 		point_light.color = Color.RED
 		point_light.energy = 1
 		
+func enemy_in_player_melee_zone(enemy: Enemy, in_zone: bool = true) -> void:
+	enemy.in_player_melee_zone = in_zone
+	enemy.highlight_circle.visible = in_zone
 
 func player_in_melee(enemy: Enemy) -> void:
 	pass
@@ -130,12 +140,13 @@ func _on_player_attack_success(enemy: Enemy) -> void:
 
 func _on_player_parry_success(enemy: Enemy) -> void:
 	#camera_shake_and_color()
-	if enemy.can_be_countered:
-		enemy.get_parried(true)
-	elif enemy.can_be_parried:
-		enemy.get_parried()
-	else:
-		print("enemy can't be parried")
+	if enemy.in_melee or enemy.in_player_melee_zone:
+		if enemy.can_be_countered:
+			enemy.get_parried(true)
+		elif enemy.can_be_parried:
+			enemy.get_parried()
+		else:
+			print("enemy can't be parried")
 
 func freeze_display(duration := 0.3 / 12.0, delay := 0.05) -> void:
 	await get_tree().create_timer(delay).timeout

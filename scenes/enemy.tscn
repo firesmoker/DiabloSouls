@@ -52,6 +52,14 @@ input_pickable = true
 gravity_scale = 0.0
 script = ExtResource("1_vs0td")
 
+[node name="HealthBar" parent="." instance=ExtResource("4_5wg2b")]
+z_index = 1
+offset_left = -12.0
+offset_top = -38.0
+offset_right = 12.0
+offset_bottom = -34.0
+value = 2.0
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_hfmj2")
@@ -120,14 +128,6 @@ z_index = -1
 z_as_relative = false
 shape = SubResource("CapsuleShape2D_5pav5")
 disabled = true
-
-[node name="HealthBar" parent="." instance=ExtResource("4_5wg2b")]
-z_index = 1
-offset_left = -12.0
-offset_top = -38.0
-offset_right = 12.0
-offset_bottom = -34.0
-value = 2.0
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="ClumpZone" to="." method="_on_clump_zone_body_entered"]

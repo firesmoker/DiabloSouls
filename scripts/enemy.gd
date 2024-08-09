@@ -32,6 +32,7 @@ var can_be_parried: bool = false
 var stunned: bool = false
 var stun_time: float = 1.5
 var in_melee: bool = false
+var in_player_melee_zone: bool = false
 
 const FPS: float = 12.0
 const average_delta: float = 0.01666666666667
@@ -80,7 +81,8 @@ func _ready() -> void:
 	health_bar.max_value = hitpoints
 	health_bar.value = hitpoints
 	health_bar.visible = false
-	highlight_circle.visible = false
+	highlight_circle.modulate = Color.TRANSPARENT
+	#highlight_circle.visible = false
 	switch_animation_timer = Timer.new()
 	self.add_child(switch_animation_timer)
 	gravity_scale = 0
@@ -139,6 +141,7 @@ func _process(delta: float) -> void:
 				animation_player.play(animations[current_direction]["idle"])
 
 
+
 func _on_animation_player_animation_finished(anim_name: String) -> void:
 	if not attacking and has_attack:
 		moving = true
@@ -168,6 +171,7 @@ func _on_clump_zone_body_exited(body: CollisionObject2D) -> void:
 func _on_melee_zone_body_entered(body: CollisionObject2D) -> void:
 	if body == player:
 		in_melee = true
+		highlight_circle.visible = true
 		#print("player in melee")
 		#emit_signal("player_in_melee", self)
 		moving = false
@@ -176,7 +180,10 @@ func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 	if body == player:
 		#emit_signal("player_left_melee", self)
 		in_melee = false
-		highlight_circle.visible = false
+		if not in_player_melee_zone:
+			highlight_circle.visible = false
+		highlight_circle.modulate = Color.TRANSPARENT
+		#highlight_circle.visible = false
 		moving = true
 		
 func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
@@ -196,17 +203,17 @@ func switch_direction() -> void:
 
 func get_stunned() -> void:
 	animation_player.stop()
-	highlight_circle.visible = false
-	highlight_circle.modulate = Color.WHITE
+	#highlight_circle.visible = false
+	highlight_circle.modulate = Color.TRANSPARENT
 	stunned = true
-	print("got stunned")
+	#print("got stunned")
 	var stun_timer := Timer.new()
 	self.add_child(stun_timer)
 	stun_timer.wait_time = stun_time
 	stun_timer.start()
 	await stun_timer.timeout
 	stunned = false
-	print("not stunned")
+	#print("not stunned")
 	stun_timer.queue_free()
 
 func get_parried(counter: bool = false) -> void:
@@ -221,8 +228,8 @@ func get_parried(counter: bool = false) -> void:
 	if not dying:
 		can_be_parried = false
 		can_be_countered = false
-		highlight_circle.modulate = Color.WHITE
-		highlight_circle.visible = false
+		highlight_circle.modulate = Color.TRANSPARENT
+		#highlight_circle.visible = false
 		get_stunned()
 
 		var timer := Timer.new()
@@ -241,7 +248,7 @@ func get_hit(damage: int = randi_range(1,3)) -> void:
 	#sprite_material.blend_mode = 1
 	can_be_parried = false
 	can_be_countered = false
-	highlight_circle.modulate = Color.WHITE
+	highlight_circle.modulate = Color.TRANSPARENT
 	animated_sprite_2d.modulate = Color.RED
 	var timer := Timer.new()
 	self.add_child(timer)
@@ -258,10 +265,11 @@ func get_hit(damage: int = randi_range(1,3)) -> void:
 		health_bar.value = hitpoints
 		health_bar.visible = true
 		if randi() % 100 + 1 > 50:
-			print("lucky! stopping animation")
+			#print("lucky! stopping animation")
 			animation_player.stop()
 		else:
-			print("unlucky, not stopping")
+			pass
+			#print("unlucky, not stopping")
 		attack_collider.disabled = true
 		#animated_sprite_2d.play("new_animation")
 		pass
@@ -300,7 +308,8 @@ func die() -> void:
 	animation_player.speed_scale = 1
 	animation_player.play(animations[current_direction]["death"])
 	$PhysicalCollider.disabled = true
-	highlight_circle.visible = false
+	highlight_circle.modulate = Color.TRANSPARENT
+	#highlight_circle.visible = false
 	$HoverZone.DISABLE_MODE_REMOVE
 	$MeleeZone.DISABLE_MODE_REMOVE
 	attack_zone.DISABLE_MODE_REMOVE
@@ -354,10 +363,10 @@ func add_animation_method_calls() -> void:
 			animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : []}, 1)
 
 func attack_effect() -> void:
-	print("enemy attacked succesfuly")
+	#print("enemy attacked succesfuly")
 	attack_collider.disabled = false
-	highlight_circle.visible = false
-	highlight_circle.modulate = Color.WHITE
+	#highlight_circle.visible = false
+	highlight_circle.modulate = Color.TRANSPARENT
 	can_be_countered = false
 	can_be_parried = false
 	#print(attack_collider.disabled)
@@ -378,17 +387,18 @@ func disable_attack_zone() -> void:
 func ready_to_be_parried() -> void:
 	if not stunned:
 		if in_melee:
-			highlight_circle.visible = true
+			#highlight_circle.visible = true
+			highlight_circle.modulate = Color.WHITE
 		can_be_parried = true
-		print("can be parried")
+		#print("can be parried")
 
 func ready_to_be_countered() -> void:
 	if not stunned:
-		if in_melee:
-			highlight_circle.visible = true
+		#if in_melee:
+			#highlight_circle.visible = true
 		highlight_circle.modulate = Color.BLUE
 		can_be_countered = true
-		print("can be countered")
+		#print("can be countered")
 
 
 

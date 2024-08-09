@@ -1,6 +1,5 @@
 Things that are very missing:
-	counter indication is not set by the player melee, but by the enemies
-		should counter range be determined by the longest reach of player and enemy? so if an enemy with a far reach attacks me I can parry or counter him?
+	 I can parry or counter him?
 	Pathfinding is non existent for both player and enemies
 	Sound is not good and responsive
 	Enemy highlight makes them transparent and the highlight is not clear enough. I want outline.
@@ -260,6 +259,11 @@ if not:
 ==============================================================================
 # 9.8
 Above enemy health indication if they're damaged
+counter indication is not set by the player melee, but by the enemies
+		should counter range be determined by the longest reach of player and enemy? so if an enemy with a far reach attacks me
+Dodge
+Stamina
+Health Stamina Regeneration
 
 # 8.8
 Player health indication
