@@ -8,6 +8,8 @@ class_name Enemy extends RigidBody2D
 @onready var attack_axis: Node2D = $AttackAxis
 @onready var attack_zone: Area2D = $AttackAxis/AttackZone
 @onready var attack_collider: CollisionShape2D = $AttackAxis/AttackZone/AttackCollider
+@onready var health_bar: ProgressBar = $HealthBar
+
 @export var id: String = "Enemy"
 @export_enum("skeleton_default", "slime") var model: String = "skeleton_default"
 @export var speed_fps_ratio: float = 42.35
@@ -75,6 +77,9 @@ signal switch_direction_animation
 
 
 func _ready() -> void:
+	health_bar.max_value = hitpoints
+	health_bar.value = hitpoints
+	health_bar.visible = false
 	highlight_circle.visible = false
 	switch_animation_timer = Timer.new()
 	self.add_child(switch_animation_timer)
@@ -232,7 +237,7 @@ func get_parried(counter: bool = false) -> void:
 			animation_player.stop()
 		attack_collider.disabled = true
 
-func get_hit(damage: int = randi_range(1,2)) -> void:
+func get_hit(damage: int = randi_range(1,3)) -> void:
 	#sprite_material.blend_mode = 1
 	can_be_parried = false
 	can_be_countered = false
@@ -247,8 +252,11 @@ func get_hit(damage: int = randi_range(1,2)) -> void:
 	animated_sprite_2d.modulate = Color.WHITE
 	hitpoints -= damage
 	if hitpoints <= 0:
+		health_bar.visible = false
 		die()
 	elif not dying:
+		health_bar.value = hitpoints
+		health_bar.visible = true
 		if randi() % 100 + 1 > 50:
 			print("lucky! stopping animation")
 			animation_player.stop()

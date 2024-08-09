@@ -1,3 +1,21 @@
+Things that are very missing:
+	counter indication is not set by the player melee, but by the enemies
+		should counter range be determined by the longest reach of player and enemy? so if an enemy with a far reach attacks me I can parry or counter him?
+	Pathfinding is non existent for both player and enemies
+	Sound is not good and responsive
+	Enemy highlight makes them transparent and the highlight is not clear enough. I want outline.
+	no abilities in combat other than basic attack, parry, counter
+	no dodge
+	parry / counter is not optimized for multiple enemies
+	no counter and parry animations
+	enemy retaliation animations (lower priority)
+	no decals like blood and bones flying in the air (very very low priority)
+	Artstyle is lacking
+	no music
+	player light is a bit awkard, and the dark is not dark enough
+	counter is immediate (maybe good?) and doesn't provide invulnerability (?)
+
+
 abilities queue
 if I press an enemy, I do several things.
 I'm entering chasing mode on him.
@@ -11,11 +29,87 @@ the same interruption when you hit an enemy.
 the chance could be higher for some weapons
 so interruption plus fast attack speed could be a psuedo stun, as it keeps interruping all the time
 
+I need to think of some Shadowsoul creatures and bosses.
+
+Artifacts
+
+Artifacts should provide a very significant boost in power. Nothing sucks more than getting to the mythical item only to discover that your rare is better, or to have it for a very short while.
+They should also be applicable to a wide variety of builds.
+Maybe some more specialized artifacts from side bosses could be narrower and more build-enabling. But the "main quest" ones should be the widest.
+AND NEVER LEVELED. THEY CAN HAVE ONE VERSION PER DIFFICULTY LEVEL. BUT NEVER LEVELED!
+generlly with items, I prefer having more bases, and even if they have the same art, have them have different names and be consistent.
+
+Raguel's Ring - Quest reward
+* Health, Mana, Stamina
+* Increased reputation gain from slain monsters (not bosses to not encourage switch before final blow, and not quests)
+* Unlock ability based on Bless threshold
+* Light Radius
+
+___ of the Divine Order
+* 
+
+___ of Congregation
+* 
+
+Astaroth's ?
+* Unlock ability based on Curse threshold
+
+Abel's ?
+* Unlocks abilities based on Bless/Curse thresholds?!
+
+Gabriel's ?
+* 
+
+Kayne's ?
+* 
+
+Elite Guardian Bow
+* 
+* Light radius
+
+Duriel's Sword - Slay Duriel
+* Strength
+* Versatile sword one handed or two?!
+* Unlocks abilities based on ability thresholds?!
+* Unlocks abilities based on Bless/Curse thresholds?!
+* Light radius
+
+Soulstone Core - Slay Death
+* charm that provide overall powerful generic boost - all abilities, tiredness. Very strong
+* gets stronger the more souls you slay
+* maybe curse you with less light?
+* maybe curse you with less resistences?
+
+
+Weapon types?
+Ranged
+Bows
+	Bows
+	Composite Bows: requiring and using strength as well for damage. Higher base damage.
+
+Melee
+	Axes: High bleeding, high base damage (best with strength (little dex?), highest damage, lowest defence)
+	Maces: No bleeding, Higher stun chance, high base damage (best with strength, defence with stun)
+	Swords, Medium Bleeding? Higher critical chance? critical damage? something for counter? medium damage (best with dexterity, defence with counter/interruption)
+	Daggers: Highest critical chance, low damage, lowest reach, highest attack speed (best with dexterity, defence with counter/interruption)
+
+Shields
+	Small shield medium defence, medium block reduction, no movement penalty
+	Tower shield high defence, high block reduction, movement penalty
+
 think about stats.
 
+"medium" warrior?
+strength and dex
+should be the best at counters and balance, gets high damage by balancing crit and base damage.
+swords?
+
 battle mage equipment?
-one that requires both strength / dexterity and magic?
+one that requires both strength / and magic?
 the mana shield from D1 is pretty cool, but I think it would be cooler if it was a property of a battle mage armor.
+
+Wand slinger equipment:
+	wands getting bonuses from both dex and int
 
 Strength could be:
 	Damage:
@@ -41,7 +135,7 @@ Strength could be:
 		equip heavier weapons and armor
 	
 
-Agility could be:
+Dexterity could be:
 	Damage:
 		ranged attack damage (and some melee?)
 	Counter:
@@ -95,25 +189,16 @@ I now have a prototype that the player moves very good, enemies move pretty good
 
 strange bug when slime appears no counter highlight
 
-Things that are very missing:
-	No player health indication
-	No enemy health indication
-	Pathfinding is non existent for both player and enemies
-	Sound is not good and responsive
-	Enemy highlight makes them transparent and the highlight is not clear enough. I want outline.
-	no abilities in combat other than basic attack, parry, counter
-	no dodge
-	parry / counter is not optimized for multiple enemies
-	no counter and parry animations
-	enemy retaliation animations (lower priority)
-	no decals like blood and bones flying in the air (very very low priority)
-	Artstyle is lacking
-	no music
-	player light is a bit awkard, and the dark is not dark enough
-
+Critical - how does it work?
+	right now it seems to be mostly if not all gear-based.
+	the only thing that's based on char abilities is attack speed, more chances to crit
+	
 Do I want attack rating?
 It's not really fun, and not very "actiony"
 I could do enemies that actually "dodge", using dodge abillity the moves them away.
+Attack rating can be only related to crit chance. but let's just call it crit chance than. no?
+the pro for attack rating is that it provides different chances for different opponents.
+i don't know.
 
 -----------------------
 TO DO
@@ -173,6 +258,17 @@ if not:
 	cancel animation
 
 ==============================================================================
+# 9.8
+Above enemy health indication if they're damaged
+
+# 8.8
+Player health indication
+Skeleton hud health and name
+Parry and counter and their indication
+Story
+Planning stats and items
+
+
 # 7.8
 When player gets hit there are no effects
 

@@ -71,7 +71,7 @@ In the next few hundred years, dark creatures began to roam the earth but were m
 
 But now, an attack on a scale never seen before has ravaged much of of humanity.
 You are one of the few survivors of the attack, in the small village named Firstlight.
-You begin by helping other survivors to eliminate some of the leftover demons around the ruined village.
+You begin by helping other survivors by rescuing them from demons around the ruined village as you run away to the shelter of the divine barrier around Duriel's Temple.
 =========================================================================================
 
 	

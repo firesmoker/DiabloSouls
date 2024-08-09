@@ -20,6 +20,19 @@ func _ready() -> void:
 	player_health.max_value = player.hitpoints
 	#enemy_label.text = "tuuukaaa"
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("zoom_out"):
+		print("zoom out")
+		camera.zoom.x -= 1
+		camera.zoom.y -= 1
+		pass
+		
+	elif event.is_action_pressed("zoom_in"):
+		print("zoom in")
+		camera.zoom.x += 1
+		camera.zoom.y += 1
+		pass
+
 func _process(delta: float) -> void:
 	#print(enemy_in_focus)
 	player_health.value = player.hitpoints

@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://b1hcswr77ft67"]
+[gd_scene load_steps=13 format=3 uid="uid://b1hcswr77ft67"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_vs0td"]
 [ext_resource type="Texture2D" uid="uid://dih8qcag7ojye" path="res://assets/art/enemy/skeleton_default/skeleton_default_idle/S/skeleton_default_idle_S_270.0_0.png" id="2_qaf1f"]
 [ext_resource type="Texture2D" uid="uid://bqp4tcluyjuh8" path="res://assets/art/user interface/highlight/highlight_white.png" id="3_n1wcj"]
+[ext_resource type="PackedScene" uid="uid://d1iryj60bywy" path="res://scenes/health_bar.tscn" id="4_5wg2b"]
 
 [sub_resource type="Animation" id="Animation_qn4kt"]
 resource_name = "default"
@@ -119,6 +120,14 @@ z_index = -1
 z_as_relative = false
 shape = SubResource("CapsuleShape2D_5pav5")
 disabled = true
+
+[node name="HealthBar" parent="." instance=ExtResource("4_5wg2b")]
+z_index = 1
+offset_left = -12.0
+offset_top = -38.0
+offset_right = 12.0
+offset_bottom = -34.0
+value = 2.0
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="ClumpZone" to="." method="_on_clump_zone_body_entered"]
