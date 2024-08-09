@@ -324,71 +324,54 @@ y_sort_enabled = true
 hitpoints = 50
 
 [node name="Skeleton2" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(157, -36)
 
 [node name="Skeleton3" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(265, 66)
 
 [node name="Skeleton4" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(218, 165)
 
 [node name="Skeleton5" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(10, 187)
 
 [node name="Skeleton6" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(-167, 69)
 
 [node name="Skeleton7" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(-164, 137)
 
 [node name="Skeleton8" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(-134, 186)
 
 [node name="Skeleton9" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(-79, 224)
 
 [node name="Skeleton10" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(143, 192)
 
 [node name="Skeleton11" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(347, 180)
 
 [node name="Skeleton12" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(288, -11)
 
 [node name="Skeleton13" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(211, -147)
 
 [node name="Skeleton14" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(24, -150)
 
 [node name="Skeleton15" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(-130, -141)
 
 [node name="Skeleton16" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(-150, -36)
 
 [node name="Skeleton17" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(-32, -70)
 
 [node name="Skeleton18" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(-300, -9)
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]

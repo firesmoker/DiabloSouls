@@ -33,6 +33,7 @@ var stunned: bool = false
 var stun_time: float = 1.5
 var in_melee: bool = false
 var in_player_melee_zone: bool = false
+var perry_subdued: bool = false
 
 const FPS: float = 12.0
 const average_delta: float = 0.01666666666667
@@ -98,6 +99,16 @@ func _ready() -> void:
 		stopped_mouse_hover.connect(game_manager.enemy_mouse_hover_stopped)
 
 func _process(delta: float) -> void:
+	if player.is_executing and not perry_subdued:
+		print("player is executing BY ENEMY")
+		perry_subdued = true
+		highlight_circle.modulate = Color.TRANSPARENT
+		highlight_circle.process_mode = Node.PROCESS_MODE_DISABLED
+	elif perry_subdued:
+		print("player stopped with THIS EXECUTION")
+		perry_subdued = false
+		highlight_circle.process_mode = Node.PROCESS_MODE_INHERIT
+		
 	if player.dead and in_melee:
 		in_melee = false
 	elif !player.dead:
