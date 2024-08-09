@@ -1,5 +1,5 @@
 class_name Enemy extends RigidBody2D
-
+#test comment
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var game_manager: GameManager = %GameManager
 @onready var highlight_circle: Sprite2D = $HighlightCircle
