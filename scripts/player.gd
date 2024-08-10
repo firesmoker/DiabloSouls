@@ -24,16 +24,17 @@ class_name Player extends CharacterBody2D
 @export var max_stamina: float = 5
 @export var mana: int = 5
 @export var health_regen_amount: float = 0.006
-@export var stamina_regen_amount: float = 0.08
+@export var stamina_regen_amount: float = 0.02
 @export var max_mana: int = 5
 @export var invlunerable: bool = false
 @export var animation_types: Array[String] = ["idle", "walk", "attack", "death", "parry"]
-var is_moving: bool = false
-var is_executing: bool = false
+#var can_move: bool = false
+var is_locked: bool = false
 var is_chasing_enemy: bool = false
 var is_dodging: bool = false
 var ready_for_idle: bool= true
 var ready_to_attack_again: bool = true
+var is_attacking: bool = false
 
 var stamina_regen_rate: float = 0.1
 var stamina_regen_time: float = 0.0
@@ -58,6 +59,7 @@ signal execution_aborted
 
 var destination: Vector2 = Vector2()
 var movement: Vector2 = Vector2()
+var original_position: Vector2 = Vector2()
 
 const FPS: float = 12.0
 const average_delta: float = 0.01666666666667
@@ -112,6 +114,7 @@ func _ready() -> void:
 	stamina = max_stamina
 	mana = max_mana
 	#animation_player.playback_default_blend_time
+	#original_position = position
 	destination = position
 	construct_animation_library()
 	add_animation_method_calls()
@@ -126,7 +129,7 @@ func _physics_process(delta: float) -> void:
 	if not is_dying:
 		handle_movement(delta)
 		
-		if not is_executing:
+		if not is_locked:
 			stop_on_destination()
 			
 			if velocity:
@@ -166,7 +169,9 @@ func dodge(dodge_destination: Vector2) -> void:
 	else:
 		stamina -= dodge_cost
 		print("dodging to " + str(dodge_destination))
-		is_moving = true
+		#can_move = true
+		is_attacking = false
+		#original_position = position
 		destination = dodge_destination
 		is_dodging = true
 		invlunerable = true
@@ -184,10 +189,11 @@ func dodge(dodge_destination: Vector2) -> void:
 		invlunerable = false
 		if is_dodging != false:
 			is_dodging = false
-			#is_moving = false
+			#can_move = false
 			velocity = Vector2(0,0)
+			#original_position = position
 			destination = position
-		#is_moving = true
+		#can_move = true
 		#velocity += dodge_destination
 	
 
@@ -214,14 +220,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place"):
 			if game_manager.enemy_in_focus != null:
 				targeted_enemy = game_manager.enemy_in_focus
-				#is_moving = false
+				#can_move = false
 				if targeted_enemy not in enemies_in_melee:
 					move_to_enemy()
 				else:
 					attack(targeted_enemy.position)
 			else:
 				#print("unhandled input")
-				is_moving = true
+				#can_move = true
+				is_attacking = false
+				original_position = position
 				destination = get_global_mouse_position()
 
 
@@ -263,17 +271,30 @@ func _on_attack_effects() -> void:
 
 
 func stop_on_destination() -> void:
-	if abs(position.x - destination.x) <= 1 and abs(position.y - destination.y) <= 1:
-	#if position.distance_to(destination) <= 1:
-		is_dodging = false
-		velocity = Vector2(0,0)
-		if not Input.is_action_pressed("mouse_move"):
-			ready_for_idle = true
+	if not is_attacking:
+		print("trying to stop on destination")
+		var distance_to_stop: float = 1.0
+		#if speed_modifier > 1.8:
+			#distance_to_stop = speed_modifier * 2
+		if position.distance_to(original_position) > destination.distance_to(original_position):
+			print("stopping because player is too far away")
+			is_dodging = false
+			velocity = Vector2(0,0)
+			position = destination
+			if not Input.is_action_pressed("mouse_move"):
+				ready_for_idle = true
+		elif abs(position.x - destination.x) <= distance_to_stop and abs(position.y - destination.y) <= distance_to_stop:
+		#if position.distance_to(destination) <= 1:
+			print("should be stopping")
+			is_dodging = false
+			velocity = Vector2(0,0)
+			if not Input.is_action_pressed("mouse_move"):
+				ready_for_idle = true
 
 
 func running_state() -> void:
 	var current_animation: String = animation_player.current_animation
-	is_executing = false
+	is_locked = false
 	ready_to_attack_again = true
 	if speed_modifier >= 2:
 		animation_player.speed_scale = speed_modifier / 2
@@ -289,7 +310,7 @@ func running_state() -> void:
 
 func standing_state() -> void:
 	if "attack" in animation_player.current_animation or "parry" in animation_player.current_animation:
-		is_moving = false
+		#can_move = false
 		await animation_player.animation_finished
 	#print("going idle!")
 	if not is_dying:
@@ -297,19 +318,22 @@ func standing_state() -> void:
 
 
 func handle_movement(delta: float) -> void:
-	if is_moving and not is_executing:
+	if not is_attacking and not is_locked:
 		if Input.is_action_pressed("mouse_move"):
 			if game_manager.enemies_under_mouse.size() <= 0:
 				is_chasing_enemy = false
 				targeted_enemy = null
-			is_moving = true
+			is_attacking = false
 			ready_for_idle = false
+			original_position = position
 			destination = get_global_mouse_position()
 			if abs(position.x - destination.x) <= 5 and abs(position.y - destination.y) <= 5:
 			#if position.distance_to(destination) <= 5:
 				velocity = Vector2(0,0)
+				#original_position = position
 				destination = position
 		if is_chasing_enemy and targeted_enemy != null:
+			#original_position = position
 			destination = targeted_enemy.position
 		velocity = calculate_movement_velocity() * delta / average_delta
 
@@ -325,7 +349,8 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability) -> v
 	is_chasing_enemy = false
 	targeted_enemy = null
 	ready_for_idle = false
-	is_moving = false
+	#can_move = false
+	is_attacking = true
 	if ability.range_type == "melee":
 		#print("melee attack!")
 		pass
@@ -341,12 +366,12 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability) -> v
 			await ready_to_attack_again_signal
 			print("thinking can attack again and it is: " + str(ready_to_attack_again))
 			ready_to_attack_again = false
-			#is_executing = true
+			#is_locked = true
 			attack_axis.rotation = angle
 			animation_player.stop()
 			execute(ability)
 		if ready_to_attack_again:
-			#is_executing = true
+			#is_locked = true
 			ready_to_attack_again = false
 			attack_axis.rotation = angle
 			#print("first or restarted attack")
@@ -386,8 +411,10 @@ func move_to_enemy() -> void:
 			return
 		
 	is_chasing_enemy = true
+	#original_position = position
 	destination = targeted_enemy.position
-	is_moving = true
+	#can_move = true
+	is_attacking = false
 
 
 func round_to_multiple(number: float, multiple: float) -> float:
@@ -406,7 +433,9 @@ func calculate_movement_velocity() -> Vector2:
 	if is_dodging:
 		print("dodge calculation")
 		return Vector2(max_velocity_x * dodge_speed_bonus, max_velocity_y * dodge_speed_bonus)
-	return Vector2(max_velocity_x, max_velocity_y)
+	#return Vector2(max_velocity_x, max_velocity_y)
+	print(position.direction_to(destination) * speed_fps_ratio * speed_modifier)
+	return position.direction_to(destination) * speed_fps_ratio * speed_modifier
 
 
 func just_attacked() -> void: # THIS
@@ -511,15 +540,13 @@ func add_animation_method_calls() -> void:
 
 
 func animation_cancel_disabled() -> void:
-	is_executing = true
+	is_locked = true
 
 
 func attack_again_ready() -> void:
-	print("attack again ready")
-	is_executing = false
+	is_locked = false
 	ready_to_attack_again = true
 	emit_signal("ready_to_attack_again_signal")
-	#print("can attack again")
 
 
 func disable_attack_zone() -> void:
@@ -542,8 +569,6 @@ func disable_parry_zone() -> void:
 
 
 func get_hit(damage: int = 1) -> void:
-	#if not audio.playing:
-	#audio.stop()
 	if invlunerable:
 		damage = 0
 	if hitpoints - damage <= 0:
@@ -551,7 +576,6 @@ func get_hit(damage: int = 1) -> void:
 		is_dying = true
 	elif hitpoints > 0:
 		hitpoints -= damage
-		#print("ouch!")
 		audio.pitch_scale = 0.90
 		audio.pitch_scale += randf_range(-0.03, 0.03)
 		audio.play()
@@ -563,9 +587,6 @@ func get_hit(damage: int = 1) -> void:
 		await timer.timeout
 		timer.queue_free()
 		animated_sprite_2d.modulate = Color.WHITE
-	#else:
-		#print("player died")
-		#animation_player.stop()
 		
 		
 

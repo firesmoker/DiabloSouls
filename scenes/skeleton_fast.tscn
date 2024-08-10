@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://dxfa0xmqhcorr"]
+
+[ext_resource type="PackedScene" uid="uid://brlvroq1a2p0i" path="res://scenes/skeleton.tscn" id="1_eecra"]
+[ext_resource type="Texture2D" uid="uid://dih8qcag7ojye" path="res://assets/art/enemy/skeleton_default/skeleton_default_idle/S/skeleton_default_idle_S_270.0_0.png" id="2_7mu3y"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_m2wpn"]
+resource_local_to_scene = true
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_exdmd"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_7mu3y")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_4ietx"]
+resource_local_to_scene = true
+
+[node name="Skeleton_Fast" instance=ExtResource("1_eecra")]
+body_color = Color(1, 1, 0, 1)
+move_speed_modifier = 1.8
+attack_speed_modifier = 1.0
+hitpoints_max = 1
+hitpoints = 1
+
+[node name="AnimatedSprite2D" parent="." index="2"]
+material = SubResource("CanvasItemMaterial_m2wpn")
+sprite_frames = SubResource("SpriteFrames_exdmd")
+
+[node name="HighlightCircle" parent="." index="4"]
+material = SubResource("CanvasItemMaterial_4ietx")

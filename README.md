@@ -1,9 +1,11 @@
 Things that are very missing:
 	Pathfinding is non existent for both player and enemies
 	Sound is not good and responsive
+	no way to use mana
+	no ranged abilities
+	no abilities in combat other than basic attack, parry, counter, dodge
 	no indication for lack of stamina to parry on the highlight circles (very low priority, if parry actually uses atmina)
 	Enemy highlight makes them transparent and the highlight is not clear enough. I want outline.
-	no abilities in combat other than basic attack, parry, counter, dodge
 	parry / counter is not optimized for multiple enemies
 	no counter and parry animations
 	enemy retaliation animations (lower priority)
