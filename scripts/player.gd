@@ -202,8 +202,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			attack(face_destination)
 		
 		if event.is_action_pressed("parry"):
-			var face_destination: Vector2 = get_global_mouse_position()
-			attack(face_destination, parry_ability)
+			if stamina - 1 < 0:
+				print("not enough stamina")
+			else:
+				stamina -= 1
+				if stamina < 0:
+					stamina = 0
+				var face_destination: Vector2 = get_global_mouse_position()
+				attack(face_destination, parry_ability)
 		
 		if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place"):
 			if game_manager.enemy_in_focus != null:

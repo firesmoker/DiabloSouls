@@ -17,6 +17,7 @@ class_name Enemy extends RigidBody2D
 @export var move_speed_modifier: float = 1
 @export var attack_speed_modifier: float = 0.7
 @export var attack_frame: int = 3
+@export var hitpoints_max: int = 2
 @export var hitpoints: int = 2
 @export var has_attack: bool = false
 @export var animation_types: Array[String] = ["idle", "walk"]
@@ -31,7 +32,7 @@ var adjacent_enemies: Array = []
 var can_be_countered: bool = false
 var can_be_parried: bool = false
 var stunned: bool = false
-var stun_time: float = 1.5
+var stun_time: float = 1
 var in_melee: bool = false
 var in_player_melee_zone: bool = false
 var perry_subdued: bool = false
@@ -74,14 +75,15 @@ var radian_direction: Dictionary = {
 
 signal under_mouse_hover
 signal stopped_mouse_hover
-signal player_in_melee
+#signal player_in_melee
 signal player_left_melee
 signal switch_direction_animation
 
 
 func _ready() -> void:
 	animated_sprite_2d.modulate = body_color
-	health_bar.max_value = hitpoints
+	health_bar.max_value = hitpoints_max
+	hitpoints = hitpoints_max
 	health_bar.value = hitpoints
 	health_bar.visible = false
 	highlight_circle.modulate = Color.TRANSPARENT
@@ -95,19 +97,19 @@ func _ready() -> void:
 	sprite_material = animated_sprite_2d.material
 	if game_manager != null:
 		player = game_manager.player
-		player_in_melee.connect(game_manager.player_in_melee)
-		player_left_melee.connect(game_manager.player_left_melee)
+		#player_in_melee.connect(game_manager.player_in_melee)
+		#player_left_melee.connect(game_manager.player_left_melee)
 		under_mouse_hover.connect(game_manager.enemy_mouse_hover)
 		stopped_mouse_hover.connect(game_manager.enemy_mouse_hover_stopped)
 
 func _process(delta: float) -> void:
 	if player.is_executing and not perry_subdued:
-		print("player is executing BY ENEMY")
+		#print("player is executing BY ENEMY")
 		perry_subdued = true
 		highlight_circle.modulate = Color.TRANSPARENT
 		highlight_circle.process_mode = Node.PROCESS_MODE_DISABLED
 	elif perry_subdued:
-		print("player stopped with THIS EXECUTION")
+		#print("player stopped with THIS EXECUTION")
 		perry_subdued = false
 		highlight_circle.process_mode = Node.PROCESS_MODE_INHERIT
 		
@@ -155,7 +157,7 @@ func _process(delta: float) -> void:
 
 
 
-func _on_animation_player_animation_finished(anim_name: String) -> void:
+func _on_animation_player_animation_finished(_anim_name: String) -> void:
 	if not attacking and has_attack:
 		moving = true
 
@@ -220,7 +222,7 @@ func get_stunned() -> void:
 	highlight_circle.modulate = Color.TRANSPARENT
 	stunned = true
 	#print("got stunned")
-	var stun_timer := Timer.new()
+	var stun_timer: Timer = Timer.new()
 	self.add_child(stun_timer)
 	stun_timer.wait_time = stun_time
 	stun_timer.start()
@@ -245,7 +247,7 @@ func get_parried(counter: bool = false) -> void:
 		#highlight_circle.visible = false
 		get_stunned()
 
-		var timer := Timer.new()
+		var timer: Timer = Timer.new()
 		self.add_child(timer)
 		timer.wait_time = 0.07
 		timer.start()
@@ -257,13 +259,13 @@ func get_parried(counter: bool = false) -> void:
 			animation_player.stop()
 		attack_collider.disabled = true
 
-func get_hit(damage: int = randi_range(1,3)) -> void:
+func get_hit(damage: int = randi_range(1,3)) -> bool:
 	#sprite_material.blend_mode = 1
 	can_be_parried = false
 	can_be_countered = false
 	highlight_circle.modulate = Color.TRANSPARENT
 	animated_sprite_2d.modulate = Color.RED
-	var timer := Timer.new()
+	var timer: Timer = Timer.new()
 	self.add_child(timer)
 	timer.wait_time = 0.07
 	timer.start()
@@ -274,6 +276,7 @@ func get_hit(damage: int = randi_range(1,3)) -> void:
 	if hitpoints <= 0:
 		health_bar.visible = false
 		die()
+		return true
 	elif not dying:
 		health_bar.value = hitpoints
 		health_bar.visible = true
@@ -286,6 +289,7 @@ func get_hit(damage: int = randi_range(1,3)) -> void:
 		attack_collider.disabled = true
 		#animated_sprite_2d.play("new_animation")
 		pass
+	return false
 		#await Timer.new().timeout
 		#queue_free()
 	#sprite_material.blend_mode = 0
@@ -302,7 +306,7 @@ func calculate_movement() -> Vector2:
 		#emit_signal("switch_direction_animation")
 		switch_direction()
 	
-	var radius := speed_fps_ratio
+	var radius: float = speed_fps_ratio
 	var direction_x: float = cos(angle) * radius
 	var direction_y: float = sin(angle) * radius
 	var max_velocity_x: float = direction_x
@@ -323,11 +327,11 @@ func die() -> void:
 	$PhysicalCollider.disabled = true
 	highlight_circle.modulate = Color.TRANSPARENT
 	#highlight_circle.visible = false
-	$HoverZone.DISABLE_MODE_REMOVE
-	$MeleeZone.DISABLE_MODE_REMOVE
-	attack_zone.DISABLE_MODE_REMOVE
-	player_in_melee.disconnect(game_manager.player_in_melee)
-	player_left_melee.disconnect(game_manager.player_left_melee)
+	$HoverZone.process_mode = Node.PROCESS_MODE_DISABLED
+	$MeleeZone.process_mode = Node.PROCESS_MODE_DISABLED
+	attack_zone.process_mode = Node.PROCESS_MODE_DISABLED
+	#player_in_melee.disconnect(game_manager.player_in_melee)
+	#player_left_melee.disconnect(game_manager.player_left_melee)
 	under_mouse_hover.disconnect(game_manager.enemy_mouse_hover)
 	stopped_mouse_hover.disconnect(game_manager.enemy_mouse_hover_stopped)
 	z_index = 4
@@ -362,13 +366,13 @@ func construct_animation_library() -> void:
 	
 
 func add_animation_method_calls() -> void:
-	var animation_list := animation_library.get_animation_list()
-	for animation in animation_list:
-		var animation_to_modify := animation_library.get_animation(animation)
-		var track := animation_to_modify.add_track(Animation.TYPE_METHOD)
+	var animation_list: Array[StringName] = animation_library.get_animation_list()
+	for animation: StringName in animation_list:
+		var animation_to_modify: Animation = animation_library.get_animation(animation)
+		var track: int = animation_to_modify.add_track(Animation.TYPE_METHOD)
 		animation_to_modify.track_set_path(track, ".")
 		if "attack" in animation:
-			var time := attack_frame/FPS
+			var time: float = attack_frame/FPS
 			var parried_time: float = 0.5/FPS
 			var countered_time: float = 3/FPS
 			animation_to_modify.track_insert_key(track, parried_time, {"method" : "ready_to_be_parried" , "args" : []}, 1)
@@ -387,7 +391,7 @@ func attack_effect() -> void:
 	disable_attack_zone()
 	
 func disable_attack_zone() -> void:
-	var timer := Timer.new()
+	var timer: Timer = Timer.new()
 	attack_collider.add_child(timer)
 	timer.wait_time = 0.06
 	timer.start()
@@ -431,7 +435,7 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	#elif "walk" in animation_name:
 		#action_type = "walk"
 	#else:
-		print("unknown action type to construct")
+		#print("unknown action type to construct")
 		#return
 	
 	frames.add_animation(animation_name)
@@ -450,11 +454,11 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	
 	# create the matching animations in AnimationPlayer
 	var new_animation: Animation = Animation.new()
-	var frames_track := new_animation.add_track(Animation.TYPE_VALUE)
+	var frames_track: int = new_animation.add_track(Animation.TYPE_VALUE)
 	new_animation.track_set_path(frames_track,"AnimatedSprite2D:frame")
 	new_animation.loop_mode = Animation.LOOP_NONE
 	new_animation.length = png_list.size()/FPS
-	var name_track := new_animation.add_track(Animation.TYPE_VALUE)
+	var name_track: int = new_animation.add_track(Animation.TYPE_VALUE)
 	new_animation.track_set_path(name_track,"AnimatedSprite2D:animation")
 	new_animation.track_insert_key(name_track,0,animation_name)
 	var frame_number: float = 0

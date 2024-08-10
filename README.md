@@ -1,10 +1,9 @@
 Things that are very missing:
-	 I can parry or counter him?
 	Pathfinding is non existent for both player and enemies
 	Sound is not good and responsive
+	no indication for lack of stamina to parry on the highlight circles (very low priority, if parry actually uses atmina)
 	Enemy highlight makes them transparent and the highlight is not clear enough. I want outline.
-	no abilities in combat other than basic attack, parry, counter
-	no dodge
+	no abilities in combat other than basic attack, parry, counter, dodge
 	parry / counter is not optimized for multiple enemies
 	no counter and parry animations
 	enemy retaliation animations (lower priority)
@@ -13,6 +12,7 @@ Things that are very missing:
 	no music
 	player light is a bit awkard, and the dark is not dark enough
 	counter is immediate (maybe good?) and doesn't provide invulnerability (?)
+	movement could be smoother using root motion (lower priority)
 
 
 abilities queue
@@ -259,8 +259,7 @@ if not:
 ==============================================================================
 # 9.8
 Above enemy health indication if they're damaged
-counter indication is not set by the player melee, but by the enemies
-		should counter range be determined by the longest reach of player and enemy? so if an enemy with a far reach attacks me
+counter indication is set by bot the player and enemy melee
 Dodge
 Stamina
 Health Stamina Regeneration

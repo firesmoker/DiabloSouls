@@ -50,6 +50,7 @@ func _process(delta: float) -> void:
 		enemy_label.visible = true
 		enemy_health.visible = true
 		enemy_label.text = enemy_in_focus.id
+		enemy_health.max_value = enemy_in_focus.hitpoints_max
 		enemy_health.value = enemy_in_focus.hitpoints
 	else:
 		enemy_label.visible = false
@@ -62,15 +63,15 @@ func enemy_in_player_melee_zone(enemy: Enemy, in_zone: bool = true) -> void:
 	enemy.in_player_melee_zone = in_zone
 	enemy.highlight_circle.visible = in_zone
 
-func player_in_melee(enemy: Enemy) -> void:
-	pass
+#func player_in_melee(enemy: Enemy) -> void:
+	#pass
 	#print("MELEE!! (gamemanager) with " + str(enemy))
 	#player.enemies_in_melee.append(enemy)
 	#if player.is_chasing_enemy and player.targeted_enemy == enemy:
 			#player.attack(enemy.position)
 
-func player_left_melee(enemy: Enemy) -> void:
-	pass
+#func player_left_melee(enemy: Enemy) -> void:
+	#pass
 	#print("LEFT MELEE!! (gamemanager) with " + str(enemy))
 	#if enemy in player.enemies_in_melee:
 		#player.enemies_in_melee.erase(enemy)
@@ -92,7 +93,7 @@ func player_gets_hit(damage: float = 1) -> void:
 		point_light.color = Color.WHITE
 		point_light.energy -= 0.25
 
-func camera_shake_and_color(color: bool = true) -> void:
+func camera_shake_and_color(color: bool = true, extra: bool = false) -> void:
 	var timer: Timer = Timer.new()
 	camera.add_child(timer)
 	
@@ -102,8 +103,11 @@ func camera_shake_and_color(color: bool = true) -> void:
 		#point_light.blend_mode = 0
 		#point_light.color = Color.TEAL
 		point_light.energy += lightning_amount
-	camera.position.x += shake_amount
-	camera.position.y += shake_amount*0.7
+	var extra_modifier: float = 1
+	if extra:
+		extra_modifier = 2
+	camera.position.x += shake_amount * extra_modifier
+	camera.position.y += shake_amount * 0.7 * extra_modifier
 	timer.start()
 	await timer.timeout
 	timer.queue_free()
@@ -111,8 +115,8 @@ func camera_shake_and_color(color: bool = true) -> void:
 		#point_light.blend_mode = 1
 		#point_light.color = Color.WHITE
 		point_light.energy -= lightning_amount
-	camera.position.x -= shake_amount
-	camera.position.y -= shake_amount*0.7
+	camera.position.x -= shake_amount * extra_modifier
+	camera.position.y -= shake_amount*0.7 * extra_modifier
 
 func enemy_mouse_hover(enemy: Enemy) -> void:
 	if enemy not in enemies_under_mouse:
@@ -136,7 +140,11 @@ func enemy_mouse_hover_stopped(enemy: Enemy) -> void:
 
 func _on_player_attack_success(enemy: Enemy) -> void:
 	camera_shake_and_color()
-	enemy.get_hit()
+	var enemy_death_status: bool = await enemy.get_hit()
+	#print(enemy_death_status)
+	#if enemy_death_status:
+		#print("extra death shake")
+		#camera_shake_and_color()
 
 func _on_player_parry_success(enemy: Enemy) -> void:
 	#camera_shake_and_color()
