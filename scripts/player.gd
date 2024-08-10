@@ -32,7 +32,7 @@ class_name Player extends CharacterBody2D
 var is_locked: bool = false
 var is_chasing_enemy: bool = false
 var is_dodging: bool = false
-var ready_for_idle: bool= true
+var is_idle: bool= true
 var ready_to_attack_again: bool = true
 var is_attacking: bool = false
 
@@ -251,7 +251,8 @@ func _on_melee_zone_body_exited(enemy: CollisionObject2D) -> void:
 func _on_animation_player_animation_finished(anim_name: String) -> void:
 	if "attack" in anim_name:
 		#print("attack finished fully")
-		ready_for_idle = true
+		is_idle = true
+		#is_attacking = false
 
 
 func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
@@ -271,8 +272,8 @@ func _on_attack_effects() -> void:
 
 
 func stop_on_destination() -> void:
-	if not is_attacking:
-		print("trying to stop on destination")
+	if velocity:
+		print("trying to stop on destination " + str(velocity))
 		var distance_to_stop: float = 1.0
 		#if speed_modifier > 1.8:
 			#distance_to_stop = speed_modifier * 2
@@ -282,17 +283,20 @@ func stop_on_destination() -> void:
 			velocity = Vector2(0,0)
 			position = destination
 			if not Input.is_action_pressed("mouse_move"):
-				ready_for_idle = true
-		elif abs(position.x - destination.x) <= distance_to_stop and abs(position.y - destination.y) <= distance_to_stop:
+				is_idle = true
+				#is_attacking = false
+		elif position.distance_to(destination) <= distance_to_stop:
 		#if position.distance_to(destination) <= 1:
-			print("should be stopping")
+			print("should be stopping " + str(velocity))
 			is_dodging = false
 			velocity = Vector2(0,0)
 			if not Input.is_action_pressed("mouse_move"):
-				ready_for_idle = true
+				is_idle = true
+				#is_attacking = false
 
 
 func running_state() -> void:
+	set_direction_by_angle(position.angle_to_point(destination))
 	var current_animation: String = animation_player.current_animation
 	is_locked = false
 	ready_to_attack_again = true
@@ -323,8 +327,8 @@ func handle_movement(delta: float) -> void:
 			if game_manager.enemies_under_mouse.size() <= 0:
 				is_chasing_enemy = false
 				targeted_enemy = null
-			is_attacking = false
-			ready_for_idle = false
+			#is_attacking = false
+			is_idle = false
 			original_position = position
 			destination = get_global_mouse_position()
 			if abs(position.x - destination.x) <= 5 and abs(position.y - destination.y) <= 5:
@@ -338,9 +342,11 @@ func handle_movement(delta: float) -> void:
 		velocity = calculate_movement_velocity() * delta / average_delta
 
 
-func set_direction_by_angle(angle: float) -> void:
+func set_direction_by_angle(angle: float = position.angle_to_point(destination)) -> void:
 	var half_rand: float = (0.5/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
 	var rounded_rand: float = round_to_multiple(angle, half_rand)
+	if current_direction != radian_direction[rounded_rand]:
+		print("changing direction")
 	current_direction = radian_direction[rounded_rand]
 
 
@@ -348,7 +354,7 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability) -> v
 	#abilities_queue.append(attack_ability)
 	is_chasing_enemy = false
 	targeted_enemy = null
-	ready_for_idle = false
+	is_idle = false
 	#can_move = false
 	is_attacking = true
 	if ability.range_type == "melee":
@@ -422,19 +428,20 @@ func round_to_multiple(number: float, multiple: float) -> float:
 
 
 func calculate_movement_velocity() -> Vector2:
-	var angle: float = position.angle_to_point(destination)
-	set_direction_by_angle(angle)
+	#var angle: float = position.angle_to_point(destination)
+	#set_direction_by_angle(angle)
 	
-	var radius : float = speed_fps_ratio
-	var direction_x: float = cos(angle) * radius
-	var direction_y: float = sin(angle) * radius
-	var max_velocity_x: float = direction_x * speed_modifier
-	var max_velocity_y: float = direction_y * speed_modifier
+	#var radius : float = speed_fps_ratio
+	#var direction_x: float = cos(angle) * radius
+	#var direction_y: float = sin(angle) * radius
+	#var max_velocity_x: float = direction_x * speed_modifier
+	#var max_velocity_y: float = direction_y * speed_modifier
 	if is_dodging:
 		print("dodge calculation")
-		return Vector2(max_velocity_x * dodge_speed_bonus, max_velocity_y * dodge_speed_bonus)
+		#return Vector2(max_velocity_x * dodge_speed_bonus, max_velocity_y * dodge_speed_bonus)
+		return position.direction_to(destination) * speed_fps_ratio * speed_modifier * dodge_speed_bonus
 	#return Vector2(max_velocity_x, max_velocity_y)
-	print(position.direction_to(destination) * speed_fps_ratio * speed_modifier)
+	#print(position.direction_to(destination) * speed_fps_ratio * speed_modifier)
 	return position.direction_to(destination) * speed_fps_ratio * speed_modifier
 
 
