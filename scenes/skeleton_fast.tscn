@@ -23,6 +23,7 @@ resource_local_to_scene = true
 
 [node name="Skeleton_Fast" instance=ExtResource("1_eecra")]
 body_color = Color(1, 1, 0, 1)
+id = "Fast Skeleton"
 move_speed_modifier = 1.8
 attack_speed_modifier = 1.0
 hitpoints_max = 1

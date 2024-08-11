@@ -99,13 +99,7 @@ func _ready() -> void:
 		stopped_mouse_hover.connect(game_manager.enemy_mouse_hover_stopped)
 
 func _process(delta: float) -> void:
-	if player.is_locked and not perry_subdued:
-		perry_subdued = true
-		highlight_circle.modulate = Color.TRANSPARENT
-		highlight_circle.process_mode = Node.PROCESS_MODE_DISABLED
-	elif perry_subdued:
-		perry_subdued = false
-		highlight_circle.process_mode = Node.PROCESS_MODE_INHERIT
+	handle_parry_visibility()
 		
 	if player.dead and in_melee:
 		in_melee = false
@@ -114,6 +108,7 @@ func _process(delta: float) -> void:
 	else:
 		destination = position
 		moving = false
+		
 	if "attack" in animation_player.current_animation:
 		moving = false
 		await animation_player.animation_finished
@@ -135,8 +130,10 @@ func _process(delta: float) -> void:
 			can_attack = false
 			attacking = false
 		if not attacking:
-			if moving:
-				move_and_collide(calculate_movement() * move_speed_modifier * delta)
+			if moving and not stunned:
+				set_direction_by_angle()
+				var velocity: Vector2 = calculate_movement() * move_speed_modifier * delta
+				move_and_collide(velocity)
 				var animation_before_change: String = animation_player.current_animation
 				animation_player.speed_scale = move_speed_modifier
 				animation_player.play(animations[current_direction]["walk"])
@@ -144,6 +141,15 @@ func _process(delta: float) -> void:
 					animation_player.seek(randi_range(0, 3) / FPS)
 			else:
 				animation_player.play(animations[current_direction]["idle"])
+
+func handle_parry_visibility() -> void:
+	if player.is_locked and not perry_subdued:
+		perry_subdued = true
+		highlight_circle.modulate = Color.TRANSPARENT
+		highlight_circle.process_mode = Node.PROCESS_MODE_DISABLED
+	elif perry_subdued:
+		perry_subdued = false
+		highlight_circle.process_mode = Node.PROCESS_MODE_INHERIT
 
 
 func _on_animation_player_animation_finished(_anim_name: String) -> void:
@@ -197,13 +203,16 @@ func switch_direction() -> void:
 func get_stunned() -> void:
 	animation_player.stop()
 	highlight_circle.modulate = Color.TRANSPARENT
-	stunned = true
 	var stun_timer: Timer = Timer.new()
 	self.add_child(stun_timer)
 	stun_timer.wait_time = stun_time
+	stun_timer.set_physics_process(true)
+	stunned = true
+	moving = false
 	stun_timer.start()
 	await stun_timer.timeout
 	stunned = false
+	moving = true
 	stun_timer.queue_free()
 
 func get_parried(counter: bool = false) -> void:
@@ -256,8 +265,8 @@ func get_hit(damage: int = randi_range(1,3)) -> bool:
 			animation_player.stop()
 		attack_collider.disabled = true
 	return false
-func calculate_movement() -> Vector2:
-	var angle: float = position.angle_to_point(destination)
+
+func set_direction_by_angle(angle: float = position.angle_to_point(destination)) -> void:
 	var rand: float = (1/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
 	var rounded_rand: float = float(round(angle / rand) * rand)
 	if ready_to_switch_direction:
@@ -265,19 +274,18 @@ func calculate_movement() -> Vector2:
 		current_direction = radian_direction[rounded_rand]
 		switch_animation_timer.paused = false
 		switch_animation_timer.start(0.2)
-		switch_direction()
-	
-	var radius: float = speed_fps_ratio
-	var direction_x: float = cos(angle) * radius
-	var direction_y: float = sin(angle) * radius
-	var max_velocity_x: float = direction_x
-	var max_velocity_y: float = direction_y
-	
+		#switch_direction()
+		await switch_animation_timer.timeout
+		ready_to_switch_direction = true
+
+func calculate_movement() -> Vector2:
+	if stunned:
+		return Vector2(0, 0)
 	move_offset = Vector2(0,0)
 	for enemy: CollisionObject2D in adjacent_enemies:
 		move_offset += position - enemy.position
-	
-	return Vector2(max_velocity_x + move_offset.x, max_velocity_y + move_offset.y)
+	var movement_vector: Vector2 = position.direction_to(destination) * speed_fps_ratio
+	return Vector2(movement_vector.x + move_offset.x, movement_vector.y + move_offset.y)
 
 func die() -> void:
 	emit_signal("stopped_mouse_hover", self)

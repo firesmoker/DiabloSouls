@@ -18,6 +18,7 @@ class_name GameManager extends Node
 var enemy_in_focus: Enemy
 
 func _ready() -> void:
+	#create_enemies_timed()
 	enemy_label.visible = false
 	enemy_label.visible = true
 	player_health.max_value = player.hitpoints
@@ -58,6 +59,14 @@ func _process(delta: float) -> void:
 	if player.dead:
 		point_light.color = Color.RED
 		point_light.energy = 1
+		
+func create_enemies_timed(delay: float = 3.0) -> void:
+	var enemy_type: PackedScene = load("res://scenes/skeleton_fast.tscn")
+	while true:
+		print("creating enemy")
+		await get_tree().create_timer(delay).timeout
+		var new_enemy:  = enemy_type.instantiate()
+	
 		
 func enemy_in_player_melee_zone(enemy: Enemy, in_zone: bool = true) -> void:
 	enemy.in_player_melee_zone = in_zone

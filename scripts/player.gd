@@ -27,7 +27,7 @@ class_name Player extends CharacterBody2D
 @export var stamina_regen_amount: float = 0.02
 @export var max_mana: int = 5
 @export var invlunerable: bool = false
-@export var animation_types: Array[String] = ["idle", "walk", "attack", "death", "parry"]
+@export var animation_types: Array[String] = ["idle", "walk", "attack", "death", "parry", "defend"]
 #var can_move: bool = false
 var is_locked: bool = false
 var is_chasing_enemy: bool = false
@@ -35,6 +35,7 @@ var is_dodging: bool = false
 var is_idle: bool= true
 var ready_to_attack_again: bool = true
 var is_attacking: bool = false
+var is_defending: bool = false
 
 var stamina_regen_rate: float = 0.1
 var stamina_regen_time: float = 0.0
@@ -128,6 +129,7 @@ func _physics_process(delta: float) -> void:
 	
 	if not is_dying:
 		handle_movement(delta)
+		#handle_block(delta)
 		
 		if not is_locked:
 			stop_on_destination()
@@ -198,6 +200,15 @@ func dodge(dodge_destination: Vector2) -> void:
 	
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("speed up"):
+		print("more speed")
+		var speed_change:float = 115.0 / 100.0
+		speed_modifier *= speed_change
+		
+	elif event.is_action_pressed("speed down"):
+		print("less speed")
+		var speed_change:float = 100.0 / 115.0
+		speed_modifier *= speed_change
 	if not is_dying:
 		if event.is_action_pressed("dodge"):
 			var face_destination: Vector2 = get_global_mouse_position()
@@ -208,14 +219,15 @@ func _unhandled_input(event: InputEvent) -> void:
 			attack(face_destination)
 		
 		if event.is_action_pressed("parry"):
-			if stamina - 1 < 0:
-				print("not enough stamina")
-			else:
-				stamina -= 1
-				if stamina < 0:
-					stamina = 0
-				var face_destination: Vector2 = get_global_mouse_position()
-				attack(face_destination, parry_ability)
+			if not is_locked:
+				if stamina - 1 < 0:
+					print("not enough stamina")
+				else:
+					stamina -= 1
+					if stamina < 0:
+						stamina = 0
+					var face_destination: Vector2 = get_global_mouse_position()
+					attack(face_destination, parry_ability)
 		
 		if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place"):
 			if game_manager.enemy_in_focus != null:
@@ -273,7 +285,7 @@ func _on_attack_effects() -> void:
 
 func stop_on_destination() -> void:
 	if velocity:
-		print("trying to stop on destination " + str(velocity))
+		#print("trying to stop on destination " + str(velocity))
 		var distance_to_stop: float = 1.0
 		#if speed_modifier > 1.8:
 			#distance_to_stop = speed_modifier * 2
@@ -287,7 +299,7 @@ func stop_on_destination() -> void:
 				#is_attacking = false
 		elif position.distance_to(destination) <= distance_to_stop:
 		#if position.distance_to(destination) <= 1:
-			print("should be stopping " + str(velocity))
+			#print("should be stopping " + str(velocity))
 			is_dodging = false
 			velocity = Vector2(0,0)
 			if not Input.is_action_pressed("mouse_move"):
@@ -296,7 +308,7 @@ func stop_on_destination() -> void:
 
 
 func running_state() -> void:
-	set_direction_by_angle(position.angle_to_point(destination))
+	set_direction_by_angle(destination)
 	var current_animation: String = animation_player.current_animation
 	is_locked = false
 	ready_to_attack_again = true
@@ -320,10 +332,18 @@ func standing_state() -> void:
 	if not is_dying:
 		animation_player.play(animations[current_direction]["idle"])
 
+func handle_block(delta: float) -> void:
+	#if not is_attacking:
+	if Input.is_action_pressed("parry"):
+		await animation_player.animation_finished
+		destination = get_global_mouse_position()
+		set_direction_by_angle()
+		is_defending = true
+		animation_player.play(animations[current_direction]["defend"])
 
 func handle_movement(delta: float) -> void:
 	if not is_attacking and not is_locked:
-		if Input.is_action_pressed("mouse_move"):
+		if Input.is_action_pressed("mouse_move") and not is_defending:
 			if game_manager.enemies_under_mouse.size() <= 0:
 				is_chasing_enemy = false
 				targeted_enemy = null
@@ -342,11 +362,10 @@ func handle_movement(delta: float) -> void:
 		velocity = calculate_movement_velocity() * delta / average_delta
 
 
-func set_direction_by_angle(angle: float = position.angle_to_point(destination)) -> void:
+func set_direction_by_angle(look_destination: Vector2 = destination) -> void:
+	var angle: float = position.angle_to_point(look_destination)
 	var half_rand: float = (0.5/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
 	var rounded_rand: float = round_to_multiple(angle, half_rand)
-	if current_direction != radian_direction[rounded_rand]:
-		print("changing direction")
 	current_direction = radian_direction[rounded_rand]
 
 
@@ -364,7 +383,7 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability) -> v
 		#print("not melee")
 	velocity = Vector2(0, 0)
 	var angle: float = position.angle_to_point(attack_destination)
-	set_direction_by_angle(angle)
+	set_direction_by_angle(attack_destination)
 	if not is_dying:
 		animation_player.speed_scale = speed_modifier
 		if not ready_to_attack_again and animation_player.current_animation_position >= re_attack_frame/FPS and ability != parry_ability:
@@ -479,6 +498,9 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 			if action_type == "parry": # TEMPORARY
 				action_type = "attack" # TEMPORARY
 				#print("forcing parry to use attack assets") # TEMPORARY
+			if action_type == "defend": # TEMPORARY
+				action_type = "attack" # TEMPORARY
+				print("forcing defend to use attack assets for direction " + direction_name[direction]) # TEMPORARY
 			break
 	
 	frames.add_animation(animation_name)
@@ -495,6 +517,10 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 		if "parry" in animation_name:
 			count += 1
 			if count >= 3:
+				break
+		if "defend" in animation_name:
+			count += 1
+			if count >= 1:
 				break
 		var frame_png: Texture2D  = load(png_path)
 		frames.add_frame(animation_name,frame_png)
