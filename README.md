@@ -1,7 +1,9 @@
+certain conditions can have an array of different "sources", and remove themselves from it later, so only when all sources are removed the condition stops.
+
 Things that are very missing:
+	FOCUS: no defend
 	Pathfinding is non existent for both player and enemies
 	Sound is not good and responsive
-	no defend
 	no way to use mana
 	no ranged abilities
 	no abilities in combat other than basic attack, parry, counter, dodge
@@ -18,6 +20,7 @@ Things that are very missing:
 	no movement accelaration (low priority)
 	no indication for lack of stamina to parry on the highlight circles (very low priority, if parry actually uses atmina)
 	no decals like blood and bones flying in the air (very very low priority)
+	
 
 
 abilities queue

@@ -41,7 +41,7 @@ const FPS: float = 12.0
 const average_delta: float = 0.01666666666667
 
 var sprite_material: Material
-var player: CharacterBody2D
+var player: Player
 var destination: Vector2
 var player_in_range: bool = false
 var attack_range: float = 35
@@ -190,7 +190,10 @@ func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 		
 func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
 	if body == player:
-		game_manager.player_gets_hit()
+		if self in player.enemies_in_defense_zone and player.is_defending:
+			print(str(self) + " in defense zone when trying to attack")
+		else:
+			game_manager.player_gets_hit()
 	else:
 		print(body)
 		print("not player")

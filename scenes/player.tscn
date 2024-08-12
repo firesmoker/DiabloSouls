@@ -1493,3 +1493,4 @@ texture_scale = 1.2
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="AttackAxis/AttackZone" to="." method="_on_attack_zone_body_entered"]
 [connection signal="body_entered" from="AttackAxis/ParryZone" to="." method="_on_parry_zone_body_entered"]
+[connection signal="body_exited" from="AttackAxis/ParryZone" to="." method="_on_parry_zone_body_exited"]
