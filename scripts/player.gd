@@ -113,7 +113,10 @@ var attack_ability: Ability = Ability.new("attack", "melee")
 var parry_ability: Ability = Ability.new("parry", "melee")
 
 func _ready() -> void:
+	print("trying to change hitpoints fuck")
+	print(max_hitpoints)
 	hitpoints = max_hitpoints
+	print(hitpoints)
 	stamina = max_stamina
 	mana = max_mana
 	#animation_player.playback_default_blend_time
@@ -148,23 +151,23 @@ func _physics_process(delta: float) -> void:
 
 
 func stamina_regen(delta_time: float) -> void:
-	if stamina < max_stamina:
+	if stamina < max_stamina and not is_dying:
 		stamina_regen_time += delta_time
 		if stamina_regen_time >= stamina_regen_rate:
 			stamina_regen_time = 0
 			stamina += stamina_regen_amount
 	else:
-		stamina = 5
+		stamina = max_stamina
 		stamina_regen_time = 0
 
 func health_regen(delta_time: float) -> void:
-	if hitpoints < max_hitpoints:
+	if hitpoints < max_hitpoints and not is_dying:
 		health_regen_time += delta_time
 		if health_regen_time >= health_regen_rate:
 			health_regen_time = 0
 			hitpoints += health_regen_amount
 	else:
-		hitpoints = 5
+		hitpoints = max_hitpoints
 		health_regen_time = 0
 
 func dodge(dodge_destination: Vector2) -> void:
@@ -382,6 +385,7 @@ func handle_block(delta: float) -> void:
 			await animation_player.animation_finished
 			print("parry animation finished")
 		if Input.is_action_pressed("parry"):
+			print("handle block -> blocking -> collider = NOT disabled")
 			parry_collider.disabled = false
 			var defend_destination: Vector2 = get_global_mouse_position()
 			var angle: float = position.angle_to_point(defend_destination)
@@ -395,10 +399,13 @@ func handle_block(delta: float) -> void:
 			velocity = Vector2(0, 0)
 			print("trying to play defened animation")
 			animation_player.play(animations[current_direction]["defend"])
+		else:
+			print("disabled parry collider after animation finished")
+			parry_collider.disabled = true
 		
 	if Input.is_action_just_released("parry"):
 		if is_defending:
-			print("released defense")
+			print("released defense -> collider = disabled")
 			is_defending = false
 			is_locked = false
 			invlunerable = false
@@ -413,6 +420,7 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability) -> v
 	targeted_enemy = null
 	is_idle = false
 	#can_move = false
+	is_defending = false
 	is_attacking = true
 	if ability.range_type == "melee":
 		#print("melee attack!")
@@ -509,7 +517,7 @@ func just_attacked() -> void: # THIS
 	disable_attack_zone()
 
 func just_parried() -> void: # THIS
-	print("PARRY!")
+	print("PARRY! -> collider not disabled")
 	is_parrying = true
 	parry_collider.disabled = false
 	emit_signal("attack_effects")
@@ -640,6 +648,7 @@ func disable_parry_zone() -> void:
 	await timer.timeout
 	timer.queue_free()
 	if not Input.is_action_pressed("parry"):
+		print("disable parry zone -> collider = disabled")
 		parry_collider.disabled = true
 
 

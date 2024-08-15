@@ -1,7 +1,6 @@
 certain conditions can have an array of different "sources", and remove themselves from it later, so only when all sources are removed the condition stops.
 
 Things that are very missing:
-	FOCUS: no defend
 	Pathfinding is non existent for both player and enemies
 	Sound is not good and responsive
 	no way to use mana
