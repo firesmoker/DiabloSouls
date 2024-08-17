@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dxfa0xmqhcorr"]
+[gd_scene load_steps=10 format=3 uid="uid://dxfa0xmqhcorr"]
 
 [ext_resource type="PackedScene" uid="uid://brlvroq1a2p0i" path="res://scenes/skeleton.tscn" id="1_eecra"]
 [ext_resource type="Texture2D" uid="uid://dih8qcag7ojye" path="res://assets/art/enemy/skeleton_default/skeleton_default_idle/S/skeleton_default_idle_S_270.0_0.png" id="2_7mu3y"]
@@ -60,6 +60,11 @@ animations = [{
 "speed": 12.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rflhr"]
+resource_local_to_scene = true
+radius = 6.0
+height = 16.0
+
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_4ietx"]
 resource_local_to_scene = true
 
@@ -85,6 +90,9 @@ hitpoints = 1
 [node name="AnimatedSprite2D" parent="." index="2"]
 material = SubResource("ShaderMaterial_mbm04")
 sprite_frames = SubResource("SpriteFrames_exdmd")
+
+[node name="PhysicalCollider" parent="." index="3"]
+shape = SubResource("CapsuleShape2D_rflhr")
 
 [node name="HighlightCircle" parent="." index="4"]
 material = SubResource("CanvasItemMaterial_4ietx")

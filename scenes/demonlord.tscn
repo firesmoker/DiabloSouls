@@ -86,10 +86,23 @@ resource_local_to_scene = true
 radius = 9.0
 height = 52.0
 
-[node name="Enemy" instance=ExtResource("1_exfay")]
+[node name="Demonlord" instance=ExtResource("1_exfay")]
+id = "Demon Lord"
 base_id = "demonlord"
 model = "demonlord"
 category = "boss"
+speed_fps_ratio = 82.0
+attack_frame = 4
+hitpoints_max = 20
+hitpoints = 20
+has_attack = true
+animation_types = Array[String](["idle", "walk", "death", "attack"])
+
+[node name="HealthBar" parent="." index="0"]
+offset_left = -22.0
+offset_top = -70.7
+offset_right = 22.0
+offset_bottom = -66.7
 
 [node name="AnimatedSprite2D" parent="." index="2"]
 material = SubResource("ShaderMaterial_1031v")
@@ -100,13 +113,21 @@ z_index = 50
 shape = SubResource("CapsuleShape2D_xh5jj")
 
 [node name="HighlightCircle" parent="." index="4"]
+visible = true
+z_index = -1
 material = SubResource("CanvasItemMaterial_dm3a0")
+scale = Vector2(3.46, 3.46)
 
 [node name="CollisionShape2D" parent="ClumpZone" index="0"]
 shape = SubResource("CapsuleShape2D_rvte0")
 
 [node name="CollisionShape2D" parent="HoverZone" index="0"]
+position = Vector2(0, -25.6)
+scale = Vector2(1.805, 2.01)
 shape = SubResource("CapsuleShape2D_rvte0")
+
+[node name="MeleeZone" parent="." index="7"]
+scale = Vector2(2.31, 2.31)
 
 [node name="CollisionShape2D" parent="MeleeZone" index="0"]
 shape = SubResource("CapsuleShape2D_rvte0")

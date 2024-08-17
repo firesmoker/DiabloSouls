@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://lr15cpqcai72"]
+[gd_scene load_steps=14 format=3 uid="uid://lr15cpqcai72"]
 
 [ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_h602i"]
 [ext_resource type="Script" path="res://scripts/TileMap.gd" id="2_orhwb"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://brlvroq1a2p0i" path="res://scenes/skeleton.tscn" id="7_fmbge"]
 [ext_resource type="PackedScene" uid="uid://crbwettm152r0" path="res://scenes/hud.tscn" id="7_luld2"]
 [ext_resource type="PackedScene" uid="uid://dxfa0xmqhcorr" path="res://scenes/skeleton_fast.tscn" id="8_m5cea"]
+[ext_resource type="PackedScene" uid="uid://ch1let232ajbg" path="res://scenes/demonlord.tscn" id="9_upit6"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_w3c5t"]
 source_geometry_group_name = &"navigation_polygon_source_group"
@@ -314,58 +315,73 @@ script = ExtResource("2_orhwb")
 position = Vector2(37, 49)
 model = "fighter_armed"
 attack_speed_modifier = 1.0
+invlunerable = true
 
 [node name="Enemies" type="Node2D" parent="."]
 y_sort_enabled = true
 
 [node name="Skeleton" parent="Enemies" instance=ExtResource("7_fmbge")]
+process_mode = 4
 body_color = Color(1, 0, 1, 1)
 hitpoints_max = 50
 
 [node name="Skeleton2" parent="Enemies" instance=ExtResource("7_fmbge")]
+process_mode = 4
 position = Vector2(157, -36)
 
 [node name="Skeleton4" parent="Enemies" instance=ExtResource("7_fmbge")]
+process_mode = 4
 position = Vector2(234, 201)
 
 [node name="Skeleton5" parent="Enemies" instance=ExtResource("7_fmbge")]
+process_mode = 4
 position = Vector2(22, 207)
 
 [node name="Skeleton6" parent="Enemies" instance=ExtResource("7_fmbge")]
+process_mode = 4
 position = Vector2(-174, 184)
 
 [node name="Skeleton7" parent="Enemies" instance=ExtResource("7_fmbge")]
+process_mode = 4
 position = Vector2(-274, 228)
 
 [node name="Skeleton_Fast" parent="Enemies" instance=ExtResource("8_m5cea")]
+process_mode = 4
 position = Vector2(-207, 11)
 custom_integrator = true
 base_id = ""
 
 [node name="Skeleton_Fast2" parent="Enemies" instance=ExtResource("8_m5cea")]
+process_mode = 4
 position = Vector2(-278, 98)
 custom_integrator = true
 base_id = ""
 
 [node name="Skeleton_Fast3" parent="Enemies" instance=ExtResource("8_m5cea")]
+process_mode = 4
 position = Vector2(-167, -62)
 custom_integrator = true
 base_id = ""
 
 [node name="Skeleton_Fast4" parent="Enemies" instance=ExtResource("8_m5cea")]
+process_mode = 4
 position = Vector2(-20, -81)
 custom_integrator = true
 base_id = ""
 
 [node name="Skeleton_Fast5" parent="Enemies" instance=ExtResource("8_m5cea")]
+process_mode = 4
 position = Vector2(-82, 168)
 custom_integrator = true
 base_id = ""
 
 [node name="Skeleton_Fast6" parent="Enemies" instance=ExtResource("8_m5cea")]
+process_mode = 4
 position = Vector2(290, 21)
 custom_integrator = true
 base_id = ""
+
+[node name="Demonlord" parent="Enemies" instance=ExtResource("9_upit6")]
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
 [connection signal="parry_success" from="Player" to="GameManager" method="_on_player_parry_success"]
