@@ -80,7 +80,7 @@ signal switch_direction_animation
 
 
 func _ready() -> void:
-	animated_sprite_2d.modulate = body_color
+	animated_sprite_2d.material.set_shader_parameter("modulated_color", body_color)
 	health_bar.max_value = hitpoints_max
 	hitpoints = hitpoints_max
 	health_bar.value = hitpoints
@@ -307,10 +307,10 @@ func die() -> void:
 	y_sort_enabled = false
 
 func highlight() -> void:
-	sprite_material.blend_mode = 1
+	animated_sprite_2d.material.set_shader_parameter("width", 1.5)
 
 func highlight_stop() -> void:
-	sprite_material.blend_mode = 0
+	animated_sprite_2d.material.set_shader_parameter("width", 0)
 
 
 func construct_animation_library() -> void:

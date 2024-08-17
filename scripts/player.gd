@@ -702,7 +702,3 @@ class Ability:
 			#print("execute on: " + str(target))
 			pass
 		
-
-
-
-
