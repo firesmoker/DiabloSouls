@@ -1,7 +1,52 @@
-[gd_scene load_steps=5 format=3 uid="uid://brlvroq1a2p0i"]
+[gd_scene load_steps=9 format=3 uid="uid://brlvroq1a2p0i"]
 
 [ext_resource type="PackedScene" uid="uid://b1hcswr77ft67" path="res://scenes/enemy.tscn" id="1_mhxew"]
 [ext_resource type="Texture2D" uid="uid://dih8qcag7ojye" path="res://assets/art/enemy/skeleton_default/skeleton_default_idle/S/skeleton_default_idle_S_270.0_0.png" id="2_206bq"]
+
+[sub_resource type="Shader" id="Shader_skvic"]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+
+uniform float width: hint_range(0.0, 30.0) = 0.0;
+uniform vec4 modulated_color: source_color = vec4(1, 1, 1, 1);
+uniform vec4 outline_color: source_color = vec4(0, 1, 0, 1);
+
+
+void fragment() {
+	float size = width * 1.0 / float(textureSize(TEXTURE, 0).x);
+	vec4 sprite_color = texture(TEXTURE, UV);
+	float alpha = -4.0 * sprite_color.a;
+	alpha += texture(TEXTURE, UV + vec2(size, 0.0)).a;
+	alpha += texture(TEXTURE, UV + vec2(-size, 0.0)).a;
+	alpha += texture(TEXTURE, UV + vec2(0.0, size)).a;
+	alpha += texture(TEXTURE, UV + vec2(0.0, -size)).a;
+	//alpha += texture(TEXTURE, UV + vec2(size, 0.0)).a;
+	//alpha += texture(TEXTURE, UV + vec2(-size, 0.0)).a;
+	//alpha += texture(TEXTURE, UV + vec2(0.0, size)).a;
+	//alpha += texture(TEXTURE, UV + vec2(0.0, -size)).a;
+	
+	//alpha += step(0.1,texture(TEXTURE, UV + vec2(size, 0.0)).a);
+	//alpha += step(0.1,texture(TEXTURE, UV + vec2(-size, 0.0)).a);
+	//alpha += step(0.1,texture(TEXTURE, UV + vec2(0.0, size)).a);
+	//alpha += step(0.1,texture(TEXTURE, UV + vec2(0.0, -size)).a);
+	
+	vec4 final_color = mix(sprite_color * modulated_color, outline_color, clamp(alpha, 0.0, 1.0));
+	COLOR = vec4(final_color.rgb, clamp(abs(alpha) + sprite_color.a, 0.0, 1.0));
+	
+}
+
+//void light() {
+	// Called for every pixel for every light affecting the CanvasItem.
+	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0w58q"]
+resource_local_to_scene = true
+shader = SubResource("Shader_skvic")
+shader_parameter/width = 0.0
+shader_parameter/modulated_color = Color(1, 1, 1, 1)
+shader_parameter/outline_color = Color(0.333327, 0, 0.0012985, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ckd27"]
 resource_local_to_scene = true
@@ -18,14 +63,38 @@ animations = [{
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ury82"]
 resource_local_to_scene = true
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ujkq1"]
+resource_local_to_scene = true
+radius = 24.0
+height = 48.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lrxak"]
+resource_local_to_scene = true
+radius = 13.0
+height = 34.0
+
 [node name="Skeleton" instance=ExtResource("1_mhxew")]
 id = "Skeleton"
+base_id = "skeleton"
 attack_frame = 5
 has_attack = true
 animation_types = Array[String](["idle", "walk", "attack", "death"])
 
 [node name="AnimatedSprite2D" parent="." index="2"]
+material = SubResource("ShaderMaterial_0w58q")
 sprite_frames = SubResource("SpriteFrames_ckd27")
 
 [node name="HighlightCircle" parent="." index="4"]
 material = SubResource("CanvasItemMaterial_ury82")
+
+[node name="CollisionShape2D" parent="ClumpZone" index="0"]
+shape = SubResource("CapsuleShape2D_ujkq1")
+
+[node name="CollisionShape2D" parent="HoverZone" index="0"]
+shape = SubResource("CapsuleShape2D_ujkq1")
+
+[node name="CollisionShape2D" parent="MeleeZone" index="0"]
+shape = SubResource("CapsuleShape2D_ujkq1")
+
+[node name="AttackCollider" parent="AttackAxis/AttackZone" index="0"]
+shape = SubResource("CapsuleShape2D_lrxak")

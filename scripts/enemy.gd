@@ -12,7 +12,9 @@ class_name Enemy extends RigidBody2D
 
 @export var body_color: Color = Color.WHITE
 @export var id: String = "Enemy"
-@export_enum("skeleton_default", "slime") var model: String = "skeleton_default"
+@export var base_id: String
+@export_enum("skeleton_default", "slime", "demonlord") var model: String = "skeleton_default"
+@export_enum("normal", "boss") var category: String = "normal"
 @export var speed_fps_ratio: float = 42.35
 @export var move_speed_modifier: float = 1
 @export var attack_speed_modifier: float = 0.7
@@ -75,11 +77,10 @@ var radian_direction: Dictionary = {
 
 signal under_mouse_hover
 signal stopped_mouse_hover
-signal player_left_melee
-signal switch_direction_animation
 
 
 func _ready() -> void:
+	#custom_integrator = true
 	animated_sprite_2d.material.set_shader_parameter("modulated_color", body_color)
 	health_bar.max_value = hitpoints_max
 	hitpoints = hitpoints_max
@@ -97,6 +98,12 @@ func _ready() -> void:
 		player = game_manager.player
 		under_mouse_hover.connect(game_manager.enemy_mouse_hover)
 		stopped_mouse_hover.connect(game_manager.enemy_mouse_hover_stopped)
+
+
+#func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	#state.linear_velocity = Vector2.ZERO
+	#state.angular_velocity = 0
+
 
 func _process(delta: float) -> void:
 	handle_parry_visibility()
@@ -137,7 +144,7 @@ func _process(delta: float) -> void:
 				var animation_before_change: String = animation_player.current_animation
 				animation_player.speed_scale = move_speed_modifier
 				animation_player.play(animations[current_direction]["walk"])
-				if animation_player.current_animation != animation_before_change:
+				if animation_player.current_animation != animation_before_change and animation_player.current_animation in animation_library:
 					animation_player.seek(randi_range(0, 3) / FPS)
 			else:
 				animation_player.play(animations[current_direction]["idle"])
@@ -292,7 +299,6 @@ func calculate_movement() -> Vector2:
 
 func die() -> void:
 	emit_signal("stopped_mouse_hover", self)
-	emit_signal("player_left_melee", self)
 	dying = true
 	animation_player.speed_scale = 1
 	animation_player.play(animations[current_direction]["death"])
@@ -383,7 +389,10 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	
 	#get all pngs to add to each frame of the animation
 	var assets_path: String = model + "/" + model + "_" + action_type + "/" + direction_name[direction]
-	var png_list: Array[String] = game_manager.dir_contents_filter("res://assets/art/enemy/" + assets_path,"png")
+	var parent_directory: String = "enemy"
+	if category == "boss":
+		parent_directory = "boss"
+	var png_list: Array[String] = game_manager.dir_contents_filter("res://assets/art/" + parent_directory + "/" + assets_path,"png")
 	
 	# add new frames to the spriteframes resource
 	for png_path: String in png_list:

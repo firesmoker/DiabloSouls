@@ -335,40 +335,37 @@ position = Vector2(22, 207)
 position = Vector2(-174, 184)
 
 [node name="Skeleton7" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(-274, 227)
-
-[node name="Skeleton8" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(-274, 227)
-
-[node name="Skeleton9" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(-274, 227)
-
-[node name="Skeleton10" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(-274, 227)
-
-[node name="Skeleton11" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(-274, 227)
-
-[node name="Skeleton12" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(-274, 227)
+position = Vector2(-274, 228)
 
 [node name="Skeleton_Fast" parent="Enemies" instance=ExtResource("8_m5cea")]
 position = Vector2(-207, 11)
+custom_integrator = true
+base_id = ""
 
 [node name="Skeleton_Fast2" parent="Enemies" instance=ExtResource("8_m5cea")]
 position = Vector2(-278, 98)
+custom_integrator = true
+base_id = ""
 
 [node name="Skeleton_Fast3" parent="Enemies" instance=ExtResource("8_m5cea")]
 position = Vector2(-167, -62)
+custom_integrator = true
+base_id = ""
 
 [node name="Skeleton_Fast4" parent="Enemies" instance=ExtResource("8_m5cea")]
 position = Vector2(-20, -81)
+custom_integrator = true
+base_id = ""
 
 [node name="Skeleton_Fast5" parent="Enemies" instance=ExtResource("8_m5cea")]
 position = Vector2(-82, 168)
+custom_integrator = true
+base_id = ""
 
 [node name="Skeleton_Fast6" parent="Enemies" instance=ExtResource("8_m5cea")]
 position = Vector2(290, 21)
+custom_integrator = true
+base_id = ""
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
 [connection signal="parry_success" from="Player" to="GameManager" method="_on_player_parry_success"]

@@ -113,14 +113,9 @@ var attack_ability: Ability = Ability.new("attack", "melee")
 var parry_ability: Ability = Ability.new("parry", "melee")
 
 func _ready() -> void:
-	print("trying to change hitpoints fuck")
-	print(max_hitpoints)
 	hitpoints = max_hitpoints
-	print(hitpoints)
 	stamina = max_stamina
 	mana = max_mana
-	#animation_player.playback_default_blend_time
-	#original_position = position
 	destination = position
 	construct_animation_library()
 	add_animation_method_calls()
@@ -156,6 +151,8 @@ func stamina_regen(delta_time: float) -> void:
 		if stamina_regen_time >= stamina_regen_rate:
 			stamina_regen_time = 0
 			stamina += stamina_regen_amount
+	elif is_dying:
+		stamina = stamina
 	else:
 		stamina = max_stamina
 		stamina_regen_time = 0
@@ -166,6 +163,8 @@ func health_regen(delta_time: float) -> void:
 		if health_regen_time >= health_regen_rate:
 			health_regen_time = 0
 			hitpoints += health_regen_amount
+	elif is_dying:
+		hitpoints = 0
 	else:
 		hitpoints = max_hitpoints
 		health_regen_time = 0

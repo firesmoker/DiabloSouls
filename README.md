@@ -5,8 +5,8 @@ Things that are very missing:
 	Sound is not good and responsive
 	no way to use mana
 	no ranged abilities
+	no ranged enemies
 	no abilities in combat other than basic attack, parry, counter, dodge
-	Enemy highlight makes them transparent and the highlight is not clear enough. I want outline.
 	parry / counter is not optimized for multiple enemies
 	no counter and parry animations (maybe in the meantime - knockback? reverse step?)
 	Artstyle is lacking
@@ -15,10 +15,10 @@ Things that are very missing:
 	counter is immediate (maybe good?) and doesn't provide invulnerability (?)
 	BUG: stun makes enemy's "teleport" forward after it
 	enemy retaliation animations (lower priority)
-	movement could be smoother using root motion, or better more consistent animations (lower priority)
 	no movement accelaration (low priority)
 	no indication for lack of stamina to parry on the highlight circles (very low priority, if parry actually uses atmina)
 	no decals like blood and bones flying in the air (very very low priority)
+	movement could be smoother using root motion, or better more consistent animations (very very low priority)
 	
 
 
@@ -264,6 +264,9 @@ if not:
 	cancel animation
 
 ==============================================================================
+# 17.8
+enemy outline
+
 # 9.8
 Above enemy health indication if they're damaged
 counter indication is set by bot the player and enemy melee

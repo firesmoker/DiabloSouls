@@ -33,18 +33,21 @@ animations = [{
 "speed": 12.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o5f0a"]
-radius = 4.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3rv2h"]
+resource_local_to_scene = true
+radius = 6.0
 height = 16.0
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nvcc2"]
 resource_local_to_scene = true
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ud6ys"]
+resource_local_to_scene = true
 radius = 24.0
 height = 48.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5pav5"]
+resource_local_to_scene = true
 radius = 13.0
 height = 34.0
 
@@ -55,6 +58,7 @@ y_sort_enabled = true
 collision_mask = 3
 input_pickable = true
 gravity_scale = 0.0
+custom_integrator = true
 script = ExtResource("1_vs0td")
 
 [node name="HealthBar" parent="." instance=ExtResource("4_5wg2b")]
@@ -78,7 +82,7 @@ sprite_frames = SubResource("SpriteFrames_e0icc")
 z_index = -1
 z_as_relative = false
 rotation = 1.5708
-shape = SubResource("CapsuleShape2D_o5f0a")
+shape = SubResource("CapsuleShape2D_3rv2h")
 
 [node name="HighlightCircle" type="Sprite2D" parent="."]
 visible = false

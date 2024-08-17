@@ -1,9 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://bx722w57mqme2"]
+[gd_scene load_steps=12 format=3 uid="uid://ch1let232ajbg"]
 
-[ext_resource type="PackedScene" uid="uid://b1hcswr77ft67" path="res://scenes/enemy.tscn" id="1_h6qdv"]
-[ext_resource type="Texture2D" uid="uid://dmn1yj51l5mrb" path="res://assets/art/enemy/slime/slime_idle/E/slime_default_idle_E_0.0_0.png" id="2_noxwh"]
+[ext_resource type="PackedScene" uid="uid://b1hcswr77ft67" path="res://scenes/enemy.tscn" id="1_exfay"]
+[ext_resource type="Texture2D" uid="uid://dywc8ehgqff6b" path="res://assets/art/boss/demonlord/demonlord_idle/E/demonlord_default_idle_E_0.0_0.png" id="2_hj6x6"]
+[ext_resource type="Texture2D" uid="uid://drcnh1cemyatb" path="res://assets/art/boss/demonlord/demonlord_attack/E/demonlord_default_attack1_E_0.0_6.png" id="2_ra36m"]
+[ext_resource type="Texture2D" uid="uid://0ixytbmg325h" path="res://assets/art/boss/demonlord/demonlord_idle/S/demonlord_default_idle_S_270.0_0.png" id="3_kiv02"]
 
-[sub_resource type="Shader" id="Shader_jkn5f"]
+[sub_resource type="Shader" id="Shader_73ldh"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -41,74 +43,74 @@ void fragment() {
 //}
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_w7qk1"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1031v"]
 resource_local_to_scene = true
-shader = SubResource("Shader_jkn5f")
+shader = SubResource("Shader_73ldh")
 shader_parameter/width = 0.0
 shader_parameter/modulated_color = Color(1, 1, 1, 1)
 shader_parameter/outline_color = Color(0.333327, 0, 0.0012985, 1)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_iyag3"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_kkpv2"]
 resource_local_to_scene = true
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_noxwh")
+"texture": ExtResource("2_hj6x6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_ra36m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_kiv02")
 }],
 "loop": true,
 "name": &"default",
 "speed": 12.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_m8147"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xh5jj"]
 resource_local_to_scene = true
-radius = 4.66321
-height = 15.864
+radius = 12.0
+height = 32.0
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0i3qh"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_dm3a0"]
 resource_local_to_scene = true
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_80ple"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rvte0"]
 resource_local_to_scene = true
 radius = 24.0
 height = 48.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nme5d"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_03g7x"]
 resource_local_to_scene = true
-radius = 13.0
-height = 34.0
+radius = 9.0
+height = 52.0
 
-[node name="Slime" instance=ExtResource("1_h6qdv")]
-id = "Slime"
-base_id = "slime"
-model = "slime"
-speed_fps_ratio = 30.0
-move_speed_modifier = 0.8
-hitpoints = 1
-animation_types = Array[String](["idle", "walk", "death"])
+[node name="Enemy" instance=ExtResource("1_exfay")]
+base_id = "demonlord"
+model = "demonlord"
+category = "boss"
 
 [node name="AnimatedSprite2D" parent="." index="2"]
-material = SubResource("ShaderMaterial_w7qk1")
-sprite_frames = SubResource("SpriteFrames_iyag3")
+material = SubResource("ShaderMaterial_1031v")
+sprite_frames = SubResource("SpriteFrames_kkpv2")
 
 [node name="PhysicalCollider" parent="." index="3"]
-scale = Vector2(1.93, 1.765)
-shape = SubResource("CapsuleShape2D_m8147")
+z_index = 50
+shape = SubResource("CapsuleShape2D_xh5jj")
 
 [node name="HighlightCircle" parent="." index="4"]
-material = SubResource("CanvasItemMaterial_0i3qh")
+material = SubResource("CanvasItemMaterial_dm3a0")
 
 [node name="CollisionShape2D" parent="ClumpZone" index="0"]
-shape = SubResource("CapsuleShape2D_80ple")
+shape = SubResource("CapsuleShape2D_rvte0")
 
 [node name="CollisionShape2D" parent="HoverZone" index="0"]
-position = Vector2(0, -6.075)
-scale = Vector2(0.655, 0.655)
-shape = SubResource("CapsuleShape2D_80ple")
+shape = SubResource("CapsuleShape2D_rvte0")
 
 [node name="CollisionShape2D" parent="MeleeZone" index="0"]
-position = Vector2(0, 0)
-shape = SubResource("CapsuleShape2D_80ple")
+shape = SubResource("CapsuleShape2D_rvte0")
 
 [node name="AttackCollider" parent="AttackAxis/AttackZone" index="0"]
-shape = SubResource("CapsuleShape2D_nme5d")
+position = Vector2(-6.87798e-05, -19)
+shape = SubResource("CapsuleShape2D_03g7x")
