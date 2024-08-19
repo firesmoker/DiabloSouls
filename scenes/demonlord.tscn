@@ -92,7 +92,6 @@ base_id = "demonlord"
 model = "demonlord"
 category = "boss"
 speed_fps_ratio = 82.0
-attack_frame = 4
 hitpoints_max = 20
 hitpoints = 20
 has_attack = true
@@ -113,7 +112,6 @@ z_index = 50
 shape = SubResource("CapsuleShape2D_xh5jj")
 
 [node name="HighlightCircle" parent="." index="4"]
-visible = true
 z_index = -1
 material = SubResource("CanvasItemMaterial_dm3a0")
 scale = Vector2(3.46, 3.46)

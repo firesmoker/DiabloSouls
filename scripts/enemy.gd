@@ -18,14 +18,14 @@ class_name Enemy extends RigidBody2D
 @export var speed_fps_ratio: float = 42.35
 @export var move_speed_modifier: float = 1
 @export var attack_speed_modifier: float = 0.7
-@export var attack_frame: int = 3
+@export var attack_frame: int = 4
 @export var hitpoints_max: int = 2
 @export var hitpoints: int = 2
 @export var has_attack: bool = false
 @export var animation_types: Array[String] = ["idle", "walk"]
 
 var move_offset: Vector2 = Vector2(0,0)
-var moving: bool = true
+var is_locked: bool = false
 var dying: bool = false
 var can_attack: bool = true
 var attacking: bool = false
@@ -114,40 +114,59 @@ func _process(delta: float) -> void:
 		destination = player.position
 	else:
 		destination = position
-		moving = false
+		is_locked = true
 		
-	if "attack" in animation_player.current_animation:
-		moving = false
-		await animation_player.animation_finished
+	if "attack" in animation_player.current_animation and attacking:
+		is_locked = true
+		print("waiting for attack to finish")
+		if not stunned and not is_locked:
+			await animation_player.animation_finished
 	if not dying and not stunned:
-		animation_player.speed_scale = attack_speed_modifier
-		#if position.distance_to(player.position) <= attack_range and has_attack:
+		#print("trying to do normal actions")
 		if in_melee and has_attack:
-			can_attack = true
-			attacking = true
-			var angle: float = position.angle_to_point(player.position)
-			
-			var rand: float = (1/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
-			var rounded_rand: float = float(round(angle / rand) * rand)
-			current_direction = radian_direction[rounded_rand]
-			
-			attack_axis.rotation = angle
-			animation_player.play(animations[current_direction]["attack"])
+			#print("trying to attack")
+			attack()
 		else:
+			#print("setting to not attack")
 			can_attack = false
 			attacking = false
 		if not attacking:
-			if moving and not stunned:
-				set_direction_by_angle()
-				var velocity: Vector2 = calculate_movement() * move_speed_modifier * delta
-				move_and_collide(velocity)
-				var animation_before_change: String = animation_player.current_animation
-				animation_player.speed_scale = move_speed_modifier
-				animation_player.play(animations[current_direction]["walk"])
-				if animation_player.current_animation != animation_before_change and animation_player.current_animation in animation_library:
-					animation_player.seek(randi_range(0, 3) / FPS)
+			#print("not attacking actions")
+			if not is_locked and not stunned:
+				#print("trying to walk")
+				walk(delta)
 			else:
+				#print("trying to idle")
 				animation_player.play(animations[current_direction]["idle"])
+
+func walk(delta: float) -> void:
+	#print("walking")
+	set_direction_by_angle()
+	var velocity: Vector2 = calculate_movement() * move_speed_modifier * delta
+	move_and_collide(velocity)
+	var animation_before_change: String = animation_player.current_animation
+	animation_player.speed_scale = move_speed_modifier
+	if "walk" not in animation_player.current_animation:
+		print("starting to walk")
+	animation_player.play(animations[current_direction]["walk"])
+	#print(animation_player.current_animation)
+	#if animation_player.current_animation != animation_before_change and animation_player.current_animation in animation_library:
+		#animation_player.seek(randi_range(0, 3) / FPS)
+
+
+func attack() -> void:
+	can_attack = true
+	attacking = true
+	var angle: float = position.angle_to_point(player.position)
+	
+	var rand: float = (1/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
+	var rounded_rand: float = float(round(angle / rand) * rand)
+	current_direction = radian_direction[rounded_rand]
+	
+	attack_axis.rotation = angle
+	animation_player.speed_scale = attack_speed_modifier
+	animation_player.play(animations[current_direction]["attack"])
+
 
 func handle_parry_visibility() -> void:
 	if player.is_locked and not perry_subdued:
@@ -161,7 +180,7 @@ func handle_parry_visibility() -> void:
 
 func _on_animation_player_animation_finished(_anim_name: String) -> void:
 	if not attacking and has_attack:
-		moving = true
+		is_locked = false
 
 
 func _on_hover_zone_mouse_entered() -> void:
@@ -185,7 +204,7 @@ func _on_melee_zone_body_entered(body: CollisionObject2D) -> void:
 	if body == player:
 		in_melee = true
 		highlight_circle.visible = true
-		moving = false
+		is_locked = true
 
 func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 	if body == player:
@@ -193,7 +212,7 @@ func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 		if not in_player_melee_zone:
 			highlight_circle.visible = false
 		highlight_circle.modulate = Color.TRANSPARENT
-		moving = true
+		is_locked = false
 		
 func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
 	if body == player:
@@ -216,13 +235,14 @@ func get_stunned() -> void:
 	var stun_timer: Timer = Timer.new()
 	self.add_child(stun_timer)
 	stun_timer.wait_time = stun_time
-	stun_timer.set_physics_process(true)
+	#stun_timer.set_physics_process(true)
 	stunned = true
-	moving = false
+	is_locked = true
 	stun_timer.start()
 	await stun_timer.timeout
+	print("STUN TIMEOUT!")
 	stunned = false
-	moving = true
+	is_locked = false
 	stun_timer.queue_free()
 
 func get_parried(counter: bool = false) -> void:
@@ -232,7 +252,7 @@ func get_parried(counter: bool = false) -> void:
 		game_manager.camera_shake_and_color()
 		get_hit(2)
 	else:
-		animated_sprite_2d.modulate = Color.BLUE
+		animated_sprite_2d.material.set_shader_parameter("modulated_color",Color.BLUE)
 	if not dying:
 		can_be_parried = false
 		can_be_countered = false
@@ -245,8 +265,9 @@ func get_parried(counter: bool = false) -> void:
 		timer.start()
 		
 		await timer.timeout
+		print("PARRY TIMEOUT!")
 		timer.queue_free()
-		animated_sprite_2d.modulate = body_color
+		animated_sprite_2d.material.set_shader_parameter("modulated_color",body_color)
 		if not dying:
 			animation_player.stop()
 		attack_collider.disabled = true
@@ -255,14 +276,14 @@ func get_hit(damage: int = randi_range(1,3)) -> bool:
 	can_be_parried = false
 	can_be_countered = false
 	highlight_circle.modulate = Color.TRANSPARENT
-	animated_sprite_2d.modulate = Color.RED
+	animated_sprite_2d.material.set_shader_parameter("modulated_color",Color.RED)
 	var timer: Timer = Timer.new()
 	self.add_child(timer)
 	timer.wait_time = 0.07
 	timer.start()
 	await timer.timeout
 	timer.queue_free()
-	animated_sprite_2d.modulate = body_color
+	animated_sprite_2d.material.set_shader_parameter("modulated_color",body_color)
 	hitpoints -= damage
 	if hitpoints <= 0:
 		health_bar.visible = false
@@ -340,11 +361,13 @@ func add_animation_method_calls() -> void:
 			var time: float = attack_frame/FPS
 			var parried_time: float = 0.5/FPS
 			var countered_time: float = 3/FPS
+			print("adding method calls for animation " + str(animation))
 			animation_to_modify.track_insert_key(track, parried_time, {"method" : "ready_to_be_parried" , "args" : []}, 1)
 			animation_to_modify.track_insert_key(track, countered_time, {"method" : "ready_to_be_countered" , "args" : []}, 1)
 			animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : []}, 1)
 
 func attack_effect() -> void:
+	print("attack effect!")
 	attack_collider.disabled = false
 	highlight_circle.modulate = Color.TRANSPARENT
 	can_be_countered = false
@@ -361,12 +384,14 @@ func disable_attack_zone() -> void:
 	attack_collider.disabled = true
 	
 func ready_to_be_parried() -> void:
+	print("ready to be parried")
 	if not stunned:
 		if in_melee:
 			highlight_circle.modulate = Color.WHITE
 		can_be_parried = true
 
 func ready_to_be_countered() -> void:
+	print("ready to be countered")
 	if not stunned:
 		highlight_circle.modulate = Color.BLUE
 		can_be_countered = true

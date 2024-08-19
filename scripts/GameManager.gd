@@ -21,9 +21,9 @@ func _ready() -> void:
 	#create_enemies_timed()
 	enemy_label.visible = false
 	enemy_label.visible = true
-	player_health.max_value = player.hitpoints
-	player_stamina.max_value = player.stamina
-	player_mana.max_value = player.mana
+	player_health.max_value = player.max_hitpoints
+	player_stamina.max_value = player.max_stamina
+	player_mana.max_value = player.max_mana
 	#enemy_label.text = "tuuukaaa"
 
 func _unhandled_input(event: InputEvent) -> void:

@@ -19,10 +19,10 @@ class_name Player extends CharacterBody2D
 @export var no_cancel_frame: float = 2.9
 @export var attack_again_frame: int = 5
 @export var max_hitpoints: float = 5
-@export var hitpoints: float = 5
-@export var stamina: float = 5
+var hitpoints: float = 5
+var stamina: float = 5
 @export var max_stamina: float = 5
-@export var mana: int = 5
+var mana: int = 5
 @export var health_regen_amount: float = 0.006
 @export var stamina_regen_amount: float = 0.02
 @export var max_mana: int = 5
@@ -281,6 +281,7 @@ func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
 
 func _on_parry_zone_body_entered(enemy: CollisionObject2D) -> void:
 	enemies_in_defense_zone.append(enemy)
+	print("enemies in parry: " + str(enemy))
 	if not is_defending and is_parrying:
 		emit_signal("parry_success", enemy)
 		print("parrying" + str(enemy) + "(in player.gd)")
