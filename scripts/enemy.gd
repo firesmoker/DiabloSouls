@@ -27,7 +27,7 @@ class_name Enemy extends RigidBody2D
 var move_offset: Vector2 = Vector2(0,0)
 var is_locked: bool = false
 var dying: bool = false
-var can_attack: bool = true
+#var can_attack: bool = true
 var attacking: bool = false
 var switch_animation_timer: Timer
 var adjacent_enemies: Array = []
@@ -107,7 +107,28 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	handle_parry_visibility()
+	get_destination()
+	
 		
+	#if "attack" in animation_player.current_animation and attacking:
+		#is_locked = true
+		#print("waiting for attack to finish")
+		#if not stunned and not is_locked:
+			#await animation_player.animation_finished
+			
+	if not dying and not stunned:
+		if in_melee and has_attack and not attacking:
+			attack()
+			#can_attack = true
+		#else:
+			#can_attack = false
+		if not attacking and not is_locked:
+			if not is_locked and not stunned:
+				walk(delta)
+			else:
+				animation_player.play(animations[current_direction]["idle"])
+
+func get_destination() -> void:
 	if player.dead and in_melee:
 		in_melee = false
 	elif !player.dead:
@@ -115,29 +136,6 @@ func _process(delta: float) -> void:
 	else:
 		destination = position
 		is_locked = true
-		
-	if "attack" in animation_player.current_animation and attacking:
-		is_locked = true
-		print("waiting for attack to finish")
-		if not stunned and not is_locked:
-			await animation_player.animation_finished
-	if not dying and not stunned:
-		#print("trying to do normal actions")
-		if in_melee and has_attack:
-			#print("trying to attack")
-			attack()
-		else:
-			#print("setting to not attack")
-			can_attack = false
-			attacking = false
-		if not attacking:
-			#print("not attacking actions")
-			if not is_locked and not stunned:
-				#print("trying to walk")
-				walk(delta)
-			else:
-				#print("trying to idle")
-				animation_player.play(animations[current_direction]["idle"])
 
 func walk(delta: float) -> void:
 	#print("walking")
@@ -155,7 +153,8 @@ func walk(delta: float) -> void:
 
 
 func attack() -> void:
-	can_attack = true
+	is_locked = true
+	#can_attack = false
 	attacking = true
 	var angle: float = position.angle_to_point(player.position)
 	
@@ -181,6 +180,8 @@ func handle_parry_visibility() -> void:
 func _on_animation_player_animation_finished(_anim_name: String) -> void:
 	if not attacking and has_attack:
 		is_locked = false
+	if "attack" in _anim_name:
+		attacking = false
 
 
 func _on_hover_zone_mouse_entered() -> void:
@@ -231,6 +232,7 @@ func switch_direction() -> void:
 
 func get_stunned() -> void:
 	animation_player.stop()
+	attacking = false
 	highlight_circle.modulate = Color.TRANSPARENT
 	var stun_timer: Timer = Timer.new()
 	self.add_child(stun_timer)
@@ -294,7 +296,8 @@ func get_hit(damage: int = randi_range(1,3)) -> bool:
 		health_bar.visible = true
 		if randi() % 100 + 1 > 50:
 			animation_player.stop()
-		attack_collider.disabled = true
+			attack_collider.disabled = true
+			attacking = false
 	return false
 
 func set_direction_by_angle(angle: float = position.angle_to_point(destination)) -> void:
