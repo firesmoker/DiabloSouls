@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://bx722w57mqme2"]
+[gd_scene load_steps=11 format=3 uid="uid://bx722w57mqme2"]
 
 [ext_resource type="PackedScene" uid="uid://b1hcswr77ft67" path="res://scenes/enemy.tscn" id="1_h6qdv"]
+[ext_resource type="PackedScene" uid="uid://brcjsn57c8n5p" path="res://scenes/projectile.tscn" id="2_k21f3"]
 [ext_resource type="Texture2D" uid="uid://dmn1yj51l5mrb" path="res://assets/art/enemy/slime/slime_idle/E/slime_default_idle_E_0.0_0.png" id="2_noxwh"]
 
 [sub_resource type="Shader" id="Shader_jkn5f"]
@@ -85,7 +86,11 @@ model = "slime"
 speed_fps_ratio = 30.0
 move_speed_modifier = 0.8
 hitpoints = 1
-animation_types = Array[String](["idle", "walk", "death"])
+has_attack = true
+has_ranged_attack = true
+animation_types = Array[String](["idle", "walk", "death", "attack"])
+attack_range = 80.0
+projectile = ExtResource("2_k21f3")
 
 [node name="AnimatedSprite2D" parent="." index="2"]
 material = SubResource("ShaderMaterial_w7qk1")

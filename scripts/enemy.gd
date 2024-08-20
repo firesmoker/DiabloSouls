@@ -22,6 +22,7 @@ class_name Enemy extends RigidBody2D
 @export var hitpoints_max: int = 2
 @export var hitpoints: int = 2
 @export var has_attack: bool = false
+@export var has_ranged_attack: bool = false
 @export var animation_types: Array[String] = ["idle", "walk"]
 
 var move_offset: Vector2 = Vector2(0,0)
@@ -46,7 +47,10 @@ var sprite_material: Material
 var player: Player
 var destination: Vector2
 var player_in_range: bool = false
-var attack_range: float = 35
+
+@export var attack_range: float = 35
+@export var projectile: PackedScene
+#@export var abilities: Array[Ability]
 var ready_to_switch_direction: bool = true
 
 var animations: Dictionary = {}
@@ -108,20 +112,16 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	handle_parry_visibility()
 	get_destination()
+
 	
-		
-	#if "attack" in animation_player.current_animation and attacking:
-		#is_locked = true
-		#print("waiting for attack to finish")
-		#if not stunned and not is_locked:
-			#await animation_player.animation_finished
 			
 	if not dying and not stunned:
+		if has_ranged_attack and not attacking:
+			if position.distance_to(player.position) <= attack_range:
+				attack()
+		
 		if in_melee and has_attack and not attacking:
 			attack()
-			#can_attack = true
-		#else:
-			#can_attack = false
 		if not attacking and not is_locked:
 			if not is_locked and not stunned:
 				walk(delta)
@@ -182,6 +182,8 @@ func _on_animation_player_animation_finished(_anim_name: String) -> void:
 		is_locked = false
 	if "attack" in _anim_name:
 		attacking = false
+		if has_ranged_attack:
+			is_locked = false
 
 
 func _on_hover_zone_mouse_entered() -> void:
@@ -343,6 +345,46 @@ func highlight_stop() -> void:
 	animated_sprite_2d.material.set_shader_parameter("width", 0)
 
 
+func attack_effect(melee: bool = true) -> void:
+	if melee:
+		print("attack effect!")
+		attack_collider.disabled = false
+		highlight_circle.modulate = Color.TRANSPARENT
+		can_be_countered = false
+		can_be_parried = false
+		disable_attack_zone()
+	else:
+		print("ranged")
+		var instance: Projectile = projectile.instantiate() as Projectile
+		add_child(instance)
+		instance.player = player
+		instance.rotation += get_angle_to(player.position)
+		instance.velocity = position.direction_to(player.position)
+		
+	
+func disable_attack_zone() -> void:
+	var timer: Timer = Timer.new()
+	attack_collider.add_child(timer)
+	timer.wait_time = 0.06
+	timer.start()
+	await timer.timeout
+	timer.queue_free()
+	attack_collider.disabled = true
+	
+func ready_to_be_parried() -> void:
+	print("ready to be parried")
+	if not stunned:
+		if in_melee:
+			highlight_circle.modulate = Color.WHITE
+		can_be_parried = true
+
+func ready_to_be_countered() -> void:
+	print("ready to be countered")
+	if not stunned:
+		highlight_circle.modulate = Color.BLUE
+		can_be_countered = true
+		
+
 func construct_animation_library() -> void:
 	animations.clear()
 	for key: int in direction_name:
@@ -367,37 +409,11 @@ func add_animation_method_calls() -> void:
 			print("adding method calls for animation " + str(animation))
 			animation_to_modify.track_insert_key(track, parried_time, {"method" : "ready_to_be_parried" , "args" : []}, 1)
 			animation_to_modify.track_insert_key(track, countered_time, {"method" : "ready_to_be_countered" , "args" : []}, 1)
-			animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : []}, 1)
+			if has_ranged_attack:
+				animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : [false]}, 1)
+			else:
+				animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : []}, 1)
 
-func attack_effect() -> void:
-	print("attack effect!")
-	attack_collider.disabled = false
-	highlight_circle.modulate = Color.TRANSPARENT
-	can_be_countered = false
-	can_be_parried = false
-	disable_attack_zone()
-	
-func disable_attack_zone() -> void:
-	var timer: Timer = Timer.new()
-	attack_collider.add_child(timer)
-	timer.wait_time = 0.06
-	timer.start()
-	await timer.timeout
-	timer.queue_free()
-	attack_collider.disabled = true
-	
-func ready_to_be_parried() -> void:
-	print("ready to be parried")
-	if not stunned:
-		if in_melee:
-			highlight_circle.modulate = Color.WHITE
-		can_be_parried = true
-
-func ready_to_be_countered() -> void:
-	print("ready to be countered")
-	if not stunned:
-		highlight_circle.modulate = Color.BLUE
-		can_be_countered = true
 
 
 func create_animated2d_animations_from_assets(animation_name: String, direction: int = directions.N) -> void:
@@ -441,3 +457,26 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 		new_animation.track_insert_key(frames_track,frame_number/FPS, frame_number)
 		frame_number += 1
 	animation_library.add_animation(animation_name, new_animation)
+
+class Ability:
+	@export var name: String
+	@export var range_type: String
+	@export var standing: bool
+	@export var animation_name: String
+	
+	func _init(name: String, range_type: String, standing: bool = true) -> void:
+		self.name = name
+		self.range_type = range_type
+		self.standing = standing
+		self.animation_name = self.name
+		
+	func execute(target: Vector2 = Vector2(0,0)) -> void:
+		#print("executing " + name)
+		if self.range_type == "self":
+			#print("execute on: " + str(target))
+			pass
+		elif self.range_type == "ranged" :
+			print("pew!")
+		elif self.range_type == "melee":
+			print("ZBANG MELEE")
+		

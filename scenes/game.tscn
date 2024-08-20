@@ -5,8 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://cgvpmrxms5e4k" path="res://scenes/player.tscn" id="3_gcy3d"]
 [ext_resource type="Texture2D" uid="uid://b14lamihq1w8f" path="res://assets/art/environment/ground_stone1.png" id="6_6dfq4"]
 [ext_resource type="Texture2D" uid="uid://bsrx8kbnpdg4d" path="res://assets/art/environment/ground_variation1.png" id="7_5uejp"]
-[ext_resource type="PackedScene" uid="uid://brlvroq1a2p0i" path="res://scenes/skeleton.tscn" id="7_fmbge"]
 [ext_resource type="PackedScene" uid="uid://crbwettm152r0" path="res://scenes/hud.tscn" id="7_luld2"]
+[ext_resource type="PackedScene" uid="uid://bx722w57mqme2" path="res://scenes/slime.tscn" id="10_vlv13"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_w3c5t"]
 source_geometry_group_name = &"navigation_polygon_source_group"
@@ -318,8 +318,8 @@ invlunerable = true
 [node name="Enemies" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="Skeleton" parent="Enemies" instance=ExtResource("7_fmbge")]
-hitpoints_max = 100
+[node name="Slime" parent="Enemies" instance=ExtResource("10_vlv13")]
+position = Vector2(-191, -113)
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
 [connection signal="parry_success" from="Player" to="GameManager" method="_on_player_parry_success"]

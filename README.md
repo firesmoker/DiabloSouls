@@ -1,11 +1,12 @@
 certain conditions can have an array of different "sources", and remove themselves from it later, so only when all sources are removed the condition stops.
 
 Things that are very missing:
+	no ranged enemies
+	maybe i can get rid of the "is_locked" for enemies?
 	Pathfinding is non existent for both player and enemies
 	Sound is not good and responsive
 	no way to use mana
 	no ranged abilities
-	no ranged enemies
 	no abilities in combat other than basic attack, parry, counter, dodge
 	parry / counter is not optimized for multiple enemies
 	no counter and parry animations (maybe in the meantime - knockback? reverse step?)
@@ -13,7 +14,6 @@ Things that are very missing:
 	no music
 	player light is a bit awkard, and the dark is not dark enough
 	counter is immediate (maybe good?) and doesn't provide invulnerability (?)
-	BUG: stun makes enemy's "teleport" forward after it
 	enemy retaliation animations (lower priority)
 	no movement accelaration (low priority)
 	no indication for lack of stamina to parry on the highlight circles (very low priority, if parry actually uses atmina)
