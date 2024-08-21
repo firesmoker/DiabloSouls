@@ -53,6 +53,7 @@ var enemies_in_defense_zone: Array[Enemy]
 #var abilities_queue: Array[Ability]
 var is_dying: bool = false
 var dead: bool = false
+var target_for_ranged: Vector2
 
 signal ready_to_attack_again_signal
 signal attack_effects
@@ -229,7 +230,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			attack(face_destination)
 		
 		if event.is_action_pressed("ability_1"):
-			var face_destination: Vector2 = get_global_mouse_position()
+			var face_destination: Vector2
+			if game_manager.enemy_in_focus != null:
+				face_destination = game_manager.enemy_in_focus.position
+				target_for_ranged = game_manager.enemy_in_focus.position
+			else:
+				face_destination = get_global_mouse_position()
+				target_for_ranged = get_global_mouse_position()
 			attack(face_destination, ranged_ability)
 		
 		if event.is_action_pressed("parry"):
@@ -523,9 +530,11 @@ func just_attacked(attack_type: String = "melee") -> void: # THIS
 		emit_signal("attack_effects")
 		disable_attack_zone()
 	elif attack_type == "ranged":
+		if target_for_ranged == null:
+			target_for_ranged = get_global_mouse_position()
 		print("ranged attack")
 		emit_signal("attack_effects")
-		create_projectile(get_global_mouse_position(), 2)
+		create_projectile(target_for_ranged, 2)
 
 func create_projectile(target: Vector2 = Vector2(0,0), speed: float = 1.0) -> void:
 	var instance: Projectile = projectile.instantiate() as Projectile

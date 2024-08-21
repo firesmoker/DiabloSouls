@@ -403,10 +403,38 @@ y_sort_enabled = true
 position = Vector2(-33, 3)
 projectile = SubResource("PackedScene_86j4h")
 
+[node name="Slime2" parent="Enemies" instance=ExtResource("10_vlv13")]
+position = Vector2(-198, -64)
+projectile = SubResource("PackedScene_86j4h")
+
+[node name="Slime3" parent="Enemies" instance=ExtResource("10_vlv13")]
+position = Vector2(-285, 90)
+projectile = SubResource("PackedScene_86j4h")
+
+[node name="Slime4" parent="Enemies" instance=ExtResource("10_vlv13")]
+position = Vector2(419, -94)
+projectile = SubResource("PackedScene_86j4h")
+
 [node name="Skeleton" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(-119, 157)
+
+[node name="Skeleton2" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(313, 146)
+
+[node name="Skeleton3" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(59, 200)
+
+[node name="Skeleton4" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(323, 16)
+
+[node name="Skeleton5" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(45, -139)
 
 [node name="Skeleton_Fast" parent="Enemies" instance=ExtResource("8_m5cea")]
 position = Vector2(139, -19)
+
+[node name="Skeleton_Fast2" parent="Enemies" instance=ExtResource("8_m5cea")]
+position = Vector2(176, -128)
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
 [connection signal="parry_success" from="Player" to="GameManager" method="_on_player_parry_success"]
