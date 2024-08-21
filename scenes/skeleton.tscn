@@ -106,3 +106,6 @@ shape = SubResource("CapsuleShape2D_ujkq1")
 
 [node name="AttackCollider" parent="AttackAxis/AttackZone" index="0"]
 shape = SubResource("CapsuleShape2D_lrxak")
+
+[node name="Attack_Cooldown" parent="." index="9"]
+wait_time = 5.0

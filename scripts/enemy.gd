@@ -1,5 +1,7 @@
 class_name Enemy extends RigidBody2D
 
+@onready var attack_cooldown: Timer = $Attack_Cooldown
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var game_manager: GameManager = %GameManager
 @onready var highlight_circle: Sprite2D = $HighlightCircle
@@ -122,7 +124,7 @@ func _process(delta: float) -> void:
 		
 		if in_melee and has_attack and not attacking:
 			attack()
-		if not attacking and not is_locked:
+		if not attacking and not is_locked and not in_melee:
 			if not is_locked and not stunned:
 				walk(delta)
 			else:
@@ -153,8 +155,10 @@ func walk(delta: float) -> void:
 
 
 func attack() -> void:
+	
+	#if attack_cooldown.is_stopped():
 	is_locked = true
-	#can_attack = false
+#can_attack = false
 	attacking = true
 	var angle: float = position.angle_to_point(player.position)
 	
@@ -163,8 +167,10 @@ func attack() -> void:
 	current_direction = radian_direction[rounded_rand]
 	
 	attack_axis.rotation = angle
+	print("attack cooldown is stopped")
 	animation_player.speed_scale = attack_speed_modifier
 	animation_player.play(animations[current_direction]["attack"])
+	attack_cooldown.start()
 
 
 func handle_parry_visibility() -> void:
@@ -354,14 +360,18 @@ func attack_effect(melee: bool = true) -> void:
 		can_be_parried = false
 		disable_attack_zone()
 	else:
-		print("ranged")
-		var instance: Projectile = projectile.instantiate() as Projectile
-		add_child(instance)
-		instance.player = player
-		instance.rotation += get_angle_to(player.position)
-		instance.velocity = position.direction_to(player.position)
+		create_projectile()
 		
-	
+
+func create_projectile(speed: float = 1.0) -> void:
+	var instance: Projectile = projectile.instantiate() as Projectile
+	add_child(instance)
+	instance.player = player
+	instance.rotation += get_angle_to(player.position)
+	instance.position += position.direction_to(player.position) * 30
+	instance.velocity = position.direction_to(player.position) * speed
+
+
 func disable_attack_zone() -> void:
 	var timer: Timer = Timer.new()
 	attack_collider.add_child(timer)
@@ -480,3 +490,8 @@ class Ability:
 		elif self.range_type == "melee":
 			print("ZBANG MELEE")
 		
+
+
+func _on_attack_cooldown_timeout() -> void:
+	#attack_cooldown.stop()
+	pass # Replace with function body.

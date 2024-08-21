@@ -106,7 +106,7 @@ func camera_shake_and_color(color: bool = true, extra: bool = false) -> void:
 	var timer: Timer = Timer.new()
 	camera.add_child(timer)
 	
-	#freeze_display()
+	freeze_display()
 	timer.wait_time = shake_time
 	if color:
 		#point_light.blend_mode = 0
@@ -165,12 +165,18 @@ func _on_player_parry_success(enemy: Enemy) -> void:
 		else:
 			print("enemy can't be parried")
 
-func freeze_display(duration := 0.3 / 12.0, delay := 0.05) -> void:
+func freeze_display(duration := 1 / 12.0, delay := 0.05) -> void:
 	await get_tree().create_timer(delay).timeout
-	RenderingServer.set_render_loop_enabled(false)
-	
-	await get_tree().create_timer(duration).timeout
-	RenderingServer.set_render_loop_enabled(true)
+	#RenderingServer.set_render_loop_enabled(false)
+	var timer: Timer = Timer.new()
+	add_child(timer)
+	var time_scale: float = 0.1
+	timer.wait_time = duration * time_scale
+	timer.start()
+	Engine.time_scale = time_scale
+	await timer.timeout
+	Engine.time_scale = 1
+	#RenderingServer.set_render_loop_enabled(true)
 
 
 func dir_contents(path: String) -> void:

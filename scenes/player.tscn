@@ -152,7 +152,7 @@ radius = 29.0172
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hcvbx"]
 resource_local_to_scene = true
 shader = ExtResource("2_ktb63")
-shader_parameter/width = 2.0
+shader_parameter/width = 0.0
 shader_parameter/modulated_color = Color(1, 1, 1, 1)
 shader_parameter/outline_color = Color(0.814995, 0.86858, 0.453719, 1)
 

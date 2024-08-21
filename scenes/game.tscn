@@ -1,12 +1,24 @@
-[gd_scene load_steps=12 format=3 uid="uid://lr15cpqcai72"]
+[gd_scene load_steps=27 format=3 uid="uid://lr15cpqcai72"]
 
 [ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_h602i"]
 [ext_resource type="Script" path="res://scripts/TileMap.gd" id="2_orhwb"]
 [ext_resource type="PackedScene" uid="uid://cgvpmrxms5e4k" path="res://scenes/player.tscn" id="3_gcy3d"]
 [ext_resource type="Texture2D" uid="uid://b14lamihq1w8f" path="res://assets/art/environment/ground_stone1.png" id="6_6dfq4"]
 [ext_resource type="Texture2D" uid="uid://bsrx8kbnpdg4d" path="res://assets/art/environment/ground_variation1.png" id="7_5uejp"]
+[ext_resource type="PackedScene" uid="uid://brlvroq1a2p0i" path="res://scenes/skeleton.tscn" id="7_fmbge"]
 [ext_resource type="PackedScene" uid="uid://crbwettm152r0" path="res://scenes/hud.tscn" id="7_luld2"]
+[ext_resource type="Script" path="res://scripts/projectile.gd" id="8_kku4k"]
+[ext_resource type="PackedScene" uid="uid://dxfa0xmqhcorr" path="res://scenes/skeleton_fast.tscn" id="8_m5cea"]
+[ext_resource type="PackedScene" uid="uid://nmprnxbf13ho" path="res://scenes/explosion.tscn" id="9_82eft"]
+[ext_resource type="Texture2D" uid="uid://dm5gpdlvevfnl" path="res://assets/art/vfx/flame/flame_0.png" id="10_qqnfp"]
 [ext_resource type="PackedScene" uid="uid://bx722w57mqme2" path="res://scenes/slime.tscn" id="10_vlv13"]
+[ext_resource type="Texture2D" uid="uid://bia2pss5e05s1" path="res://assets/art/vfx/flame/flame_1.png" id="11_d2txy"]
+[ext_resource type="Texture2D" uid="uid://cbb01m2duplje" path="res://assets/art/vfx/flame/flame_2.png" id="12_t8d7n"]
+[ext_resource type="Texture2D" uid="uid://dhik1kubrdg1i" path="res://assets/art/vfx/flame/flame_3.png" id="13_bgdse"]
+[ext_resource type="Texture2D" uid="uid://b020abm2yiqjt" path="res://assets/art/vfx/flame/flame_4.png" id="14_q4031"]
+[ext_resource type="Texture2D" uid="uid://dack3xff717lb" path="res://assets/art/vfx/flame/flame_5.png" id="15_g4e0c"]
+[ext_resource type="Texture2D" uid="uid://bafcjrkv6jus" path="res://assets/art/vfx/flame/flame_6.png" id="16_2l01s"]
+[ext_resource type="Texture2D" uid="uid://xpjcovltfxha" path="res://assets/art/vfx/flame/flame_7.png" id="17_6qrxn"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_w3c5t"]
 source_geometry_group_name = &"navigation_polygon_source_group"
@@ -280,6 +292,56 @@ use_texture_padding = false
 sources/0 = SubResource("TileSetAtlasSource_gos0m")
 sources/1 = SubResource("TileSetAtlasSource_ltl66")
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_8asgb"]
+resource_local_to_scene = true
+radius = 4.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uw5ym"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_qqnfp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_d2txy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_t8d7n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_bgdse")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_q4031")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_g4e0c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_2l01s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_6qrxn")
+}],
+"loop": true,
+"name": &"default",
+"speed": 24.0
+}]
+
+[sub_resource type="PackedScene" id="PackedScene_86j4h"]
+resource_local_to_scene = true
+_bundled = {
+"conn_count": 2,
+"conns": PackedInt32Array(1, 0, 19, 18, 2, 0, 0, 2, 0, 21, 20, 2, 0, 0),
+"editable_instances": [],
+"names": PackedStringArray("Projectile", "rotation", "script", "explosion", "Node2D", "SelfDestructTimer", "Timer", "ImpactZone", "collision_layer", "collision_mask", "Area2D", "CollisionShape2D", "position", "shape", "AnimatedSprite2D", "sprite_frames", "autoplay", "frame_progress", "_on_self_destruct_timer_timeout", "timeout", "_on_impact_zone_body_entered", "body_entered"),
+"node_count": 5,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 4, 0, -1, 3, 1, 0, 2, 1, 3, 2, 0, 0, 0, 6, 5, -1, 0, 0, 0, 0, 10, 7, -1, 2, 8, 3, 9, 4, 0, 2, 0, 11, 11, -1, 2, 12, 5, 13, 6, 0, 0, 0, 14, 14, -1, 3, 15, 7, 16, 8, 17, 9, 0),
+"variants": [-1.5708, ExtResource("8_kku4k"), ExtResource("9_82eft"), 4, 2, Vector2(0, -4), SubResource("CircleShape2D_8asgb"), SubResource("SpriteFrames_uw5ym"), "default", 0.514392],
+"version": 3
+}
+
 [node name="Game" type="Node2D"]
 y_sort_enabled = true
 
@@ -319,7 +381,13 @@ invlunerable = true
 y_sort_enabled = true
 
 [node name="Slime" parent="Enemies" instance=ExtResource("10_vlv13")]
-position = Vector2(-191, -113)
+position = Vector2(-33, 3)
+projectile = SubResource("PackedScene_86j4h")
+
+[node name="Skeleton" parent="Enemies" instance=ExtResource("7_fmbge")]
+
+[node name="Skeleton_Fast" parent="Enemies" instance=ExtResource("8_m5cea")]
+position = Vector2(139, -19)
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
 [connection signal="parry_success" from="Player" to="GameManager" method="_on_player_parry_success"]

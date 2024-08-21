@@ -138,6 +138,9 @@ z_as_relative = false
 shape = SubResource("CapsuleShape2D_5pav5")
 disabled = true
 
+[node name="Attack_Cooldown" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="ClumpZone" to="." method="_on_clump_zone_body_entered"]
 [connection signal="body_exited" from="ClumpZone" to="." method="_on_clump_zone_body_exited"]
@@ -146,3 +149,4 @@ disabled = true
 [connection signal="body_entered" from="MeleeZone" to="." method="_on_melee_zone_body_entered"]
 [connection signal="body_exited" from="MeleeZone" to="." method="_on_melee_zone_body_exited"]
 [connection signal="body_entered" from="AttackAxis/AttackZone" to="." method="_on_attack_zone_body_entered"]
+[connection signal="timeout" from="Attack_Cooldown" to="." method="_on_attack_cooldown_timeout"]

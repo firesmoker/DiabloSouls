@@ -83,7 +83,7 @@ custom_integrator = false
 body_color = Color(1, 1, 0, 1)
 id = "Fast Skeleton"
 move_speed_modifier = 1.8
-attack_speed_modifier = 1.0
+attack_speed_modifier = 0.8
 hitpoints_max = 1
 hitpoints = 1
 

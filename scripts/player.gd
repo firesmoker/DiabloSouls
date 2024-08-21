@@ -663,15 +663,14 @@ func get_hit(damage: int = 1) -> void:
 		audio.pitch_scale = 0.90
 		audio.pitch_scale += randf_range(-0.03, 0.03)
 		audio.play()
-		animated_sprite_2d.modulate = Color.RED
+		animated_sprite_2d.material.set_shader_parameter("modulated_color", Color.RED)
 		var timer: Timer = Timer.new()
 		self.add_child(timer)
 		timer.wait_time = 0.07
 		timer.start()
 		await timer.timeout
 		timer.queue_free()
-		animated_sprite_2d.modulate = Color.WHITE
-		
+		animated_sprite_2d.material.set_shader_parameter("modulated_color", Color.WHITE)
 		
 
 func _on_timer_timeout() -> void:

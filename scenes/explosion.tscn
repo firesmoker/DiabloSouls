@@ -1,0 +1,56 @@
+[gd_scene load_steps=11 format=3 uid="uid://nmprnxbf13ho"]
+
+[ext_resource type="Script" path="res://scripts/explosion.gd" id="1_bcd5b"]
+[ext_resource type="Texture2D" uid="uid://gldr6uvw8s27" path="res://assets/art/vfx/glint/glint_0.png" id="2_bx821"]
+[ext_resource type="Texture2D" uid="uid://ok66dkhp57d8" path="res://assets/art/vfx/glint/glint_1.png" id="3_jcqtb"]
+[ext_resource type="Texture2D" uid="uid://hiaxkj128rt2" path="res://assets/art/vfx/glint/glint_2.png" id="4_hoii2"]
+[ext_resource type="Texture2D" uid="uid://bjljovvurue6v" path="res://assets/art/vfx/glint/glint_3.png" id="5_ryyqf"]
+[ext_resource type="Texture2D" uid="uid://t484fiegm5pv" path="res://assets/art/vfx/glint/glint_4.png" id="6_ymfny"]
+[ext_resource type="Texture2D" uid="uid://cuacncaf3ii0c" path="res://assets/art/vfx/glint/glint_5.png" id="7_wi7s1"]
+[ext_resource type="Texture2D" uid="uid://cq5ubs720b3xx" path="res://assets/art/vfx/glint/glint_6.png" id="8_if41i"]
+[ext_resource type="Texture2D" uid="uid://cxq7oc5qgymwd" path="res://assets/art/vfx/glint/glint_7.png" id="9_e5wwo"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uw5ym"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_bx821")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_jcqtb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_hoii2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ryyqf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ymfny")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_wi7s1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_if41i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_e5wwo")
+}],
+"loop": false,
+"name": &"default",
+"speed": 24.0
+}]
+
+[node name="Explosion" type="Node2D"]
+z_as_relative = false
+script = ExtResource("1_bcd5b")
+
+[node name="SelfDestructTimer" type="Timer" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_uw5ym")
+autoplay = "default"
+
+[connection signal="timeout" from="SelfDestructTimer" to="." method="_on_self_destruct_timer_timeout"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
