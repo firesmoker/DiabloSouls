@@ -3,6 +3,7 @@ class_name Player extends CharacterBody2D
 @onready var game_manager: GameManager = %GameManager
 @onready var audio: AudioStreamPlayer = $AudioStreamPlayer
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@export var projectile: PackedScene
 @export var attack_axis: Node2D
 @export var animation_player: AnimationPlayer
 @export var attack_zone: Area2D
@@ -27,7 +28,7 @@ var mana: int = 5
 @export var stamina_regen_amount: float = 0.02
 @export var max_mana: int = 5
 @export var invlunerable: bool = false
-@export var animation_types: Array[String] = ["idle", "walk", "attack", "death", "parry", "defend"]
+@export var animation_types: Array[String] = ["idle", "walk", "attack", "death", "parry", "defend", "ranged_attack"]
 #var can_move: bool = false
 var is_locked: bool = false
 var is_chasing_enemy: bool = false
@@ -111,6 +112,7 @@ var radian_direction: Dictionary = {
 
 var attack_ability: Ability = Ability.new("attack", "melee")
 var parry_ability: Ability = Ability.new("parry", "melee")
+var ranged_ability: Ability = Ability.new("ranged_attack", "ranged", true, 1.4)
 
 func _ready() -> void:
 	hitpoints = max_hitpoints
@@ -225,6 +227,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.is_action_pressed("attack_in_place"):
 			var face_destination: Vector2 = get_global_mouse_position()
 			attack(face_destination)
+		
+		if event.is_action_pressed("ability_1"):
+			var face_destination: Vector2 = get_global_mouse_position()
+			attack(face_destination, ranged_ability)
 		
 		if event.is_action_pressed("parry"):
 			if not is_locked:
@@ -414,7 +420,7 @@ func handle_block(delta: float) -> void:
 		else:
 			print("released parry")
 
-func attack(attack_destination: Vector2, ability: Ability = attack_ability) -> void:
+func attack(attack_destination: Vector2, ability: Ability = attack_ability, speed: float = 1) -> void:
 	#abilities_queue.append(attack_ability)
 	is_chasing_enemy = false
 	targeted_enemy = null
@@ -510,11 +516,27 @@ func calculate_movement_velocity() -> Vector2:
 	return position.direction_to(destination) * speed_fps_ratio * speed_modifier
 
 
-func just_attacked() -> void: # THIS
-	print("pow!")
-	attack_collider.disabled = false
-	emit_signal("attack_effects")
-	disable_attack_zone()
+func just_attacked(attack_type: String = "melee") -> void: # THIS
+	if attack_type == "melee":
+		print("melee attack")
+		attack_collider.disabled = false
+		emit_signal("attack_effects")
+		disable_attack_zone()
+	elif attack_type == "ranged":
+		print("ranged attack")
+		emit_signal("attack_effects")
+		create_projectile(get_global_mouse_position(), 2)
+
+func create_projectile(target: Vector2 = Vector2(0,0), speed: float = 1.0) -> void:
+	var instance: Projectile = projectile.instantiate() as Projectile
+	instance.targets_player = false
+	get_tree().root.add_child(instance)
+	instance.collision_shape.scale *= 2.5
+	instance.global_position = global_position
+	instance.rotation += get_angle_to(target)
+	instance.position += position.direction_to(target) * 30
+	instance.velocity = position.direction_to(target) * speed
+
 
 func just_parried() -> void: # THIS
 	print("PARRY! -> collider not disabled")
@@ -603,7 +625,15 @@ func add_animation_method_calls() -> void:
 		var animation_to_modify: Animation = animation_library.get_animation(animation)
 		var track: int = animation_to_modify.add_track(Animation.TYPE_METHOD)
 		animation_to_modify.track_set_path(track, ".")
-		if "attack" in animation:
+		if "ranged_attack" in animation:
+			var time : float = attack_frame/FPS
+			var attack_again_time : float = attack_again_frame/FPS
+			var no_cancel_time : float = no_cancel_frame / FPS
+			#var cancel_time : float = attack_again_time + 1/FPS
+			animation_to_modify.track_insert_key(track, no_cancel_time, {"method" : "animation_cancel_disabled" , "args" : []})
+			animation_to_modify.track_insert_key(track, time, {"method" : "just_attacked" , "args" : ["ranged"]})
+			animation_to_modify.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []})
+		elif "attack" in animation:
 			var time : float = attack_frame/FPS
 			var attack_again_time : float = attack_again_frame/FPS
 			var no_cancel_time : float = no_cancel_frame / FPS
@@ -677,8 +707,8 @@ func _on_timer_timeout() -> void:
 	pass
 
 
-func execute(ability: Ability, target: Vector2 = Vector2(0,0)) -> void:
-	animation_player.speed_scale = 1 * attack_speed_modifier
+func execute(ability: Ability, speed: float = ability.attack_speed) -> void:
+	animation_player.speed_scale = speed * attack_speed_modifier
 	animation_player.play(animations[current_direction][ability.animation_name])
 	#ability.execute(target)
 
@@ -688,12 +718,14 @@ class Ability:
 	var range_type: String
 	var standing: bool
 	var animation_name: String
+	var attack_speed: float
 	
-	func _init(name: String, range_type: String, standing: bool = true) -> void:
+	func _init(name: String, range_type: String, standing: bool = true, attack_speed: float = 1) -> void:
 		self.name = name
 		self.range_type = range_type
 		self.standing = standing
 		self.animation_name = self.name
+		self.attack_speed = attack_speed
 		
 	func execute(target: Vector2 = Vector2(0,0)) -> void:
 		#print("executing " + name)

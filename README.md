@@ -1,7 +1,7 @@
 certain conditions can have an array of different "sources", and remove themselves from it later, so only when all sources are removed the condition stops.
 
 Things that are very missing:
-	no ranged enemies
+	attack cooldown is quirky for enemies
 	maybe i can get rid of the "is_locked" for enemies?
 	Pathfinding is non existent for both player and enemies
 	Sound is not good and responsive
