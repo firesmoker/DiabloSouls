@@ -1,7 +1,16 @@
-[gd_scene load_steps=10 format=3 uid="uid://dxfa0xmqhcorr"]
+[gd_scene load_steps=12 format=3 uid="uid://dxfa0xmqhcorr"]
 
 [ext_resource type="PackedScene" uid="uid://brlvroq1a2p0i" path="res://scenes/skeleton.tscn" id="1_eecra"]
 [ext_resource type="Texture2D" uid="uid://dih8qcag7ojye" path="res://assets/art/enemy/skeleton_default/skeleton_default_idle/S/skeleton_default_idle_S_270.0_0.png" id="2_7mu3y"]
+
+[sub_resource type="Animation" id="Animation_qn4kt"]
+resource_name = "default"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hfmj2"]
+resource_local_to_scene = true
+_data = {
+"default": SubResource("Animation_qn4kt")
+}
 
 [sub_resource type="Shader" id="Shader_x0j7y"]
 resource_local_to_scene = true
@@ -86,6 +95,11 @@ move_speed_modifier = 1.8
 attack_speed_modifier = 0.8
 hitpoints_max = 1
 hitpoints = 1
+
+[node name="AnimationPlayer" parent="." index="1"]
+libraries = {
+"": SubResource("AnimationLibrary_hfmj2")
+}
 
 [node name="AnimatedSprite2D" parent="." index="2"]
 material = SubResource("ShaderMaterial_mbm04")

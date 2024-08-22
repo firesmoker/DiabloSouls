@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://lr15cpqcai72"]
+[gd_scene load_steps=28 format=3 uid="uid://lr15cpqcai72"]
 
 [ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_h602i"]
 [ext_resource type="Script" path="res://scripts/TileMap.gd" id="2_orhwb"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://brlvroq1a2p0i" path="res://scenes/skeleton.tscn" id="7_fmbge"]
 [ext_resource type="PackedScene" uid="uid://crbwettm152r0" path="res://scenes/hud.tscn" id="7_luld2"]
 [ext_resource type="Script" path="res://scripts/projectile.gd" id="8_kku4k"]
-[ext_resource type="PackedScene" uid="uid://dxfa0xmqhcorr" path="res://scenes/skeleton_fast.tscn" id="8_m5cea"]
 [ext_resource type="PackedScene" uid="uid://nmprnxbf13ho" path="res://scenes/explosion.tscn" id="9_82eft"]
 [ext_resource type="Texture2D" uid="uid://dm5gpdlvevfnl" path="res://assets/art/vfx/flame/flame_0.png" id="10_qqnfp"]
 [ext_resource type="PackedScene" uid="uid://bx722w57mqme2" path="res://scenes/slime.tscn" id="10_vlv13"]
@@ -403,38 +402,9 @@ y_sort_enabled = true
 position = Vector2(-33, 3)
 projectile = SubResource("PackedScene_86j4h")
 
-[node name="Slime2" parent="Enemies" instance=ExtResource("10_vlv13")]
-position = Vector2(-198, -64)
-projectile = SubResource("PackedScene_86j4h")
-
-[node name="Slime3" parent="Enemies" instance=ExtResource("10_vlv13")]
-position = Vector2(-285, 90)
-projectile = SubResource("PackedScene_86j4h")
-
-[node name="Slime4" parent="Enemies" instance=ExtResource("10_vlv13")]
-position = Vector2(419, -94)
-projectile = SubResource("PackedScene_86j4h")
-
 [node name="Skeleton" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(-119, 157)
-
-[node name="Skeleton2" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(313, 146)
-
-[node name="Skeleton3" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(59, 200)
-
-[node name="Skeleton4" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(323, 16)
-
-[node name="Skeleton5" parent="Enemies" instance=ExtResource("7_fmbge")]
-position = Vector2(45, -139)
-
-[node name="Skeleton_Fast" parent="Enemies" instance=ExtResource("8_m5cea")]
-position = Vector2(139, -19)
-
-[node name="Skeleton_Fast2" parent="Enemies" instance=ExtResource("8_m5cea")]
-position = Vector2(176, -128)
+process_mode = 4
+position = Vector2(47, 129)
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
 [connection signal="parry_success" from="Player" to="GameManager" method="_on_player_parry_success"]

@@ -1,9 +1,18 @@
-[gd_scene load_steps=12 format=3 uid="uid://ch1let232ajbg"]
+[gd_scene load_steps=14 format=3 uid="uid://ch1let232ajbg"]
 
 [ext_resource type="PackedScene" uid="uid://b1hcswr77ft67" path="res://scenes/enemy.tscn" id="1_exfay"]
 [ext_resource type="Texture2D" uid="uid://dywc8ehgqff6b" path="res://assets/art/boss/demonlord/demonlord_idle/E/demonlord_default_idle_E_0.0_0.png" id="2_hj6x6"]
 [ext_resource type="Texture2D" uid="uid://drcnh1cemyatb" path="res://assets/art/boss/demonlord/demonlord_attack/E/demonlord_default_attack1_E_0.0_6.png" id="2_ra36m"]
 [ext_resource type="Texture2D" uid="uid://0ixytbmg325h" path="res://assets/art/boss/demonlord/demonlord_idle/S/demonlord_default_idle_S_270.0_0.png" id="3_kiv02"]
+
+[sub_resource type="Animation" id="Animation_qn4kt"]
+resource_name = "default"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hfmj2"]
+resource_local_to_scene = true
+_data = {
+"default": SubResource("Animation_qn4kt")
+}
 
 [sub_resource type="Shader" id="Shader_73ldh"]
 resource_local_to_scene = true
@@ -102,6 +111,11 @@ offset_left = -22.0
 offset_top = -70.7
 offset_right = 22.0
 offset_bottom = -66.7
+
+[node name="AnimationPlayer" parent="." index="1"]
+libraries = {
+"": SubResource("AnimationLibrary_hfmj2")
+}
 
 [node name="AnimatedSprite2D" parent="." index="2"]
 material = SubResource("ShaderMaterial_1031v")

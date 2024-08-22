@@ -121,11 +121,15 @@ func _process(delta: float) -> void:
 		if has_ranged_attack and not attacking:
 			if position.distance_to(player.position) <= attack_range:
 				attack()
-		
-		if in_melee and has_attack and not attacking:
+		elif in_melee and has_attack and not attacking:
 			attack()
+			
+		
+				
 		if not attacking and not is_locked and not in_melee:
-			if not is_locked and not stunned:
+			if has_ranged_attack and position.distance_to(player.position) > attack_range and not is_locked and not stunned:
+				walk(delta)
+			elif not has_ranged_attack and not is_locked and not stunned:
 				walk(delta)
 			else:
 				animation_player.play(animations[current_direction]["idle"])
@@ -155,22 +159,29 @@ func walk(delta: float) -> void:
 
 
 func attack() -> void:
-	
-	#if attack_cooldown.is_stopped():
-	is_locked = true
 #can_attack = false
-	attacking = true
-	var angle: float = position.angle_to_point(player.position)
 	
-	var rand: float = (1/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
-	var rounded_rand: float = float(round(angle / rand) * rand)
-	current_direction = radian_direction[rounded_rand]
-	
-	attack_axis.rotation = angle
-	print("attack cooldown is stopped")
-	animation_player.speed_scale = attack_speed_modifier
-	animation_player.play(animations[current_direction]["attack"])
-	attack_cooldown.start()
+	if attack_cooldown.is_stopped():
+		is_locked = true
+		attacking = true
+		var angle: float = position.angle_to_point(player.position)
+		
+		var rand: float = (1/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
+		var rounded_rand: float = float(round(angle / rand) * rand)
+		current_direction = radian_direction[rounded_rand]
+		
+		attack_axis.rotation = angle
+		print("attack cooldown is stopped")
+		animation_player.speed_scale = attack_speed_modifier
+		animation_player.play(animations[current_direction]["attack"])
+		print(animations[current_direction]["attack"])
+		attack_cooldown.start()
+	else:
+		var angle: float = position.angle_to_point(player.position)
+		var rand: float = (1/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
+		var rounded_rand: float = float(round(angle / rand) * rand)
+		current_direction = radian_direction[rounded_rand]
+		animation_player.play(animations[current_direction]["idle"])
 
 
 func handle_parry_visibility() -> void:
@@ -353,13 +364,17 @@ func highlight_stop() -> void:
 
 func attack_effect(melee: bool = true) -> void:
 	if melee:
-		print("attack effect!")
+		print("melee!")
 		attack_collider.disabled = false
 		highlight_circle.modulate = Color.TRANSPARENT
 		can_be_countered = false
 		can_be_parried = false
 		disable_attack_zone()
 	else:
+		print("ranged")
+		highlight_circle.modulate = Color.TRANSPARENT
+		can_be_countered = false
+		can_be_parried = false
 		create_projectile()
 		
 
@@ -382,14 +397,14 @@ func disable_attack_zone() -> void:
 	attack_collider.disabled = true
 	
 func ready_to_be_parried() -> void:
-	print("ready to be parried")
+	#print("ready to be parried")
 	if not stunned:
 		if in_melee:
 			highlight_circle.modulate = Color.WHITE
 		can_be_parried = true
 
 func ready_to_be_countered() -> void:
-	print("ready to be countered")
+	#print("ready to be countered")
 	if not stunned:
 		highlight_circle.modulate = Color.BLUE
 		can_be_countered = true
@@ -421,7 +436,9 @@ func add_animation_method_calls() -> void:
 			animation_to_modify.track_insert_key(track, countered_time, {"method" : "ready_to_be_countered" , "args" : []}, 1)
 			if has_ranged_attack:
 				animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : [false]}, 1)
+				print(str(self) + "added RANGED effects to " + str(animation_to_modify))
 			else:
+				print(str(self) + "added MELEE effects to " + str(animation_to_modify) + "because has_ranged attack = " + str(has_ranged_attack))
 				animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : []}, 1)
 
 

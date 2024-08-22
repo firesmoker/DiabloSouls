@@ -1382,6 +1382,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_17pca"]
+resource_local_to_scene = true
 _data = {
 "warrior_armed_parry_E": SubResource("Animation_fmkf4"),
 "warrior_attack_E": SubResource("Animation_uj4dm"),
