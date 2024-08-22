@@ -23,10 +23,11 @@ class_name Player extends CharacterBody2D
 var hitpoints: float = 5
 var stamina: float = 5
 @export var max_stamina: float = 5
-var mana: int = 5
+var mana: float = 5
 @export var health_regen_amount: float = 0.006
 @export var stamina_regen_amount: float = 0.02
-@export var max_mana: int = 5
+@export var mana_regen_amount: float = 0.02
+@export var max_mana: float = 5
 @export var invlunerable: bool = false
 @export var animation_types: Array[String] = ["idle", "walk", "attack", "death", "parry", "defend", "ranged_attack"]
 #var can_move: bool = false
@@ -45,6 +46,9 @@ var stamina_regen_time: float = 0.0
 
 var health_regen_rate: float = 0.1
 var health_regen_time: float = 0.0
+
+var mana_regen_rate: float = 0.1
+var mana_regen_time: float = 0.0
 
 var dodge_cost: float = 1
 
@@ -128,6 +132,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:	
+	mana_regen(delta)
 	stamina_regen(delta)
 	health_regen(delta)
 	
@@ -147,6 +152,20 @@ func _physics_process(delta: float) -> void:
 	elif not dead:
 		animation_player.play(animations[current_direction]["death"])
 		dead = true
+
+
+func mana_regen(delta_time: float) -> void:
+	print("trying to regen mana, which is: " + str(mana))
+	if mana < max_mana and not is_dying:
+		mana_regen_time += delta_time
+		if mana_regen_time >= mana_regen_rate:
+			mana_regen_time = 0
+			mana += mana_regen_amount
+	elif is_dying:
+		mana = mana
+	else:
+		mana = max_mana
+		mana_regen_time = 0
 
 
 func stamina_regen(delta_time: float) -> void:
@@ -262,7 +281,14 @@ func _unhandled_input(event: InputEvent) -> void:
 					var face_destination: Vector2
 					face_destination = game_manager.enemy_in_focus.position
 					target_for_ranged = game_manager.enemy_in_focus.position
-					attack(face_destination, ranged_ability)
+					
+					if mana - 1 < 0:
+						print("not enough stamina")
+					else:
+						mana -= 1
+						if mana < 0:
+							mana = 0
+						attack(face_destination, ranged_ability)
 					
 				else:
 					attack(targeted_enemy.position)

@@ -1436,6 +1436,7 @@ attack_collider = NodePath("AttackAxis/AttackZone/AttackCollider")
 parry_collider = NodePath("AttackAxis/ParryZone/ParryCollider")
 model = "knight_armed"
 attack_speed_modifier = 1.1
+attack_with_melee = true
 
 [node name="PhysicalCollider" type="CollisionShape2D" parent="."]
 visible = false
