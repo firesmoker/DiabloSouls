@@ -96,11 +96,15 @@ radius = 9.0
 height = 52.0
 
 [node name="Demonlord" instance=ExtResource("1_exfay")]
+interruptable = false
+attack_cooldown_duration = 1.8
+attack_damage = 3.0
 id = "Demon Lord"
 base_id = "demonlord"
 model = "demonlord"
 category = "boss"
 speed_fps_ratio = 82.0
+move_speed_modifier = 0.75
 hitpoints_max = 20
 hitpoints = 20
 has_attack = true

@@ -12,6 +12,9 @@ class_name Enemy extends RigidBody2D
 @onready var attack_collider: CollisionShape2D = $AttackAxis/AttackZone/AttackCollider
 @onready var health_bar: ProgressBar = $HealthBar
 
+@export var interruptable: bool = true
+@export var attack_cooldown_duration: float =1.3
+@export var attack_damage: float = 1
 @export var body_color: Color = Color.WHITE
 @export var id: String = "Enemy"
 @export var base_id: String
@@ -86,7 +89,9 @@ signal stopped_mouse_hover
 
 
 func _ready() -> void:
+	attack_cooldown.stop()
 	#custom_integrator = true
+	attack_cooldown.wait_time = attack_cooldown_duration
 	animated_sprite_2d.material.set_shader_parameter("modulated_color", body_color)
 	health_bar.max_value = hitpoints_max
 	hitpoints = hitpoints_max
@@ -239,7 +244,7 @@ func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
 		if self in player.enemies_in_defense_zone and player.is_defending:
 			print(str(self) + " in defense zone when trying to attack")
 		else:
-			game_manager.player_gets_hit()
+			game_manager.player_gets_hit(attack_damage)
 	else:
 		print(body)
 		print("not player")
@@ -313,7 +318,7 @@ func get_hit(damage: int = randi_range(1,3)) -> bool:
 	elif not dying:
 		health_bar.value = hitpoints
 		health_bar.visible = true
-		if randi() % 100 + 1 > 50:
+		if randi() % 100 + 1 > 50 and interruptable:
 			animation_player.stop()
 			attack_collider.disabled = true
 			attacking = false
