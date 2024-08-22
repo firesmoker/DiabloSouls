@@ -30,6 +30,7 @@ var mana: int = 5
 @export var invlunerable: bool = false
 @export var animation_types: Array[String] = ["idle", "walk", "attack", "death", "parry", "defend", "ranged_attack"]
 #var can_move: bool = false
+@export var attack_with_melee: bool = false # TEMPORARY
 var is_locked: bool = false
 var is_chasing_enemy: bool = false
 var is_dodging: bool = false
@@ -45,7 +46,7 @@ var stamina_regen_time: float = 0.0
 var health_regen_rate: float = 0.1
 var health_regen_time: float = 0.0
 
-var dodge_cost: float = 2
+var dodge_cost: float = 1
 
 var targeted_enemy: RigidBody2D = null
 var enemies_in_melee: Array[Enemy]
@@ -254,8 +255,15 @@ func _unhandled_input(event: InputEvent) -> void:
 			if game_manager.enemy_in_focus != null:
 				targeted_enemy = game_manager.enemy_in_focus
 				#can_move = false
-				if targeted_enemy not in enemies_in_melee:
+				if targeted_enemy not in enemies_in_melee and attack_with_melee:
 					move_to_enemy()
+				elif not attack_with_melee:
+					
+					var face_destination: Vector2
+					face_destination = game_manager.enemy_in_focus.position
+					target_for_ranged = game_manager.enemy_in_focus.position
+					attack(face_destination, ranged_ability)
+					
 				else:
 					attack(targeted_enemy.position)
 			else:
@@ -534,7 +542,7 @@ func just_attacked(attack_type: String = "melee") -> void: # THIS
 			target_for_ranged = get_global_mouse_position()
 		print("ranged attack")
 		emit_signal("attack_effects")
-		create_projectile(target_for_ranged, 2)
+		create_projectile(target_for_ranged, 4)
 
 func create_projectile(target: Vector2 = Vector2(0,0), speed: float = 1.0) -> void:
 	var instance: Projectile = projectile.instantiate() as Projectile
