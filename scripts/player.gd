@@ -13,7 +13,7 @@ class_name Player extends CharacterBody2D
 @onready var animation_library: AnimationLibrary = animation_player.get_animation_library("")
 @export_enum("warrior_armed", "fighter_armed", "knight_armed") var model: String = "warrior_armed"
 @export var speed_fps_ratio: float = 121.0
-@export var speed_modifier: float = 1
+@export var moving_speed_modifier: float = 1
 @export var attack_speed_modifier: float = 0.8
 @export var dodge_speed_bonus: float = 3.5
 @export var attack_frame: int = 3
@@ -230,12 +230,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("speed up"): # TEMPORARY
 		print("more speed") # TEMPORARY
 		var speed_change:float = 115.0 / 100.0 # TEMPORARY
-		speed_modifier *= speed_change # TEMPORARY
+		moving_speed_modifier *= speed_change # TEMPORARY
 		
 	elif event.is_action_pressed("speed down"): # TEMPORARY
 		print("less speed") # TEMPORARY
 		var speed_change:float = 100.0 / 115.0 # TEMPORARY
-		speed_modifier *= speed_change # TEMPORARY
+		moving_speed_modifier *= speed_change # TEMPORARY
 		
 		
 	if not is_dying:
@@ -348,8 +348,8 @@ func stop_on_destination() -> void:
 	if velocity:
 		#print("trying to stop on destination " + str(velocity))
 		var distance_to_stop: float = 1.0
-		#if speed_modifier > 1.8:
-			#distance_to_stop = speed_modifier * 2
+		#if moving_speed_modifier > 1.8:
+			#distance_to_stop = moving_speed_modifier * 2
 		if position.distance_to(original_position) > destination.distance_to(original_position):
 			print("stopping because player is too far away")
 			is_dodging = false
@@ -373,10 +373,10 @@ func running_state() -> void:
 	var current_animation: String = animation_player.current_animation
 	is_locked = false
 	ready_to_attack_again = true
-	if speed_modifier >= 2:
-		animation_player.speed_scale = speed_modifier / 2
+	if moving_speed_modifier >= 2:
+		animation_player.speed_scale = moving_speed_modifier / 2
 	else:
-		animation_player.speed_scale = speed_modifier
+		animation_player.speed_scale = moving_speed_modifier
 	if "walk" in current_animation and current_animation != animations[current_direction]["walk"]:
 		var current_animation_position: float = animation_player.current_animation_position
 		animation_player.play(animations[current_direction]["walk"])
@@ -473,7 +473,7 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability, spee
 	var angle: float = position.angle_to_point(attack_destination)
 	set_direction_by_destination(attack_destination)
 	if not is_dying:
-		animation_player.speed_scale = speed_modifier
+		animation_player.speed_scale = moving_speed_modifier
 		if not ready_to_attack_again and animation_player.current_animation_position >= re_attack_frame/FPS and ability != parry_ability:
 			print("waiting for attack again ready")
 			await ready_to_attack_again_signal
@@ -541,15 +541,15 @@ func calculate_movement_velocity() -> Vector2:
 	#var radius : float = speed_fps_ratio
 	#var direction_x: float = cos(angle) * radius
 	#var direction_y: float = sin(angle) * radius
-	#var max_velocity_x: float = direction_x * speed_modifier
-	#var max_velocity_y: float = direction_y * speed_modifier
+	#var max_velocity_x: float = direction_x * moving_speed_modifier
+	#var max_velocity_y: float = direction_y * moving_speed_modifier
 	if is_dodging:
 		print("dodge calculation")
 		#return Vector2(max_velocity_x * dodge_speed_bonus, max_velocity_y * dodge_speed_bonus)
-		return position.direction_to(destination) * speed_fps_ratio * speed_modifier * dodge_speed_bonus
+		return position.direction_to(destination) * speed_fps_ratio * moving_speed_modifier * dodge_speed_bonus
 	#return Vector2(max_velocity_x, max_velocity_y)
-	#print(position.direction_to(destination) * speed_fps_ratio * speed_modifier)
-	return position.direction_to(destination) * speed_fps_ratio * speed_modifier
+	#print(position.direction_to(destination) * speed_fps_ratio * moving_speed_modifier)
+	return position.direction_to(destination) * speed_fps_ratio * moving_speed_modifier
 
 
 func just_attacked(attack_type: String = "melee") -> void: # THIS

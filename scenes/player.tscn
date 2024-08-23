@@ -1420,7 +1420,7 @@ height = 34.0
 radius = 33.0
 height = 66.0
 
-[sub_resource type="Shader" id="Shader_un1hv"]
+[sub_resource type="Shader" id="Shader_ovbay"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -1442,7 +1442,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7xqen"]
 resource_local_to_scene = true
-shader = SubResource("Shader_un1hv")
+shader = SubResource("Shader_ovbay")
 shader_parameter/color = Color(0.96873, 0.921816, 0.802173, 1)
 shader_parameter/power = 3.0
 shader_parameter/radius = 2.5

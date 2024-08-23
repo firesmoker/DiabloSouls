@@ -1,0 +1,102 @@
+[gd_scene load_steps=14 format=3 uid="uid://urqw3cri0rj3"]
+
+[ext_resource type="PackedScene" uid="uid://b4qsmsjjcorlc" path="res://scenes/light.tscn" id="1_c8s5k"]
+[ext_resource type="Texture2D" uid="uid://bx530odyrcvio" path="res://assets/art/prop/torch/S/torch_S_270.0_0.png" id="3_e3b7g"]
+[ext_resource type="Texture2D" uid="uid://diyaymfcnwvpq" path="res://assets/art/vfx/flames/flames_0.png" id="4_ftokm"]
+[ext_resource type="Texture2D" uid="uid://dsg4im5fwnrjs" path="res://assets/art/vfx/flames/flames_1.png" id="5_ci7vj"]
+[ext_resource type="Texture2D" uid="uid://b6t2etiiys47i" path="res://assets/art/vfx/flames/flames_2.png" id="6_nxg47"]
+[ext_resource type="Texture2D" uid="uid://bhtegdiy707dn" path="res://assets/art/vfx/flames/flames_3.png" id="7_f0lna"]
+[ext_resource type="Texture2D" uid="uid://cjb0vecu8vkbl" path="res://assets/art/vfx/flames/flames_4.png" id="8_qwul2"]
+[ext_resource type="Texture2D" uid="uid://pkdefqvq76fy" path="res://assets/art/vfx/flames/flames_5.png" id="9_2h6sx"]
+[ext_resource type="Texture2D" uid="uid://cnxdt3lqkxpvc" path="res://assets/art/vfx/flames/flames_6.png" id="10_g1a1k"]
+[ext_resource type="Texture2D" uid="uid://dbs3ktc03qiyd" path="res://assets/art/vfx/flames/flames_7.png" id="11_nitk8"]
+
+[sub_resource type="Shader" id="Shader_42vxv"]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+
+
+// 040012
+uniform vec3 color: source_color = vec3(1.0);
+uniform float power: hint_range(0.0, 6.0, 0.1) = 3.0;
+uniform float radius: hint_range(0.0, 10.0, 0.1) = 2.5;
+uniform sampler2D SCREEN_TEXTURE: hint_screen_texture, filter_linear_mipmap;
+uniform bool flickering = false;
+uniform float flicker_range: hint_range(1.0, 5.0, 0.1) = 1.0;
+
+
+float random (vec2 uv) {
+    return fract(sin(dot(uv.xy,
+        vec2(12.9898,78.233))) * 43758.5453123);
+}
+
+void fragment() {
+	vec2 uv = UV;
+	float distance_from_center = length(vec2(abs(uv.x - 0.5), abs(uv.y - 0.5)));
+	vec4 screen_color = texture(SCREEN_TEXTURE, SCREEN_UV);
+	COLOR.rgb = screen_color.rgb * vec3(1.0 + power + 1.0 - length(color)) * color;
+	float random_radius = radius;
+	if (flickering) {
+		random_radius = clamp(sin(TIME * cos(TIME)) * radius, radius * 0.85, radius);
+		random_radius *= (1.0 - 0.2 * abs(cos(TIME)));
+	}
+	COLOR.a = 1.0 - distance_from_center * (1.0 / (random_radius *  0.1));
+}
+
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yvmrt"]
+shader = SubResource("Shader_42vxv")
+shader_parameter/color = Color(0.638993, 0.537444, 0.310342, 1)
+shader_parameter/power = 3.0
+shader_parameter/radius = 2.5
+shader_parameter/flickering = true
+shader_parameter/flicker_range = 1.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w6aap"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_ftokm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ci7vj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_nxg47")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_f0lna")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_qwul2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_2h6sx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_g1a1k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_nitk8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[node name="Torch" type="Node2D"]
+z_index = 5
+
+[node name="Light" parent="." instance=ExtResource("1_c8s5k")]
+material = SubResource("ShaderMaterial_yvmrt")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 33)
+texture = ExtResource("3_e3b7g")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.55, 0.55)
+sprite_frames = SubResource("SpriteFrames_w6aap")
+autoplay = "default"
+frame_progress = 0.784048

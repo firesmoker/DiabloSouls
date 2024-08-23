@@ -8,6 +8,8 @@ shader = ExtResource("1_hdybt")
 shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/power = 3.0
 shader_parameter/radius = 2.5
+shader_parameter/flickering = false
+shader_parameter/flicker_range = 1.0
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_7nw8y"]
 
