@@ -9,6 +9,7 @@ class_name GameManager extends Node
 @onready var player_health: ProgressBar = %HUD/PlayerHealth
 @onready var player_stamina: ProgressBar = %HUD/PlayerStamina
 @onready var player_mana: ProgressBar = %HUD/PlayerMana
+@onready var darkness: Sprite2D = $"../Darkness"
 
 @export var shake_time: float = 0.05
 @export var shake_amount: float = 1.5
@@ -42,6 +43,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		pass
 
 func _process(delta: float) -> void:
+	darkness.position = player.position
 	#print(enemy_in_focus)
 	player_health.value = player.hitpoints
 	player_stamina.value = player.stamina
@@ -149,6 +151,7 @@ func enemy_mouse_hover_stopped(enemy: Enemy) -> void:
 
 func _on_player_attack_success(enemy: Enemy) -> void:
 	camera_shake_and_color()
+	print("attack succes!")
 	var enemy_death_status: bool = await enemy.get_hit()
 	#print(enemy_death_status)
 	#if enemy_death_status:

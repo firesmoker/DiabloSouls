@@ -3,6 +3,7 @@ class_name Player extends CharacterBody2D
 @onready var game_manager: GameManager = %GameManager
 @onready var audio: AudioStreamPlayer = $AudioStreamPlayer
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@export var light_radius: float = 3.5
 @export var projectile: PackedScene
 @export var attack_axis: Node2D
 @export var animation_player: AnimationPlayer
@@ -30,7 +31,6 @@ var mana: float = 5
 @export var max_mana: float = 5
 @export var invlunerable: bool = false
 @export var animation_types: Array[String] = ["idle", "walk", "attack", "death", "parry", "defend", "ranged_attack"]
-#var can_move: bool = false
 @export var attack_with_melee: bool = false # TEMPORARY
 var is_locked: bool = false
 var is_chasing_enemy: bool = false
@@ -121,6 +121,7 @@ var parry_ability: Ability = Ability.new("parry", "melee")
 var ranged_ability: Ability = Ability.new("ranged_attack", "ranged", true, 1.4)
 
 func _ready() -> void:
+	animated_sprite_2d.material.set_shader_parameter("radius", light_radius)
 	hitpoints = max_hitpoints
 	stamina = max_stamina
 	mana = max_mana
@@ -155,7 +156,6 @@ func _physics_process(delta: float) -> void:
 
 
 func mana_regen(delta_time: float) -> void:
-	print("trying to regen mana, which is: " + str(mana))
 	if mana < max_mana and not is_dying:
 		mana_regen_time += delta_time
 		if mana_regen_time >= mana_regen_rate:
@@ -198,7 +198,6 @@ func dodge(dodge_destination: Vector2) -> void:
 	else:
 		stamina -= dodge_cost
 		print("dodging to " + str(dodge_destination))
-		#can_move = true
 		is_attacking = false
 		#original_position = position
 		destination = dodge_destination
@@ -218,28 +217,27 @@ func dodge(dodge_destination: Vector2) -> void:
 		invlunerable = false
 		if is_dodging != false:
 			is_dodging = false
-			#can_move = false
 			velocity = Vector2(0,0)
 			#original_position = position
 			destination = position
-		#can_move = true
 		#velocity += dodge_destination
 	
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("test_button"):
-		animation_player.play(animations[current_direction]["walk"])
+	if event.is_action_pressed("test_button"): # TEMPORARY
+		animation_player.play(animations[current_direction]["walk"]) # TEMPORARY
 	
-	
-	if event.is_action_pressed("speed up"):
-		print("more speed")
-		var speed_change:float = 115.0 / 100.0
-		speed_modifier *= speed_change
+	if event.is_action_pressed("speed up"): # TEMPORARY
+		print("more speed") # TEMPORARY
+		var speed_change:float = 115.0 / 100.0 # TEMPORARY
+		speed_modifier *= speed_change # TEMPORARY
 		
-	elif event.is_action_pressed("speed down"):
-		print("less speed")
-		var speed_change:float = 100.0 / 115.0
-		speed_modifier *= speed_change
+	elif event.is_action_pressed("speed down"): # TEMPORARY
+		print("less speed") # TEMPORARY
+		var speed_change:float = 100.0 / 115.0 # TEMPORARY
+		speed_modifier *= speed_change # TEMPORARY
+		
+		
 	if not is_dying:
 		if event.is_action_pressed("dodge"):
 			var face_destination: Vector2 = get_global_mouse_position()
@@ -273,7 +271,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place") and not event.is_action_pressed("parry"):
 			if game_manager.enemy_in_focus != null:
 				targeted_enemy = game_manager.enemy_in_focus
-				#can_move = false
 				if targeted_enemy not in enemies_in_melee and attack_with_melee:
 					move_to_enemy()
 				elif not attack_with_melee:
@@ -294,7 +291,6 @@ func _unhandled_input(event: InputEvent) -> void:
 					attack(targeted_enemy.position)
 			else:
 				#print("unhandled input")
-				#can_move = true
 				is_attacking = false
 				original_position = position
 				destination = get_global_mouse_position()
@@ -324,6 +320,7 @@ func _on_animation_player_animation_finished(anim_name: String) -> void:
 
 func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
 	emit_signal("attack_success", body)
+	print(str(body) + " has entered attack zone")
 
 
 func _on_parry_zone_body_entered(enemy: CollisionObject2D) -> void:
@@ -390,9 +387,7 @@ func running_state() -> void:
 
 func standing_state() -> void:
 	if "attack" in animation_player.current_animation or "parry" in animation_player.current_animation:
-		#can_move = false
 		await animation_player.animation_finished
-	#print("going idle!")
 	if not is_dying:
 		animation_player.play(animations[current_direction]["idle"])
 

@@ -96,6 +96,10 @@ attack_speed_modifier = 0.8
 hitpoints_max = 1
 hitpoints = 1
 
+[node name="HealthBar" parent="." index="0"]
+z_index = 1
+z_as_relative = true
+
 [node name="AnimationPlayer" parent="." index="1"]
 libraries = {
 "": SubResource("AnimationLibrary_hfmj2")

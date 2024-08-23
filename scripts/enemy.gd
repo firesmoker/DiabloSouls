@@ -93,6 +93,8 @@ func _ready() -> void:
 	#custom_integrator = true
 	attack_cooldown.wait_time = attack_cooldown_duration
 	animated_sprite_2d.material.set_shader_parameter("modulated_color", body_color)
+	#animated_sprite_2d.material.set_shader_parameter("width", 1.0)
+	#animated_sprite_2d.material.set_shader_parameter("outline_color", Color.BLACK)
 	health_bar.max_value = hitpoints_max
 	hitpoints = hitpoints_max
 	health_bar.value = hitpoints

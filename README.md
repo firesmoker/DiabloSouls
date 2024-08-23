@@ -5,8 +5,7 @@ Things that are very missing:
 	abilities should probably become scenes
 	maybe i can get rid of the "is_locked" for enemies?
 	Pathfinding is non existent for both player and enemies
-	no way to use mana
-	no abilities in combat other than basic attack, parry, counter, dodge
+	no abilities in combat other than basic attack, parry, counter, dodge, shoot projectile
 	parry / counter is not optimized for multiple enemies
 	no counter and parry animations (maybe in the meantime - knockback? reverse step?)
 	Artstyle is lacking
