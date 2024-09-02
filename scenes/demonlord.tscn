@@ -1,8 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://ch1let232ajbg"]
+[gd_scene load_steps=16 format=3 uid="uid://ch1let232ajbg"]
 
 [ext_resource type="PackedScene" uid="uid://b1hcswr77ft67" path="res://scenes/enemy.tscn" id="1_exfay"]
+[ext_resource type="AudioStream" uid="uid://ou0yksoc5rbr" path="res://assets/audio/demonlord_get_hit1.wav" id="2_6wj71"]
 [ext_resource type="Texture2D" uid="uid://dywc8ehgqff6b" path="res://assets/art/boss/demonlord/demonlord_idle/E/demonlord_default_idle_E_0.0_0.png" id="2_hj6x6"]
 [ext_resource type="Texture2D" uid="uid://drcnh1cemyatb" path="res://assets/art/boss/demonlord/demonlord_attack/E/demonlord_default_attack1_E_0.0_6.png" id="2_ra36m"]
+[ext_resource type="AudioStream" uid="uid://b4r2382h0hqxw" path="res://assets/audio/demonlord_death1.wav" id="3_a5c1j"]
 [ext_resource type="Texture2D" uid="uid://0ixytbmg325h" path="res://assets/art/boss/demonlord/demonlord_idle/S/demonlord_default_idle_S_270.0_0.png" id="3_kiv02"]
 
 [sub_resource type="Animation" id="Animation_qn4kt"]
@@ -96,6 +98,8 @@ radius = 9.0
 height = 52.0
 
 [node name="Demonlord" instance=ExtResource("1_exfay")]
+get_hit_sound = ExtResource("2_6wj71")
+death_sound = ExtResource("3_a5c1j")
 interruptable = false
 attack_cooldown_duration = 1.8
 attack_damage = 3.0
@@ -110,26 +114,32 @@ hitpoints = 20
 has_attack = true
 animation_types = Array[String](["idle", "walk", "death", "attack"])
 
-[node name="HealthBar" parent="." index="0"]
+[node name="AudioPlayer" parent="." index="0"]
+sounds = {
+"Death": ExtResource("3_a5c1j"),
+"GetHit": ExtResource("2_6wj71")
+}
+
+[node name="HealthBar" parent="." index="1"]
 offset_left = -22.0
 offset_top = -70.7
 offset_right = 22.0
 offset_bottom = -66.7
 
-[node name="AnimationPlayer" parent="." index="1"]
+[node name="AnimationPlayer" parent="." index="2"]
 libraries = {
 "": SubResource("AnimationLibrary_hfmj2")
 }
 
-[node name="AnimatedSprite2D" parent="." index="2"]
+[node name="AnimatedSprite2D" parent="." index="3"]
 material = SubResource("ShaderMaterial_1031v")
 sprite_frames = SubResource("SpriteFrames_kkpv2")
 
-[node name="PhysicalCollider" parent="." index="3"]
+[node name="PhysicalCollider" parent="." index="4"]
 z_index = 50
 shape = SubResource("CapsuleShape2D_xh5jj")
 
-[node name="HighlightCircle" parent="." index="4"]
+[node name="HighlightCircle" parent="." index="5"]
 z_index = -1
 material = SubResource("CanvasItemMaterial_dm3a0")
 scale = Vector2(3.46, 3.46)
@@ -142,7 +152,7 @@ position = Vector2(0, -25.6)
 scale = Vector2(1.805, 2.01)
 shape = SubResource("CapsuleShape2D_rvte0")
 
-[node name="MeleeZone" parent="." index="7"]
+[node name="MeleeZone" parent="." index="8"]
 scale = Vector2(2.31, 2.31)
 
 [node name="CollisionShape2D" parent="MeleeZone" index="0"]

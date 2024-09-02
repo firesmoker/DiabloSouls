@@ -1,7 +1,10 @@
 class_name Player extends CharacterBody2D
+@onready var light: Sprite2D = $Light
+
+@onready var audio_player: AudioPlayer = $AudioPlayer
+
 
 @onready var game_manager: GameManager = %GameManager
-@onready var audio: AudioStreamPlayer = $AudioStreamPlayer
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @export var light_radius: float = 3.5
 @export var projectile: PackedScene
@@ -74,6 +77,9 @@ var original_position: Vector2 = Vector2()
 const FPS: float = 12.0
 const average_delta: float = 0.01666666666667
 
+
+
+
 #enum directions{N,NE,E,SE,S,SW,W,NW}
 enum directions{N,NNE,NE,NEE,E,SEE,SE,SSE,S,SSW,SW,SWW,W,NWW,NW,NNW}
 var current_direction: int = directions.E
@@ -121,7 +127,8 @@ var parry_ability: Ability = Ability.new("parry", "melee")
 var ranged_ability: Ability = Ability.new("ranged_attack", "ranged", true, 1.4)
 
 func _ready() -> void:
-	animated_sprite_2d.material.set_shader_parameter("radius", light_radius)
+
+		
 	hitpoints = max_hitpoints
 	stamina = max_stamina
 	mana = max_mana
@@ -133,6 +140,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:	
+	light.material.set_shader_parameter("radius", light_radius)
 	mana_regen(delta)
 	stamina_regen(delta)
 	health_regen(delta)
@@ -152,6 +160,7 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 	elif not dead:
 		animation_player.play(animations[current_direction]["death"])
+		audio_player.play("Death")
 		dead = true
 
 
@@ -195,14 +204,17 @@ func health_regen(delta_time: float) -> void:
 func dodge(dodge_destination: Vector2) -> void:
 	if stamina - dodge_cost < 0:
 		print("not enough stamina")
-	else:
+	elif not is_dodging and not is_locked:
+		is_dodging = true
+		animation_player.stop()
+		audio_player.play("Dodge")
 		stamina -= dodge_cost
-		print("dodging to " + str(dodge_destination))
+		#print("dodging to " + str(dodge_destination))
 		is_attacking = false
 		#original_position = position
 		destination = dodge_destination
-		is_dodging = true
 		invlunerable = true
+		animated_sprite_2d.material.set_shader_parameter("dir_x", 0.025)
 		#set_collision_mask_value(1, false)
 		#set_collision_layer_value(2, false)
 		#set_collision_layer_value(3, true)
@@ -211,6 +223,7 @@ func dodge(dodge_destination: Vector2) -> void:
 		timer.wait_time = 0.1
 		timer.start()
 		await timer.timeout
+		animated_sprite_2d.material.set_shader_parameter("dir_x", 0.0)
 		#set_collision_mask_value(1, true)
 		#set_collision_layer_value(2, true)
 		#set_collision_layer_value(3, false)
@@ -220,7 +233,7 @@ func dodge(dodge_destination: Vector2) -> void:
 			velocity = Vector2(0,0)
 			#original_position = position
 			destination = position
-		#velocity += dodge_destination
+	#velocity += dodge_destination
 	
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -255,7 +268,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			else:
 				face_destination = get_global_mouse_position()
 				target_for_ranged = get_global_mouse_position()
-			attack(face_destination, ranged_ability)
+			if mana - 1 < 0:
+				print("not enough stamina")
+			else:
+				mana -= 1
+				if mana < 0:
+					mana = 0
+				attack(face_destination, ranged_ability)
 		
 		if event.is_action_pressed("parry"):
 			if not is_locked:
@@ -337,11 +356,7 @@ func _on_parry_zone_body_exited(enemy: CollisionObject2D) -> void:
 	enemies_in_defense_zone.erase(enemy)
 
 func _on_attack_effects() -> void:
-	#if not audio.playing:
-		#audio.stop()
-	audio.pitch_scale = 1
-	audio.pitch_scale += randf_range(-0.03, 0.03)
-	audio.play()
+	pass
 
 
 func stop_on_destination() -> void:
@@ -351,7 +366,7 @@ func stop_on_destination() -> void:
 		#if moving_speed_modifier > 1.8:
 			#distance_to_stop = moving_speed_modifier * 2
 		if position.distance_to(original_position) > destination.distance_to(original_position):
-			print("stopping because player is too far away")
+			#print("stopping because player is too far away")
 			is_dodging = false
 			velocity = Vector2(0,0)
 			position = destination
@@ -544,7 +559,7 @@ func calculate_movement_velocity() -> Vector2:
 	#var max_velocity_x: float = direction_x * moving_speed_modifier
 	#var max_velocity_y: float = direction_y * moving_speed_modifier
 	if is_dodging:
-		print("dodge calculation")
+		#print("dodge calculation")
 		#return Vector2(max_velocity_x * dodge_speed_bonus, max_velocity_y * dodge_speed_bonus)
 		return position.direction_to(destination) * speed_fps_ratio * moving_speed_modifier * dodge_speed_bonus
 	#return Vector2(max_velocity_x, max_velocity_y)
@@ -728,9 +743,6 @@ func get_hit(damage: int = 1) -> void:
 		is_dying = true
 	elif hitpoints > 0:
 		hitpoints -= damage
-		audio.pitch_scale = 0.90
-		audio.pitch_scale += randf_range(-0.03, 0.03)
-		audio.play()
 		animated_sprite_2d.material.set_shader_parameter("modulated_color", Color.RED)
 		var timer: Timer = Timer.new()
 		self.add_child(timer)

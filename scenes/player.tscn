@@ -1,11 +1,15 @@
-[gd_scene load_steps=178 format=3 uid="uid://cgvpmrxms5e4k"]
+[gd_scene load_steps=181 format=3 uid="uid://cgvpmrxms5e4k"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_3jece"]
 [ext_resource type="Shader" path="res://shaders/player.gdshader" id="2_ktb63"]
+[ext_resource type="AudioStream" uid="uid://cvrd2xhlvliao" path="res://assets/audio/man_screams1.wav" id="2_s7oww"]
 [ext_resource type="Texture2D" uid="uid://nrok3hqdeyws" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/E/fighter_armed_attack_E_0.0_0.png" id="2_sf5aj"]
 [ext_resource type="PackedScene" uid="uid://brcjsn57c8n5p" path="res://scenes/projectile.tscn" id="2_yccfu"]
 [ext_resource type="Texture2D" uid="uid://bebj53vs4q066" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/E/fighter_armed_attack_E_0.0_1.png" id="3_2hqi0"]
+[ext_resource type="AudioStream" uid="uid://b24v20bl0oy1a" path="res://assets/audio/dodge1.wav" id="3_2t8y0"]
+[ext_resource type="PackedScene" uid="uid://cotuae7xoylm0" path="res://scenes/audio_player.tscn" id="3_mleu6"]
 [ext_resource type="Texture2D" uid="uid://mlaia5l72058" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/E/fighter_armed_attack_E_0.0_2.png" id="4_l3cr6"]
+[ext_resource type="Script" path="res://scripts/audioPlayer.gd" id="5_xygtc"]
 [ext_resource type="Texture2D" uid="uid://eubva2wkhqsx" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/E/fighter_armed_attack_E_0.0_3.png" id="5_yuwcg"]
 [ext_resource type="Texture2D" uid="uid://d3d8qdbo8f0pf" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/E/fighter_armed_attack_E_0.0_4.png" id="6_ekpfi"]
 [ext_resource type="Texture2D" uid="uid://bre1rqgq3q538" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/E/fighter_armed_attack_E_0.0_5.png" id="7_siq75"]
@@ -141,8 +145,8 @@
 [ext_resource type="Texture2D" uid="uid://12v5qks5ef8c" path="res://assets/art/playable character/fighter_armed/fighter_armed_walk/W/fighter_armed_walk_W_180.0_7.png" id="137_lphbr"]
 [ext_resource type="Texture2D" uid="uid://1rke6kppqr3a" path="res://assets/art/environment/light3.png" id="138_d4a61"]
 [ext_resource type="Texture2D" uid="uid://cvdypdgmkr770" path="res://assets/art/environment/light2.png" id="139_ftsq4"]
-[ext_resource type="AudioStream" uid="uid://djhoydj4vr7ct" path="res://assets/audio/hit_2.wav" id="140_mpi84"]
 [ext_resource type="PackedScene" uid="uid://b4qsmsjjcorlc" path="res://scenes/light.tscn" id="143_a3yxq"]
+[ext_resource type="Shader" path="res://shaders/light.gdshader" id="144_nyccg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dhxtk"]
 resource_local_to_scene = true
@@ -154,9 +158,9 @@ radius = 29.0172
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hcvbx"]
 resource_local_to_scene = true
 shader = ExtResource("2_ktb63")
-shader_parameter/width = 0.0
-shader_parameter/modulated_color = Color(1, 1, 1, 1)
-shader_parameter/outline_color = Color(0.814995, 0.86858, 0.453719, 1)
+shader_parameter/dir_x = null
+shader_parameter/dir_y = null
+shader_parameter/quality = 4
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rd8ew"]
 animations = [{
@@ -1420,32 +1424,14 @@ height = 34.0
 radius = 33.0
 height = 66.0
 
-[sub_resource type="Shader" id="Shader_ovbay"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d4q8c"]
 resource_local_to_scene = true
-code = "shader_type canvas_item;
-
-
-// 040012
-uniform vec3 color: source_color = vec3(1.0);
-uniform float power: hint_range(0.0, 6.0, 0.1) = 3.0;
-uniform float radius: hint_range(0.0, 10.0, 0.1) = 2.5;
-uniform sampler2D SCREEN_TEXTURE: hint_screen_texture, filter_linear_mipmap;
-
-
-void fragment() {
-	vec2 uv = UV;
-	float distance_from_center = length(vec2(abs(uv.x - 0.5), abs(uv.y - 0.5)));
-	vec4 screen_color = texture(SCREEN_TEXTURE, SCREEN_UV);
-	COLOR.rgb = screen_color.rgb * vec3(1.0 + power) * color;
-	COLOR.a = 1.0 - distance_from_center * (1.0 / (radius * 0.1));
-}"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7xqen"]
-resource_local_to_scene = true
-shader = SubResource("Shader_ovbay")
-shader_parameter/color = Color(0.96873, 0.921816, 0.802173, 1)
+shader = ExtResource("144_nyccg")
+shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/power = 3.0
 shader_parameter/radius = 2.5
+shader_parameter/flickering = false
+shader_parameter/flicker_range = 1.0
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("attack_axis", "animation_player", "attack_zone", "attack_collider", "parry_collider")]
 z_index = 5
@@ -1465,6 +1451,20 @@ parry_collider = NodePath("AttackAxis/ParryZone/ParryCollider")
 model = "knight_armed"
 attack_speed_modifier = 1.1
 attack_with_melee = true
+
+[node name="AudioPlayer" parent="." instance=ExtResource("3_mleu6")]
+sounds = {
+"Death": ExtResource("2_s7oww"),
+"Dodge": ExtResource("3_2t8y0")
+}
+
+[node name="Sounds_Backup" type="Node" parent="."]
+process_mode = 4
+script = ExtResource("5_xygtc")
+sounds = {
+"Death": ExtResource("2_s7oww"),
+"Dodge": ExtResource("2_s7oww")
+}
 
 [node name="PhysicalCollider" type="CollisionShape2D" parent="."]
 visible = false
@@ -1496,6 +1496,7 @@ rotation = 1.5708
 collision_layer = 2
 
 [node name="AttackCollider" type="CollisionShape2D" parent="AttackAxis/AttackZone"]
+visible = false
 shape = SubResource("CapsuleShape2D_2gqxe")
 disabled = true
 
@@ -1512,9 +1513,10 @@ disabled = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-1, -1)
-zoom = Vector2(5, 5)
+zoom = Vector2(2.9, 2.9)
 
 [node name="PointLight2D" type="PointLight2D" parent="Camera2D"]
+process_mode = 4
 visible = false
 position = Vector2(-220, 92)
 energy = 0.0
@@ -1522,19 +1524,15 @@ texture = ExtResource("139_ftsq4")
 texture_scale = 16.28
 height = 500.0
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("140_mpi84")
-volume_db = -11.0
-bus = &"SFX"
-
 [node name="PointLight2D" type="PointLight2D" parent="."]
+process_mode = 4
 visible = false
 position = Vector2(-1, -3)
 texture = ExtResource("138_d4a61")
 texture_scale = 1.2
 
 [node name="Light" parent="." instance=ExtResource("143_a3yxq")]
-material = SubResource("ShaderMaterial_7xqen")
+material = SubResource("ShaderMaterial_d4q8c")
 
 [connection signal="attack_effects" from="." to="." method="_on_attack_effects"]
 [connection signal="body_entered" from="MeleeZone" to="." method="_on_melee_zone_body_entered"]

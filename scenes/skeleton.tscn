@@ -94,19 +94,19 @@ attack_frame = 5
 has_attack = true
 animation_types = Array[String](["idle", "walk", "attack", "death"])
 
-[node name="AnimationPlayer" parent="." index="1"]
+[node name="AnimationPlayer" parent="." index="2"]
 libraries = {
 "": SubResource("AnimationLibrary_hfmj2")
 }
 
-[node name="AnimatedSprite2D" parent="." index="2"]
+[node name="AnimatedSprite2D" parent="." index="3"]
 material = SubResource("ShaderMaterial_0w58q")
 sprite_frames = SubResource("SpriteFrames_ckd27")
 
-[node name="PhysicalCollider" parent="." index="3"]
+[node name="PhysicalCollider" parent="." index="4"]
 shape = SubResource("CapsuleShape2D_hap0o")
 
-[node name="HighlightCircle" parent="." index="4"]
+[node name="HighlightCircle" parent="." index="5"]
 material = SubResource("CanvasItemMaterial_ury82")
 
 [node name="CollisionShape2D" parent="ClumpZone" index="0"]
@@ -121,5 +121,5 @@ shape = SubResource("CapsuleShape2D_ujkq1")
 [node name="AttackCollider" parent="AttackAxis/AttackZone" index="0"]
 shape = SubResource("CapsuleShape2D_lrxak")
 
-[node name="Attack_Cooldown" parent="." index="9"]
+[node name="Attack_Cooldown" parent="." index="10"]
 wait_time = 5.0

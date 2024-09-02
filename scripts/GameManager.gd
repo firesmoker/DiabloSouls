@@ -153,7 +153,7 @@ func _on_player_attack_success(enemy: Enemy) -> void:
 	camera_shake_and_color()
 	print("attack succes!")
 	var enemy_death_status: bool = await enemy.get_hit()
-	#print(enemy_death_status)
+	#print(enemy_death_status)z
 	#if enemy_death_status:
 		#print("extra death shake")
 		#camera_shake_and_color()

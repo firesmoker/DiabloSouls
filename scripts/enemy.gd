@@ -1,4 +1,5 @@
 class_name Enemy extends RigidBody2D
+@onready var audio_player: AudioPlayer = $AudioPlayer
 
 @onready var attack_cooldown: Timer = $Attack_Cooldown
 
@@ -12,6 +13,8 @@ class_name Enemy extends RigidBody2D
 @onready var attack_collider: CollisionShape2D = $AttackAxis/AttackZone/AttackCollider
 @onready var health_bar: ProgressBar = $HealthBar
 
+@export var get_hit_sound: AudioStream
+@export var death_sound: AudioStream
 @export var interruptable: bool = true
 @export var attack_cooldown_duration: float =1.3
 @export var attack_damage: float = 1
@@ -157,8 +160,8 @@ func walk(delta: float) -> void:
 	move_and_collide(velocity)
 	var animation_before_change: String = animation_player.current_animation
 	animation_player.speed_scale = move_speed_modifier
-	if "walk" not in animation_player.current_animation:
-		print("starting to walk")
+	#if "walk" not in animation_player.current_animation:
+		#if 1 == 1: print("starting to walk")
 	animation_player.play(animations[current_direction]["walk"])
 	#print(animation_player.current_animation)
 	#if animation_player.current_animation != animation_before_change and animation_player.current_animation in animation_library:
@@ -318,6 +321,9 @@ func get_hit(damage: int = randi_range(1,3)) -> bool:
 		die()
 		return true
 	elif not dying:
+		#audio.stream = get_hit_sound
+		#audio.play()
+		audio_player.play("GetHit")
 		health_bar.value = hitpoints
 		health_bar.visible = true
 		if randi() % 100 + 1 > 50 and interruptable:
@@ -348,6 +354,9 @@ func calculate_movement() -> Vector2:
 	return Vector2(movement_vector.x + move_offset.x, movement_vector.y + move_offset.y)
 
 func die() -> void:
+	#audio.stream = death_sound
+	#audio.play()
+	audio_player.play("Death")
 	emit_signal("stopped_mouse_hover", self)
 	dying = true
 	animation_player.speed_scale = 1

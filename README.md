@@ -1,23 +1,30 @@
 certain conditions can have an array of different "sources", and remove themselves from it later, so only when all sources are removed the condition stops.
 
 Things that are very missing:
+	BUG: dodging without moving can teleport player, probably because of the await timer
+	arena has no walls, objects, etc.
 	Sound is not good and responsive
-	abilities should probably become scenes
-	maybe i can get rid of the "is_locked" for enemies?
+	Ranged enemies have no prediction, they shoot in a stupid manner.
+	Enemies don't have idle states and agression zones, they always go to the player and try to attack him wherever they start
 	Pathfinding is non existent for both player and enemies
 	no abilities in combat other than basic attack, parry, counter, dodge, shoot projectile
 	parry / counter is not optimized for multiple enemies
 	no counter and parry animations (maybe in the meantime - knockback? reverse step?)
 	Artstyle is lacking
 	no music
-	player light is a bit awkard, and the dark is not dark enough
 	counter is immediate (maybe good?) and doesn't provide invulnerability (?)
 	enemy retaliation animations (lower priority)
 	no movement accelaration (low priority)
 	no indication for lack of stamina to parry on the highlight circles (very low priority, if parry actually uses atmina)
 	no decals like blood and bones flying in the air (very very low priority)
 	movement could be smoother using root motion, or better more consistent animations (very very low priority)
-	
+
+Coding stuff that bothers me:
+	abilities should probably become scenes
+	maybe i can get rid of the "is_locked" for enemies?
+	sound dictionaries are calculated for each enemy instance instead of each unique enemy
+	animations: dictionaries, arrays, animations, etc. are calculated for each enemy instance instead of each unique enemy
+	debugging could be easier if I could toggle some types of messages
 
 
 abilities queue

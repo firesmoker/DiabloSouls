@@ -33,15 +33,15 @@ func _on_self_destruct_timer_timeout() -> void:
 
 
 func _on_impact_zone_body_entered(body: CollisionObject2D) -> void:
-	print("body entered " + str(body))
+	#print("body entered " + str(body))
 	if player != null:
 		if body == player and targets_player:
-			print("trying to hit player with projectile")
+			#print("trying to hit player with projectile")
 			player.get_hit()
 			explode()
 	if not targets_player:
 		if typeof(body) == typeof(Enemy):
-			print("enemy proj")
+			#if 1 == 1: print("enemy proj")
 			body.get_hit(damage)
 			explode()
 	#pass # Replace with function body.
