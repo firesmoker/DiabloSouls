@@ -1,30 +1,36 @@
-certain conditions can have an array of different "sources", and remove themselves from it later, so only when all sources are removed the condition stops.
+Ideas:
+	GAMEPLAY:	Mitigation chance?
 
 Things that are very missing:
-	BUG: dodging without moving can teleport player, probably because of the await timer
-	arena has no walls, objects, etc.
-	Sound is not good and responsive
-	Ranged enemies have no prediction, they shoot in a stupid manner.
-	Enemies don't have idle states and agression zones, they always go to the player and try to attack him wherever they start
-	Pathfinding is non existent for both player and enemies
-	no abilities in combat other than basic attack, parry, counter, dodge, shoot projectile
-	parry / counter is not optimized for multiple enemies
-	no counter and parry animations (maybe in the meantime - knockback? reverse step?)
-	Artstyle is lacking
-	no music
-	counter is immediate (maybe good?) and doesn't provide invulnerability (?)
-	enemy retaliation animations (lower priority)
-	no movement accelaration (low priority)
-	no indication for lack of stamina to parry on the highlight circles (very low priority, if parry actually uses atmina)
-	no decals like blood and bones flying in the air (very very low priority)
-	movement could be smoother using root motion, or better more consistent animations (very very low priority)
+	BUG:		dodging without moving can teleport player, probably because of the await timer
+	WORLD:		arena has no walls, objects, etc.
+	SOUND:		Enemies sound their get_hit sound each and every time
+	SOUND:		Enemy sounds are not randomized enough
+	SOUND:		Missing sounds
+	VISUAL:		No red overlay when dead
+	VISUAL:		No normal-map lightning
+	GAMEPLAY:	Ranged enemies have no prediction, they shoot in a stupid manner.
+	GAMEPLAY:	Enemies don't have idle states and agression zones, they always go to the player and try to attack him wherever they start
+	GAMEPLAY:	Pathfinding is non existent for both player and enemies
+	GAMEPLAY:	no abilities in combat other than basic attack, parry, counter, dodge, shoot projectile
+	GAMEPLAY:	parry / counter is not optimized for multiple enemies
+	GAMEPLAY:	certain conditions can have an array of different "sources", and remove themselves from it later, so only when all sources are removed the condition stops. (for example invul and dodge)
+	ANIMATION:	no counter and parry animations (maybe in the meantime - knockback? reverse step?)
+	ART:		Artstyle is lacking
+	MUSIC:		no music
+	GAMEPLAY:	counter is immediate (maybe good?) and doesn't provide invulnerability (?)
+	ANIMATION:	enemy retaliation animations (lower priority)
+	GAMEPLAY:	no movement accelaration (low priority)
+	GAMEPLAY:	no decals like blood and bones flying in the air (very very low priority)
+	ANIMATION:	movement could be smoother using root motion, or better more consistent animations (very very low priority)
+	UI:	no indication for lack of stamina to parry on the highlight circles (very low priority, if parry actually uses atmina)
 
 Coding stuff that bothers me:
-	abilities should probably become scenes
-	maybe i can get rid of the "is_locked" for enemies?
-	sound dictionaries are calculated for each enemy instance instead of each unique enemy
-	animations: dictionaries, arrays, animations, etc. are calculated for each enemy instance instead of each unique enemy
-	debugging could be easier if I could toggle some types of messages
+	REFACTOR:		abilities should probably become scenes
+	REFACTOR:		maybe i can get rid of the "is_locked" for enemies?
+	PERFORMANCE:	sound dictionaries are calculated for each enemy instance instead of each unique enemy
+	PERFORMANCE:	animations: dictionaries, arrays, animations, etc. are calculated for each enemy instance instead of each unique enemy
+	WORKFLOW:		debugging could be easier if I could toggle some types of messages
 
 
 abilities queue

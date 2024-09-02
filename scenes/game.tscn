@@ -340,19 +340,19 @@ y_sort_enabled = true
 [node name="Demonlord2" parent="Enemies" instance=ExtResource("9_upit6")]
 position = Vector2(-76, 71)
 
-[node name="Skeleton" parent="." instance=ExtResource("7_fmbge")]
+[node name="Skeleton" parent="Enemies" instance=ExtResource("7_fmbge")]
 position = Vector2(122, -29)
 
-[node name="Skeleton2" parent="." instance=ExtResource("7_fmbge")]
+[node name="Skeleton2" parent="Enemies" instance=ExtResource("7_fmbge")]
 position = Vector2(106, 79)
 
-[node name="Skeleton3" parent="." instance=ExtResource("7_fmbge")]
+[node name="Skeleton3" parent="Enemies" instance=ExtResource("7_fmbge")]
 position = Vector2(40, 144)
 
-[node name="Skeleton4" parent="." instance=ExtResource("7_fmbge")]
+[node name="Skeleton4" parent="Enemies" instance=ExtResource("7_fmbge")]
 position = Vector2(-199, -90)
 
-[node name="Skeleton5" parent="." instance=ExtResource("7_fmbge")]
+[node name="Skeleton5" parent="Enemies" instance=ExtResource("7_fmbge")]
 position = Vector2(-198, 99)
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
