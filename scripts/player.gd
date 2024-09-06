@@ -3,6 +3,7 @@ class_name Player extends CharacterBody2D
 
 @onready var audio_player: AudioPlayer = $AudioPlayer
 
+@export var blood_template: PackedScene
 
 @onready var game_manager: GameManager = %GameManager
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
@@ -339,7 +340,22 @@ func _on_animation_player_animation_finished(anim_name: String) -> void:
 
 func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
 	emit_signal("attack_success", body)
+	audio_player.play("Hit")
+	var effect_position: Vector2 = body.position + Vector2(0, -10.0)
+	#create_blood_effect(effect_position)
 	print(str(body) + " has entered attack zone")
+
+
+func create_blood_effect(effect_position: Vector2, custom_parent: Node = null) -> void:
+	var blood_effect: Node2D = blood_template.instantiate() as Node2D
+	if custom_parent == null:
+		get_tree().root.add_child(blood_effect)
+	else:
+		custom_parent.add_child(blood_effect)
+		blood_effect.z_as_relative = true
+		blood_effect.z_index = custom_parent.z_index + 1
+		blood_effect.y_sort_enabled = false
+	blood_effect.global_position = effect_position
 
 
 func _on_parry_zone_body_entered(enemy: CollisionObject2D) -> void:

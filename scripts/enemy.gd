@@ -307,30 +307,36 @@ func get_hit(damage: int = randi_range(1,3)) -> bool:
 	can_be_parried = false
 	can_be_countered = false
 	highlight_circle.modulate = Color.TRANSPARENT
-	animated_sprite_2d.material.set_shader_parameter("modulated_color",Color.RED)
-	var timer: Timer = Timer.new()
-	self.add_child(timer)
-	timer.wait_time = 0.07
-	timer.start()
-	await timer.timeout
-	timer.queue_free()
-	animated_sprite_2d.material.set_shader_parameter("modulated_color",body_color)
 	hitpoints -= damage
 	if hitpoints <= 0:
 		health_bar.visible = false
+		#died = true
 		die()
-		return true
+		return false
+		#return true
 	elif not dying:
 		#audio.stream = get_hit_sound
 		#audio.play()
-		audio_player.play("GetHit")
+		if randi_range(1, 100) >= 50:
+			audio_player.play("GetHit", 0.96, 1.04)
 		health_bar.value = hitpoints
 		health_bar.visible = true
 		if randi() % 100 + 1 > 50 and interruptable:
 			animation_player.stop()
 			attack_collider.disabled = true
 			attacking = false
-	return false
+	
+		animated_sprite_2d.material.set_shader_parameter("modulated_color",Color.RED)
+		var timer: Timer = Timer.new()
+		self.add_child(timer)
+		timer.wait_time = 0.07
+		timer.start()
+		await timer.timeout
+		animated_sprite_2d.material.set_shader_parameter("modulated_color",body_color)
+		timer.queue_free()
+	
+	#return false
+	return true
 
 func set_direction_by_angle(angle: float = position.angle_to_point(destination)) -> void:
 	var rand: float = (1/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
@@ -355,13 +361,14 @@ func calculate_movement() -> Vector2:
 
 func die() -> void:
 	#audio.stream = death_sound
-	#audio.play()
+	#audio.play()ךך
 	audio_player.play("Death")
 	emit_signal("stopped_mouse_hover", self)
 	dying = true
 	animation_player.speed_scale = 1
 	animation_player.play(animations[current_direction]["death"])
-	$PhysicalCollider.disabled = true
+	#$PhysicalCollider.disabled = true
+	$PhysicalCollider.call_deferred("set","disabled", true)
 	highlight_circle.modulate = Color.TRANSPARENT
 	$HoverZone.process_mode = Node.PROCESS_MODE_DISABLED
 	$MeleeZone.process_mode = Node.PROCESS_MODE_DISABLED
@@ -394,14 +401,36 @@ func attack_effect(melee: bool = true) -> void:
 		create_projectile()
 		
 
-func create_projectile(speed: float = 1.0) -> void:
+func create_projectile(projectile_speed: float = 1.0, prediction: bool = false) -> void:
 	var instance: Projectile = projectile.instantiate() as Projectile
 	add_child(instance)
 	instance.player = player
-	instance.rotation += get_angle_to(player.position)
-	instance.position += position.direction_to(player.position) * 30
-	instance.velocity = position.direction_to(player.position) * speed
+	
+	#var starting_position: Vector2 = position.direction_to(player.position) * 30
+	var starting_position: Vector2 = position
+	
+	var target_position: Vector2 = player.position
+	if prediction:
+		
+		# Calculate relative velocity
+		var relative_velocity: Vector2 = player.velocity - (starting_position - player.position).normalized() * projectile_speed
+		
+		# Calculate distance to player
+		var distance_to_player: float = (player.position - starting_position).length()
 
+		# Calculate time to hit
+		var time_to_hit: float = distance_to_player / relative_velocity.length()
+		
+
+		# Predict future position
+		var predicted_position: Vector2 = player.position + player.velocity * time_to_hit
+		target_position = predicted_position
+		
+
+	instance.rotation += get_angle_to(target_position)
+	instance.position += position.direction_to(target_position) * 30
+	instance.velocity = position.direction_to(target_position) * projectile_speed
+	
 
 func disable_attack_zone() -> void:
 	var timer: Timer = Timer.new()

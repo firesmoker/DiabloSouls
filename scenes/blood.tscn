@@ -1,0 +1,86 @@
+[gd_scene load_steps=13 format=3 uid="uid://cbc7srdprkpgm"]
+
+[ext_resource type="Texture2D" uid="uid://dac8382jhj3yf" path="res://assets/art/vfx/blood1/Blood_Batch_1_SpriteSheetRows.png" id="1_js7no"]
+[ext_resource type="Script" path="res://scripts/effect.gd" id="2_l0x61"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wcbuy"]
+atlas = ExtResource("1_js7no")
+region = Rect2(0, 93, 110, 93)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bbivn"]
+atlas = ExtResource("1_js7no")
+region = Rect2(110, 93, 110, 93)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hm13q"]
+atlas = ExtResource("1_js7no")
+region = Rect2(220, 93, 110, 93)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fohht"]
+atlas = ExtResource("1_js7no")
+region = Rect2(330, 93, 110, 93)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ug02b"]
+atlas = ExtResource("1_js7no")
+region = Rect2(440, 93, 110, 93)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0gale"]
+atlas = ExtResource("1_js7no")
+region = Rect2(550, 93, 110, 93)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qtqaj"]
+atlas = ExtResource("1_js7no")
+region = Rect2(660, 93, 110, 93)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f4oey"]
+atlas = ExtResource("1_js7no")
+region = Rect2(770, 93, 110, 93)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_al3a5"]
+atlas = ExtResource("1_js7no")
+region = Rect2(880, 93, 110, 93)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qduol"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wcbuy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bbivn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hm13q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fohht")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ug02b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0gale")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qtqaj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f4oey")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_al3a5")
+}],
+"loop": false,
+"name": &"default",
+"speed": 24.0
+}]
+
+[node name="Blood" type="AnimatedSprite2D"]
+scale = Vector2(0.3, 0.3)
+sprite_frames = SubResource("SpriteFrames_qduol")
+autoplay = "default"
+frame = 8
+frame_progress = 1.0
+script = ExtResource("2_l0x61")
+
+[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

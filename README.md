@@ -4,12 +4,10 @@ Ideas:
 Things that are very missing:
 	BUG:		dodging without moving can teleport player, probably because of the await timer
 	WORLD:		arena has no walls, objects, etc.
-	SOUND:		Enemies sound their get_hit sound each and every time
-	SOUND:		Enemy sounds are not randomized enough
 	SOUND:		Missing sounds
 	VISUAL:		No red overlay when dead
 	VISUAL:		No normal-map lightning
-	GAMEPLAY:	Ranged enemies have no prediction, they shoot in a stupid manner.
+	GAMEPLAY:	Ranged enemies have no target prediction, they shoot in a stupid manner.
 	GAMEPLAY:	Enemies don't have idle states and agression zones, they always go to the player and try to attack him wherever they start
 	GAMEPLAY:	Pathfinding is non existent for both player and enemies
 	GAMEPLAY:	no abilities in combat other than basic attack, parry, counter, dodge, shoot projectile
@@ -24,6 +22,8 @@ Things that are very missing:
 	GAMEPLAY:	no decals like blood and bones flying in the air (very very low priority)
 	ANIMATION:	movement could be smoother using root motion, or better more consistent animations (very very low priority)
 	UI:	no indication for lack of stamina to parry on the highlight circles (very low priority, if parry actually uses atmina)
+	MENUS: Pause
+	MENUS: SETTINGS
 
 Coding stuff that bothers me:
 	REFACTOR:		abilities should probably become scenes

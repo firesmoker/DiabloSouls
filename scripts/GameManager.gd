@@ -168,7 +168,7 @@ func _on_player_parry_success(enemy: Enemy) -> void:
 		else:
 			print("enemy can't be parried")
 
-func freeze_display(duration := 1 / 12.0, delay := 0.05) -> void:
+func freeze_display(duration := 0.2 / 12.0, delay := 0.05) -> void:
 	await get_tree().create_timer(delay).timeout
 	#RenderingServer.set_render_loop_enabled(false)
 	var timer: Timer = Timer.new()

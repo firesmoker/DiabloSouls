@@ -12,6 +12,7 @@ func _ready() -> void:
 	else:
 		for i in range(0,my_sounds.size()):
 			var new_audio_stream: AudioStreamPlayer2D = AudioStreamPlayer2D.new()
+			new_audio_stream.bus = "SFX"
 			self.add_child(new_audio_stream)
 			if my_sounds[sounds_keys[i]] != null:
 				print("SOUND:" + str(my_sounds[sounds_keys[i]]))
@@ -27,9 +28,10 @@ func _ready() -> void:
 
 
 
-func play(name: String) -> void:
+func play(name: String, pitch_min: float = 1.0, pitch_max: float = 1.0) -> void:
 	if my_sounds.size() > 0:
 		if name in my_sounds:
+			audio_streams[my_sounds[name]["stream"]].pitch_scale = randf_range(pitch_min, pitch_max)
 			audio_streams[my_sounds[name]["stream"]].play()
 		else:
 			print("no " + name + " in sounds")
