@@ -316,7 +316,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				destination = get_global_mouse_position()
 
 
-func _on_melee_zone_body_entered(enemy: CollisionObject2D) -> void:
+func _on_melee_zone_body_entered(enemy: RigidBody2D) -> void:
 	#print("body entered " + str(enemy))
 	enemies_in_melee.append(enemy)
 	game_manager.enemy_in_player_melee_zone(enemy)
@@ -324,7 +324,7 @@ func _on_melee_zone_body_entered(enemy: CollisionObject2D) -> void:
 		attack(enemy.position)
 
 
-func _on_melee_zone_body_exited(enemy: CollisionObject2D) -> void:
+func _on_melee_zone_body_exited(enemy: RigidBody2D) -> void:
 	#print("body exited " + str(enemy))
 	if enemy in enemies_in_melee:
 		enemies_in_melee.erase(enemy)
@@ -338,7 +338,7 @@ func _on_animation_player_animation_finished(anim_name: String) -> void:
 		#is_attacking = false
 
 
-func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
+func _on_attack_zone_body_entered(body: RigidBody2D) -> void:
 	emit_signal("attack_success", body)
 	audio_player.play("Hit")
 	var effect_position: Vector2 = body.position + Vector2(0, -10.0)
@@ -358,7 +358,7 @@ func create_blood_effect(effect_position: Vector2, custom_parent: Node = null) -
 	blood_effect.global_position = effect_position
 
 
-func _on_parry_zone_body_entered(enemy: CollisionObject2D) -> void:
+func _on_parry_zone_body_entered(enemy: RigidBody2D) -> void:
 	enemies_in_defense_zone.append(enemy)
 	print("enemies in parry: " + str(enemy))
 	if not is_defending and is_parrying:
@@ -368,7 +368,7 @@ func _on_parry_zone_body_entered(enemy: CollisionObject2D) -> void:
 		#enemies_in_defense_zone.append(enemy)
 
 
-func _on_parry_zone_body_exited(enemy: CollisionObject2D) -> void:
+func _on_parry_zone_body_exited(enemy: RigidBody2D) -> void:
 	enemies_in_defense_zone.erase(enemy)
 
 func _on_attack_effects() -> void:
