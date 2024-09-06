@@ -102,20 +102,20 @@ animation_types = Array[String](["idle", "walk", "death", "attack"])
 attack_range = 150.0
 projectile = ExtResource("2_k21f3")
 
-[node name="AnimationPlayer" parent="." index="1"]
+[node name="AnimationPlayer" parent="." index="3"]
 libraries = {
 "": SubResource("AnimationLibrary_hfmj2")
 }
 
-[node name="AnimatedSprite2D" parent="." index="2"]
+[node name="AnimatedSprite2D" parent="." index="4"]
 material = SubResource("ShaderMaterial_w7qk1")
 sprite_frames = SubResource("SpriteFrames_iyag3")
 
-[node name="PhysicalCollider" parent="." index="3"]
+[node name="PhysicalCollider" parent="." index="5"]
 scale = Vector2(1.93, 1.765)
 shape = SubResource("CapsuleShape2D_m8147")
 
-[node name="HighlightCircle" parent="." index="4"]
+[node name="HighlightCircle" parent="." index="6"]
 material = SubResource("CanvasItemMaterial_0i3qh")
 
 [node name="CollisionShape2D" parent="ClumpZone" index="0"]

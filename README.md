@@ -1,15 +1,25 @@
 Ideas:
 	GAMEPLAY:	Mitigation chance?
 
+Milestones:
+	1) Basic level:
+		objects and walls
+		enemies scattered around, non agressive until player in radius
+		enemies and player pathfind their way
+		major SFX exists
+	2) Improved basic level:
+		
+
 Things that are very missing:
+	GAMEPLAY:	Pathfinding is non existent for both player and enemies
+	
 	BUG:		dodging without moving can teleport player, probably because of the await timer
 	WORLD:		arena has no walls, objects, etc.
 	SOUND:		Missing sounds
 	VISUAL:		No red overlay when dead
 	VISUAL:		No normal-map lightning
-	GAMEPLAY:	Ranged enemies have no target prediction, they shoot in a stupid manner.
+	GAMEPLAY:	Ranged enemies have no target prediction, they shoot in a stupid manner. (not working)
 	GAMEPLAY:	Enemies don't have idle states and agression zones, they always go to the player and try to attack him wherever they start
-	GAMEPLAY:	Pathfinding is non existent for both player and enemies
 	GAMEPLAY:	no abilities in combat other than basic attack, parry, counter, dodge, shoot projectile
 	GAMEPLAY:	parry / counter is not optimized for multiple enemies
 	GAMEPLAY:	certain conditions can have an array of different "sources", and remove themselves from it later, so only when all sources are removed the condition stops. (for example invul and dodge)

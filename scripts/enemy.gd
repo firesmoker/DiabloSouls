@@ -1,5 +1,6 @@
 class_name Enemy extends RigidBody2D
 @onready var audio_player: AudioPlayer = $AudioPlayer
+@onready var nav: NavigationAgent2D = $NavigationAgent2D
 
 @onready var attack_cooldown: Timer = $Attack_Cooldown
 
@@ -33,6 +34,7 @@ class_name Enemy extends RigidBody2D
 @export var has_ranged_attack: bool = false
 @export var animation_types: Array[String] = ["idle", "walk"]
 
+var direction: Vector2 = Vector2()
 var move_offset: Vector2 = Vector2(0,0)
 var is_locked: bool = false
 var dying: bool = false
@@ -155,17 +157,37 @@ func get_destination() -> void:
 
 func walk(delta: float) -> void:
 	#print("walking")
-	set_direction_by_angle()
+	#var velocity: Vector2 = calculate_movement() * speed_fps_ratio * move_speed_modifier * delta
 	var velocity: Vector2 = calculate_movement() * move_speed_modifier * delta
 	move_and_collide(velocity)
+	
+	set_visual_direction_by_angle(position.angle_to_point(nav.get_next_path_position()))
+	
 	var animation_before_change: String = animation_player.current_animation
 	animation_player.speed_scale = move_speed_modifier
-	#if "walk" not in animation_player.current_animation:
-		#if 1 == 1: print("starting to walk")
 	animation_player.play(animations[current_direction]["walk"])
-	#print(animation_player.current_animation)
-	#if animation_player.current_animation != animation_before_change and animation_player.current_animation in animation_library:
-		#animation_player.seek(randi_range(0, 3) / FPS)
+
+
+func calculate_movement() -> Vector2:
+	if stunned:
+		return Vector2(0, 0)
+		
+	move_offset = Vector2(0,0)
+	for enemy: CollisionObject2D in adjacent_enemies:
+		move_offset += position - enemy.position
+	
+	
+	#var movement_vector: Vector2 = position.direction_to(destination) * speed_fps_ratio
+	#return Vector2(movement_vector.x + move_offset.x, movement_vector.y + move_offset.y)
+	
+	#var direction: Vector2 = Vector2()	
+	nav.target_position = destination
+	
+	direction = nav.get_next_path_position() - global_position
+	direction = direction.normalized()
+	
+	var movement_vector: Vector2 = direction * speed_fps_ratio
+	return movement_vector
 
 
 func attack() -> void:
@@ -338,7 +360,7 @@ func get_hit(damage: int = randi_range(1,3)) -> bool:
 	#return false
 	return true
 
-func set_direction_by_angle(angle: float = position.angle_to_point(destination)) -> void:
+func set_visual_direction_by_angle(angle: float = position.angle_to_point(destination)) -> void:
 	var rand: float = (1/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
 	var rounded_rand: float = float(round(angle / rand) * rand)
 	if ready_to_switch_direction:
@@ -350,14 +372,7 @@ func set_direction_by_angle(angle: float = position.angle_to_point(destination))
 		await switch_animation_timer.timeout
 		ready_to_switch_direction = true
 
-func calculate_movement() -> Vector2:
-	if stunned:
-		return Vector2(0, 0)
-	move_offset = Vector2(0,0)
-	for enemy: CollisionObject2D in adjacent_enemies:
-		move_offset += position - enemy.position
-	var movement_vector: Vector2 = position.direction_to(destination) * speed_fps_ratio
-	return Vector2(movement_vector.x + move_offset.x, movement_vector.y + move_offset.y)
+
 
 func die() -> void:
 	#audio.stream = death_sound

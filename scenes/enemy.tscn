@@ -65,6 +65,9 @@ script = ExtResource("1_vs0td")
 
 [node name="AudioPlayer" parent="." instance=ExtResource("2_6n65l")]
 
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_postprocessing = 1
+
 [node name="HealthBar" parent="." instance=ExtResource("4_5wg2b")]
 z_index = 100
 z_as_relative = false

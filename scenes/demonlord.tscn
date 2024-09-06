@@ -120,26 +120,26 @@ sounds = {
 "GetHit": ExtResource("2_6wj71")
 }
 
-[node name="HealthBar" parent="." index="1"]
+[node name="HealthBar" parent="." index="2"]
 offset_left = -22.0
 offset_top = -70.7
 offset_right = 22.0
 offset_bottom = -66.7
 
-[node name="AnimationPlayer" parent="." index="2"]
+[node name="AnimationPlayer" parent="." index="3"]
 libraries = {
 "": SubResource("AnimationLibrary_hfmj2")
 }
 
-[node name="AnimatedSprite2D" parent="." index="3"]
+[node name="AnimatedSprite2D" parent="." index="4"]
 material = SubResource("ShaderMaterial_1031v")
 sprite_frames = SubResource("SpriteFrames_kkpv2")
 
-[node name="PhysicalCollider" parent="." index="4"]
+[node name="PhysicalCollider" parent="." index="5"]
 z_index = 50
 shape = SubResource("CapsuleShape2D_xh5jj")
 
-[node name="HighlightCircle" parent="." index="5"]
+[node name="HighlightCircle" parent="." index="6"]
 z_index = -1
 material = SubResource("CanvasItemMaterial_dm3a0")
 scale = Vector2(3.46, 3.46)
@@ -152,7 +152,7 @@ position = Vector2(0, -25.6)
 scale = Vector2(1.805, 2.01)
 shape = SubResource("CapsuleShape2D_rvte0")
 
-[node name="MeleeZone" parent="." index="8"]
+[node name="MeleeZone" parent="." index="9"]
 scale = Vector2(2.31, 2.31)
 
 [node name="CollisionShape2D" parent="MeleeZone" index="0"]
