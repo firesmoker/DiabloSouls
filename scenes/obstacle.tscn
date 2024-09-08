@@ -2,8 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://cpxgnvstr8nna" path="res://assets/art/prop/column1/E/column1_E_0.0_0.png" id="1_udwvx"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_bt11o"]
-radius = 23.0868
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ui784"]
+size = Vector2(24, 21)
 
 [node name="Obstacle" type="Sprite2D"]
 position = Vector2(447, 39)
@@ -12,4 +12,9 @@ texture = ExtResource("1_udwvx")
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-shape = SubResource("CircleShape2D_bt11o")
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_ui784")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+radius = 17.0
+affect_navigation_mesh = true

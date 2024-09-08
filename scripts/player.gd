@@ -2,7 +2,16 @@ class_name Player extends CharacterBody2D
 @onready var light: Sprite2D = $Light
 
 @onready var audio_player: AudioPlayer = $AudioPlayer
+@onready var nav: NavigationAgent2D = $NavigationAgent2D
+@onready var ray_cast: RayCast2D = $Rays/RayCast2
+@onready var ray_axis: Node2D = $Rays
 
+var last_movement_offset: int = 0
+var minimum_collision_distance: float = 0
+
+@export var rays: Array[RayCast2D]
+@export var rays_right: Array[RayCast2D]
+@export var rays_left: Array[RayCast2D]
 @export var blood_template: PackedScene
 
 @onready var game_manager: GameManager = %GameManager
@@ -55,8 +64,10 @@ var mana_regen_rate: float = 0.1
 var mana_regen_time: float = 0.0
 
 var dodge_cost: float = 1
+var is_moving_with_offset: bool = false
+var number_of_offset_frames: int = 0
 
-var targeted_enemy: RigidBody2D = null
+var targeted_enemy: Enemy = null
 var enemies_in_melee: Array[Enemy]
 var enemies_in_defense_zone: Array[Enemy]
 #var abilities_queue: Array[Ability]
@@ -129,7 +140,7 @@ var ranged_ability: Ability = Ability.new("ranged_attack", "ranged", true, 1.4)
 
 func _ready() -> void:
 
-		
+	motion_mode = 1
 	hitpoints = max_hitpoints
 	stamina = max_stamina
 	mana = max_mana
@@ -314,6 +325,10 @@ func _unhandled_input(event: InputEvent) -> void:
 				is_attacking = false
 				original_position = position
 				destination = get_global_mouse_position()
+		elif event.is_action_released("mouse_move"):
+			last_movement_offset = 0
+			var closest_point: Vector2 = NavigationServer2D.map_get_closest_point(get_world_2d().navigation_map, get_global_mouse_position())
+			destination = closest_point - (closest_point - global_position).normalized() * 5
 
 
 func _on_melee_zone_body_entered(enemy: RigidBody2D) -> void:
@@ -400,7 +415,11 @@ func stop_on_destination() -> void:
 
 
 func running_state() -> void:
-	set_direction_by_destination(destination)
+	if not is_moving_with_offset:
+		set_direction_by_destination(nav.get_next_path_position())
+	else:
+		set_direction_by_velocity(velocity)
+	#set_direction_by_velocity(velocity)
 	var current_animation: String = animation_player.current_animation
 	is_locked = false
 	ready_to_attack_again = true
@@ -425,6 +444,8 @@ func standing_state() -> void:
 
 
 func handle_movement(delta: float) -> void:
+	var offset: float = 0
+	var move_offset: Vector2 = Vector2(0,0)
 	if not is_attacking and not is_locked and not is_defending:
 		if Input.is_action_pressed("mouse_move"):
 			if game_manager.enemies_under_mouse.size() <= 0:
@@ -434,6 +455,7 @@ func handle_movement(delta: float) -> void:
 			is_idle = false
 			original_position = position
 			destination = get_global_mouse_position()
+			
 			if abs(position.x - destination.x) <= 5 and abs(position.y - destination.y) <= 5:
 			#if position.distance_to(destination) <= 5:
 				velocity = Vector2(0,0)
@@ -442,8 +464,103 @@ func handle_movement(delta: float) -> void:
 		if is_chasing_enemy and targeted_enemy != null:
 			#original_position = position
 			destination = targeted_enemy.position
-		velocity = calculate_movement_velocity() * delta / average_delta
+		var collisions: float = 0
+		#var collisions: float = ray_coliisions()
+		#print(collisions)
+		if collisions != 0 and not Input.is_action_pressed("mouse_move") and not is_dodging:
+			if global_position.distance_to(destination) - minimum_collision_distance > 5:
+				offset = collisions
+				is_moving_with_offset = true
+			else:
+				is_moving_with_offset = false
+		else:
+			is_moving_with_offset = false
+			#var body: Object = ray_cast.get_collider()
+			#if body.get_script():
+				#if body.get_script().get_global_name() == "Enemy":
+					#print("offset!")
+					#offset = true
+		var new_velocity: Vector2 = calculate_movement_velocity(offset)
+		#if offset:
+		ray_axis.rotation = position.angle_to_point(destination)
+		velocity = (new_velocity + move_offset) * delta / average_delta
 
+func ray_coliisions() -> float:
+	var direction_angle: int = 0
+	var collision_count: int = 0
+	var count: int = 0
+	var angle_size: float = 7.5
+	var colliding_with_enemy: bool = false
+	var positive_collisions: int = 0
+	var negative_collisions: int = 0
+	var maximum_collision_distance: float = global_position.distance_to(rays[5].target_position)
+	minimum_collision_distance = maximum_collision_distance
+	for ray in rays:
+		colliding_with_enemy = false
+		if ray.is_colliding():
+			if ray.get_collider().get_script():
+				if ray.get_collider().get_script().get_global_name() == "Enemy":
+					colliding_with_enemy = true
+			if colliding_with_enemy:
+				var collision_point_distance: float = global_position.distance_to(rays[count].get_collision_point())
+				if collision_point_distance < minimum_collision_distance:
+					minimum_collision_distance = collision_point_distance
+				collision_count += 1
+				if count < 4:
+					direction_angle += angle_size
+					positive_collisions += 1
+				else:
+					direction_angle -= angle_size
+					negative_collisions += 1
+		count += 1
+	#if count >= 2:
+		#number_of_offset_frames += 1
+	#if collision_count <= 0:
+		#number_of_offset_frames = 0
+	#if number_of_offset_frames >= 2:
+		#return deg_to_rad(direction_counter)
+		
+	#if collision_count > 0 and direction_angle == 0:
+		#return deg_to_rad(angle_size * collision_count)
+	#if collision_count > rays.size() / 2:
+		#pass
+	#return deg_to_rad(direction_angle)
+	
+	var distance_ratio: float = (maximum_collision_distance - minimum_collision_distance) / maximum_collision_distance
+	if last_movement_offset == 1:
+		if positive_collisions > 0:
+			last_movement_offset = 1
+			return deg_to_rad((positive_collisions + collision_count) * angle_size * distance_ratio)
+		#if positive_collisions <= 0:
+		last_movement_offset = 0
+		return 0
+	elif last_movement_offset == 2:
+		if negative_collisions > 0:
+			last_movement_offset = 2
+			return deg_to_rad((negative_collisions + collision_count) * -angle_size * distance_ratio)
+		#if negative_collisions <= 0:
+		last_movement_offset = 0
+		return 0
+	else:
+		if positive_collisions > negative_collisions:
+			last_movement_offset = 1
+			return deg_to_rad((positive_collisions + collision_count) * angle_size * distance_ratio)
+		elif negative_collisions > 0:
+			last_movement_offset = 2
+			return deg_to_rad((negative_collisions + collision_count) * -angle_size * distance_ratio)
+		else:
+			last_movement_offset = 0
+			return deg_to_rad((positive_collisions + collision_count) * angle_size * distance_ratio)
+		
+		
+	
+	#return 0
+
+func set_direction_by_velocity(moving_velocity: Vector2) -> void:
+	var angle: float = position.angle_to_point(global_position + moving_velocity)
+	var half_rand: float = (0.5/4.0 * PI) # switch to full rand 1.0/4.0 * PI for 8 directions
+	var rounded_rand: float = round_to_multiple(angle, half_rand)
+	current_direction = radian_direction[rounded_rand]
 
 func set_direction_by_destination(look_destination: Vector2 = destination) -> void:
 	var angle: float = position.angle_to_point(look_destination)
@@ -565,22 +682,32 @@ func round_to_multiple(number: float, multiple: float) -> float:
 	return float(round(number / multiple) * multiple)
 
 
-func calculate_movement_velocity() -> Vector2:
-	#var angle: float = position.angle_to_point(destination)
-	#set_direction_by_destination(angle)
+func calculate_movement_velocity(offset: float = 0) -> Vector2:
+
+	nav.target_position = destination
 	
-	#var radius : float = speed_fps_ratio
-	#var direction_x: float = cos(angle) * radius
-	#var direction_y: float = sin(angle) * radius
-	#var max_velocity_x: float = direction_x * moving_speed_modifier
-	#var max_velocity_y: float = direction_y * moving_speed_modifier
+	var direction: Vector2 = Vector2()
+	direction = nav.get_next_path_position() - global_position
+	if offset != 0:
+		direction = direction.rotated(offset)
+		
+		var closest_point: Vector2 = NavigationServer2D.map_get_closest_point(get_world_2d().navigation_map, (global_position + direction))
+		direction = closest_point - global_position
+		#directions = findclo
+	
+	direction = direction.normalized()
+	#get_angle_to()
+	
+	
 	if is_dodging:
 		#print("dodge calculation")
 		#return Vector2(max_velocity_x * dodge_speed_bonus, max_velocity_y * dodge_speed_bonus)
-		return position.direction_to(destination) * speed_fps_ratio * moving_speed_modifier * dodge_speed_bonus
+		
+		return direction * speed_fps_ratio * moving_speed_modifier * dodge_speed_bonus
 	#return Vector2(max_velocity_x, max_velocity_y)
 	#print(position.direction_to(destination) * speed_fps_ratio * moving_speed_modifier)
-	return position.direction_to(destination) * speed_fps_ratio * moving_speed_modifier
+	#print(direction)
+	return direction * speed_fps_ratio * moving_speed_modifier
 
 
 func just_attacked(attack_type: String = "melee") -> void: # THIS

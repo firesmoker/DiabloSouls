@@ -1455,6 +1455,130 @@ model = "knight_armed"
 attack_speed_modifier = 1.1
 attack_with_melee = true
 
+[node name="Rays" type="Node2D" parent="."]
+
+[node name="Forward0" type="RayCast2D" parent="Rays"]
+position = Vector2(0, -12)
+target_position = Vector2(122, 0)
+
+[node name="Forward1" type="RayCast2D" parent="Rays"]
+position = Vector2(0, -9)
+target_position = Vector2(124, 0)
+
+[node name="Forward2" type="RayCast2D" parent="Rays"]
+position = Vector2(0, -6)
+target_position = Vector2(126, 0)
+
+[node name="Forward3" type="RayCast2D" parent="Rays"]
+position = Vector2(0, -3)
+target_position = Vector2(128, 0)
+
+[node name="Forward4" type="RayCast2D" parent="Rays"]
+target_position = Vector2(130, 0)
+
+[node name="Forward5" type="RayCast2D" parent="Rays"]
+position = Vector2(0, 3)
+target_position = Vector2(128, 0)
+
+[node name="Forward6" type="RayCast2D" parent="Rays"]
+position = Vector2(0, 6)
+target_position = Vector2(126, 0)
+
+[node name="Forward7" type="RayCast2D" parent="Rays"]
+position = Vector2(0, 9)
+target_position = Vector2(124, 0)
+
+[node name="Forward8" type="RayCast2D" parent="Rays"]
+position = Vector2(0, 12)
+target_position = Vector2(122, 0)
+
+[node name="Right0" type="RayCast2D" parent="Rays"]
+position = Vector2(12, 0)
+target_position = Vector2(0, 30)
+
+[node name="Right1" type="RayCast2D" parent="Rays"]
+position = Vector2(9, 0)
+target_position = Vector2(0, 30)
+
+[node name="Right2" type="RayCast2D" parent="Rays"]
+position = Vector2(6, 0)
+target_position = Vector2(0, 30)
+
+[node name="Right3" type="RayCast2D" parent="Rays"]
+position = Vector2(3, 0)
+target_position = Vector2(0, 30)
+
+[node name="Right4" type="RayCast2D" parent="Rays"]
+target_position = Vector2(0, 30)
+
+[node name="Right5" type="RayCast2D" parent="Rays"]
+position = Vector2(-3, 0)
+target_position = Vector2(0, 30)
+
+[node name="Right6" type="RayCast2D" parent="Rays"]
+position = Vector2(-6, 0)
+target_position = Vector2(0, 30)
+
+[node name="Right7" type="RayCast2D" parent="Rays"]
+position = Vector2(-9, 0)
+target_position = Vector2(0, 30)
+
+[node name="Right8" type="RayCast2D" parent="Rays"]
+position = Vector2(-12, 0)
+target_position = Vector2(0, 30)
+
+[node name="Left0" type="RayCast2D" parent="Rays"]
+position = Vector2(12, 0)
+rotation = 3.14159
+target_position = Vector2(0, 30)
+
+[node name="Left1" type="RayCast2D" parent="Rays"]
+position = Vector2(9, 0)
+rotation = 3.14159
+target_position = Vector2(0, 30)
+
+[node name="Left2" type="RayCast2D" parent="Rays"]
+position = Vector2(6, 0)
+rotation = 3.14159
+target_position = Vector2(0, 30)
+
+[node name="Left3" type="RayCast2D" parent="Rays"]
+position = Vector2(3, 0)
+rotation = 3.14159
+target_position = Vector2(0, 30)
+
+[node name="Left4" type="RayCast2D" parent="Rays"]
+rotation = 3.14159
+target_position = Vector2(0, 30)
+
+[node name="Left5" type="RayCast2D" parent="Rays"]
+position = Vector2(-3, 0)
+rotation = 3.14159
+target_position = Vector2(0, 30)
+
+[node name="Left6" type="RayCast2D" parent="Rays"]
+position = Vector2(-6, 0)
+rotation = 3.14159
+target_position = Vector2(0, 30)
+
+[node name="Left7" type="RayCast2D" parent="Rays"]
+position = Vector2(-9, 0)
+rotation = 3.14159
+target_position = Vector2(0, 30)
+
+[node name="Left8" type="RayCast2D" parent="Rays"]
+position = Vector2(-12, 0)
+rotation = 3.14159
+target_position = Vector2(0, 30)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+simplify_path = true
+avoidance_enabled = true
+avoidance_mask = 2
+debug_enabled = true
+debug_use_custom = true
+debug_path_custom_color = Color(0.672086, 0.990379, 7.70092e-07, 1)
+
 [node name="AudioPlayer" parent="." instance=ExtResource("3_mleu6")]
 sounds = {
 "Death": ExtResource("2_s7oww"),
@@ -1471,7 +1595,6 @@ sounds = {
 }
 
 [node name="PhysicalCollider" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource("CircleShape2D_dhxtk")
 
 [node name="MeleeZone" type="Area2D" parent="."]
@@ -1500,7 +1623,6 @@ rotation = 1.5708
 collision_layer = 2
 
 [node name="AttackCollider" type="CollisionShape2D" parent="AttackAxis/AttackZone"]
-visible = false
 shape = SubResource("CapsuleShape2D_2gqxe")
 disabled = true
 

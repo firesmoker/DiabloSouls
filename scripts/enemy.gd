@@ -185,6 +185,7 @@ func calculate_movement() -> Vector2:
 	
 	direction = nav.get_next_path_position() - global_position
 	direction = direction.normalized()
+	direction = direction + move_offset.normalized()
 	
 	var movement_vector: Vector2 = direction * speed_fps_ratio
 	return movement_vector

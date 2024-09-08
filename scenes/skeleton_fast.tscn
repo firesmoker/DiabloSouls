@@ -96,23 +96,23 @@ attack_speed_modifier = 0.8
 hitpoints_max = 1
 hitpoints = 1
 
-[node name="HealthBar" parent="." index="0"]
+[node name="HealthBar" parent="." index="2"]
 z_index = 1
 z_as_relative = true
 
-[node name="AnimationPlayer" parent="." index="1"]
+[node name="AnimationPlayer" parent="." index="3"]
 libraries = {
 "": SubResource("AnimationLibrary_hfmj2")
 }
 
-[node name="AnimatedSprite2D" parent="." index="2"]
+[node name="AnimatedSprite2D" parent="." index="4"]
 material = SubResource("ShaderMaterial_mbm04")
 sprite_frames = SubResource("SpriteFrames_exdmd")
 
-[node name="PhysicalCollider" parent="." index="3"]
+[node name="PhysicalCollider" parent="." index="5"]
 shape = SubResource("CapsuleShape2D_rflhr")
 
-[node name="HighlightCircle" parent="." index="4"]
+[node name="HighlightCircle" parent="." index="6"]
 material = SubResource("CanvasItemMaterial_4ietx")
 
 [node name="CollisionShape2D" parent="ClumpZone" index="0"]
