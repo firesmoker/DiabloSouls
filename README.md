@@ -1,21 +1,31 @@
 Ideas:
 	GAMEPLAY:	Mitigation chance?
 
-Milestones:
+Project Milestones:
 	1) Basic level:
-		objects and walls
+		objects and walls - in progress
+		enemies and player pathfind their way - in progress
 		enemies scattered around, non agressive until player in radius
-		enemies and player pathfind their way
-		major SFX exists
+		main SFX exists
 	2) Improved basic level:
 		
 
 Things that are very missing:
-	GAMEPLAY:	Pathfinding is non existent for both player and enemies
-	
+	GAMEPLAY:	Pathfinding: Player: not checking its sides for collision
+	GAMEPLAY:	Pathfinding: Player: can go out of navigation map when trying to circle around enemies
+	GAMEPLAY:	Pathfinding: Player: can get "funneled" between enemies, not going back
+	GAMEPLAY:	Pathfinding: Player: when destination is set before enemies and not after - weird behaviour
+	GAMEPLAY:	Pathfinding: Enemies: are jittery when clumped
+	GAMEPLAY:	Pathfinding: Enemies: get stuck behind other enemies instead of circling around them
+	GAMEPLAY:	Pathfinding: [Milestone]: Diablo 4 style player movement
 	BUG:		dodging without moving can teleport player, probably because of the await timer
+	BUG:		convert object 1 to object 1 on characterbody2d debugger (annoying, but doesn't seem to impact for now)
 	WORLD:		arena has no walls, objects, etc.
-	SOUND:		Missing sounds
+	SOUND:		Play projectile sounds
+	SOUND:		Play animation sounds for attack
+	SOUND:		Play Get hit SFX by material (flesh, metallic, etc.), probably played from enemy
+	SOUND:		Missing SFX all around
+	Visual:		Obstacle ordering
 	VISUAL:		No red overlay when dead
 	VISUAL:		No normal-map lightning
 	GAMEPLAY:	Ranged enemies have no target prediction, they shoot in a stupid manner. (not working)
@@ -24,6 +34,7 @@ Things that are very missing:
 	GAMEPLAY:	parry / counter is not optimized for multiple enemies
 	GAMEPLAY:	certain conditions can have an array of different "sources", and remove themselves from it later, so only when all sources are removed the condition stops. (for example invul and dodge)
 	ANIMATION:	no counter and parry animations (maybe in the meantime - knockback? reverse step?)
+	ANIMATION:	no ranged attack animation
 	ART:		Artstyle is lacking
 	MUSIC:		no music
 	GAMEPLAY:	counter is immediate (maybe good?) and doesn't provide invulnerability (?)
@@ -41,6 +52,7 @@ Coding stuff that bothers me:
 	PERFORMANCE:	sound dictionaries are calculated for each enemy instance instead of each unique enemy
 	PERFORMANCE:	animations: dictionaries, arrays, animations, etc. are calculated for each enemy instance instead of each unique enemy
 	WORKFLOW:		debugging could be easier if I could toggle some types of messages
+	WORKFLOW:		sort out the stupid ordering
 
 
 abilities queue

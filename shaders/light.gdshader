@@ -29,4 +29,3 @@ void fragment() {
 	COLOR.rgb = screen_color.rgb * vec3(1.0 + new_power + 1.0 - length(color)) * color;
 	COLOR.a = 1.0 - distance_from_center * (1.0 / (random_radius *  0.1)) + clamp((1.0 - distance_from_center), 0.0, 1.0) / 1.0;
 }
-

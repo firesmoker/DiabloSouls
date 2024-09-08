@@ -305,9 +305,8 @@ script = ExtResource("1_h602i")
 [node name="HUD" parent="." instance=ExtResource("7_luld2")]
 unique_name_in_owner = true
 
-[node name="Player" parent="." node_paths=PackedStringArray("rays") instance=ExtResource("3_gcy3d")]
+[node name="Player" parent="." instance=ExtResource("3_gcy3d")]
 position = Vector2(-57, -100)
-rays = []
 light_radius = 3.135
 moving_speed_modifier = 0.75
 dodge_speed_bonus = 5.0

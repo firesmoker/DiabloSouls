@@ -1435,7 +1435,7 @@ shader_parameter/radius = 2.5
 shader_parameter/flickering = false
 shader_parameter/flicker_range = 1.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("attack_axis", "animation_player", "attack_zone", "attack_collider", "parry_collider")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("rays", "rays_right", "rays_left", "attack_axis", "animation_player", "attack_zone", "attack_collider", "parry_collider")]
 z_index = 5
 z_as_relative = false
 y_sort_enabled = true
@@ -1444,6 +1444,9 @@ collision_layer = 2
 motion_mode = 1
 safe_margin = 5.0
 script = ExtResource("1_3jece")
+rays = [NodePath("Rays/Forward0"), NodePath("Rays/Forward1"), NodePath("Rays/Forward2"), NodePath("Rays/Forward3"), NodePath("Rays/Forward4"), NodePath("Rays/Forward5"), NodePath("Rays/Forward6"), NodePath("Rays/Forward7"), NodePath("Rays/Forward8")]
+rays_right = [NodePath("Rays/Right0"), NodePath("Rays/Right1"), NodePath("Rays/Right2"), NodePath("Rays/Right3"), NodePath("Rays/Right4"), NodePath("Rays/Right5"), NodePath("Rays/Right6"), NodePath("Rays/Right7"), NodePath("Rays/Right8")]
+rays_left = [NodePath("Rays/Left0"), NodePath("Rays/Left1"), NodePath("Rays/Left2"), NodePath("Rays/Left3"), NodePath("Rays/Left4"), NodePath("Rays/Left5"), NodePath("Rays/Left6"), NodePath("Rays/Left7"), NodePath("Rays/Left8")]
 blood_template = ExtResource("2_iqh1e")
 projectile = ExtResource("2_yccfu")
 attack_axis = NodePath("AttackAxis")

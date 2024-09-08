@@ -464,8 +464,8 @@ func handle_movement(delta: float) -> void:
 		if is_chasing_enemy and targeted_enemy != null:
 			#original_position = position
 			destination = targeted_enemy.position
-		var collisions: float = 0
-		#var collisions: float = ray_coliisions()
+		#var collisions: float = 0
+		var collisions: float = ray_coliisions()
 		#print(collisions)
 		if collisions != 0 and not Input.is_action_pressed("mouse_move") and not is_dodging:
 			if global_position.distance_to(destination) - minimum_collision_distance > 5:
