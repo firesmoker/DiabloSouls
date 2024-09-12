@@ -40,10 +40,10 @@ func _on_impact_zone_body_entered(body: CollisionObject2D) -> void:
 			player.get_hit()
 			explode()
 	if not targets_player:
-		if typeof(body) == typeof(Enemy):
+		if body.get_script():
 			#if 1 == 1: print("enemy proj")
 			body.get_hit(damage)
-			explode()
+		explode()
 	#pass # Replace with function body.
 
 func explode() -> void:

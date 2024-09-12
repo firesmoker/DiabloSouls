@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b1hcswr77ft67" path="res://scenes/enemy.tscn" id="1_h6qdv"]
 [ext_resource type="PackedScene" uid="uid://brcjsn57c8n5p" path="res://scenes/projectile.tscn" id="2_k21f3"]
 [ext_resource type="Texture2D" uid="uid://dmn1yj51l5mrb" path="res://assets/art/enemy/slime/slime_idle/E/slime_default_idle_E_0.0_0.png" id="2_noxwh"]
+[ext_resource type="Shape2D" uid="uid://bahnusprqh84b" path="res://scene_resources/slime_collider.tres" id="4_muauk"]
 
 [sub_resource type="Animation" id="Animation_qn4kt"]
 resource_name = "default"
@@ -64,16 +65,14 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("2_noxwh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_noxwh")
 }],
 "loop": true,
 "name": &"default",
 "speed": 12.0
 }]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_m8147"]
-resource_local_to_scene = true
-radius = 4.66321
-height = 15.864
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0i3qh"]
 resource_local_to_scene = true
@@ -99,6 +98,7 @@ hitpoints = 1
 has_attack = true
 has_ranged_attack = true
 animation_types = Array[String](["idle", "walk", "death", "attack"])
+rotating_collider = false
 attack_range = 150.0
 projectile = ExtResource("2_k21f3")
 
@@ -112,23 +112,39 @@ material = SubResource("ShaderMaterial_w7qk1")
 sprite_frames = SubResource("SpriteFrames_iyag3")
 
 [node name="PhysicalCollider" parent="." index="5"]
+rotation = 0.0
 scale = Vector2(1.93, 1.765)
-shape = SubResource("CapsuleShape2D_m8147")
+shape = ExtResource("4_muauk")
 
 [node name="HighlightCircle" parent="." index="6"]
 material = SubResource("CanvasItemMaterial_0i3qh")
 
+[node name="ClumpZone" parent="." index="7"]
+visible = false
+
 [node name="CollisionShape2D" parent="ClumpZone" index="0"]
 shape = SubResource("CapsuleShape2D_80ple")
+
+[node name="HoverZone" parent="." index="8"]
+visible = false
 
 [node name="CollisionShape2D" parent="HoverZone" index="0"]
 position = Vector2(0, -6.075)
 scale = Vector2(0.655, 0.655)
 shape = SubResource("CapsuleShape2D_80ple")
 
+[node name="MeleeZone" parent="." index="9"]
+visible = false
+
 [node name="CollisionShape2D" parent="MeleeZone" index="0"]
 position = Vector2(0, 0)
 shape = SubResource("CapsuleShape2D_80ple")
+
+[node name="AttackAxis" parent="." index="10"]
+visible = false
+
+[node name="AttackZone" parent="AttackAxis" index="0"]
+visible = false
 
 [node name="AttackCollider" parent="AttackAxis/AttackZone" index="0"]
 shape = SubResource("CapsuleShape2D_nme5d")

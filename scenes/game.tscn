@@ -20,11 +20,10 @@ shader_parameter/power = 100.0
 shader_parameter/radius = 2.3
 shader_parameter/transperancy = 0.0
 
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_w3c5t"]
-vertices = PackedVector2Array(270.93, -42.6172, 216.602, 82.3203, 178.438, -5, 173.953, -21.7266, 212.242, -156.328, 173.953, 11.7266, 161.727, 23.9531, 127.352, 49.2109, 145, 28.4375, 128.273, 23.9531, 9.89063, 35.5703, 161.727, -33.9531, -70.6172, -126.602, 145, -38.4375, 128.273, -33.9531, 116.047, -21.7266, -158.602, 41.8672, 116.047, 11.7266, 111.563, -5, -82.6172, 112.672)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4), PackedInt32Array(5, 2, 1), PackedInt32Array(6, 5, 1), PackedInt32Array(6, 1, 7, 8), PackedInt32Array(9, 8, 7, 10), PackedInt32Array(4, 3, 11), PackedInt32Array(12, 4, 11, 13), PackedInt32Array(12, 13, 14), PackedInt32Array(12, 14, 15, 16), PackedInt32Array(17, 9, 10), PackedInt32Array(18, 17, 10, 16), PackedInt32Array(16, 15, 18), PackedInt32Array(16, 10, 19)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-171, 44, -77, -136, 218, -167, 282, -43, 222, 95, 125, 59, 13, 46, -83, 126)])
-source_geometry_group_name = &"navigation_polygon_source_group"
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_v0kjw"]
+vertices = PackedVector2Array(854.023, -460.008, 855.969, 513.898, 172.352, -5, 168.68, -18.6797, 168.68, 8.67969, -637.961, 500.094, -635.031, -462.977, 131.32, 18.6797, 158.68, 18.6797, 158.68, -28.6797, 145, -32.3516, 131.32, -28.6797, 121.32, -18.6797, 117.648, -5, 145, 22.3516, 121.32, 8.67969)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 2, 1), PackedInt32Array(1, 5, 6, 7), PackedInt32Array(8, 4, 1), PackedInt32Array(0, 3, 9), PackedInt32Array(6, 0, 9, 10), PackedInt32Array(6, 10, 11), PackedInt32Array(6, 11, 12), PackedInt32Array(6, 12, 13), PackedInt32Array(14, 8, 1), PackedInt32Array(6, 13, 15), PackedInt32Array(7, 14, 1), PackedInt32Array(6, 15, 7)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-645, -473, 864, -470, 866, 524, -648, 510)])
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gos0m"]
 texture = ExtResource("6_6dfq4")
@@ -308,6 +307,7 @@ unique_name_in_owner = true
 [node name="Player" parent="." instance=ExtResource("3_gcy3d")]
 position = Vector2(-57, -100)
 light_radius = 3.135
+model = "fighter_armed"
 moving_speed_modifier = 0.75
 dodge_speed_bonus = 5.0
 max_hitpoints = 50.0
@@ -316,13 +316,13 @@ invlunerable = true
 
 [node name="Darkness" parent="." instance=ExtResource("19_6rjls")]
 material = SubResource("ShaderMaterial_pec2l")
-scale = Vector2(700, 700)
+scale = Vector2(900, 900)
 metadata/_edit_lock_ = true
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 z_as_relative = false
 position = Vector2(-4, 0)
-navigation_polygon = SubResource("NavigationPolygon_w3c5t")
+navigation_polygon = SubResource("NavigationPolygon_v0kjw")
 metadata/_edit_lock_ = true
 
 [node name="TileMap2" type="TileMap" parent="NavigationRegion2D"]
@@ -349,10 +349,27 @@ y_sort_enabled = true
 
 [node name="Demonlord" parent="Enemies" instance=ExtResource("9_upit6")]
 position = Vector2(-195, 197)
+freeze_mode = 0
 
 [node name="Skeleton" parent="Enemies" instance=ExtResource("7_fmbge")]
-process_mode = 4
 position = Vector2(50, 194)
+freeze_mode = 0
+
+[node name="Skeleton2" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(219, 142)
+freeze_mode = 0
+
+[node name="Skeleton3" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(-172, 45)
+freeze_mode = 0
+
+[node name="Skeleton4" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(-266, -45)
+freeze_mode = 0
+
+[node name="Skeleton5" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(251, -91)
+freeze_mode = 0
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
 [connection signal="parry_success" from="Player" to="GameManager" method="_on_player_parry_success"]

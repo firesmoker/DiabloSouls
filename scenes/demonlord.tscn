@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://drcnh1cemyatb" path="res://assets/art/boss/demonlord/demonlord_attack/E/demonlord_default_attack1_E_0.0_6.png" id="2_ra36m"]
 [ext_resource type="AudioStream" uid="uid://b4r2382h0hqxw" path="res://assets/audio/demonlord_death1.wav" id="3_a5c1j"]
 [ext_resource type="Texture2D" uid="uid://0ixytbmg325h" path="res://assets/art/boss/demonlord/demonlord_idle/S/demonlord_default_idle_S_270.0_0.png" id="3_kiv02"]
+[ext_resource type="Shape2D" uid="uid://bnch2iet0y0y8" path="res://scene_resources/demonlord_collider.tres" id="7_jsx3q"]
 
 [sub_resource type="Animation" id="Animation_qn4kt"]
 resource_name = "default"
@@ -69,20 +70,15 @@ animations = [{
 "texture": ExtResource("2_hj6x6")
 }, {
 "duration": 1.0,
-"texture": ExtResource("2_ra36m")
+"texture": ExtResource("3_kiv02")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_kiv02")
+"texture": ExtResource("2_ra36m")
 }],
 "loop": true,
 "name": &"default",
 "speed": 12.0
 }]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xh5jj"]
-resource_local_to_scene = true
-radius = 12.0
-height = 32.0
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_dm3a0"]
 resource_local_to_scene = true
@@ -137,7 +133,8 @@ sprite_frames = SubResource("SpriteFrames_kkpv2")
 
 [node name="PhysicalCollider" parent="." index="5"]
 z_index = 50
-shape = SubResource("CapsuleShape2D_xh5jj")
+rotation = 0.0
+shape = ExtResource("7_jsx3q")
 
 [node name="HighlightCircle" parent="." index="6"]
 z_index = -1

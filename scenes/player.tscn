@@ -1,4 +1,4 @@
-[gd_scene load_steps=183 format=3 uid="uid://cgvpmrxms5e4k"]
+[gd_scene load_steps=184 format=3 uid="uid://cgvpmrxms5e4k"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_3jece"]
 [ext_resource type="PackedScene" uid="uid://cbc7srdprkpgm" path="res://scenes/blood.tscn" id="2_iqh1e"]
@@ -149,6 +149,7 @@
 [ext_resource type="Texture2D" uid="uid://cvdypdgmkr770" path="res://assets/art/environment/light2.png" id="139_ftsq4"]
 [ext_resource type="PackedScene" uid="uid://b4qsmsjjcorlc" path="res://scenes/light.tscn" id="143_a3yxq"]
 [ext_resource type="Shader" path="res://shaders/light.gdshader" id="144_nyccg"]
+[ext_resource type="Script" path="res://scenes/dodge_timer.gd" id="150_d173a"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dhxtk"]
 resource_local_to_scene = true
@@ -1578,7 +1579,6 @@ target_position = Vector2(0, 30)
 simplify_path = true
 avoidance_enabled = true
 avoidance_mask = 2
-debug_enabled = true
 debug_use_custom = true
 debug_path_custom_color = Color(0.672086, 0.990379, 7.70092e-07, 1)
 
@@ -1662,6 +1662,9 @@ texture_scale = 1.2
 
 [node name="Light" parent="." instance=ExtResource("143_a3yxq")]
 material = SubResource("ShaderMaterial_d4q8c")
+
+[node name="DodgeTimer" type="Timer" parent="."]
+script = ExtResource("150_d173a")
 
 [connection signal="attack_effects" from="." to="." method="_on_attack_effects"]
 [connection signal="body_entered" from="MeleeZone" to="." method="_on_melee_zone_body_entered"]

@@ -1,7 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://brlvroq1a2p0i"]
+[gd_scene load_steps=13 format=3 uid="uid://brlvroq1a2p0i"]
 
 [ext_resource type="PackedScene" uid="uid://b1hcswr77ft67" path="res://scenes/enemy.tscn" id="1_mhxew"]
 [ext_resource type="Texture2D" uid="uid://dih8qcag7ojye" path="res://assets/art/enemy/skeleton_default/skeleton_default_idle/S/skeleton_default_idle_S_270.0_0.png" id="2_206bq"]
+[ext_resource type="Texture2D" uid="uid://dnii0d234r8c4" path="res://assets/art/enemy/skeleton_default/skeleton_default_idle/E/skeleton_default_idle_E_0.0_0.png" id="2_sxywa"]
+[ext_resource type="Shape2D" uid="uid://cmawryknkeri" path="res://scene_resources/skeleton_collider.tres" id="3_12a1b"]
 
 [sub_resource type="Animation" id="Animation_qn4kt"]
 resource_name = "default"
@@ -62,17 +64,15 @@ resource_local_to_scene = true
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("2_sxywa")
+}, {
+"duration": 1.0,
 "texture": ExtResource("2_206bq")
 }],
 "loop": true,
 "name": &"default",
 "speed": 12.0
 }]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hap0o"]
-resource_local_to_scene = true
-radius = 6.0
-height = 16.0
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ury82"]
 resource_local_to_scene = true
@@ -104,7 +104,8 @@ material = SubResource("ShaderMaterial_0w58q")
 sprite_frames = SubResource("SpriteFrames_ckd27")
 
 [node name="PhysicalCollider" parent="." index="5"]
-shape = SubResource("CapsuleShape2D_hap0o")
+rotation = 0.0
+shape = ExtResource("3_12a1b")
 
 [node name="HighlightCircle" parent="." index="6"]
 material = SubResource("CanvasItemMaterial_ury82")

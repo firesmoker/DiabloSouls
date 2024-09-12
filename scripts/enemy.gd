@@ -1,6 +1,7 @@
 class_name Enemy extends RigidBody2D
 @onready var audio_player: AudioPlayer = $AudioPlayer
 @onready var nav: NavigationAgent2D = $NavigationAgent2D
+@onready var physical_collider: CollisionShape2D = $PhysicalCollider
 
 @onready var attack_cooldown: Timer = $Attack_Cooldown
 
@@ -33,6 +34,7 @@ class_name Enemy extends RigidBody2D
 @export var has_attack: bool = false
 @export var has_ranged_attack: bool = false
 @export var animation_types: Array[String] = ["idle", "walk"]
+@export var rotating_collider: bool = true
 
 var direction: Vector2 = Vector2()
 var move_offset: Vector2 = Vector2(0,0)
@@ -160,6 +162,7 @@ func walk(delta: float) -> void:
 	#var velocity: Vector2 = calculate_movement() * speed_fps_ratio * move_speed_modifier * delta
 	var velocity: Vector2 = calculate_movement() * move_speed_modifier * delta
 	move_and_collide(velocity)
+	#position += velocity
 	
 	set_visual_direction_by_angle(position.angle_to_point(nav.get_next_path_position()))
 	
@@ -204,6 +207,8 @@ func attack() -> void:
 		current_direction = radian_direction[rounded_rand]
 		
 		attack_axis.rotation = angle
+		if rotating_collider:
+			physical_collider.rotation = angle
 		print("attack cooldown is stopped")
 		animation_player.speed_scale = attack_speed_modifier
 		animation_player.play(animations[current_direction]["attack"])
@@ -346,7 +351,7 @@ func get_hit(damage: int = randi_range(1,3)) -> bool:
 		health_bar.visible = true
 		if randi() % 100 + 1 > 50 and interruptable:
 			animation_player.stop()
-			attack_collider.disabled = true
+			attack_collider.set_deferred("disabled", true)
 			attacking = false
 	
 		animated_sprite_2d.material.set_shader_parameter("modulated_color",Color.RED)

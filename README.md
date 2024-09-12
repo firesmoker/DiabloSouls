@@ -8,28 +8,37 @@ Project Milestones:
 		enemies scattered around, non agressive until player in radius
 		main SFX exists
 	2) Improved basic level:
+		more abilities
+		better built arena
+		better enemy variety
+		better animations (knockback for parry/counter/getting hit or interrupted)
+		particle effects
+		decals on the ground (blood)
+		better sfx
+		WSAD movement?
+		less intrusive counter/parry indication
 		
 
 Things that are very missing:
+	GAMEPLAY:	Enemies don't have idle states and agression zones, they always go to the player and try to attack him wherever they start
 	GAMEPLAY:	Pathfinding: Player: not checking its sides for collision
-	GAMEPLAY:	Pathfinding: Player: can go out of navigation map when trying to circle around enemies
 	GAMEPLAY:	Pathfinding: Player: can get "funneled" between enemies, not going back
+	GAMEPLAY:	Pathfinding: Player: can go out of navigation map when trying to circle around enemies - in progress, looking good
+	GAMEPLAY:	Pathfinding: Player: sliding to the side near navigation map edge can act a bit weird
 	GAMEPLAY:	Pathfinding: Player: when destination is set before enemies and not after - weird behaviour
 	GAMEPLAY:	Pathfinding: Enemies: are jittery when clumped
-	GAMEPLAY:	Pathfinding: Enemies: get stuck behind other enemies instead of circling around them
+	GAMEPLAY:	Pathfinding: Enemies: get stuck behind other enemies instead of circling around them or stopping
+	GAMEPLAY:	Pathfinding: Enemies: not smooth around corners, lacking "slide"
 	GAMEPLAY:	Pathfinding: [Milestone]: Diablo 4 style player movement
-	BUG:		dodging without moving can teleport player, probably because of the await timer
-	BUG:		convert object 1 to object 1 on characterbody2d debugger (annoying, but doesn't seem to impact for now)
 	WORLD:		arena has no walls, objects, etc.
 	SOUND:		Play projectile sounds
 	SOUND:		Play animation sounds for attack
 	SOUND:		Play Get hit SFX by material (flesh, metallic, etc.), probably played from enemy
 	SOUND:		Missing SFX all around
-	Visual:		Obstacle ordering
+	VISUAL:		Obstacle ordering, currently obstacle has problems
 	VISUAL:		No red overlay when dead
 	VISUAL:		No normal-map lightning
 	GAMEPLAY:	Ranged enemies have no target prediction, they shoot in a stupid manner. (not working)
-	GAMEPLAY:	Enemies don't have idle states and agression zones, they always go to the player and try to attack him wherever they start
 	GAMEPLAY:	no abilities in combat other than basic attack, parry, counter, dodge, shoot projectile
 	GAMEPLAY:	parry / counter is not optimized for multiple enemies
 	GAMEPLAY:	certain conditions can have an array of different "sources", and remove themselves from it later, so only when all sources are removed the condition stops. (for example invul and dodge)
@@ -45,6 +54,7 @@ Things that are very missing:
 	UI:	no indication for lack of stamina to parry on the highlight circles (very low priority, if parry actually uses atmina)
 	MENUS: Pause
 	MENUS: SETTINGS
+	BUG: strange dodge behaviour at high speeds (low priority)
 
 Coding stuff that bothers me:
 	REFACTOR:		abilities should probably become scenes

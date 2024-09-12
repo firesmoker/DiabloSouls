@@ -1,14 +1,15 @@
 class_name Player extends CharacterBody2D
 @onready var light: Sprite2D = $Light
+@onready var dodge_timer: Timer = $DodgeTimer
 
 @onready var audio_player: AudioPlayer = $AudioPlayer
 @onready var nav: NavigationAgent2D = $NavigationAgent2D
-@onready var ray_cast: RayCast2D = $Rays/RayCast2
 @onready var ray_axis: Node2D = $Rays
 
 var last_movement_offset: int = 0
 var minimum_collision_distance: float = 0
-
+@export var dodge_delta_timer: float = 0
+@export var is_dodging: bool = false
 @export var rays: Array[RayCast2D]
 @export var rays_right: Array[RayCast2D]
 @export var rays_left: Array[RayCast2D]
@@ -47,7 +48,7 @@ var mana: float = 5
 @export var attack_with_melee: bool = false # TEMPORARY
 var is_locked: bool = false
 var is_chasing_enemy: bool = false
-var is_dodging: bool = false
+
 var is_idle: bool= true
 var ready_to_attack_again: bool = true
 var is_attacking: bool = false
@@ -153,6 +154,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:	
 	light.material.set_shader_parameter("radius", light_radius)
+	
 	mana_regen(delta)
 	stamina_regen(delta)
 	health_regen(delta)
@@ -168,12 +170,22 @@ func _physics_process(delta: float) -> void:
 				running_state()
 			else:
 				standing_state()
-
 		move_and_slide()
 	elif not dead:
 		animation_player.play(animations[current_direction]["death"])
 		audio_player.play("Death")
 		dead = true
+
+func handle_dodge(delta_time: float) -> void:
+	if is_dodging:
+		dodge_delta_timer += delta_time
+		if dodge_delta_timer >= 0.1:
+			dodge_delta_timer = 0
+			animated_sprite_2d.material.set_shader_parameter("dir_x", 0.0)
+			invlunerable = false
+			velocity = Vector2(0,0)
+			destination = global_position
+			is_dodging = false
 
 
 func mana_regen(delta_time: float) -> void:
@@ -217,7 +229,7 @@ func dodge(dodge_destination: Vector2) -> void:
 	if stamina - dodge_cost < 0:
 		print("not enough stamina")
 	elif not is_dodging and not is_locked:
-		is_dodging = true
+		original_position = position
 		animation_player.stop()
 		audio_player.play("Dodge")
 		stamina -= dodge_cost
@@ -227,25 +239,29 @@ func dodge(dodge_destination: Vector2) -> void:
 		destination = dodge_destination
 		invlunerable = true
 		animated_sprite_2d.material.set_shader_parameter("dir_x", 0.025)
+		is_dodging = true 
 		#set_collision_mask_value(1, false)
 		#set_collision_layer_value(2, false)
 		#set_collision_layer_value(3, true)
-		var timer: Timer = Timer.new()
-		add_child(timer)
-		timer.wait_time = 0.1
-		timer.start()
-		await timer.timeout
-		animated_sprite_2d.material.set_shader_parameter("dir_x", 0.0)
-		#set_collision_mask_value(1, true)
-		#set_collision_layer_value(2, true)
-		#set_collision_layer_value(3, false)
-		invlunerable = false
-		if is_dodging != false:
-			is_dodging = false
-			velocity = Vector2(0,0)
-			#original_position = position
-			destination = position
-	#velocity += dodge_destination
+	#elif is_dodging and dodge_delta_timer >= 0.1:
+	#
+		##var timer: Timer = Timer.new()
+		##add_child(timer)
+		##timer.wait_time = 0.1
+		##timer.start()
+		##await timer.timeout
+		#
+		#dodge_delta_timer = 0
+		#is_dodging = false
+		#animated_sprite_2d.material.set_shader_parameter("dir_x", 0.0)
+		#invlunerable = false
+		#velocity = Vector2(0,0)
+		
+		
+		#if is_dodging != false:
+			#is_dodging = false
+			#velocity = Vector2(0,0)
+			#destination = position
 	
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -264,7 +280,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		
 	if not is_dying:
-		if event.is_action_pressed("dodge"):
+		if event.is_action_pressed("dodge") and not is_dodging:
 			var face_destination: Vector2 = get_global_mouse_position()
 			dodge(face_destination)
 		
@@ -328,10 +344,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.is_action_released("mouse_move"):
 			last_movement_offset = 0
 			var closest_point: Vector2 = NavigationServer2D.map_get_closest_point(get_world_2d().navigation_map, get_global_mouse_position())
-			destination = closest_point - (closest_point - global_position).normalized() * 5
+			#destination = closest_point - (closest_point - global_position).normalized() * 5
+			destination = closest_point
 
 
-func _on_melee_zone_body_entered(enemy: RigidBody2D) -> void:
+
+func _on_melee_zone_body_entered(enemy: Enemy) -> void:
 	#print("body entered " + str(enemy))
 	enemies_in_melee.append(enemy)
 	game_manager.enemy_in_player_melee_zone(enemy)
@@ -339,7 +357,7 @@ func _on_melee_zone_body_entered(enemy: RigidBody2D) -> void:
 		attack(enemy.position)
 
 
-func _on_melee_zone_body_exited(enemy: RigidBody2D) -> void:
+func _on_melee_zone_body_exited(enemy: Enemy) -> void:
 	#print("body exited " + str(enemy))
 	if enemy in enemies_in_melee:
 		enemies_in_melee.erase(enemy)
@@ -353,7 +371,7 @@ func _on_animation_player_animation_finished(anim_name: String) -> void:
 		#is_attacking = false
 
 
-func _on_attack_zone_body_entered(body: RigidBody2D) -> void:
+func _on_attack_zone_body_entered(body: Enemy) -> void:
 	emit_signal("attack_success", body)
 	audio_player.play("Hit")
 	var effect_position: Vector2 = body.position + Vector2(0, -10.0)
@@ -373,7 +391,7 @@ func create_blood_effect(effect_position: Vector2, custom_parent: Node = null) -
 	blood_effect.global_position = effect_position
 
 
-func _on_parry_zone_body_entered(enemy: RigidBody2D) -> void:
+func _on_parry_zone_body_entered(enemy: Enemy) -> void:
 	enemies_in_defense_zone.append(enemy)
 	print("enemies in parry: " + str(enemy))
 	if not is_defending and is_parrying:
@@ -383,7 +401,7 @@ func _on_parry_zone_body_entered(enemy: RigidBody2D) -> void:
 		#enemies_in_defense_zone.append(enemy)
 
 
-func _on_parry_zone_body_exited(enemy: RigidBody2D) -> void:
+func _on_parry_zone_body_exited(enemy: Enemy) -> void:
 	enemies_in_defense_zone.erase(enemy)
 
 func _on_attack_effects() -> void:
@@ -444,6 +462,7 @@ func standing_state() -> void:
 
 
 func handle_movement(delta: float) -> void:
+	handle_dodge(delta)
 	var offset: float = 0
 	var move_offset: Vector2 = Vector2(0,0)
 	if not is_attacking and not is_locked and not is_defending:
@@ -480,10 +499,16 @@ func handle_movement(delta: float) -> void:
 				#if body.get_script().get_global_name() == "Enemy":
 					#print("offset!")
 					#offset = true
-		var new_velocity: Vector2 = calculate_movement_velocity(offset)
+		var new_velocity: Vector2 = (calculate_movement_velocity(offset) + move_offset) * delta / average_delta
 		#if offset:
 		ray_axis.rotation = position.angle_to_point(destination)
-		velocity = (new_velocity + move_offset) * delta / average_delta
+		if check_if_in_navigation_map(global_position + new_velocity):
+			velocity = new_velocity
+		else:
+			var moving_to: Vector2 = (global_position + new_velocity)
+			var close: Vector2 = NavigationServer2D.map_get_closest_point(get_world_2d().navigation_map,moving_to)
+			print("trying to move outside navigation map. moving to:" + str(moving_to) + "closest: " + str(close) + "their distance: " + str(moving_to.distance_to(close)))
+			velocity = calculate_movement_velocity(0) * delta / average_delta
 
 func ray_coliisions() -> float:
 	var direction_angle: int = 0
@@ -500,7 +525,8 @@ func ray_coliisions() -> float:
 		if ray.is_colliding():
 			if ray.get_collider().get_script():
 				if ray.get_collider().get_script().get_global_name() == "Enemy":
-					colliding_with_enemy = true
+					if ray.get_collider() != targeted_enemy:
+						colliding_with_enemy = true
 			if colliding_with_enemy:
 				var collision_point_distance: float = global_position.distance_to(rays[count].get_collision_point())
 				if collision_point_distance < minimum_collision_distance:
@@ -513,18 +539,6 @@ func ray_coliisions() -> float:
 					direction_angle -= angle_size
 					negative_collisions += 1
 		count += 1
-	#if count >= 2:
-		#number_of_offset_frames += 1
-	#if collision_count <= 0:
-		#number_of_offset_frames = 0
-	#if number_of_offset_frames >= 2:
-		#return deg_to_rad(direction_counter)
-		
-	#if collision_count > 0 and direction_angle == 0:
-		#return deg_to_rad(angle_size * collision_count)
-	#if collision_count > rays.size() / 2:
-		#pass
-	#return deg_to_rad(direction_angle)
 	
 	var distance_ratio: float = (maximum_collision_distance - minimum_collision_distance) / maximum_collision_distance
 	if last_movement_offset == 1:
@@ -681,6 +695,13 @@ func move_to_enemy() -> void:
 func round_to_multiple(number: float, multiple: float) -> float:
 	return float(round(number / multiple) * multiple)
 
+
+func check_if_in_navigation_map(point: Vector2) -> bool:
+	var closest_point: Vector2 = NavigationServer2D.map_get_closest_point(get_world_2d().navigation_map,point)
+	if point.distance_to(closest_point) <= 0.5:
+		return true
+	else:
+		return false
 
 func calculate_movement_velocity(offset: float = 0) -> Vector2:
 
