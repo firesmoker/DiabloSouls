@@ -93,6 +93,7 @@ hitpoints_max = 1
 hitpoints = 1
 
 [node name="HealthBar" parent="." index="2"]
+visible = true
 z_index = 1
 z_as_relative = true
 

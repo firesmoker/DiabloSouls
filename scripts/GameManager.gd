@@ -20,6 +20,7 @@ var enemy_in_focus: Enemy
 
 func _ready() -> void:
 	#create_enemies_timed()
+	hud.visible = true
 	enemy_label.visible = false
 	enemy_label.visible = true
 	player_health.max_value = player.max_hitpoints

@@ -21,6 +21,7 @@ shader_parameter/radius = 2.3
 shader_parameter/transperancy = 0.0
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_v0kjw"]
+resource_local_to_scene = true
 vertices = PackedVector2Array(854.023, -460.008, 855.969, 513.898, 172.352, -5, 168.68, -18.6797, 168.68, 8.67969, -637.961, 500.094, -635.031, -462.977, 131.32, 18.6797, 158.68, 18.6797, 158.68, -28.6797, 145, -32.3516, 131.32, -28.6797, 121.32, -18.6797, 117.648, -5, 145, 22.3516, 121.32, 8.67969)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 2, 1), PackedInt32Array(1, 5, 6, 7), PackedInt32Array(8, 4, 1), PackedInt32Array(0, 3, 9), PackedInt32Array(6, 0, 9, 10), PackedInt32Array(6, 10, 11), PackedInt32Array(6, 11, 12), PackedInt32Array(6, 12, 13), PackedInt32Array(14, 8, 1), PackedInt32Array(6, 13, 15), PackedInt32Array(7, 14, 1), PackedInt32Array(6, 15, 7)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-645, -473, 864, -470, 866, 524, -648, 510)])
@@ -303,6 +304,7 @@ script = ExtResource("1_h602i")
 
 [node name="HUD" parent="." instance=ExtResource("7_luld2")]
 unique_name_in_owner = true
+visible = false
 
 [node name="Player" parent="." instance=ExtResource("3_gcy3d")]
 position = Vector2(-57, -100)
@@ -370,6 +372,33 @@ freeze_mode = 0
 [node name="Skeleton5" parent="Enemies" instance=ExtResource("7_fmbge")]
 position = Vector2(251, -91)
 freeze_mode = 0
+
+[node name="Skeleton6" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(-176, -124)
+
+[node name="Skeleton9" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(-380, -48)
+
+[node name="Skeleton8" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(-296, 127)
+
+[node name="Skeleton7" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(-391, -175)
+
+[node name="Skeleton14" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(-189, -249)
+
+[node name="Skeleton13" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(7, -262)
+
+[node name="Skeleton12" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(140, -233)
+
+[node name="Skeleton11" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(226, 67)
+
+[node name="Skeleton10" parent="Enemies" instance=ExtResource("7_fmbge")]
+position = Vector2(-35, 115)
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
 [connection signal="parry_success" from="Player" to="GameManager" method="_on_player_parry_success"]

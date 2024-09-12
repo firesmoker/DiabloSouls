@@ -20,6 +20,7 @@ Project Milestones:
 		
 
 Things that are very missing:
+	GAMEPLAY:	Enemies: Different colliders for physical place (small) and area they can be damaged (larger)
 	GAMEPLAY:	Enemies don't have idle states and agression zones, they always go to the player and try to attack him wherever they start
 	GAMEPLAY:	Pathfinding: Player: not checking its sides for collision
 	GAMEPLAY:	Pathfinding: Player: can get "funneled" between enemies, not going back
