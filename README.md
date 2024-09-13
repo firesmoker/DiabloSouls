@@ -5,7 +5,7 @@ Project Milestones:
 	1) Basic level:
 		objects and walls - in progress
 		enemies and player pathfind their way - in progress
-		enemies scattered around, non agressive until player in radius
+		enemies scattered around, non agressive until player in radius - done!
 		main SFX exists
 	2) Improved basic level:
 		more abilities
@@ -21,7 +21,6 @@ Project Milestones:
 
 Things that are very missing:
 	GAMEPLAY:	Enemies: Different colliders for physical place (small) and area they can be damaged (larger)
-	GAMEPLAY:	Enemies don't have idle states and agression zones, they always go to the player and try to attack him wherever they start
 	GAMEPLAY:	Pathfinding: Player: not checking its sides for collision
 	GAMEPLAY:	Pathfinding: Player: can get "funneled" between enemies, not going back
 	GAMEPLAY:	Pathfinding: Player: can go out of navigation map when trying to circle around enemies - in progress, looking good

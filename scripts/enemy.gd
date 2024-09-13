@@ -36,6 +36,8 @@ class_name Enemy extends RigidBody2D
 @export var animation_types: Array[String] = ["idle", "walk"]
 @export var rotating_collider: bool = true
 
+var original_spawn_position: Vector2 = Vector2(0,0)
+var agression_enabled: bool = false
 var direction: Vector2 = Vector2()
 var move_offset: Vector2 = Vector2(0,0)
 var is_locked: bool = false
@@ -96,6 +98,7 @@ signal stopped_mouse_hover
 
 
 func _ready() -> void:
+	original_spawn_position = global_position
 	attack_cooldown.stop()
 	#custom_integrator = true
 	attack_cooldown.wait_time = attack_cooldown_duration
@@ -126,6 +129,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	check_for_agression()
 	handle_parry_visibility()
 	get_destination()
 
@@ -141,12 +145,24 @@ func _process(delta: float) -> void:
 		
 				
 		if not attacking and not is_locked and not in_melee:
-			if has_ranged_attack and position.distance_to(player.position) > attack_range and not is_locked and not stunned:
-				walk(delta)
-			elif not has_ranged_attack and not is_locked and not stunned:
+			if agression_enabled:
+				if has_ranged_attack and position.distance_to(player.position) > attack_range and not is_locked and not stunned:
+					walk(delta)
+				elif not has_ranged_attack and not is_locked and not stunned:
+					walk(delta)
+			elif global_position.distance_to(original_spawn_position) > 5:
+				destination = original_spawn_position
 				walk(delta)
 			else:
 				animation_player.play(animations[current_direction]["idle"])
+
+func check_for_agression() -> void:
+	if global_position.distance_to(player.global_position) < 250:
+		agression_enabled = true
+	elif global_position.distance_to(player.global_position) > 450 and agression_enabled:
+		agression_enabled = false
+	#else:
+		#agression_enabled = false
 
 func get_destination() -> void:
 	if player.dead and in_melee:

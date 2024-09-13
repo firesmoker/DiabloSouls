@@ -317,6 +317,7 @@ max_stamina = 500.0
 invlunerable = true
 
 [node name="Darkness" parent="." instance=ExtResource("19_6rjls")]
+visible = false
 material = SubResource("ShaderMaterial_pec2l")
 scale = Vector2(900, 900)
 metadata/_edit_lock_ = true
