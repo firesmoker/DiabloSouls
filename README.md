@@ -18,8 +18,19 @@ Project Milestones:
 		WSAD movement?
 		less intrusive counter/parry indication
 		
+Technical stuff that bothers me:
+	BUG:			NavigationServer player tries to use nav map before it's initizalized
+	WORLD:			Convert TileMap2 to the new system
+	REFACTOR:		abilities should probably become scenes
+	REFACTOR:		maybe i can get rid of the "is_locked" for enemies?
+	PERFORMANCE:	sound dictionaries are calculated for each enemy instance instead of each unique enemy
+	PERFORMANCE:	animations: dictionaries, arrays, animations, etc. are calculated for each enemy instance instead of each unique enemy
+	WORKFLOW:		debugging could be easier if I could toggle some types of messages
+	WORKFLOW:		sort out the stupid ordering
+
 
 Things that are very missing:
+	GAMEPLAY:	Pathfinding: Set angle of offset based on angle from the collision point instead of just a random number times collisions
 	GAMEPLAY:	Enemies: Different colliders for physical place (small) and area they can be damaged (larger)
 	GAMEPLAY:	Pathfinding: Player: not checking its sides for collision
 	GAMEPLAY:	Pathfinding: Player: can get "funneled" between enemies, not going back
@@ -56,13 +67,6 @@ Things that are very missing:
 	MENUS: SETTINGS
 	BUG: strange dodge behaviour at high speeds (low priority)
 
-Coding stuff that bothers me:
-	REFACTOR:		abilities should probably become scenes
-	REFACTOR:		maybe i can get rid of the "is_locked" for enemies?
-	PERFORMANCE:	sound dictionaries are calculated for each enemy instance instead of each unique enemy
-	PERFORMANCE:	animations: dictionaries, arrays, animations, etc. are calculated for each enemy instance instead of each unique enemy
-	WORKFLOW:		debugging could be easier if I could toggle some types of messages
-	WORKFLOW:		sort out the stupid ordering
 
 
 abilities queue
