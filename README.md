@@ -8,6 +8,7 @@ Project Milestones:
 		enemies scattered around, non agressive until player in radius - done!
 		main SFX exists
 	2) Improved basic level:
+		obastacles transparency when player behind them
 		more abilities
 		better built arena
 		better enemy variety
@@ -15,10 +16,11 @@ Project Milestones:
 		particle effects
 		decals on the ground (blood)
 		better sfx
-		WSAD movement?
 		less intrusive counter/parry indication
+		WSAD movement?
 		
 Technical stuff that bothers me:
+	WORKFLOW:		ADD EXPORT GROUPS OMG ITS AMAZING
 	BUG:			NavigationServer player tries to use nav map before it's initizalized
 	WORLD:			Convert TileMap2 to the new system
 	REFACTOR:		abilities should probably become scenes
@@ -30,6 +32,9 @@ Technical stuff that bothers me:
 
 
 Things that are very missing:
+	BUG:		Weird parry/counter rings behaviour
+	GAMEPLAY:	Can't defend without parrying, wasting activation stamina. Also "cheeses" parry
+	GAMEPLAY:	Can parry whenever, even mid attack. Limit it in a good way somehow
 	GAMEPLAY:	Pathfinding: Set angle of offset based on angle from the collision point instead of just a random number times collisions
 	GAMEPLAY:	Enemies: Different colliders for physical place (small) and area they can be damaged (larger)
 	GAMEPLAY:	Pathfinding: Player: not checking its sides for collision
@@ -136,19 +141,87 @@ Soulstone Core - Slay Death
 
 Weapon types?
 Ranged
-Bows
-	Bows
-	Composite Bows: requiring and using strength as well for damage. Higher base damage.
+	Javelin (STR + DEX): # not so sure about this one
+		STR(Med) + DEX(Med) requirement
+		Highest base damage
+		Slow attack speed
+	
+	Longbows (STR + DEX):
+		STR(Med) + DEX(High?) requirement
+		High base damage
+		Medium attack speed
+	
+	Shortbow -> Recurve bow (DEX):
+		STR(Nothing -> Low) + DEX(High) requirement
+		Medium base damage
+		High attack speed
+		Higher attack speed makes damage scaling with the flat added quiver damage better than longbows
+	
+	Crossbow(None!)
+		STR requirement (low)
+		Most expensive "base weapon"
+		Highest base damage, but gets no bonuses, "noob weapon"
+		Best with INT using elemental bolts
+		Lowest attack speed
+		Attack bonus speed applies X2? makes it a weird DEX + INT?
+	
+	Wands (INT):
+		INT requirement
+		Medium base damage (Physical / Elemental)
+		Highest +Spell damage
+	
+	Arrow Quiver(Helper 2nd hand)
+		Endless. Ammo is not fun
+		Adds Medium physical / elemental damage (INT)
+	
+	Bolt Quiver(Helper 2nd hand)
+		Endless. Ammo is not fun
+		Adds High physical / elemental damage (INT)
 
 Melee
-	Axes: High bleeding, high base damage (best with strength (little dex?), highest damage, lowest defence)
-	Maces: No bleeding, Higher stun chance, high base damage (best with strength, defence with stun)
-	Swords, Medium Bleeding? Higher critical chance? critical damage? something for counter? medium damage (best with dexterity, defence with counter/interruption)
-	Daggers: Highest critical chance, low damage, lowest reach, highest attack speed (best with dexterity, defence with counter/interruption)
+	Axes: (STR): Pure damage no defense
+		High base damage
+		High bleeding
+		Shield shattering?
+		Normal cleave angle
+		1H / 2H version with higher stats
+		
+	Maces: (STR): Damage + Stun:
+		High base damage
+		Highest stun chance
+		Highest stun duration
+		Shield shattering?
+		Normal cleave angle
+		1H / 2H version with higher stats
+	
+	Scepter: (STR):
+		Medium Base Damage
+		Medium +Spell Damage
+		Medium stun chance?
+		Medium stun duration?
+		Shield shattering?
+		Normal cleave angle
+		
+	Swords, (STR + DEX): Balanced: best control with parry and counter, great damage with critical strikes / attacking disabled opponents
+		Medium Base Damage
+		High parry window
+		High counter window?
+		High critical chance? critical damage?
+		Medium Bleeding?
+		Normal cleave angle
+		1H / 2H version with higher stats
+		
+	Daggers: (DEX): Speed + Critical Strikes, defense by interruption and easier to move with
+		Highest attack speed
+		Highest critical chance
+		High counter window	?
+		Low base damage
+		Lowest reach
+		Single target
 
 Shields
 	Small shield medium defence, medium block reduction, no movement penalty
-	Tower shield high defence, high block reduction, movement penalty
+	Tower shield high defence, high block reduction, movement penalty, breath attacks invulnerability
 
 think about stats.
 
@@ -169,6 +242,8 @@ Strength could be:
 		melee attack damage (and some ranged damaged?)
 		higher bleeding damage?
 		higher bleeding chance?
+	Critical Hits:
+		Higher critical weapon damage?
 	Counter:
 		counter stronger attacks (minimum required for some attacks)
 	Block:
@@ -185,20 +260,23 @@ Strength could be:
 		Lower tiredness from blocking
 		Lower tiredness from melee attacks
 	Equipment:
-		equip heavier weapons and armor
+		equip heavier weapons and armor (including some ranged weapons)
 	
 
 Dexterity could be:
 	Damage:
 		ranged attack damage (and some melee?)
+	Critical Hits:
+		Higher global critical chance?
 	Counter:
 		counter faster attacks (minimum required for some attacks)
-		bigger counter window
+		bigger counter window (kind of the same thing)
 	Interruption:
 		higher interruption chance
 	Speed:
 		Move Speed
-		Attack (and Casting) speed
+		Attack speed
+		Casting speed
 	Stamina:
 		Lower stamina cost for ranged weapons
 		Lower stamina cost for dodge
@@ -213,8 +291,11 @@ Dexterity could be:
 
 Intellect:
 	Damage:
+		wand damage
 		spell damage
-		elemental/magic damage?
+		elemental damage
+	Critical Hits:
+		Higher critical spell damage?
 	Counter:
 		counter spell?
 	Mana:
