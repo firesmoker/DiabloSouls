@@ -1,5 +1,7 @@
 Ideas:
-	GAMEPLAY:	Mitigation chance?
+	CODE:		CLASSES: It's a good idea to update all "derivative" properties on setters. chain of setters will ensure good architecture
+	UI/UX:		Ingame game guide is awesome (like last Epoch)
+	UI/UX:		Extra helpers for scaling and meaning and examples are awesome (like last epoch)
 
 Project Milestones:
 	1) Basic level:
@@ -18,9 +20,16 @@ Project Milestones:
 		better sfx
 		less intrusive counter/parry indication
 		WSAD movement?
-		
+
+Game Design stuff to do:
+	Stats:			Define types of defense.
+	Itemization:	Define armor bases
+	Progression:	Define classes/classless system
+	Skills:			Define skills
+	Skills:			Define skill trees
+	Itemization:	Define crafting
+
 Technical stuff that bothers me:
-	WORKFLOW:		ADD EXPORT GROUPS OMG ITS AMAZING
 	BUG:			NavigationServer player tries to use nav map before it's initizalized
 	WORLD:			Convert TileMap2 to the new system
 	REFACTOR:		abilities should probably become scenes
@@ -28,25 +37,18 @@ Technical stuff that bothers me:
 	PERFORMANCE:	sound dictionaries are calculated for each enemy instance instead of each unique enemy
 	PERFORMANCE:	animations: dictionaries, arrays, animations, etc. are calculated for each enemy instance instead of each unique enemy
 	WORKFLOW:		debugging could be easier if I could toggle some types of messages
-	WORKFLOW:		sort out the stupid ordering
-
+	WORKFLOW:		debugging could be easier if I put a debugging CanvasItem that shows me everything I need
+	WORKFLOW:		sort out the stupid ordering. both logic and execution
 
 Things that are very missing:
+	GAMEPLAY:	consuming mana the very moment you press to cast the spell feels weird. maybe because it takes a while to shoot.
+	BUG:		Slime enemy can't be hovered or targeted
 	BUG:		Weird parry/counter rings behaviour
 	GAMEPLAY:	Can't defend without parrying, wasting activation stamina. Also "cheeses" parry
 	GAMEPLAY:	Can parry whenever, even mid attack. Limit it in a good way somehow
 	GAMEPLAY:	Pathfinding: Set angle of offset based on angle from the collision point instead of just a random number times collisions
-	GAMEPLAY:	Enemies: Different colliders for physical place (small) and area they can be damaged (larger)
-	GAMEPLAY:	Pathfinding: Player: not checking its sides for collision
-	GAMEPLAY:	Pathfinding: Player: can get "funneled" between enemies, not going back
-	GAMEPLAY:	Pathfinding: Player: can go out of navigation map when trying to circle around enemies - in progress, looking good
-	GAMEPLAY:	Pathfinding: Player: sliding to the side near navigation map edge can act a bit weird
-	GAMEPLAY:	Pathfinding: Player: when destination is set before enemies and not after - weird behaviour
-	GAMEPLAY:	Pathfinding: Enemies: are jittery when clumped
-	GAMEPLAY:	Pathfinding: Enemies: get stuck behind other enemies instead of circling around them or stopping
-	GAMEPLAY:	Pathfinding: Enemies: not smooth around corners, lacking "slide"
-	GAMEPLAY:	Pathfinding: [Milestone]: Diablo 4 style player movement
 	WORLD:		arena has no walls, objects, etc.
+	WORLD:		arena is not an actual, interesting level
 	SOUND:		Play projectile sounds
 	SOUND:		Play animation sounds for attack
 	SOUND:		Play Get hit SFX by material (flesh, metallic, etc.), probably played from enemy
@@ -72,15 +74,62 @@ Things that are very missing:
 	MENUS: SETTINGS
 	BUG: strange dodge behaviour at high speeds (low priority)
 
+Pathfinding:
+	GAMEPLAY:	Enemies: Different colliders for physical place (small) and area they can be damaged (larger)
+	GAMEPLAY:	Pathfinding: Player: not checking its sides for collision
+	GAMEPLAY:	Pathfinding: Player: can get "funneled" between enemies, not going back
+	GAMEPLAY:	Pathfinding: Player: can go out of navigation map when trying to circle around enemies - in progress, looking good
+	GAMEPLAY:	Pathfinding: Player: sliding to the side near navigation map edge can act a bit weird
+	GAMEPLAY:	Pathfinding: Player: when destination is set before enemies and not after - weird behaviour
+	GAMEPLAY:	Pathfinding: Enemies: are jittery when clumped
+	GAMEPLAY:	Pathfinding: Enemies: get stuck behind other enemies instead of circling around them or stopping
+	GAMEPLAY:	Pathfinding: Enemies: not smooth around corners, lacking "slide"
+	GAMEPLAY:	Pathfinding: [Milestone]: Diablo 4 style player movement
+
+Stats (example, will not be defined together like that):
+	Dictionary for each stat
+	all sources are there. for example; 
+	
+	PlayerStats class
+	static var spell_damage_increased_sources: Dictionary = { # each change will call for sum update via setter
+		"right_hand_slot": 15,
+		"slot_head": 20,
+		"spell_rage": 15,
+		"attribute_intellect": 40,
+		}
+	
+	static var spell_damage_increased_sources_sum = sum_stat_dictionary(spell_damage_increased_sources)
+	
+	static var spell_damage_flat_sources: Dictionary = { # each change will call for sum update via setter
+		"right_hand_slot": 5,
+		"passive_melee_expertise": 5,
+		}
+	static var spell_damage_flat_sources_sum = sum_stat_dictionary(spell_damage_flat_sources)
+	
+	Skill Class
+	static var damage_types: Array[String] = ["spell","fire"]
+	static var skill_level: int = 3 # change will call for base_damage update function via setter
+	static var base_damage_by_level: Dictionary = {1: 30, 2: 45, 3: 60 .....}
+	
+	var base_damage: float = base_damage_by_level[skill_level]
+	var total_increased_damage: float = 0
+	var modified_base_damage = base_damage
+	
+	for damage_type in damage_types:
+		total_increased_damage += Player.get_increased_damage_sum(damage_type)
+		modified_base_damage += Player.get_flat_damage_sum(damage_type)
+		
+	var total_damage = (modified_base_damage * total_increased_damage)
+	
 
 
-abilities queue
-if I press an enemy, I do several things.
-I'm entering chasing mode on him.
-if my left click ability:
-If it's melee, I'll walk until he is the melee zone. Then I'll execute the attack.
-If it's ranged, I'll walk until he is in range, then I'll execute the attack.
-If it's self, I'll immediatly execute the ability. It might have a direction.
+abilities queue:
+	if I press an enemy, I do several things.
+	I'm entering chasing mode on him.
+	if my left click ability:
+	If it's melee, I'll walk until he is the melee zone. Then I'll execute the attack.
+	If it's ranged, I'll walk until he is in range, then I'll execute the attack.
+	If it's self, I'll immediatly execute the ability. It might have a direction.
 
 interruption could be a thing.
 the same interruption when you hit an enemy.
@@ -88,6 +137,13 @@ the chance could be higher for some weapons
 so interruption plus fast attack speed could be a psuedo stun, as it keeps interruping all the time
 
 I need to think of some Shadowsoul creatures and bosses.
+
+3 Divine Paths:
+	Blessed Champion:	handing over soulstone shards to the divine order, so they can recreate the stone of creation and other good acts
+	Dark Slayer:		augmenting yourself with the soulstone shards and other evil acts
+	Mortal Hero:		1 point for lowest stat between slayer and champion:
+							(if you have 50 champion and 25 slayer, you get 25 for the "joint" points)
+						"mortal" acts that are only beneficiary to mortal people
 
 Artifacts
 
@@ -129,7 +185,7 @@ Duriel's Sword - Slay Duriel
 * Strength
 * Versatile sword one handed or two?!
 * Unlocks abilities based on ability thresholds?!
-* Unlocks abilities based on Bless/Curse thresholds?!
+* Unlocks abilities based on Bless/Dark thresholds?!
 * Light radius
 
 Soulstone Core - Slay Death
@@ -137,91 +193,11 @@ Soulstone Core - Slay Death
 * gets stronger the more souls you slay
 * maybe curse you with less light?
 * maybe curse you with less resistences?
+* quest item, cannot be dropped/stashed/sold/traded
 
 
-Weapon types?
-Ranged
-	Javelin (STR + DEX): # not so sure about this one
-		STR(Med) + DEX(Med) requirement
-		Highest base damage
-		Slow attack speed
 	
-	Longbows (STR + DEX):
-		STR(Med) + DEX(High?) requirement
-		High base damage
-		Medium attack speed
 	
-	Shortbow -> Recurve bow (DEX):
-		STR(Nothing -> Low) + DEX(High) requirement
-		Medium base damage
-		High attack speed
-		Higher attack speed makes damage scaling with the flat added quiver damage better than longbows
-	
-	Crossbow(None!)
-		STR requirement (low)
-		Most expensive "base weapon"
-		Highest base damage, but gets no bonuses, "noob weapon"
-		Best with INT using elemental bolts
-		Lowest attack speed
-		Attack bonus speed applies X2? makes it a weird DEX + INT?
-	
-	Wands (INT):
-		INT requirement
-		Medium base damage (Physical / Elemental)
-		Highest +Spell damage
-	
-	Arrow Quiver(Helper 2nd hand)
-		Endless. Ammo is not fun
-		Adds Medium physical / elemental damage (INT)
-	
-	Bolt Quiver(Helper 2nd hand)
-		Endless. Ammo is not fun
-		Adds High physical / elemental damage (INT)
-
-Melee
-	Axes: (STR): Pure damage no defense
-		High base damage
-		High bleeding
-		Shield shattering?
-		Normal cleave angle
-		1H / 2H version with higher stats
-		
-	Maces: (STR): Damage + Stun:
-		High base damage
-		Highest stun chance
-		Highest stun duration
-		Shield shattering?
-		Normal cleave angle
-		1H / 2H version with higher stats
-	
-	Scepter: (STR):
-		Medium Base Damage
-		Medium +Spell Damage
-		Medium stun chance?
-		Medium stun duration?
-		Shield shattering?
-		Normal cleave angle
-		
-	Swords, (STR + DEX): Balanced: best control with parry and counter, great damage with critical strikes / attacking disabled opponents
-		Medium Base Damage
-		High parry window
-		High counter window?
-		High critical chance? critical damage?
-		Medium Bleeding?
-		Normal cleave angle
-		1H / 2H version with higher stats
-		
-	Daggers: (DEX): Speed + Critical Strikes, defense by interruption and easier to move with
-		Highest attack speed
-		Highest critical chance
-		High counter window	?
-		Low base damage
-		Lowest reach
-		Single target
-
-Shields
-	Small shield medium defence, medium block reduction, no movement penalty
-	Tower shield high defence, high block reduction, movement penalty, breath attacks invulnerability
 
 think about stats.
 
@@ -236,84 +212,6 @@ the mana shield from D1 is pretty cool, but I think it would be cooler if it was
 
 Wand slinger equipment:
 	wands getting bonuses from both dex and int
-
-Strength could be:
-	Damage:
-		melee attack damage (and some ranged damaged?)
-		higher bleeding damage?
-		higher bleeding chance?
-	Critical Hits:
-		Higher critical weapon damage?
-	Counter:
-		counter stronger attacks (minimum required for some attacks)
-	Block:
-		Higher block damage reduction
-	Stun:
-		longer stun duration (bigger boink!)
-		higher stun chance
-	Stamina:
-		Lower stamina cost for melee weapons
-		lower heavy armor stamina modifier
-	Tiredness:
-		Lower tiredness from parrying and countering
-		Lower tiredness from taking damage
-		Lower tiredness from blocking
-		Lower tiredness from melee attacks
-	Equipment:
-		equip heavier weapons and armor (including some ranged weapons)
-	
-
-Dexterity could be:
-	Damage:
-		ranged attack damage (and some melee?)
-	Critical Hits:
-		Higher global critical chance?
-	Counter:
-		counter faster attacks (minimum required for some attacks)
-		bigger counter window (kind of the same thing)
-	Interruption:
-		higher interruption chance
-	Speed:
-		Move Speed
-		Attack speed
-		Casting speed
-	Stamina:
-		Lower stamina cost for ranged weapons
-		Lower stamina cost for dodge
-	Tiredness:
-		Lower tiredness from parrying and countering
-		Lower tiredness from dodging
-		Lower tiredness from ranged attacks
-	Equipment:
-		equip better ranged weapons
-		equip better "medium" armor
-		
-
-Intellect:
-	Damage:
-		wand damage
-		spell damage
-		elemental damage
-	Critical Hits:
-		Higher critical spell damage?
-	Counter:
-		counter spell?
-	Mana:
-		higher mana
-	Equipment:
-		equip better magical weapons?
-		equip better magical equipment
-	Tiredness:
-		Lower tiredness from casting spells
-
-
-Constitution:
-	Health:
-		higher health
-	Stamina:
-		higher stamina
-	Tiredness:
-		Lower tiredness modifier
 
 	
 
@@ -334,20 +232,6 @@ Attack rating can be only related to crit chance. but let's just call it crit ch
 the pro for attack rating is that it provides different chances for different opponents.
 i don't know.
 
------------------------
-TO DO
------------------------
-
-A TIER
-------------------------------------
-* player - fix bug when walking too close to enemy and it keeps running
-* PLAYER: PATHFINDING and NAVIGATION ZONES
-* ENEMY:  PATHFINDING and NAVIGATION ZONES
-
-
-B TIER
-------------------------------------
-* outline shader for highlighted enemy
 
 
 C TIER
