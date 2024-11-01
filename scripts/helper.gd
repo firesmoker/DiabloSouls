@@ -18,7 +18,9 @@ static var colors_dictionary: Dictionary = {
 }
 
 static var templates: Dictionary = {
-	"player": CustomMessageTemplate.new("yellow",false,"PLAYER",true)
+	"player": CustomMessageTemplate.new(colors_dictionary[colors.CYAN],false,"PLAYER",true),
+	"enemy": CustomMessageTemplate.new(colors_dictionary[colors.WHITE],false,"ENEMY",true),
+	"game_manager": CustomMessageTemplate.new(colors_dictionary[colors.YELLOW],false,"GameManager",true),
 }
 #static var template_player: CustomMessageTemplate = CustomMessageTemplate.new("blue",true,"",true)
 

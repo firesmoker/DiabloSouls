@@ -21,19 +21,19 @@ class_name GameManager extends Node
 var enemy_in_focus: Enemy
 
 func _ready() -> void:
-	#Helper.print_custom("green",true,true,"yohoho")
-	Helper.print_template("player","yohoho")
-	#Helper.print_custom(Helper.colors.BLACK,)
-	#create_enemies_timed()
+	print_template("Game starts")
 	hud.visible = true
 	enemy_label.visible = false
 	enemy_label.visible = true
 	player_health.max_value = player.max_hitpoints
 	player_stamina.max_value = player.max_stamina
 	player_mana.max_value = player.max_mana
-	#enemy_label.text = "tuuukaaa"
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("restart"):
+		print_template("Restarting")
+		get_tree().reload_current_scene()
+	
 	if event.is_action_pressed("zoom_out"):
 		print_debug("zoom out")
 		var zoom_in_amount:float = 115.0 / 100.0
@@ -173,7 +173,7 @@ func enemy_mouse_hover_stopped(enemy: Enemy) -> void:
 
 func _on_player_attack_success(enemy: Enemy) -> void:
 	camera_shake_and_color()
-	print_debug("attack succes!")
+	#print_debug("attack succes!")
 	var enemy_death_status: bool = await enemy.get_hit()
 	#print_debug(enemy_death_status)z
 	#if enemy_death_status:
@@ -246,3 +246,6 @@ func dir_contents_filter(path: String, extension: String, print: bool = false) -
 	else:
 		print_debug("An error occurred when trying to access the path.")
 	return file_list
+
+func print_template(message: String) -> void:
+	Helper.print_template("game_manager", message)

@@ -193,6 +193,7 @@ func _physics_process(delta: float) -> void:
 		animation_player.play(animations[current_direction]["death"])
 		audio_player.play("Death")
 		dead = true
+		print_template("Died")
 
 func handle_invulnerability() -> void:
 	if invulnerability_sources.size() > 0:
@@ -298,9 +299,6 @@ func dodge(dodge_destination: Vector2) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	
-	if event.is_action_pressed("restart"):
-		get_tree().reload_current_scene()
 	
 	if event.is_action_pressed("test_button"): # TEMPORARY
 		animation_player.play(animations[current_direction]["walk"]) # TEMPORARY
@@ -838,6 +836,7 @@ func construct_animation_library() -> void:
 		animations[key] = animation_dictionary_for_key
 		for type: String in animation_types:
 			create_animated2d_animations_from_assets(animations[key][type], key)
+	print_template("Finished animation construction")
 
 
 func create_animated2d_animations_from_assets(animation_name: String, direction: int = directions.N) -> void:
@@ -852,7 +851,7 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 				#print("forcing parry to use attack assets") # TEMPORARY
 			if action_type == "defend": # TEMPORARY
 				action_type = "attack" # TEMPORARY
-				print("forcing defend to use attack assets for direction " + direction_name[direction]) # TEMPORARY
+				#print("forcing defend to use attack assets for direction " + direction_name[direction]) # TEMPORARY
 			break
 	
 	frames.add_animation(animation_name)
@@ -932,7 +931,7 @@ func add_animation_method_calls() -> void:
 			animation_to_modify.track_insert_key(track, no_cancel_time, {"method" : "animation_cancel_disabled" , "args" : []})
 			animation_to_modify.track_insert_key(track, time, {"method" : "just_parried" , "args" : []})
 			animation_to_modify.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []})
-
+	print_template("Finished adding animation method calls")
 
 func animation_cancel_disabled() -> void:
 	locked_sources["attacking"] = true
@@ -994,6 +993,8 @@ func execute(ability: Ability, speed: float = ability.attack_speed) -> void:
 	animation_player.play(animations[current_direction][ability.animation_name])
 	#ability.execute(target)
 
+func print_template(message: String) -> void:
+	Helper.print_template("player", message)
 
 class Ability:
 	var name: String

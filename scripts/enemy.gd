@@ -426,6 +426,7 @@ func die() -> void:
 	stopped_mouse_hover.disconnect(game_manager.enemy_mouse_hover_stopped)
 	z_index = 4
 	y_sort_enabled = false
+	print_template("Died")
 
 func highlight() -> void:
 	animated_sprite_2d.material.set_shader_parameter("width", 1.5)
@@ -513,6 +514,7 @@ func construct_animation_library() -> void:
 		animations[key] = animation_dictionary_for_key
 		for type: String in animation_types:
 			create_animated2d_animations_from_assets(animations[key][type], key)
+	print_template("Finished constructing animation library")
 	
 
 func add_animation_method_calls() -> void:
@@ -534,7 +536,7 @@ func add_animation_method_calls() -> void:
 			else:
 				#print_debug(str(self) + "added MELEE effects to " + str(animation_to_modify) + "because has_ranged attack = " + str(has_ranged_attack))
 				animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : []}, 1)
-
+	print_template("Finished adding animation method calls")
 
 
 func create_animated2d_animations_from_assets(animation_name: String, direction: int = directions.N) -> void:
@@ -603,7 +605,8 @@ class Ability:
 			pass
 			#print_debug("ZBANG MELEE")
 		
-
+func print_template(message: String) -> void:
+	Helper.print_template("enemy",str(self.name) + ": " + message)
 
 func _on_attack_cooldown_timeout() -> void:
 	#attack_cooldown.stop()
