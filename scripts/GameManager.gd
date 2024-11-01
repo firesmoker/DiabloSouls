@@ -21,6 +21,9 @@ class_name GameManager extends Node
 var enemy_in_focus: Enemy
 
 func _ready() -> void:
+	#Helper.print_custom("green",true,true,"yohoho")
+	Helper.print_template("player","yohoho")
+	#Helper.print_custom(Helper.colors.BLACK,)
 	#create_enemies_timed()
 	hud.visible = true
 	enemy_label.visible = false
