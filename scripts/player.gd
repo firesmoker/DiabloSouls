@@ -54,6 +54,7 @@ class_name Player extends CharacterBody2D
 @onready var animation_library: AnimationLibrary = animation_player.get_animation_library("")
 
 var invulnerability_sources: Dictionary
+var locked_sources: Dictionary
 
 var last_movement_offset: int = 0
 var minimum_collision_distance: float = 0
@@ -171,6 +172,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:	
 	light.material.set_shader_parameter("radius", light_radius)
+	handle_locked()
 	handle_invulnerability()
 	mana_regen(delta)
 	stamina_regen(delta)
@@ -198,6 +200,12 @@ func handle_invulnerability() -> void:
 		invulnerable = true
 	else:
 		invulnerable = false
+
+func handle_locked() -> void:
+	if locked_sources.size() > 0:
+		is_locked = true
+	else:
+		is_locked = false
 
 func handle_dodge(delta_time: float) -> void:
 	if is_dodging:
@@ -289,7 +297,12 @@ func dodge(dodge_destination: Vector2) -> void:
 			#destination = position
 	
 
+
 func _unhandled_input(event: InputEvent) -> void:
+	
+	if event.is_action_pressed("restart"):
+		get_tree().reload_current_scene()
+	
 	if event.is_action_pressed("test_button"): # TEMPORARY
 		animation_player.play(animations[current_direction]["walk"]) # TEMPORARY
 	
@@ -340,14 +353,15 @@ func _unhandled_input(event: InputEvent) -> void:
 				attack(face_destination, parry_ability)
 		
 		if event.is_action_released("parry"):
-			if ready_to_parry_on_mouse_release:
-				if stamina - 1 < 0:
-					print("not enough stamina")
-				else:
-					stamina -= 1
-					if stamina < 0:
-						stamina = 0
-					parry()
+			if not is_locked:
+				if ready_to_parry_on_mouse_release:
+					if stamina - 1 < 0:
+						print("not enough stamina")
+					else:
+						stamina -= 1
+						if stamina < 0:
+							stamina = 0
+						parry()
 		
 		if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place") and not event.is_action_pressed("parry"):
 			if game_manager.enemy_in_focus != null:
@@ -482,7 +496,7 @@ func running_state() -> void:
 		set_direction_by_velocity(velocity)
 	#set_direction_by_velocity(velocity)
 	var current_animation: String = animation_player.current_animation
-	is_locked = false
+	#is_locked = false
 	ready_to_attack_again = true
 	if moving_speed_modifier >= 2:
 		animation_player.speed_scale = moving_speed_modifier / 2
@@ -628,6 +642,8 @@ func set_direction_by_destination(look_destination: Vector2 = destination) -> vo
 
 func handle_block(delta: float) -> void:
 	#if not is_attacking:
+	if locked_sources.size() > 0 and not locked_sources.has("defending"):
+		return
 	if Input.is_action_pressed("parry"):
 		if "parry" in animation_player.current_animation:
 			await animation_player.animation_finished
@@ -643,7 +659,8 @@ func handle_block(delta: float) -> void:
 			is_idle = false
 			is_defending = true
 			ready_to_parry_on_mouse_release = false
-			is_locked = true
+			locked_sources["defending"] = true
+			#is_locked = true
 			#invulnerability_sources["defend"] = true
 			#invulnerable = true
 			velocity = Vector2(0, 0)
@@ -657,7 +674,8 @@ func handle_block(delta: float) -> void:
 		if is_defending:
 			print("released defense -> collider = disabled")
 			is_defending = false
-			is_locked = false
+			locked_sources.erase("defending")
+			#is_locked = false
 			#invulnerability_sources.erase("defend")
 			#invulnerable = false
 			destination = position
@@ -815,6 +833,7 @@ func parry() -> void:
 		print("PARRY! -> collider not disabled")
 		is_parrying = true
 		parry_collider.disabled = false
+		locked_sources.erase("defending")
 		emit_signal("attack_effects")
 		disable_parry_zone()
 
@@ -924,11 +943,13 @@ func add_animation_method_calls() -> void:
 
 
 func animation_cancel_disabled() -> void:
-	is_locked = true
+	locked_sources["attacking"] = true
+	#is_locked = true
 
 
 func attack_again_ready() -> void:
-	is_locked = false
+	#is_locked = false
+	locked_sources.erase("attacking")
 	ready_to_attack_again = true
 	emit_signal("ready_to_attack_again_signal")
 
