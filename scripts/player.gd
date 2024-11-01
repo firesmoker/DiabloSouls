@@ -87,6 +87,8 @@ var is_dying: bool = false
 var dead: bool = false
 var target_for_ranged: Vector2
 
+var ready_to_parry_on_mouse_release: bool = false
+
 signal ready_to_attack_again_signal
 signal attack_effects
 signal attack_success
@@ -330,6 +332,10 @@ func _unhandled_input(event: InputEvent) -> void:
 						stamina = 0
 					var face_destination: Vector2 = get_global_mouse_position()
 					attack(face_destination, parry_ability)
+		
+		if event.is_action_released("parry"):
+			if ready_to_parry_on_mouse_release:
+				parry()
 		
 		if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place") and not event.is_action_pressed("parry"):
 			if game_manager.enemy_in_focus != null:
@@ -779,12 +785,20 @@ func create_projectile(target: Vector2 = Vector2(0,0), speed: float = 1.0) -> vo
 
 
 func just_parried() -> void: # THIS
-	print("PARRY! -> collider not disabled")
-	is_parrying = true
-	parry_collider.disabled = false
-	emit_signal("attack_effects")
-	disable_parry_zone()
+	ready_to_parry_on_mouse_release = true
+	#print("PARRY! -> collider not disabled")
+	#is_parrying = true
+	#parry_collider.disabled = false
+	#emit_signal("attack_effects")
+	#disable_parry_zone()
 
+func parry() -> void:
+	if not is_defending:
+		print("PARRY! -> collider not disabled")
+		is_parrying = true
+		parry_collider.disabled = false
+		emit_signal("attack_effects")
+		disable_parry_zone()
 
 func construct_animation_library() -> void:
 	animations.clear()
