@@ -44,11 +44,11 @@ Technical stuff that bothers me:
 	WORKFLOW:		sort out the stupid ordering. both logic and execution
 
 Things that are very missing:
+	GAMEPLAY:	Enemies: Different colliders for physical place (small) and area they can be damaged (larger)
 	GAMEPLAY:	consuming mana the very moment you press to cast the spell feels weird. maybe because it takes a while to shoot.
 	GAMEPLAY:	Can't block ranged attacks
 	BUG:		Weird parry/counter rings behaviour
 	GAMEPLAY:	Can parry whenever, even mid attack. Limit it in a good way somehow - maybe add the "locking reasons" array/ dictionary
-	GAMEPLAY:	Pathfinding: Set angle of offset based on angle from the collision point instead of just a random number times collisions
 	WORLD:		arena has no walls, objects, etc.
 	WORLD:		arena is not an actual, interesting level
 	SOUND:		Play projectile sounds
@@ -77,7 +77,7 @@ Things that are very missing:
 	BUG: strange dodge behaviour at high speeds (low priority)
 
 Pathfinding:
-	GAMEPLAY:	Enemies: Different colliders for physical place (small) and area they can be damaged (larger)
+	GAMEPLAY:	Pathfinding: Set angle of offset based on angle from the collision point instead of just a random number times collisions
 	GAMEPLAY:	Pathfinding: Player: not checking its sides for collision
 	GAMEPLAY:	Pathfinding: Player: can get "funneled" between enemies, not going back
 	GAMEPLAY:	Pathfinding: Player: can go out of navigation map when trying to circle around enemies - in progress, looking good

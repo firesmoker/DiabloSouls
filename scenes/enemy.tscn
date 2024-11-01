@@ -91,7 +91,6 @@ sprite_frames = SubResource("SpriteFrames_e0icc")
 metadata/_edit_lock_ = true
 
 [node name="PhysicalCollider" type="CollisionShape2D" parent="."]
-z_index = -1
 z_as_relative = false
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_3rv2h")

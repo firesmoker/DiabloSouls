@@ -95,7 +95,6 @@ var target_for_ranged: Vector2
 var ready_to_parry_on_mouse_release: bool = false
 
 signal ready_to_attack_again_signal
-signal attack_effects
 signal attack_success
 signal parry_success
 signal execution_started
@@ -353,7 +352,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				attack(face_destination, parry_ability)
 		
 		if event.is_action_released("parry"):
-			if not is_locked:
+			if not is_locked and not is_defending:
 				if ready_to_parry_on_mouse_release:
 					if stamina - 1 < 0:
 						print("not enough stamina")
@@ -362,6 +361,8 @@ func _unhandled_input(event: InputEvent) -> void:
 						if stamina < 0:
 							stamina = 0
 						parry()
+			else:
+				print("doesn't accept parry action on release because: is_locked " + str(is_locked) + "and is_defeneding " + str(is_defending))
 		
 		if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place") and not event.is_action_pressed("parry"):
 			if game_manager.enemy_in_focus != null:
@@ -461,8 +462,6 @@ func _on_parry_zone_body_entered(threat: Node2D) -> void:
 func _on_parry_zone_body_exited(enemy: Enemy) -> void:
 	enemies_in_defense_zone.erase(enemy)
 
-func _on_attack_effects() -> void:
-	pass
 
 
 func stop_on_destination() -> void:
@@ -644,12 +643,14 @@ func handle_block(delta: float) -> void:
 	#if not is_attacking:
 	if locked_sources.size() > 0 and not locked_sources.has("defending"):
 		return
+	elif locked_sources.size() > 1 and locked_sources.has("defending"):
+		return
 	if Input.is_action_pressed("parry"):
-		if "parry" in animation_player.current_animation:
-			await animation_player.animation_finished
-			print("parry animation finished")
+		#if "parry" in animation_player.current_animation:
+			#await animation_player.animation_finished
+			#print("parry animation finished")
 		if Input.is_action_pressed("parry"):
-			print("handle block -> blocking -> collider = NOT disabled")
+			#print("handle block -> blocking -> collider = NOT disabled")
 			parry_collider.disabled = false
 			var defend_destination: Vector2 = get_global_mouse_position()
 			var angle: float = position.angle_to_point(defend_destination)
@@ -664,7 +665,7 @@ func handle_block(delta: float) -> void:
 			#invulnerability_sources["defend"] = true
 			#invulnerable = true
 			velocity = Vector2(0, 0)
-			print("trying to play defened animation")
+			#print("trying to play defened animation")
 			animation_player.play(animations[current_direction]["defend"])
 		else:
 			print("disabled parry collider after animation finished")
@@ -672,7 +673,7 @@ func handle_block(delta: float) -> void:
 		
 	if Input.is_action_just_released("parry"):
 		if is_defending:
-			print("released defense -> collider = disabled")
+			#print("released defense -> collider = disabled")
 			is_defending = false
 			locked_sources.erase("defending")
 			#is_locked = false
@@ -691,11 +692,7 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability, spee
 	#can_move = false
 	is_defending = false
 	is_attacking = true
-	if ability.range_type == "melee":
-		#print("melee attack!")
-		pass
-	#else:
-		#print("not melee")
+
 	velocity = Vector2(0, 0)
 	var angle: float = position.angle_to_point(attack_destination)
 	set_direction_by_destination(attack_destination)
@@ -710,7 +707,7 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability, spee
 			attack_axis.rotation = angle
 			animation_player.stop()
 			execute(ability)
-		if ready_to_attack_again:
+		elif ready_to_attack_again:
 			#is_locked = true
 			ready_to_attack_again = false
 			attack_axis.rotation = angle
@@ -718,7 +715,7 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability, spee
 			animation_player.stop()
 			#animation_player.play(animations[current_direction][attack_ability.animation_name])
 			execute(ability)
-		elif attack_collider.disabled == true:
+		elif attack_collider.disabled == true and ability == attack_ability:
 			attack_axis.rotation = angle
 			#print("normal attack")
 			var current_animation_position: float = animation_player.current_animation_position
@@ -800,13 +797,11 @@ func just_attacked(attack_type: String = "melee") -> void: # THIS
 	if attack_type == "melee":
 		print("melee attack")
 		attack_collider.disabled = false
-		emit_signal("attack_effects")
 		disable_attack_zone()
 	elif attack_type == "ranged":
 		if target_for_ranged == null:
 			target_for_ranged = get_global_mouse_position()
 		print("ranged attack")
-		emit_signal("attack_effects")
 		create_projectile(target_for_ranged, 4)
 
 func create_projectile(target: Vector2 = Vector2(0,0), speed: float = 1.0) -> void:
@@ -825,17 +820,14 @@ func just_parried() -> void: # THIS
 	#print("PARRY! -> collider not disabled")
 	#is_parrying = true
 	#parry_collider.disabled = false
-	#emit_signal("attack_effects")
 	#disable_parry_zone()
 
 func parry() -> void:
-	if not is_defending:
-		print("PARRY! -> collider not disabled")
-		is_parrying = true
-		parry_collider.disabled = false
-		locked_sources.erase("defending")
-		emit_signal("attack_effects")
-		disable_parry_zone()
+	print("PARRY!")
+	is_parrying = true
+	parry_collider.disabled = false
+	locked_sources.erase("defending")
+	disable_parry_zone()
 
 func construct_animation_library() -> void:
 	animations.clear()

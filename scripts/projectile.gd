@@ -21,7 +21,7 @@ func _ready() -> void:
 	#if game_manager != null:
 		#player = game_manager.player
 	#else:
-		#print("game manager null for projectile")
+		#print_debug("game manager null for projectile")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -33,18 +33,18 @@ func _on_self_destruct_timer_timeout() -> void:
 
 
 func _on_impact_zone_body_entered(body: CollisionObject2D) -> void:
-	#print("body entered " + str(body))
+	#print_debug("body entered " + str(body))
 	if player != null:
 		if body == player and targets_player:
 			if self in player.projectiles_in_defense_zone:
 				explode()
 			else:
-			#print("trying to hit player with projectile")
+			#print_debug("trying to hit player with projectile")
 				player.get_hit()
 				explode()
 	if not targets_player:
 		if body.get_script():
-			#if 1 == 1: print("enemy proj")
+			#if 1 == 1: print_debug("enemy proj")
 			body.get_hit(damage)
 		explode()
 	#pass # Replace with function body.

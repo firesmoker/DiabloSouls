@@ -32,14 +32,14 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("zoom_out"):
-		print("zoom out")
+		print_debug("zoom out")
 		var zoom_in_amount:float = 115.0 / 100.0
 		camera.zoom.x *= zoom_in_amount
 		camera.zoom.y *= zoom_in_amount
 		pass
 		
 	elif event.is_action_pressed("zoom_in"):
-		print("zoom in")
+		print_debug("zoom in")
 		var zoom_out_amount:float = 100.0 / 115.0
 		camera.zoom.x *= zoom_out_amount
 		camera.zoom.y *= zoom_out_amount
@@ -84,7 +84,7 @@ func update_enemy_label() -> void:
 func create_enemies_timed(delay: float = 3.0) -> void:
 	var enemy_type: PackedScene = load("res://scenes/skeleton_fast.tscn")
 	while true:
-		print("creating enemy")
+		print_debug("creating enemy")
 		await get_tree().create_timer(delay).timeout
 		var new_enemy:  = enemy_type.instantiate()
 	
@@ -95,14 +95,14 @@ func enemy_in_player_melee_zone(enemy: Enemy, in_zone: bool = true) -> void:
 
 #func player_in_melee(enemy: Enemy) -> void:
 	#pass
-	#print("MELEE!! (gamemanager) with " + str(enemy))
+	#print_debug("MELEE!! (gamemanager) with " + str(enemy))
 	#player.enemies_in_melee.append(enemy)
 	#if player.is_chasing_enemy and player.targeted_enemy == enemy:
 			#player.attack(enemy.position)
 
 #func player_left_melee(enemy: Enemy) -> void:
 	#pass
-	#print("LEFT MELEE!! (gamemanager) with " + str(enemy))
+	#print_debug("LEFT MELEE!! (gamemanager) with " + str(enemy))
 	#if enemy in player.enemies_in_melee:
 		#player.enemies_in_melee.erase(enemy)
 
@@ -151,7 +151,7 @@ func camera_shake_and_color(color: bool = true, extra: bool = false) -> void:
 func enemy_mouse_hover(enemy: Enemy) -> void:
 	if enemy not in enemies_under_mouse:
 		enemies_under_mouse.append(enemy)
-		#print("added enemy under mouse: " + str(enemy.name))
+		#print_debug("added enemy under mouse: " + str(enemy.name))
 	#if enemy_in_focus != null:
 		#enemy_in_focus.highlight_stop()	
 	if enemy_in_focus == null:
@@ -160,21 +160,21 @@ func enemy_mouse_hover(enemy: Enemy) -> void:
 func enemy_mouse_hover_stopped(enemy: Enemy) -> void:
 	if enemy in enemies_under_mouse:
 		enemies_under_mouse.erase(enemy)
-		#print("removed enemy under mouse: " + str(enemy.name))
+		#print_debug("removed enemy under mouse: " + str(enemy.name))
 	enemy.highlight_stop()
 	if enemies_under_mouse.size() > 0:
-		#print("switched to other enemy under mouse")
+		#print_debug("switched to other enemy under mouse")
 		enemy_in_focus = enemies_under_mouse[0]
 	else:
 		enemy_in_focus = null
 
 func _on_player_attack_success(enemy: Enemy) -> void:
 	camera_shake_and_color()
-	print("attack succes!")
+	print_debug("attack succes!")
 	var enemy_death_status: bool = await enemy.get_hit()
-	#print(enemy_death_status)z
+	#print_debug(enemy_death_status)z
 	#if enemy_death_status:
-		#print("extra death shake")
+		#print_debug("extra death shake")
 		#camera_shake_and_color()
 
 func _on_player_parry_success(enemy: Enemy) -> void:
@@ -185,7 +185,7 @@ func _on_player_parry_success(enemy: Enemy) -> void:
 		elif enemy.can_be_parried:
 			enemy.get_parried()
 		else:
-			print("enemy can't be parried")
+			print_debug("enemy can't be parried")
 
 func freeze_display(duration := 0.2 / 12.0, delay := 0.05) -> void:
 	await get_tree().create_timer(delay).timeout
@@ -208,13 +208,13 @@ func dir_contents(path: String) -> void:
 		var file_name: String = dir.get_next()
 		while file_name != "":
 			if dir.current_is_dir():
-				print("Found directory: " + file_name)
+				print_debug("Found directory: " + file_name)
 			else:
-				print("Found file: " + file_name)
+				print_debug("Found file: " + file_name)
 			file_name = dir.get_next()
 		dir.list_dir_end()
 	else:
-		print("An error occurred when trying to access the path.")
+		print_debug("An error occurred when trying to access the path.")
 
 func dir_contents_filter(path: String, extension: String, print: bool = false) -> Array[String]:
 	var dir: = DirAccess.open(path)
@@ -223,23 +223,23 @@ func dir_contents_filter(path: String, extension: String, print: bool = false) -
 	if dir:
 		dir.list_dir_begin()
 		fixed_path = dir.get_current_dir()
-		#print("fixed path is " + fixed_path)
+		#print_debug("fixed path is " + fixed_path)
 		var file_name: String = dir.get_next()
 		while file_name != "":
 			if not dir.current_is_dir():
 				if file_name.ends_with(extension):
-					#print("Found a " + extension + " file: " + file_name)
+					#print_debug("Found a " + extension + " file: " + file_name)
 					var file_name_path: String = fixed_path + "/" + file_name
 					file_list.append(file_name_path)
 					if print:
-						print("added to file list: " + file_name_path)
+						print_debug("added to file list: " + file_name_path)
 					
-				#print("Found directory: " + file_name)
+				#print_debug("Found directory: " + file_name)
 			#else:
-				#print("Found file: " + file_name)
+				#print_debug("Found file: " + file_name)
 				
 			file_name = dir.get_next()
 		dir.list_dir_end()
 	else:
-		print("An error occurred when trying to access the path.")
+		print_debug("An error occurred when trying to access the path.")
 	return file_list

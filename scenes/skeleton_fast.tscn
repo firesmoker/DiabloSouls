@@ -112,6 +112,7 @@ material = SubResource("ShaderMaterial_mbm04")
 sprite_frames = SubResource("SpriteFrames_exdmd")
 
 [node name="PhysicalCollider" parent="." index="5"]
+z_index = -1
 shape = SubResource("CapsuleShape2D_f3d3h")
 
 [node name="HighlightCircle" parent="." index="6"]

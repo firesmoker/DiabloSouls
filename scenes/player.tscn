@@ -1608,7 +1608,8 @@ shape = SubResource("CircleShape2D_ysxni")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_hcvbx")
 sprite_frames = SubResource("SpriteFrames_rd8ew")
-animation = &"warrior_attack_S"
+animation = &"warrior_attack_E"
+frame = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -1664,7 +1665,6 @@ material = SubResource("ShaderMaterial_d4q8c")
 [node name="DodgeTimer" type="Timer" parent="."]
 script = ExtResource("150_d173a")
 
-[connection signal="attack_effects" from="." to="." method="_on_attack_effects"]
 [connection signal="body_entered" from="MeleeZone" to="." method="_on_melee_zone_body_entered"]
 [connection signal="body_exited" from="MeleeZone" to="." method="_on_melee_zone_body_exited"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

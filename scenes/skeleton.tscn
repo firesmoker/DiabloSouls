@@ -104,6 +104,8 @@ material = SubResource("ShaderMaterial_0w58q")
 sprite_frames = SubResource("SpriteFrames_ckd27")
 
 [node name="PhysicalCollider" parent="." index="5"]
+z_index = 1
+z_as_relative = true
 rotation = 0.0
 shape = ExtResource("3_12a1b")
 

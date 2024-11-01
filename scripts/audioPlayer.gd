@@ -15,10 +15,11 @@ func _ready() -> void:
 			new_audio_stream.bus = "SFX"
 			self.add_child(new_audio_stream)
 			if my_sounds[sounds_keys[i]] != null:
-				print("SOUND:" + str(my_sounds[sounds_keys[i]]))
+				#print_debug("SOUND:" + str(my_sounds[sounds_keys[i]]))
 				new_audio_stream.stream = my_sounds[sounds_keys[i]]
 			else:
-				print("null on " + str(self))
+				#print_debug("null on " + str(self))
+				pass
 			audio_streams.append(new_audio_stream)
 			var sound_name: String = sounds_keys[i] as String
 			my_sounds[sounds_keys[i]] = {
@@ -34,6 +35,6 @@ func play(name: String, pitch_min: float = 1.0, pitch_max: float = 1.0) -> void:
 			audio_streams[my_sounds[name]["stream"]].pitch_scale = randf_range(pitch_min, pitch_max)
 			audio_streams[my_sounds[name]["stream"]].play()
 		else:
-			print("no " + name + " in sounds")
+			print_debug("no " + name + " in sounds")
 	else:
-		print("no sounds for " + str(self.get_parent()))
+		print_debug("no sounds for " + str(self.get_parent()))

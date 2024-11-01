@@ -174,9 +174,12 @@ func get_destination() -> void:
 		is_locked = true
 
 func walk(delta: float) -> void:
-	#print("walking")
+	#print_debug("walking")
 	#var velocity: Vector2 = calculate_movement() * speed_fps_ratio * move_speed_modifier * delta
 	var velocity: Vector2 = calculate_movement() * move_speed_modifier * delta
+	
+		
+			
 	move_and_collide(velocity)
 	#position += velocity
 	
@@ -225,10 +228,10 @@ func attack() -> void:
 		attack_axis.rotation = angle
 		if rotating_collider:
 			physical_collider.rotation = angle
-		print("attack cooldown is stopped")
+		#print_debug("attack cooldown is stopped")
 		animation_player.speed_scale = attack_speed_modifier
 		animation_player.play(animations[current_direction]["attack"])
-		print(animations[current_direction]["attack"])
+		#print_debug(animations[current_direction]["attack"])
 		attack_cooldown.start()
 	else:
 		var angle: float = position.angle_to_point(player.position)
@@ -291,12 +294,14 @@ func _on_melee_zone_body_exited(body: CollisionObject2D) -> void:
 func _on_attack_zone_body_entered(body: CollisionObject2D) -> void:
 	if body == player:
 		if self in player.enemies_in_defense_zone and player.is_defending:
-			print(str(self) + " in defense zone when trying to attack")
+			#print_debug(str(self) + " in defense zone when trying to attack")
+			pass
 		else:
 			game_manager.player_gets_hit(attack_damage)
 	else:
-		print(body)
-		print("not player")
+		pass
+		#print_debug(body)
+		#print_debug("not player")
 
 
 func switch_direction() -> void:
@@ -315,14 +320,14 @@ func get_stunned() -> void:
 	is_locked = true
 	stun_timer.start()
 	await stun_timer.timeout
-	print("STUN TIMEOUT!")
+	#print_debug("STUN TIMEOUT!")
 	stunned = false
 	is_locked = false
 	stun_timer.queue_free()
 
 func get_parried(counter: bool = false) -> void:
 	if counter:
-		print("COUNTER!")
+		#print_debug("COUNTER!")
 		
 		game_manager.camera_shake_and_color()
 		get_hit(2)
@@ -340,7 +345,7 @@ func get_parried(counter: bool = false) -> void:
 		timer.start()
 		
 		await timer.timeout
-		print("PARRY TIMEOUT!")
+		#print_debug("PARRY TIMEOUT!")
 		timer.queue_free()
 		animated_sprite_2d.material.set_shader_parameter("modulated_color",body_color)
 		if not dying:
@@ -390,6 +395,13 @@ func set_visual_direction_by_angle(angle: float = position.angle_to_point(destin
 		current_direction = radian_direction[rounded_rand]
 		switch_animation_timer.paused = false
 		switch_animation_timer.start(0.2)
+		if rotating_collider:
+			var last_rotation: float = physical_collider.rotation
+			var new_rotation: float = rounded_rand
+			#var new_snapped_rotation: float = snapped(new_rotation,PI/4)
+			
+			physical_collider.rotation = new_rotation
+		
 		#switch_direction()
 		await switch_animation_timer.timeout
 		ready_to_switch_direction = true
@@ -424,14 +436,14 @@ func highlight_stop() -> void:
 
 func attack_effect(melee: bool = true) -> void:
 	if melee:
-		print("melee!")
+		#print_debug("melee!")
 		attack_collider.disabled = false
 		highlight_circle.modulate = Color.TRANSPARENT
 		can_be_countered = false
 		can_be_parried = false
 		disable_attack_zone()
 	else:
-		print("ranged")
+		#print_debug("ranged")
 		highlight_circle.modulate = Color.TRANSPARENT
 		can_be_countered = false
 		can_be_parried = false
@@ -479,14 +491,14 @@ func disable_attack_zone() -> void:
 	attack_collider.disabled = true
 	
 func ready_to_be_parried() -> void:
-	#print("ready to be parried")
+	#print_debug("ready to be parried")
 	if not stunned:
 		if in_melee:
 			highlight_circle.modulate = Color.WHITE
 		can_be_parried = true
 
 func ready_to_be_countered() -> void:
-	#print("ready to be countered")
+	#print_debug("ready to be countered")
 	if not stunned:
 		highlight_circle.modulate = Color.BLUE
 		can_be_countered = true
@@ -513,14 +525,14 @@ func add_animation_method_calls() -> void:
 			var time: float = attack_frame/FPS
 			var parried_time: float = 0.5/FPS
 			var countered_time: float = 3/FPS
-			print("adding method calls for animation " + str(animation))
+			#print_debug("adding method calls for animation " + str(animation))
 			animation_to_modify.track_insert_key(track, parried_time, {"method" : "ready_to_be_parried" , "args" : []}, 1)
 			animation_to_modify.track_insert_key(track, countered_time, {"method" : "ready_to_be_countered" , "args" : []}, 1)
 			if has_ranged_attack:
 				animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : [false]}, 1)
-				print(str(self) + "added RANGED effects to " + str(animation_to_modify))
+				#print_debug(str(self) + "added RANGED effects to " + str(animation_to_modify))
 			else:
-				print(str(self) + "added MELEE effects to " + str(animation_to_modify) + "because has_ranged attack = " + str(has_ranged_attack))
+				#print_debug(str(self) + "added MELEE effects to " + str(animation_to_modify) + "because has_ranged attack = " + str(has_ranged_attack))
 				animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : []}, 1)
 
 
@@ -533,7 +545,7 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 			action_type = type
 			break
 	if action_type == null:
-		print("no animation type found for this entity: " + name)
+		print_debug("no animation type found for this entity: " + name)
 		return
 	
 	frames.add_animation(animation_name)
@@ -580,14 +592,16 @@ class Ability:
 		self.animation_name = self.name
 		
 	func execute(target: Vector2 = Vector2(0,0)) -> void:
-		#print("executing " + name)
+		#print_debug("executing " + name)
 		if self.range_type == "self":
-			#print("execute on: " + str(target))
+			#print_debug("execute on: " + str(target))
 			pass
 		elif self.range_type == "ranged" :
-			print("pew!")
+			#print_debug("pew!")
+			pass
 		elif self.range_type == "melee":
-			print("ZBANG MELEE")
+			pass
+			#print_debug("ZBANG MELEE")
 		
 
 
