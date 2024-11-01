@@ -36,9 +36,12 @@ func _on_impact_zone_body_entered(body: CollisionObject2D) -> void:
 	#print("body entered " + str(body))
 	if player != null:
 		if body == player and targets_player:
+			if self in player.projectiles_in_defense_zone:
+				explode()
+			else:
 			#print("trying to hit player with projectile")
-			player.get_hit()
-			explode()
+				player.get_hit()
+				explode()
 	if not targets_player:
 		if body.get_script():
 			#if 1 == 1: print("enemy proj")

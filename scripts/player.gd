@@ -85,6 +85,7 @@ var number_of_offset_frames: int = 0
 var targeted_enemy: Enemy = null
 var enemies_in_melee: Array[Enemy]
 var enemies_in_defense_zone: Array[Enemy]
+var projectiles_in_defense_zone: Array[Projectile]
 #var abilities_queue: Array[Ability]
 var is_dying: bool = false
 var dead: bool = false
@@ -335,18 +336,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		if event.is_action_pressed("parry"):
 			if not is_locked:
+				var face_destination: Vector2 = get_global_mouse_position()
+				attack(face_destination, parry_ability)
+		
+		if event.is_action_released("parry"):
+			if ready_to_parry_on_mouse_release:
 				if stamina - 1 < 0:
 					print("not enough stamina")
 				else:
 					stamina -= 1
 					if stamina < 0:
 						stamina = 0
-					var face_destination: Vector2 = get_global_mouse_position()
-					attack(face_destination, parry_ability)
-		
-		if event.is_action_released("parry"):
-			if ready_to_parry_on_mouse_release:
-				parry()
+					parry()
 		
 		if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place") and not event.is_action_pressed("parry"):
 			if game_manager.enemy_in_focus != null:
@@ -430,12 +431,15 @@ func create_blood_effect(effect_position: Vector2, custom_parent: Node = null) -
 	blood_effect.global_position = effect_position
 
 
-func _on_parry_zone_body_entered(enemy: Enemy) -> void:
-	enemies_in_defense_zone.append(enemy)
-	print("enemies in parry: " + str(enemy))
-	if not is_defending and is_parrying:
-		emit_signal("parry_success", enemy)
-		print("parrying" + str(enemy) + "(in player.gd)")
+func _on_parry_zone_body_entered(threat: Node2D) -> void:
+	if threat is Enemy:
+		enemies_in_defense_zone.append(threat)
+		print("enemies in parry: " + str(threat))
+		if not is_defending and is_parrying:
+			emit_signal("parry_success", threat)
+			print("parrying" + str(threat) + "(in player.gd)")
+	elif threat is Projectile:
+		projectiles_in_defense_zone.append(threat)
 	#else:
 		#enemies_in_defense_zone.append(enemy)
 
@@ -638,8 +642,9 @@ func handle_block(delta: float) -> void:
 			targeted_enemy = null
 			is_idle = false
 			is_defending = true
+			ready_to_parry_on_mouse_release = false
 			is_locked = true
-			invulnerability_sources["defend"] = true
+			#invulnerability_sources["defend"] = true
 			#invulnerable = true
 			velocity = Vector2(0, 0)
 			print("trying to play defened animation")
@@ -653,7 +658,7 @@ func handle_block(delta: float) -> void:
 			print("released defense -> collider = disabled")
 			is_defending = false
 			is_locked = false
-			invulnerability_sources.erase("defend")
+			#invulnerability_sources.erase("defend")
 			#invulnerable = false
 			destination = position
 			parry_collider.disabled = true

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://lr15cpqcai72"]
+[gd_scene load_steps=19 format=3 uid="uid://lr15cpqcai72"]
 
 [ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_h602i"]
 [ext_resource type="Script" path="res://scripts/TileMap.gd" id="2_orhwb"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cxhnyk8un34t3" path="res://scenes/obstacle.tscn" id="9_dwwik"]
 [ext_resource type="PackedScene" uid="uid://ch1let232ajbg" path="res://scenes/demonlord.tscn" id="9_upit6"]
 [ext_resource type="Shader" path="res://shaders/darkness.gdshader" id="10_lpngp"]
+[ext_resource type="PackedScene" uid="uid://bx722w57mqme2" path="res://scenes/slime.tscn" id="12_8quve"]
 [ext_resource type="PackedScene" uid="uid://dxfa0xmqhcorr" path="res://scenes/skeleton_fast.tscn" id="13_vhtj6"]
 [ext_resource type="PackedScene" uid="uid://b4qsmsjjcorlc" path="res://scenes/light.tscn" id="19_6rjls"]
 
@@ -422,6 +423,9 @@ position = Vector2(-35, 115)
 
 [node name="Skeleton_Fast" parent="Enemies" instance=ExtResource("13_vhtj6")]
 position = Vector2(576, -190)
+
+[node name="Slime" parent="Enemies" instance=ExtResource("12_8quve")]
+position = Vector2(409, -271)
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
 [connection signal="parry_success" from="Player" to="GameManager" method="_on_player_parry_success"]
