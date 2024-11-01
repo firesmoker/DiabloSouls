@@ -25,7 +25,7 @@ class_name Player extends CharacterBody2D
 @export var max_mana: float = 5
 @export_group("Conditions")
 @export var is_dodging: bool = false
-@export var invlunerable: bool = false
+@export var invulnerable: bool = false
 @export_group("Rays")
 @export var rays: Array[RayCast2D]
 @export var rays_right: Array[RayCast2D]
@@ -52,6 +52,9 @@ class_name Player extends CharacterBody2D
 
 
 @onready var animation_library: AnimationLibrary = animation_player.get_animation_library("")
+
+var invulnerability_sources: Dictionary
+
 var last_movement_offset: int = 0
 var minimum_collision_distance: float = 0
 var mana: float = 5
@@ -167,7 +170,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:	
 	light.material.set_shader_parameter("radius", light_radius)
-	
+	handle_invulnerability()
 	mana_regen(delta)
 	stamina_regen(delta)
 	health_regen(delta)
@@ -189,13 +192,20 @@ func _physics_process(delta: float) -> void:
 		audio_player.play("Death")
 		dead = true
 
+func handle_invulnerability() -> void:
+	if invulnerability_sources.size() > 0:
+		invulnerable = true
+	else:
+		invulnerable = false
+
 func handle_dodge(delta_time: float) -> void:
 	if is_dodging:
 		dodge_delta_timer += delta_time
 		if dodge_delta_timer >= 0.1:
 			dodge_delta_timer = 0
 			animated_sprite_2d.material.set_shader_parameter("dir_x", 0.0)
-			invlunerable = false
+			invulnerability_sources.erase("dodge")
+			#invulnerable = false
 			velocity = Vector2(0,0)
 			destination = global_position
 			is_dodging = false
@@ -250,7 +260,8 @@ func dodge(dodge_destination: Vector2) -> void:
 		is_attacking = false
 		#original_position = position
 		destination = dodge_destination
-		invlunerable = true
+		invulnerability_sources["dodge"] = true
+		#invulnerable = true
 		animated_sprite_2d.material.set_shader_parameter("dir_x", 0.025)
 		is_dodging = true 
 		#set_collision_mask_value(1, false)
@@ -267,7 +278,7 @@ func dodge(dodge_destination: Vector2) -> void:
 		#dodge_delta_timer = 0
 		#is_dodging = false
 		#animated_sprite_2d.material.set_shader_parameter("dir_x", 0.0)
-		#invlunerable = false
+		#invulnerable = false
 		#velocity = Vector2(0,0)
 		
 		
@@ -628,7 +639,8 @@ func handle_block(delta: float) -> void:
 			is_idle = false
 			is_defending = true
 			is_locked = true
-			#invlunerable = true
+			invulnerability_sources["defend"] = true
+			#invulnerable = true
 			velocity = Vector2(0, 0)
 			print("trying to play defened animation")
 			animation_player.play(animations[current_direction]["defend"])
@@ -641,7 +653,8 @@ func handle_block(delta: float) -> void:
 			print("released defense -> collider = disabled")
 			is_defending = false
 			is_locked = false
-			invlunerable = false
+			invulnerability_sources.erase("defend")
+			#invulnerable = false
 			destination = position
 			parry_collider.disabled = true
 		else:
@@ -937,7 +950,7 @@ func disable_parry_zone() -> void:
 
 
 func get_hit(damage: int = 1) -> void:
-	if invlunerable:
+	if invulnerable:
 		damage = 0
 	if hitpoints - damage <= 0:
 		hitpoints -= damage

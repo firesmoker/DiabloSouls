@@ -313,7 +313,6 @@ light_radius = 3.135
 moving_speed_modifier = 0.75
 dodge_speed_bonus = 5.0
 max_stamina = 10.0
-invlunerable = true
 
 [node name="Darkness" parent="." instance=ExtResource("19_6rjls")]
 visible = false
