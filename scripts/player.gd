@@ -1,51 +1,62 @@
 class_name Player extends CharacterBody2D
 @onready var light: Sprite2D = $Light
 @onready var dodge_timer: Timer = $DodgeTimer
-
 @onready var audio_player: AudioPlayer = $AudioPlayer
 @onready var nav: NavigationAgent2D = $NavigationAgent2D
 @onready var ray_axis: Node2D = $Rays
-
-var last_movement_offset: int = 0
-var minimum_collision_distance: float = 0
-@export var dodge_delta_timer: float = 0
-@export var is_dodging: bool = false
-@export var rays: Array[RayCast2D]
-@export var rays_right: Array[RayCast2D]
-@export var rays_left: Array[RayCast2D]
-@export var blood_template: PackedScene
-
-@onready var game_manager: GameManager = %GameManager
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
-@export var light_radius: float = 3.5
-@export var projectile: PackedScene
-@export var attack_axis: Node2D
-@export var animation_player: AnimationPlayer
-@export var attack_zone: Area2D
-@export var attack_collider: CollisionShape2D
-@export var parry_collider: CollisionShape2D
-@onready var animation_library: AnimationLibrary = animation_player.get_animation_library("")
+@onready var game_manager: GameManager = %GameManager
+
+@export_group("General")
 @export_enum("warrior_armed", "fighter_armed", "knight_armed") var model: String = "warrior_armed"
-@export var speed_fps_ratio: float = 121.0
+@export_group("Stats")
+@export var light_radius: float = 3.5
+@export_subgroup("Speed")
 @export var moving_speed_modifier: float = 1
 @export var attack_speed_modifier: float = 0.8
 @export var dodge_speed_bonus: float = 3.5
-@export var attack_frame: int = 3
-@export var re_attack_frame: int = 3
-@export var no_cancel_frame: float = 2.9
-@export var attack_again_frame: int = 5
+@export var dodge_delta_timer: float = 0
+@export_subgroup("Player Resources")
 @export var max_hitpoints: float = 5
-var hitpoints: float = 5
-var stamina: float = 5
 @export var max_stamina: float = 5
-var mana: float = 5
 @export var health_regen_amount: float = 0.006
 @export var stamina_regen_amount: float = 0.02
 @export var mana_regen_amount: float = 0.02
 @export var max_mana: float = 5
+@export_group("Conditions")
+@export var is_dodging: bool = false
 @export var invlunerable: bool = false
+@export_group("Rays")
+@export var rays: Array[RayCast2D]
+@export var rays_right: Array[RayCast2D]
+@export var rays_left: Array[RayCast2D]
+@export_group("Animation")
+@export var animation_player: AnimationPlayer
 @export var animation_types: Array[String] = ["idle", "walk", "attack", "death", "parry", "defend", "ranged_attack"]
+@export var speed_fps_ratio: float = 121.0
+@export var attack_frame: int = 3
+@export var re_attack_frame: int = 3
+@export var no_cancel_frame: float = 2.9
+@export var attack_again_frame: int = 5
+@export_group("Zones & Colliders")
+@export var attack_axis: Node2D
+@export var attack_zone: Area2D
+@export var attack_collider: CollisionShape2D
+@export var parry_collider: CollisionShape2D
+@export_group("Packed Scenes")
+@export var blood_template: PackedScene
+@export var projectile: PackedScene
+@export_group("MISC")
 @export var attack_with_melee: bool = false # TEMPORARY
+
+
+
+@onready var animation_library: AnimationLibrary = animation_player.get_animation_library("")
+var last_movement_offset: int = 0
+var minimum_collision_distance: float = 0
+var mana: float = 5
+var hitpoints: float = 5
+var stamina: float = 5
 var is_locked: bool = false
 var is_chasing_enemy: bool = false
 
@@ -296,13 +307,18 @@ func _unhandled_input(event: InputEvent) -> void:
 			else:
 				face_destination = get_global_mouse_position()
 				target_for_ranged = get_global_mouse_position()
-			if mana - 1 < 0:
-				print("not enough stamina")
-			else:
-				mana -= 1
-				if mana < 0:
-					mana = 0
+			var used_mana: bool = consume_mana(1, true)
+			if used_mana:
 				attack(face_destination, ranged_ability)
+			else:
+				print("not enough stamina")
+			#if mana - 1 < 0:
+				#print("not enough stamina")
+			#else:
+				#mana -= 1
+				#if mana < 0:
+					#mana = 0
+				#attack(face_destination, ranged_ability)
 		
 		if event.is_action_pressed("parry"):
 			if not is_locked:
@@ -325,14 +341,11 @@ func _unhandled_input(event: InputEvent) -> void:
 					var face_destination: Vector2
 					face_destination = game_manager.enemy_in_focus.position
 					target_for_ranged = game_manager.enemy_in_focus.position
-					
-					if mana - 1 < 0:
-						print("not enough stamina")
-					else:
-						mana -= 1
-						if mana < 0:
-							mana = 0
+					var used_mana: bool = consume_mana(1, true)
+					if used_mana:
 						attack(face_destination, ranged_ability)
+					else:
+						print("not enough stamina")
 					
 				else:
 					attack(targeted_enemy.position)
@@ -347,6 +360,15 @@ func _unhandled_input(event: InputEvent) -> void:
 			#destination = closest_point - (closest_point - global_position).normalized() * 5
 			destination = closest_point
 
+func consume_mana(amount: float = 1, overdraw: bool = false) -> bool:
+	if mana > 0 and overdraw:
+		mana -= amount
+		return true
+	elif mana - amount >= 0:
+		mana -= amount
+		return true
+	else:
+		return false
 
 
 func _on_melee_zone_body_entered(enemy: Enemy) -> void:
@@ -486,7 +508,8 @@ func handle_movement(delta: float) -> void:
 		#var collisions: float = 0
 		var collisions: float = ray_coliisions()
 		#print(collisions)
-		if collisions != 0 and not Input.is_action_pressed("mouse_move") and not is_dodging:
+		#if collisions != 0 and not Input.is_action_pressed("mouse_move") and not is_dodging:
+		if collisions != 0 and not is_dodging:
 			if global_position.distance_to(destination) - minimum_collision_distance > 5:
 				offset = collisions
 				is_moving_with_offset = true

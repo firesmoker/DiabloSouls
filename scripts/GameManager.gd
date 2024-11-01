@@ -9,6 +9,8 @@ class_name GameManager extends Node
 @onready var player_health: ProgressBar = %HUD/PlayerHealth
 @onready var player_stamina: ProgressBar = %HUD/PlayerStamina
 @onready var player_mana: ProgressBar = %HUD/PlayerMana
+@onready var player_mana_overdraw: ProgressBar = %HUD/PlayerManaOverdraw
+
 @onready var darkness: Sprite2D = $"../Darkness"
 
 @export var shake_time: float = 0.05
@@ -45,10 +47,28 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 	darkness.position = player.position
-	#print(enemy_in_focus)
+	update_resource_bars()
+	update_enemy_label()
+	if player.dead:
+		point_light.color = Color.RED
+		point_light.energy = 1
+		
+		
+func update_resource_bars() -> void:
 	player_health.value = player.hitpoints
 	player_stamina.value = player.stamina
 	player_mana.value = player.mana
+	player_mana.find_child("Text").text = str(player_mana.value)
+	if player.mana < 0:
+		player_mana_overdraw.visible = true
+		player_mana.visible = false
+		player_mana_overdraw.value = abs(player.mana)
+		player_mana_overdraw.find_child("Text").text = str(-player_mana.value)
+	else:
+		player_mana_overdraw.visible = false
+		player_mana.visible = true
+
+func update_enemy_label() -> void:
 	if enemy_in_focus != null:
 		enemy_in_focus.highlight()
 		enemy_label.visible = true
@@ -59,9 +79,7 @@ func _process(delta: float) -> void:
 	else:
 		enemy_label.visible = false
 		enemy_health.visible = false
-	if player.dead:
-		point_light.color = Color.RED
-		point_light.energy = 1
+
 		
 func create_enemies_timed(delay: float = 3.0) -> void:
 	var enemy_type: PackedScene = load("res://scenes/skeleton_fast.tscn")

@@ -125,9 +125,6 @@ visible = false
 [node name="CollisionShape2D" parent="ClumpZone" index="0"]
 shape = SubResource("CapsuleShape2D_80ple")
 
-[node name="HoverZone" parent="." index="8"]
-visible = false
-
 [node name="CollisionShape2D" parent="HoverZone" index="0"]
 position = Vector2(0, -6.075)
 scale = Vector2(0.655, 0.655)

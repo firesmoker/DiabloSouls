@@ -3,7 +3,7 @@ I think I do tend towrad classes. Kinda like POE's version of them. I like the p
 I could also do a multiclass system like DND which could be innovative. Will be hard to balance though. But innovative.
 I also really like Grim Dawn's approach of dual classing.
 I do have fun with the tree for each skill. not sure I still like the limited number of "specializations" for them.
-Like the simplified the way that you put skill points into a tree and that tree levels up, instead of putting point into the PLUS for leveling up the tree in Grim Dawn/Titan Quest.
+Like the simplified way that you put skill points into a tree and that tree levels up, instead of putting point into the PLUS for leveling up the tree in Grim Dawn/Titan Quest.
 Mitigation chance?
 Endurance from last epoch is pretty cool
 Class restricted items? (if there are classes)

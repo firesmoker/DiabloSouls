@@ -2,6 +2,9 @@ Ideas:
 	CODE:		CLASSES: It's a good idea to update all "derivative" properties on setters. chain of setters will ensure good architecture
 	UI/UX:		Ingame game guide is awesome (like last Epoch)
 	UI/UX:		Extra helpers for scaling and meaning and examples are awesome (like last epoch)
+	Visual:		LE changes unique art based on of the classes base armors
+	Gameplay:	Charge skill for melee is fun
+	Gameplay:	Try counter window BEFORE parry window. better emphasize quick reaction.
 
 Project Milestones:
 	1) Basic level:
@@ -42,7 +45,6 @@ Technical stuff that bothers me:
 
 Things that are very missing:
 	GAMEPLAY:	consuming mana the very moment you press to cast the spell feels weird. maybe because it takes a while to shoot.
-	BUG:		Slime enemy can't be hovered or targeted
 	BUG:		Weird parry/counter rings behaviour
 	GAMEPLAY:	Can't defend without parrying, wasting activation stamina. Also "cheeses" parry
 	GAMEPLAY:	Can parry whenever, even mid attack. Limit it in a good way somehow

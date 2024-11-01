@@ -4,7 +4,6 @@
 [ext_resource type="Shape2D" uid="uid://d0hus0v2lk50r" path="res://scene_resources/column_collider.tres" id="2_vwqog"]
 
 [node name="Obstacle" type="Sprite2D"]
-position = Vector2(447, 39)
 texture = ExtResource("1_udwvx")
 metadata/_edit_lock_ = true
 

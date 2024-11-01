@@ -1,6 +1,8 @@
 TO DO
 	Expand and fix the Gabriel - Raguel thing
 	Continue the post vengeance story that takes place during the game.
+	like Gal's DND session - maybe not only the hero gets power from disguised Raguel - and you can later fight them or find them dead.
+	The singer angel - main theme -duriel theme - composing the song about duriel, later you can find the rest of the song that tells the story of her downfall. she could be a character you save. super cooolllll
 
 ===============
 I. Aurora Creates the Universe
