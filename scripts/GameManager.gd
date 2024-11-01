@@ -63,7 +63,7 @@ func update_resource_bars() -> void:
 		player_mana_overdraw.visible = true
 		player_mana.visible = false
 		player_mana_overdraw.value = abs(player.mana)
-		player_mana_overdraw.find_child("Text").text = str(-player_mana.value)
+		player_mana_overdraw.find_child("Text").text = str(float(-player_mana_overdraw.value))
 	else:
 		player_mana_overdraw.visible = false
 		player_mana.visible = true
