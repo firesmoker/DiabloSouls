@@ -193,7 +193,7 @@ func _physics_process(delta: float) -> void:
 		animation_player.play(animations[current_direction]["death"])
 		audio_player.play("Death")
 		dead = true
-		print_template("Died")
+		print_template("Died", true)
 
 func handle_invulnerability() -> void:
 	if invulnerability_sources.size() > 0:
@@ -259,13 +259,13 @@ func health_regen(delta_time: float) -> void:
 
 func dodge(dodge_destination: Vector2) -> void:
 	if stamina - dodge_cost < 0:
-		print("not enough stamina")
+		print_template("not enough stamina")
 	elif not is_dodging and not is_locked:
 		original_position = position
 		animation_player.stop()
 		audio_player.play("Dodge")
 		stamina -= dodge_cost
-		#print("dodging to " + str(dodge_destination))
+		#print_template("dodging to " + str(dodge_destination))
 		is_attacking = false
 		#original_position = position
 		destination = dodge_destination
@@ -304,12 +304,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		animation_player.play(animations[current_direction]["walk"]) # TEMPORARY
 	
 	if event.is_action_pressed("speed up"): # TEMPORARY
-		print("more speed") # TEMPORARY
+		print_template("more speed") # TEMPORARY
 		var speed_change:float = 115.0 / 100.0 # TEMPORARY
 		moving_speed_modifier *= speed_change # TEMPORARY
 		
 	elif event.is_action_pressed("speed down"): # TEMPORARY
-		print("less speed") # TEMPORARY
+		print_template("less speed") # TEMPORARY
 		var speed_change:float = 100.0 / 115.0 # TEMPORARY
 		moving_speed_modifier *= speed_change # TEMPORARY
 		
@@ -335,9 +335,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			if used_mana:
 				attack(face_destination, ranged_ability)
 			else:
-				print("not enough stamina")
+				print_template("not enough stamina")
 			#if mana - 1 < 0:
-				#print("not enough stamina")
+				#print_template("not enough stamina")
 			#else:
 				#mana -= 1
 				#if mana < 0:
@@ -353,14 +353,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			if not is_locked and not is_defending:
 				if ready_to_parry_on_mouse_release:
 					if stamina - 1 < 0:
-						print("not enough stamina")
+						print_template("not enough stamina")
 					else:
 						stamina -= 1
 						if stamina < 0:
 							stamina = 0
 						parry()
 			else:
-				print("doesn't accept parry action on release because: is_locked " + str(is_locked) + "and is_defeneding " + str(is_defending))
+				print_template("doesn't accept parry action on release because: is_locked " + str(is_locked) + "and is_defeneding " + str(is_defending))
 		
 		if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place") and not event.is_action_pressed("parry"):
 			if game_manager.enemy_in_focus != null:
@@ -376,12 +376,12 @@ func _unhandled_input(event: InputEvent) -> void:
 					if used_mana:
 						attack(face_destination, ranged_ability)
 					else:
-						print("not enough stamina")
+						print_template("not enough stamina")
 					
 				else:
 					attack(targeted_enemy.position)
 			else:
-				#print("unhandled input")
+				#print_template("unhandled input")
 				is_attacking = false
 				original_position = position
 				destination = get_global_mouse_position()
@@ -402,16 +402,18 @@ func consume_mana(amount: float = 1, overdraw: bool = false) -> bool:
 		return false
 
 
-func _on_melee_zone_body_entered(enemy: Enemy) -> void:
-	#print("body entered " + str(enemy))
+func _on_melee_zone_body_entered(enemy_hit_zone: CollisionObject2D) -> void:
+	#print_template("body entered " + str(enemy))
+	var enemy: Enemy = enemy_hit_zone.get_parent()
 	enemies_in_melee.append(enemy)
 	game_manager.enemy_in_player_melee_zone(enemy)
 	if is_chasing_enemy and targeted_enemy == enemy:
 		attack(enemy.position)
 
 
-func _on_melee_zone_body_exited(enemy: Enemy) -> void:
-	#print("body exited " + str(enemy))
+func _on_melee_zone_body_exited(enemy_hit_zone: CollisionObject2D) -> void:
+	#print_template("body exited " + str(enemy))
+	var enemy: Enemy = enemy_hit_zone.get_parent()
 	if enemy in enemies_in_melee:
 		enemies_in_melee.erase(enemy)
 		game_manager.enemy_in_player_melee_zone(enemy, false)
@@ -419,17 +421,19 @@ func _on_melee_zone_body_exited(enemy: Enemy) -> void:
 
 func _on_animation_player_animation_finished(anim_name: String) -> void:
 	if "attack" in anim_name:
-		#print("attack finished fully")
+		#print_template("attack finished fully")
 		is_idle = true
 		#is_attacking = false
 
 
-func _on_attack_zone_body_entered(body: Enemy) -> void:
-	emit_signal("attack_success", body)
+func _on_attack_zone_body_entered(enemy_hit_zone: CollisionObject2D) -> void:
+	print_template(str(enemy_hit_zone) + "entered")
+	var enemy: Enemy = enemy_hit_zone.get_parent()
+	emit_signal("attack_success", enemy)
 	audio_player.play("Hit")
-	var effect_position: Vector2 = body.position + Vector2(0, -10.0)
+	#var effect_position: Vector2 = body.position + Vector2(0, -10.0)
 	#create_blood_effect(effect_position)
-	print(str(body) + " has entered attack zone")
+	print_template(str(enemy) + " has entered attack zone")
 
 
 func create_blood_effect(effect_position: Vector2, custom_parent: Node = null) -> void:
@@ -447,10 +451,10 @@ func create_blood_effect(effect_position: Vector2, custom_parent: Node = null) -
 func _on_parry_zone_body_entered(threat: Node2D) -> void:
 	if threat is Enemy:
 		enemies_in_defense_zone.append(threat)
-		print("enemies in parry: " + str(threat))
+		print_template("enemies in parry: " + str(threat))
 		if not is_defending and is_parrying:
 			emit_signal("parry_success", threat)
-			print("parrying" + str(threat) + "(in player.gd)")
+			print_template("parrying" + str(threat) + "(in player.gd)")
 	elif threat is Projectile:
 		projectiles_in_defense_zone.append(threat)
 	#else:
@@ -464,12 +468,12 @@ func _on_parry_zone_body_exited(enemy: Enemy) -> void:
 
 func stop_on_destination() -> void:
 	if velocity:
-		#print("trying to stop on destination " + str(velocity))
+		#print_template("trying to stop on destination " + str(velocity))
 		var distance_to_stop: float = 1.0
 		#if moving_speed_modifier > 1.8:
 			#distance_to_stop = moving_speed_modifier * 2
 		if position.distance_to(original_position) > destination.distance_to(original_position):
-			#print("stopping because player is too far away")
+			#print_template("stopping because player is too far away")
 			is_dodging = false
 			velocity = Vector2(0,0)
 			position = destination
@@ -478,7 +482,7 @@ func stop_on_destination() -> void:
 				#is_attacking = false
 		elif position.distance_to(destination) <= distance_to_stop:
 		#if position.distance_to(destination) <= 1:
-			#print("should be stopping " + str(velocity))
+			#print_template("should be stopping " + str(velocity))
 			is_dodging = false
 			velocity = Vector2(0,0)
 			if not Input.is_action_pressed("mouse_move"):
@@ -539,7 +543,7 @@ func handle_movement(delta: float) -> void:
 			destination = targeted_enemy.position
 		#var collisions: float = 0
 		var collisions: float = ray_coliisions()
-		#print(collisions)
+		#print_template(collisions)
 		#if collisions != 0 and not Input.is_action_pressed("mouse_move") and not is_dodging:
 		if collisions != 0 and not is_dodging:
 			if global_position.distance_to(destination) - minimum_collision_distance > 5:
@@ -552,7 +556,7 @@ func handle_movement(delta: float) -> void:
 			#var body: Object = ray_cast.get_collider()
 			#if body.get_script():
 				#if body.get_script().get_global_name() == "Enemy":
-					#print("offset!")
+					#print_template("offset!")
 					#offset = true
 		var new_velocity: Vector2 = (calculate_movement_velocity(offset) + move_offset) * delta / average_delta
 		#if offset:
@@ -562,7 +566,7 @@ func handle_movement(delta: float) -> void:
 		else:
 			var moving_to: Vector2 = (global_position + new_velocity)
 			var close: Vector2 = NavigationServer2D.map_get_closest_point(get_world_2d().navigation_map,moving_to)
-			print("trying to move outside navigation map. moving to:" + str(moving_to) + "closest: " + str(close) + "their distance: " + str(moving_to.distance_to(close)))
+			print_template("trying to move outside navigation map. moving to:" + str(moving_to) + "closest: " + str(close) + "their distance: " + str(moving_to.distance_to(close)))
 			velocity = calculate_movement_velocity(0) * delta / average_delta
 
 func ray_coliisions() -> float:
@@ -646,9 +650,9 @@ func handle_block(delta: float) -> void:
 	if Input.is_action_pressed("parry"):
 		#if "parry" in animation_player.current_animation:
 			#await animation_player.animation_finished
-			#print("parry animation finished")
+			#print_template("parry animation finished")
 		if Input.is_action_pressed("parry"):
-			#print("handle block -> blocking -> collider = NOT disabled")
+			#print_template("handle block -> blocking -> collider = NOT disabled")
 			parry_collider.disabled = false
 			var defend_destination: Vector2 = get_global_mouse_position()
 			var angle: float = position.angle_to_point(defend_destination)
@@ -663,15 +667,15 @@ func handle_block(delta: float) -> void:
 			#invulnerability_sources["defend"] = true
 			#invulnerable = true
 			velocity = Vector2(0, 0)
-			#print("trying to play defened animation")
+			#print_template("trying to play defened animation")
 			animation_player.play(animations[current_direction]["defend"])
 		else:
-			print("disabled parry collider after animation finished")
+			print_template("disabled parry collider after animation finished")
 			parry_collider.disabled = true
 		
 	if Input.is_action_just_released("parry"):
 		if is_defending:
-			#print("released defense -> collider = disabled")
+			#print_template("released defense -> collider = disabled")
 			is_defending = false
 			locked_sources.erase("defending")
 			#is_locked = false
@@ -680,7 +684,7 @@ func handle_block(delta: float) -> void:
 			destination = position
 			parry_collider.disabled = true
 		else:
-			print("released parry")
+			print_template("released parry")
 
 func attack(attack_destination: Vector2, ability: Ability = attack_ability, speed: float = 1) -> void:
 	#abilities_queue.append(attack_ability)
@@ -697,9 +701,9 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability, spee
 	if not is_dying:
 		animation_player.speed_scale = moving_speed_modifier
 		if not ready_to_attack_again and animation_player.current_animation_position >= re_attack_frame/FPS and ability != parry_ability:
-			print("waiting for attack again ready")
+			print_template("waiting for attack again ready")
 			await ready_to_attack_again_signal
-			print("thinking can attack again and it is: " + str(ready_to_attack_again))
+			print_template("thinking can attack again and it is: " + str(ready_to_attack_again))
 			ready_to_attack_again = false
 			#is_locked = true
 			attack_axis.rotation = angle
@@ -709,13 +713,13 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability, spee
 			#is_locked = true
 			ready_to_attack_again = false
 			attack_axis.rotation = angle
-			#print("first or restarted attack")
+			#print_template("first or restarted attack")
 			animation_player.stop()
 			#animation_player.play(animations[current_direction][attack_ability.animation_name])
 			execute(ability)
 		elif attack_collider.disabled == true and ability == attack_ability:
 			attack_axis.rotation = angle
-			#print("normal attack")
+			#print_template("normal attack")
 			var current_animation_position: float = animation_player.current_animation_position
 			
 			if current_animation_position < attack_frame/FPS or current_animation_position >= attack_again_frame/FPS:
@@ -723,17 +727,17 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability, spee
 				execute(ability)
 				animation_player.seek(current_animation_position)
 			#else:
-				#print("trying to queue attack whil attack collider is disabled")
+				#print_template("trying to queue attack whil attack collider is disabled")
 				#await attack_again_ready()
-				#print(ready_to_attack_again)
-				#print("re-attack")	
+				#print_template(ready_to_attack_again)
+				#print_template("re-attack")	
 				#animation_player.stop()
 				#execute(ability)
 		#elif not ready_to_attack_again:
-			#print("trying to queue attack! while attack collider is EXACTLY ENABLED")
+			#print_template("trying to queue attack! while attack collider is EXACTLY ENABLED")
 			#await attack_again_ready()
-			#print(ready_to_attack_again)
-			#print("re-attack")
+			#print_template(ready_to_attack_again)
+			#print_template("re-attack")
 			#animation_player.stop()
 			#execute(ability)
 	
@@ -742,7 +746,7 @@ func move_to_enemy() -> void:
 	if targeted_enemy == null:
 		targeted_enemy = game_manager.enemy_in_focus
 		if targeted_enemy == null:
-			print("enemy null")
+			print_template("enemy null")
 			return
 		
 	is_chasing_enemy = true
@@ -781,25 +785,25 @@ func calculate_movement_velocity(offset: float = 0) -> Vector2:
 	
 	
 	if is_dodging:
-		#print("dodge calculation")
+		#print_template("dodge calculation")
 		#return Vector2(max_velocity_x * dodge_speed_bonus, max_velocity_y * dodge_speed_bonus)
 		
 		return direction * speed_fps_ratio * moving_speed_modifier * dodge_speed_bonus
 	#return Vector2(max_velocity_x, max_velocity_y)
-	#print(position.direction_to(destination) * speed_fps_ratio * moving_speed_modifier)
-	#print(direction)
+	#print_template(position.direction_to(destination) * speed_fps_ratio * moving_speed_modifier)
+	#print_template(direction)
 	return direction * speed_fps_ratio * moving_speed_modifier
 
 
 func just_attacked(attack_type: String = "melee") -> void: # THIS
 	if attack_type == "melee":
-		print("melee attack")
+		print_template("melee attack")
 		attack_collider.disabled = false
 		disable_attack_zone()
 	elif attack_type == "ranged":
 		if target_for_ranged == null:
 			target_for_ranged = get_global_mouse_position()
-		print("ranged attack")
+		print_template("ranged attack")
 		create_projectile(target_for_ranged, 4)
 
 func create_projectile(target: Vector2 = Vector2(0,0), speed: float = 1.0) -> void:
@@ -815,13 +819,13 @@ func create_projectile(target: Vector2 = Vector2(0,0), speed: float = 1.0) -> vo
 
 func just_parried() -> void: # THIS
 	ready_to_parry_on_mouse_release = true
-	#print("PARRY! -> collider not disabled")
+	#print_template("PARRY! -> collider not disabled")
 	#is_parrying = true
 	#parry_collider.disabled = false
 	#disable_parry_zone()
 
 func parry() -> void:
-	print("PARRY!")
+	print_template("PARRY!")
 	is_parrying = true
 	parry_collider.disabled = false
 	locked_sources.erase("defending")
@@ -836,7 +840,7 @@ func construct_animation_library() -> void:
 		animations[key] = animation_dictionary_for_key
 		for type: String in animation_types:
 			create_animated2d_animations_from_assets(animations[key][type], key)
-	print_template("Finished animation construction")
+	print_template("Finished animation construction",true)
 
 
 func create_animated2d_animations_from_assets(animation_name: String, direction: int = directions.N) -> void:
@@ -848,10 +852,10 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 			action_type = type
 			if action_type == "parry": # TEMPORARY
 				action_type = "attack" # TEMPORARY
-				#print("forcing parry to use attack assets") # TEMPORARY
+				#print_template("forcing parry to use attack assets") # TEMPORARY
 			if action_type == "defend": # TEMPORARY
 				action_type = "attack" # TEMPORARY
-				#print("forcing defend to use attack assets for direction " + direction_name[direction]) # TEMPORARY
+				#print_template("forcing defend to use attack assets for direction " + direction_name[direction]) # TEMPORARY
 			break
 	
 	frames.add_animation(animation_name)
@@ -877,7 +881,7 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 			break # TEMPORARY
 		var frame_png: Texture2D  = load(png_path)
 		frames.add_frame(animation_name,frame_png)
-	#print("animation: " + animation_name + " created in AnimatedSprite2D")
+	#print_template("animation: " + animation_name + " created in AnimatedSprite2D")
 	
 	# create the matching animations in AnimationPlayer
 	var new_animation: Animation = Animation.new()
@@ -895,14 +899,14 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 	for png_path: String in png_list:
 		new_animation.track_insert_key(frames_track,frame_number/FPS, frame_number)
 		frame_number += 1
-	#print("frame number length: " + str(frame_number))
-	#print("animation: " + animation_name + " created in AnimatedSprite2D")
+	#print_template("frame number length: " + str(frame_number))
+	#print_template("animation: " + animation_name + " created in AnimatedSprite2D")
 	animation_library.add_animation(animation_name, new_animation)
 
 
 func add_animation_method_calls() -> void:
 	var animation_list: Array[StringName] = animation_library.get_animation_list()
-	#print(animation_list)
+	#print_template(animation_list)
 	for animation: StringName in animation_list:
 		var animation_to_modify: Animation = animation_library.get_animation(animation)
 		var track: int = animation_to_modify.add_track(Animation.TYPE_METHOD)
@@ -931,7 +935,7 @@ func add_animation_method_calls() -> void:
 			animation_to_modify.track_insert_key(track, no_cancel_time, {"method" : "animation_cancel_disabled" , "args" : []})
 			animation_to_modify.track_insert_key(track, time, {"method" : "just_parried" , "args" : []})
 			animation_to_modify.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []})
-	print_template("Finished adding animation method calls")
+	print_template("Finished adding animation method calls",true)
 
 func animation_cancel_disabled() -> void:
 	locked_sources["attacking"] = true
@@ -962,7 +966,7 @@ func disable_parry_zone() -> void:
 	await timer.timeout
 	timer.queue_free()
 	if not Input.is_action_pressed("parry"):
-		print("disable parry zone -> collider = disabled")
+		print_template("disable parry zone -> collider = disabled")
 		parry_collider.disabled = true
 
 
@@ -993,8 +997,11 @@ func execute(ability: Ability, speed: float = ability.attack_speed) -> void:
 	animation_player.play(animations[current_direction][ability.animation_name])
 	#ability.execute(target)
 
-func print_template(message: String) -> void:
-	Helper.print_template("player", message)
+func print_template(message: String, bold: bool = false) -> void:
+	if bold:
+		Helper.print_template("player_bold", message, "#Main")
+	else:
+		Helper.print_template("player", message)
 
 class Ability:
 	var name: String
@@ -1011,8 +1018,8 @@ class Ability:
 		self.attack_speed = attack_speed
 		
 	func execute(target: Vector2 = Vector2(0,0)) -> void:
-		#print("executing " + name)
+		#print_template("executing " + name)
 		if self.range_type != "self":
-			#print("execute on: " + str(target))
+			#print_template("execute on: " + str(target))
 			pass
 		

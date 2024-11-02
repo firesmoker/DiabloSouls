@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://bx722w57mqme2"]
+[gd_scene load_steps=14 format=3 uid="uid://bx722w57mqme2"]
 
 [ext_resource type="PackedScene" uid="uid://b1hcswr77ft67" path="res://scenes/enemy.tscn" id="1_h6qdv"]
 [ext_resource type="PackedScene" uid="uid://brcjsn57c8n5p" path="res://scenes/projectile.tscn" id="2_k21f3"]
 [ext_resource type="Texture2D" uid="uid://dmn1yj51l5mrb" path="res://assets/art/enemy/slime/slime_idle/E/slime_default_idle_E_0.0_0.png" id="2_noxwh"]
 [ext_resource type="Shape2D" uid="uid://bahnusprqh84b" path="res://scene_resources/slime_collider.tres" id="4_muauk"]
+[ext_resource type="Shape2D" uid="uid://c3swcbtx34i0p" path="res://scene_resources/slime_gethit_collider.tres" id="5_jubje"]
 
 [sub_resource type="Animation" id="Animation_qn4kt"]
 resource_name = "default"
@@ -79,8 +80,8 @@ resource_local_to_scene = true
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_80ple"]
 resource_local_to_scene = true
-radius = 24.0
-height = 48.0
+radius = 31.9466
+height = 76.3359
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nme5d"]
 resource_local_to_scene = true
@@ -119,25 +120,24 @@ shape = ExtResource("4_muauk")
 [node name="HighlightCircle" parent="." index="6"]
 material = SubResource("CanvasItemMaterial_0i3qh")
 
-[node name="ClumpZone" parent="." index="7"]
-visible = false
-
 [node name="CollisionShape2D" parent="ClumpZone" index="0"]
 shape = SubResource("CapsuleShape2D_80ple")
 
-[node name="CollisionShape2D" parent="HoverZone" index="0"]
-position = Vector2(0, -6.075)
-scale = Vector2(0.655, 0.655)
-shape = SubResource("CapsuleShape2D_80ple")
-
-[node name="MeleeZone" parent="." index="9"]
-visible = false
+[node name="CollisionShape2D" parent="GetHitZone" index="0"]
+shape = ExtResource("5_jubje")
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" parent="MeleeZone" index="0"]
 position = Vector2(0, 0)
 shape = SubResource("CapsuleShape2D_80ple")
 
-[node name="AttackAxis" parent="." index="10"]
+[node name="CollisionShape2D" parent="HoverZone" index="0"]
+position = Vector2(0, -6.075)
+rotation = -1.5708
+scale = Vector2(0.655, 0.655)
+shape = SubResource("CapsuleShape2D_80ple")
+
+[node name="AttackAxis" parent="." index="11"]
 visible = false
 
 [node name="AttackZone" parent="AttackAxis" index="0"]

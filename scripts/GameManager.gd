@@ -19,9 +19,13 @@ class_name GameManager extends Node
 @export var enemies_under_mouse := []
 
 var enemy_in_focus: Enemy
+var frame_count: int = 0
+var time_game_started: float = 0
+
 
 func _ready() -> void:
-	print_template("Game starts")
+	time_game_started = Time.get_ticks_msec()/1000.0
+	print_template("Game starts at: " + str(time_game_started))
 	hud.visible = true
 	enemy_label.visible = false
 	enemy_label.visible = true
@@ -32,6 +36,7 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("restart"):
 		print_template("Restarting")
+		AutoloadManager.first_run = false
 		get_tree().reload_current_scene()
 	
 	if event.is_action_pressed("zoom_out"):
@@ -49,6 +54,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		pass
 
 func _process(delta: float) -> void:
+	frame_count += 1
+	if frame_count == 1:
+		print_template("Performance: first frame since start. Took about " + str(Time.get_ticks_msec()/1000.0 - time_game_started) + " seconds")
 	darkness.position = player.position
 	update_resource_bars()
 	update_enemy_label()
@@ -244,8 +252,8 @@ func dir_contents_filter(path: String, extension: String, print: bool = false) -
 			file_name = dir.get_next()
 		dir.list_dir_end()
 	else:
-		print_debug("An error occurred when trying to access the path.")
+		print_debug("An error occurred when trying to access the path: " + path)
 	return file_list
 
-func print_template(message: String) -> void:
-	Helper.print_template("game_manager", message)
+func print_template(message: String, tag: String = "#Main") -> void:
+	Helper.print_template("game_manager", message,tag)

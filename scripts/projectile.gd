@@ -43,9 +43,10 @@ func _on_impact_zone_body_entered(body: CollisionObject2D) -> void:
 				player.get_hit()
 				explode()
 	if not targets_player:
-		if body.get_script():
-			#if 1 == 1: print_debug("enemy proj")
-			body.get_hit(damage)
+		if body.get_parent() is Enemy:
+			if body.get_parent().get_script():
+				#if 1 == 1: print_debug("enemy proj")
+				body.get_parent().get_hit(damage)
 		explode()
 	#pass # Replace with function body.
 

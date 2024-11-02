@@ -37,4 +37,7 @@ func play(name: String, pitch_min: float = 1.0, pitch_max: float = 1.0) -> void:
 		else:
 			print_debug("no " + name + " in sounds")
 	else:
-		print_debug("no sounds for " + str(self.get_parent()))
+		print_template("no sounds to play")
+
+func print_template(message: String) -> void:
+	get_parent().print_template(message)

@@ -1600,6 +1600,7 @@ shape = ExtResource("9_07ooa")
 
 [node name="MeleeZone" type="Area2D" parent="."]
 collision_layer = 2
+collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeZone"]
 visible = false
@@ -1617,12 +1618,12 @@ libraries = {
 }
 
 [node name="AttackAxis" type="Node2D" parent="."]
-visible = false
 
 [node name="AttackZone" type="Area2D" parent="AttackAxis"]
 position = Vector2(17, 0)
 rotation = 1.5708
 collision_layer = 2
+collision_mask = 4
 
 [node name="AttackCollider" type="CollisionShape2D" parent="AttackAxis/AttackZone"]
 shape = SubResource("CapsuleShape2D_2gqxe")

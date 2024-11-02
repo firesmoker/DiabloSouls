@@ -18,9 +18,10 @@ static var colors_dictionary: Dictionary = {
 }
 
 static var templates: Dictionary = {
-	"player": CustomMessageTemplate.new(colors_dictionary[colors.CYAN],false,"PLAYER",true),
-	"enemy": CustomMessageTemplate.new(colors_dictionary[colors.WHITE],false,"ENEMY",true),
-	"game_manager": CustomMessageTemplate.new(colors_dictionary[colors.YELLOW],false,"GameManager",true),
+	"player": 		CustomMessageTemplate.new(colors_dictionary[colors.CYAN],false,"PLAYER",true),
+	"player_bold": 	CustomMessageTemplate.new(colors_dictionary[colors.CYAN],true,"PLAYER",true),
+	"enemy":		CustomMessageTemplate.new(colors_dictionary[colors.WHITE],false,"ENEMY",true),
+	"game_manager": CustomMessageTemplate.new(colors_dictionary[colors.YELLOW],true,"GameManager",true),
 }
 #static var template_player: CustomMessageTemplate = CustomMessageTemplate.new("blue",true,"",true)
 
@@ -34,13 +35,14 @@ static func print_success(message: String) -> void:
 static func print_warning(message: String) -> void:
 	print_rich("[color=yellow][b]WARNING: " + message + "[/b][/color]") # Prints out "Hello world!" in green with a bold font
 
-static func print_template(template_name: String, message: String) -> void:
+static func print_template(template_name: String, message: String, tag: String = "") -> void:
 	var template: CustomMessageTemplate = templates[template_name]
 	var bold_starter: String = "[b]"
 	var bold_ender: String = "[/b]"
 	var color_starter: String = "[color=" + template.color + "]"
 	var color_ender: String = "[/color]"
 	var formatted_title: String = ""
+	var formatted_tag: String = ""
 	if template.title != "":
 		formatted_title = color_starter + "[b]" + template.title + ": [/b]" + color_ender
 	if not template.bold:
@@ -49,7 +51,9 @@ static func print_template(template_name: String, message: String) -> void:
 	if template.only_title_is_colored:
 		color_starter = ""
 		color_ender = ""
-	print_rich(formatted_title + color_starter + bold_starter + message + bold_ender + color_ender) # Prints out "Hello world!" in green w
+	if tag != "":
+		formatted_tag = "[" + tag + "] "
+	print_rich(str(Time.get_ticks_msec()/1000.0) + " " + formatted_title + formatted_tag + color_starter + bold_starter + message + bold_ender + color_ender) # Prints out "Hello world!" in green w
 
 static func print_custom(color: int, bold: bool, title_only: bool, message: String) -> void:
 	var bold_string: String = ""

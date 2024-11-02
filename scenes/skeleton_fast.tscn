@@ -108,6 +108,7 @@ libraries = {
 }
 
 [node name="AnimatedSprite2D" parent="." index="4"]
+z_index = 0
 material = SubResource("ShaderMaterial_mbm04")
 sprite_frames = SubResource("SpriteFrames_exdmd")
 
@@ -121,11 +122,12 @@ material = SubResource("CanvasItemMaterial_4ietx")
 [node name="CollisionShape2D" parent="ClumpZone" index="0"]
 shape = SubResource("CapsuleShape2D_8j1gu")
 
-[node name="CollisionShape2D" parent="HoverZone" index="0"]
-shape = SubResource("CapsuleShape2D_8j1gu")
-
 [node name="CollisionShape2D" parent="MeleeZone" index="0"]
 shape = SubResource("CapsuleShape2D_8j1gu")
+
+[node name="HoverZone" parent="." index="10"]
+show_behind_parent = false
+z_as_relative = false
 
 [node name="AttackCollider" parent="AttackAxis/AttackZone" index="0"]
 shape = SubResource("CapsuleShape2D_t15tt")

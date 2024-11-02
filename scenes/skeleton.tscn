@@ -79,8 +79,8 @@ resource_local_to_scene = true
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ujkq1"]
 resource_local_to_scene = true
-radius = 24.0
-height = 48.0
+radius = 32.0
+height = 64.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lrxak"]
 resource_local_to_scene = true
@@ -115,14 +115,14 @@ material = SubResource("CanvasItemMaterial_ury82")
 [node name="CollisionShape2D" parent="ClumpZone" index="0"]
 shape = SubResource("CapsuleShape2D_ujkq1")
 
-[node name="CollisionShape2D" parent="HoverZone" index="0"]
+[node name="CollisionShape2D" parent="MeleeZone" index="0"]
 shape = SubResource("CapsuleShape2D_ujkq1")
 
-[node name="CollisionShape2D" parent="MeleeZone" index="0"]
+[node name="CollisionShape2D" parent="HoverZone" index="0"]
 shape = SubResource("CapsuleShape2D_ujkq1")
 
 [node name="AttackCollider" parent="AttackAxis/AttackZone" index="0"]
 shape = SubResource("CapsuleShape2D_lrxak")
 
-[node name="Attack_Cooldown" parent="." index="11"]
+[node name="Attack_Cooldown" parent="." index="12"]
 wait_time = 5.0
