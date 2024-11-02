@@ -59,12 +59,22 @@ func _process(delta: float) -> void:
 		print_template("Performance: first frame since start. Took about " + str(Time.get_ticks_msec()/1000.0 - time_game_started) + " seconds")
 	darkness.position = player.position
 	update_resource_bars()
+	switch_to_best_focus_enemy()
 	update_enemy_label()
 	if player.dead:
 		point_light.color = Color.RED
 		point_light.energy = 1
 		
-		
+
+func switch_to_best_focus_enemy() -> void:
+	if enemy_in_focus != null and enemies_under_mouse.size() > 1:
+		#print_template("more than one possible enemy in focus. trying to switch")
+		var current_enemy_in_focus: Enemy = enemy_in_focus
+		enemy_in_focus = get_closest_enemy_to_mouse()
+		if current_enemy_in_focus != enemy_in_focus:
+			print_template("switched from " + str(current_enemy_in_focus) + " to " + str(enemy_in_focus) + " because it's closer to mouse.")
+			current_enemy_in_focus.highlight_stop()
+
 func update_resource_bars() -> void:
 	player_health.value = player.hitpoints
 	player_stamina.value = player.stamina
@@ -172,12 +182,28 @@ func enemy_mouse_hover_stopped(enemy: Enemy) -> void:
 	if enemy in enemies_under_mouse:
 		enemies_under_mouse.erase(enemy)
 		#print_debug("removed enemy under mouse: " + str(enemy.name))
-	enemy.highlight_stop()
+	if enemy == enemy_in_focus:
+		enemy.highlight_stop()
+		if enemies_under_mouse.size() > 0:
+			#print_debug("switched to other enemy under mouse")
+			enemy_in_focus.highlight_stop()
+			enemy_in_focus = get_closest_enemy_to_mouse()
+		else:
+			enemy_in_focus = null
+
+func get_closest_enemy_to_mouse() -> Enemy:
 	if enemies_under_mouse.size() > 0:
-		#print_debug("switched to other enemy under mouse")
-		enemy_in_focus = enemies_under_mouse[0]
+		var closest_distance_to_mouse: float = 50000
+		var closest_enemy: Enemy = enemies_under_mouse[0]
+		for enemy: Enemy in enemies_under_mouse:
+			if enemy.position.distance_to(player.get_global_mouse_position()) <= closest_distance_to_mouse:
+				closest_distance_to_mouse = enemy.position.distance_to(player.get_global_mouse_position())
+				closest_enemy = enemy
+		print_template(str(closest_enemy.name) + " is the closest enemy")
+		return closest_enemy
 	else:
-		enemy_in_focus = null
+		print_template("no enemies under mouse!")
+		return null
 
 func _on_player_attack_success(enemy: Enemy) -> void:
 	camera_shake_and_color()
