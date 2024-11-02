@@ -18,10 +18,12 @@ class_name GameManager extends Node
 @export var lightning_amount: float = 0.12
 @export var enemies_under_mouse := []
 
+static var current_delta: float = 0.0167
+
 var enemy_in_focus: Enemy
 var frame_count: int = 0
 var time_game_started: float = 0
-
+var fps_time_elapsed: float = 0
 
 func _ready() -> void:
 	time_game_started = Time.get_ticks_msec()/1000.0
@@ -54,6 +56,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		pass
 
 func _process(delta: float) -> void:
+	current_delta = delta
+	fps_time_elapsed += delta
+	update_debug(delta)
 	frame_count += 1
 	if frame_count == 1:
 		print_template("Performance: first frame since start. Took about " + str(Time.get_ticks_msec()/1000.0 - time_game_started) + " seconds")
@@ -65,6 +70,18 @@ func _process(delta: float) -> void:
 		point_light.color = Color.RED
 		point_light.energy = 1
 		
+
+func calculate_fps(delta: float) -> float:
+	var fps: float = 1 / delta
+	return fps
+
+func update_debug(delta: float, update_fps_every: float = 0.2) -> void:
+	var debug: Control = hud.find_child("Debug")
+	if fps_time_elapsed > update_fps_every:
+		fps_time_elapsed = 0
+		var fps_label: Label = debug.find_child("FPS")
+		var fps: float = calculate_fps(delta)
+		fps_label.text = "FPS: " + str(fps)
 
 func switch_to_best_focus_enemy() -> void:
 	if enemy_in_focus != null and enemies_under_mouse.size() > 1:

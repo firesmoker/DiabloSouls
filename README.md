@@ -1,3 +1,6 @@
+LEGEND:
+	** means it's in focus right now.
+
 Ideas:
 	CODE:		CLASSES: It's a good idea to update all "derivative" properties on setters. chain of setters will ensure good architecture
 	UI/UX:		Ingame game guide is awesome (like last Epoch)
@@ -35,20 +38,22 @@ Game Design stuff to do:
 Technical stuff that bothers me:
 	BUG:			NavigationServer player tries to use nav map before it's initizalized
 	WORLD:			Convert TileMap2 to the new system
+	REFACTOR:		Switch Player and Enemy layers
 	REFACTOR:		abilities should probably become scenes
 	REFACTOR:		maybe i can get rid of the "is_locked" for enemies?
 	PERFORMANCE:	sound dictionaries are calculated for each enemy instance instead of each unique enemy
-	PERFORMANCE:	animations: dictionaries, arrays, animations, etc. are calculated for each enemy instance instead of each unique enemy
+	PERFORMANCE:	animations: dictionaries, arrays, animations, etc. are calculated for each enemy instance instead of each basic enemy model
 	WORKFLOW:		debugging could be easier if I could toggle some types of messages
 	WORKFLOW:		debugging could be easier if I put a debugging CanvasItem that shows me everything I need
 	WORKFLOW:		sort out the stupid ordering. both logic and execution
 
 Things that are very missing:
-	GAMEPLAY:	Enemies: Different colliders for physical place (small) and area they can be damaged (larger)
+	**BUG:		Parry awaits animation finish bug when trying to parry after starting an attack
+	GAMEPLAY:	higher priority highlighting for scarier enemies. make the switch by distance higher if current enemy in focus is more scary, and vice versa
+	GAMEPLAY:	decouple projectile speed from framerate using delta
 	GAMEPLAY:	consuming mana the very moment you press to cast the spell feels weird. maybe because it takes a while to shoot.
 	GAMEPLAY:	Can't block ranged attacks
 	BUG:		Weird parry/counter rings behaviour
-	GAMEPLAY:	Can parry whenever, even mid attack. Limit it in a good way somehow - maybe add the "locking reasons" array/ dictionary
 	WORLD:		arena has no walls, objects, etc.
 	WORLD:		arena is not an actual, interesting level
 	SOUND:		Play projectile sounds
