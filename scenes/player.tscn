@@ -1633,6 +1633,7 @@ disabled = true
 position = Vector2(17, 0)
 rotation = 1.5708
 collision_layer = 2
+collision_mask = 4
 
 [node name="ParryCollider" type="CollisionShape2D" parent="AttackAxis/ParryZone"]
 visible = false

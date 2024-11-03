@@ -360,7 +360,7 @@ func _unhandled_input(event: InputEvent) -> void:
 							stamina = 0
 						parry()
 			else:
-				print_template("doesn't accept parry action on release because: is_locked " + str(is_locked) + "and is_defeneding " + str(is_defending))
+				print_template("doesn't accept parry action on release because: is_locked = " + str(is_locked) + " and is_defeneding = " + str(is_defending))
 		
 		if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place") and not event.is_action_pressed("parry"):
 			if game_manager.enemy_in_focus != null:
@@ -448,15 +448,17 @@ func create_blood_effect(effect_position: Vector2, custom_parent: Node = null) -
 	blood_effect.global_position = effect_position
 
 
-func _on_parry_zone_body_entered(threat: Node2D) -> void:
+func _on_parry_zone_body_entered(enemy_hit_zone: CollisionObject2D) -> void:
+	#print_template("body entered " + str(enemy))
+	var threat: Enemy = enemy_hit_zone.get_parent()
 	if threat is Enemy:
 		enemies_in_defense_zone.append(threat)
 		print_template("enemies in parry: " + str(threat))
 		if not is_defending and is_parrying:
 			emit_signal("parry_success", threat)
-			print_template("parrying" + str(threat) + "(in player.gd)")
-	elif threat is Projectile:
-		projectiles_in_defense_zone.append(threat)
+			print_template("parrying " + str(threat.name) + " (in player.gd)")
+	#elif threat is Projectile:
+		#projectiles_in_defense_zone.append(threat)
 	#else:
 		#enemies_in_defense_zone.append(enemy)
 
@@ -513,8 +515,11 @@ func running_state() -> void:
 
 func standing_state() -> void:
 	if "attack" in animation_player.current_animation or "parry" in animation_player.current_animation:
-		await animation_player.animation_finished
-	if not is_dying:
+		#await animation_player.animation_finished
+		pass
+		#if not is_dying and not animation_player.is_playing():
+			#animation_player.play(animations[current_direction]["idle"])
+	else:
 		animation_player.play(animations[current_direction]["idle"])
 
 
@@ -643,16 +648,19 @@ func set_direction_by_destination(look_destination: Vector2 = destination) -> vo
 
 func handle_block(delta: float) -> void:
 	#if not is_attacking:
-	if locked_sources.size() > 0 and not locked_sources.has("defending"):
-		return
-	elif locked_sources.size() > 1 and locked_sources.has("defending"):
-		return
+	#if locked_sources.size() > 0 and not locked_sources.has("defending"):
+		#return
+	#elif locked_sources.size() > 1 and locked_sources.has("defending"):
+		#return
 	if Input.is_action_pressed("parry"):
-		#if "parry" in animation_player.current_animation:
+		if "parry" in animation_player.current_animation and animation_player.is_playing():
+			print_template("not defending as still parrying")
+			return
 			#await animation_player.animation_finished
 			#print_template("parry animation finished")
-		if Input.is_action_pressed("parry"):
+		elif Input.is_action_pressed("parry"):
 			#print_template("handle block -> blocking -> collider = NOT disabled")
+			print_template("defending")
 			parry_collider.disabled = false
 			var defend_destination: Vector2 = get_global_mouse_position()
 			var angle: float = position.angle_to_point(defend_destination)
