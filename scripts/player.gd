@@ -92,6 +92,7 @@ var is_dying: bool = false
 var dead: bool = false
 var target_for_ranged: Vector2
 
+var attack_on_next_opportunity: bool = false
 var ready_to_parry_on_mouse_release: bool = false
 
 signal ready_to_attack_again_signal
@@ -179,6 +180,7 @@ func _physics_process(delta: float) -> void:
 	
 	if not is_dying:
 		handle_movement(delta)
+		launch_qeued_attack()
 		handle_block(delta)
 		
 		if not is_locked:
@@ -194,6 +196,14 @@ func _physics_process(delta: float) -> void:
 		audio_player.play("Death")
 		dead = true
 		print_template("Died", true)
+
+func launch_qeued_attack() -> void:
+	#print("launch queed but attack_on_next is " + str(attack_on_next_opportunity))
+	if attack_on_next_opportunity:
+		print_template("trying to attack on next opportunity")
+		attack_on_next_opportunity = false
+		handle_targeted_enemy(true)
+			
 
 func handle_invulnerability() -> void:
 	if invulnerability_sources.size() > 0:
@@ -365,23 +375,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place") and not event.is_action_pressed("parry"):
 			if game_manager.enemy_in_focus != null:
 				targeted_enemy = game_manager.enemy_in_focus
-				if targeted_enemy not in enemies_in_melee and attack_with_melee:
-					move_to_enemy()
-				elif not attack_with_melee:
-					
-					var face_destination: Vector2
-					face_destination = game_manager.enemy_in_focus.position
-					target_for_ranged = game_manager.enemy_in_focus.position
-					var used_mana: bool = consume_mana(1, true)
-					if used_mana:
-						attack(face_destination, ranged_ability)
-					else:
-						print_template("not enough stamina")
-					
-				else:
-					attack(targeted_enemy.position)
+				handle_targeted_enemy()
 			else:
 				#print_template("unhandled input")
+				attack_on_next_opportunity = false
 				is_attacking = false
 				original_position = position
 				destination = get_global_mouse_position()
@@ -390,6 +387,27 @@ func _unhandled_input(event: InputEvent) -> void:
 			var closest_point: Vector2 = NavigationServer2D.map_get_closest_point(get_world_2d().navigation_map, get_global_mouse_position())
 			#destination = closest_point - (closest_point - global_position).normalized() * 5
 			destination = closest_point
+
+func handle_targeted_enemy(attack_null: bool = false) -> void:
+	if targeted_enemy != null:
+		if targeted_enemy not in enemies_in_melee and attack_with_melee:
+			move_to_enemy()
+		elif not attack_with_melee:
+			
+			var face_destination: Vector2
+			face_destination = game_manager.enemy_in_focus.position
+			target_for_ranged = game_manager.enemy_in_focus.position
+			var used_mana: bool = consume_mana(1, true)
+			if used_mana:
+				attack(face_destination, ranged_ability)
+			else:
+				print_template("not enough stamina")
+			
+		else:
+			attack(targeted_enemy.position)
+	elif attack_null:
+		var face_destination: Vector2 = get_global_mouse_position()
+		attack(face_destination)
 
 func consume_mana(amount: float = 1, overdraw: bool = false) -> bool:
 	if mana > 0 and overdraw:
@@ -493,6 +511,7 @@ func stop_on_destination() -> void:
 
 
 func running_state() -> void:
+	attack_on_next_opportunity = false
 	if not is_moving_with_offset:
 		set_direction_by_destination(nav.get_next_path_position())
 	else:
@@ -697,7 +716,7 @@ func handle_block(delta: float) -> void:
 func attack(attack_destination: Vector2, ability: Ability = attack_ability, speed: float = 1) -> void:
 	#abilities_queue.append(attack_ability)
 	is_chasing_enemy = false
-	targeted_enemy = null
+	#targeted_enemy = null
 	is_idle = false
 	#can_move = false
 	is_defending = false
@@ -710,14 +729,16 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability, spee
 		animation_player.speed_scale = moving_speed_modifier
 		if not ready_to_attack_again and animation_player.current_animation_position >= re_attack_frame/FPS and ability != parry_ability:
 			print_template("waiting for attack again ready")
-			await ready_to_attack_again_signal
-			print_template("thinking can attack again and it is: " + str(ready_to_attack_again))
-			ready_to_attack_again = false
-			#is_locked = true
-			attack_axis.rotation = angle
-			animation_player.stop()
-			execute(ability)
+			attack_on_next_opportunity = true
+			#await ready_to_attack_again_signal
+			#print_template("thinking can attack again and it is: " + str(ready_to_attack_again))
+			#ready_to_attack_again = false
+			#attack_axis.rotation = angle
+			#animation_player.stop()
+			#execute(ability)
 		elif ready_to_attack_again:
+			attack_on_next_opportunity = false
+			targeted_enemy = null
 			#is_locked = true
 			ready_to_attack_again = false
 			attack_axis.rotation = angle
@@ -726,6 +747,8 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability, spee
 			#animation_player.play(animations[current_direction][attack_ability.animation_name])
 			execute(ability)
 		elif attack_collider.disabled == true and ability == attack_ability:
+			attack_on_next_opportunity = false
+			targeted_enemy = null
 			attack_axis.rotation = angle
 			#print_template("normal attack")
 			var current_animation_position: float = animation_player.current_animation_position
