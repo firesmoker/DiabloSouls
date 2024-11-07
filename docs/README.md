@@ -1,3 +1,5 @@
+# Readme
+
 LEGEND:
 	** means it's in focus right now.
 
@@ -48,7 +50,7 @@ Technical stuff that bothers me:
 	WORKFLOW:		sort out the stupid ordering. both logic and execution
 
 Things that are very missing:
-	GAMEPLAY:	higher priority highlighting for scarier enemies. make the switch by distance higher if current enemy in focus is more scary, and vice versa. maybe take enemy size into account.
+	GAMEPLAY:	higher priority highlighting for scarier enemies. make the switch by distance higher if current enemy in focus is more scary, and vice versa. maybe take enemy size into account. LOW PRIORITY
 	GAMEPLAY:	decouple projectile speed from framerate using delta
 	GAMEPLAY:	consuming mana the very moment you press to cast the spell feels weird. maybe because it takes a while to shoot.
 	GAMEPLAY:	Can't block ranged attacks

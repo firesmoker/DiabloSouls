@@ -8,6 +8,10 @@
 
 config_version=5
 
+[addons]
+
+markdown_book/docs_folder="res://docs/"
+
 [application]
 
 config/name="DiabloSouls"
@@ -40,7 +44,7 @@ window/canvas_textures/default_texture_filter=0
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/AS2P/plugin.cfg")
+enabled=PackedStringArray("res://addons/AS2P/plugin.cfg", "res://addons/markdown_book/plugin.cfg", "res://addons/markdownlabel/plugin.cfg")
 
 [input]
 

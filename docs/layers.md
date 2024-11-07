@@ -1,3 +1,5 @@
+#  Layers
+
 1: Enemy collider
 2: Player
 3: Enemy hitzone
