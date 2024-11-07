@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dxfa0xmqhcorr"]
+[gd_scene load_steps=13 format=3 uid="uid://dxfa0xmqhcorr"]
 
 [ext_resource type="PackedScene" uid="uid://brlvroq1a2p0i" path="res://scenes/skeleton.tscn" id="1_eecra"]
 [ext_resource type="Texture2D" uid="uid://dih8qcag7ojye" path="res://assets/art/enemy/skeleton_default/skeleton_default_idle/S/skeleton_default_idle_S_270.0_0.png" id="2_7mu3y"]
@@ -82,6 +82,11 @@ resource_local_to_scene = true
 radius = 24.0
 height = 48.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_l0exd"]
+resource_local_to_scene = true
+radius = 32.0
+height = 64.0
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_t15tt"]
 resource_local_to_scene = true
 radius = 13.0
@@ -128,6 +133,9 @@ shape = SubResource("CapsuleShape2D_8j1gu")
 [node name="HoverZone" parent="." index="10"]
 show_behind_parent = false
 z_as_relative = false
+
+[node name="CollisionShape2D" parent="HoverZone" index="0"]
+shape = SubResource("CapsuleShape2D_l0exd")
 
 [node name="AttackCollider" parent="AttackAxis/AttackZone" index="0"]
 shape = SubResource("CapsuleShape2D_t15tt")

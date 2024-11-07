@@ -475,7 +475,7 @@ func _on_parry_zone_body_entered(enemy_hit_zone: CollisionObject2D) -> void:
 	var threat: Enemy = enemy_hit_zone.get_parent()
 	if threat is Enemy:
 		enemies_in_defense_zone.append(threat)
-		print_template("enemies in parry: " + str(threat))
+		print_template(str(threat.name) + " entered defense zone")
 		if not is_defending and is_parrying:
 			emit_signal("parry_success", threat)
 			print_template("parrying " + str(threat.name) + " (in player.gd)")
@@ -485,8 +485,15 @@ func _on_parry_zone_body_entered(enemy_hit_zone: CollisionObject2D) -> void:
 		#enemies_in_defense_zone.append(enemy)
 
 
-func _on_parry_zone_body_exited(enemy: Enemy) -> void:
-	enemies_in_defense_zone.erase(enemy)
+func _on_parry_zone_body_exited(body: CollisionObject2D) -> void:
+	if body.get_parent() is Enemy:
+		var enemy: Enemy = body.get_parent()
+		#print_template(str(enemy.name) + " left the parry zone")
+		if enemy in enemies_in_defense_zone:
+			print_template(str(enemy.name) + " is no more in defense zone")
+			enemies_in_defense_zone.erase(enemy)
+	else:
+		print_template("non enemy left the parry zone. it's " + str(body) )
 
 
 
