@@ -95,11 +95,6 @@ var target_for_ranged: Vector2
 var attack_on_next_opportunity: bool = false
 var ready_to_parry_on_mouse_release: bool = false
 
-signal ready_to_attack_again_signal
-signal attack_success
-signal parry_success
-signal execution_started
-signal execution_aborted
 
 var destination: Vector2 = Vector2()
 var movement: Vector2 = Vector2()
@@ -109,6 +104,11 @@ const FPS: float = 12.0
 const average_delta: float = 0.01666666666667
 
 
+signal ready_to_attack_again_signal
+signal attack_success
+signal parry_success
+signal execution_started
+signal execution_aborted
 
 
 #enum directions{N,NE,E,SE,S,SW,W,NW}
@@ -224,14 +224,15 @@ func handle_dodge(delta_time: float) -> void:
 	if is_dodging:
 		dodge_delta_timer += delta_time
 		if dodge_delta_timer >= 0.1:
-			dodge_delta_timer = 0
-			animated_sprite_2d.material.set_shader_parameter("dir_x", 0.0)
-			invulnerability_sources.erase("dodge")
-			#invulnerable = false
-			velocity = Vector2(0,0)
-			destination = global_position
-			is_dodging = false
+			stop_dodging()
 
+func stop_dodging() -> void:
+	dodge_delta_timer = 0
+	animated_sprite_2d.material.set_shader_parameter("dir_x", 0.0)
+	invulnerability_sources.erase("dodge")
+	velocity = Vector2(0,0)
+	destination = global_position
+	is_dodging = false
 
 func regenerate_mana(delta_time: float) -> void:
 	if mana < max_mana and not is_dying:
@@ -509,7 +510,7 @@ func stop_on_destination() -> void:
 			#distance_to_stop = moving_speed_modifier * 2
 		if position.distance_to(original_position) > destination.distance_to(original_position):
 			#print_template("stopping because player is too far away")
-			is_dodging = false
+			stop_dodging()
 			velocity = Vector2(0,0)
 			position = destination
 			if not Input.is_action_pressed("mouse_move"):
@@ -518,7 +519,7 @@ func stop_on_destination() -> void:
 		elif position.distance_to(destination) <= distance_to_stop:
 		#if position.distance_to(destination) <= 1:
 			#print_template("should be stopping " + str(velocity))
-			is_dodging = false
+			stop_dodging()
 			velocity = Vector2(0,0)
 			if not Input.is_action_pressed("mouse_move"):
 				is_idle = true
