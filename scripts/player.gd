@@ -155,7 +155,7 @@ var radian_direction: Dictionary = {
 
 var attack_ability: Ability = Ability.new("attack", "melee")
 var parry_ability: Ability = Ability.new("parry", "melee")
-var ranged_ability: Ability = Ability.new("ranged_attack", "ranged", true, 1.4)
+var ranged_ability: Ability = Ability.new("ranged_attack", "ranged", true, 1.4, "mana", 1)
 
 func _ready() -> void:
 	motion_mode = 1
@@ -374,9 +374,11 @@ func handle_abilities_inputs(event: InputEvent) -> void:
 		else:
 			face_destination = get_global_mouse_position()
 			target_for_ranged = get_global_mouse_position()
-		var used_mana: bool = consume_mana(1, true)
-		if used_mana:
-			attack(face_destination, ranged_ability)
+		var has_enough_resource: bool = check_for_mana(1, true)
+		if has_enough_resource:
+			var attacked: bool = attack(face_destination, ranged_ability)
+			if attacked:
+				consume_mana(ranged_ability.resource_amount,true)
 		else:
 			print_template("not enough stamina")
 
@@ -417,6 +419,14 @@ func handle_targeted_enemy(attack_null: bool = false) -> void:
 	elif attack_null:
 		var face_destination: Vector2 = get_global_mouse_position()
 		attack(face_destination)
+
+func check_for_mana(amount: float = 1, overdraw: bool = false) -> bool:
+	if mana > 0 and overdraw:
+		return true
+	elif mana - amount >= 0:
+		return true
+	else:
+		return false
 
 func consume_mana(amount: float = 1, overdraw: bool = false) -> bool:
 	if mana > 0 and overdraw:
@@ -712,7 +722,8 @@ func block() -> void:
 	velocity = Vector2(0, 0)
 	animation_player.play(animations[current_direction]["defend"])
 
-func attack(attack_destination: Vector2, ability: Ability = attack_ability, speed: float = 1) -> void:
+func attack(attack_destination: Vector2, ability: Ability = attack_ability, speed: float = 1) -> bool:
+	var attacked: bool = false
 	#abilities_queue.append(attack_ability)
 	is_chasing_enemy = false
 	#targeted_enemy = null
@@ -744,6 +755,7 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability, spee
 			#print_template("first or restarted attack")
 			animation_player.stop()
 			#animation_player.play(animations[current_direction][attack_ability.animation_name])
+			attacked = true
 			execute(ability)
 		elif attack_collider.disabled == true and ability == attack_ability:
 			attack_on_next_opportunity = false
@@ -754,6 +766,7 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability, spee
 			
 			if current_animation_position < attack_frame/FPS or current_animation_position >= attack_again_frame/FPS:
 				#animation_player.play(animations[current_direction][attack_ability.animation_name])
+				attacked = true
 				execute(ability)
 				animation_player.seek(current_animation_position)
 			#else:
@@ -770,7 +783,7 @@ func attack(attack_destination: Vector2, ability: Ability = attack_ability, spee
 			#print_template("re-attack")
 			#animation_player.stop()
 			#execute(ability)
-	
+	return attacked
 
 func move_to_enemy() -> void:
 	if targeted_enemy == null:
@@ -1041,13 +1054,17 @@ class Ability:
 	var standing: bool
 	var animation_name: String
 	var attack_speed: float
+	var resource_type: String
+	var resource_amount: float
 	
-	func _init(name: String, range_type: String, standing: bool = true, attack_speed: float = 1) -> void:
+	func _init(name: String, range_type: String, standing: bool = true, attack_speed: float = 1, resource_type: String = "", resource_amount: float = 0) -> void:
 		self.name = name
 		self.range_type = range_type
 		self.standing = standing
 		self.animation_name = self.name
 		self.attack_speed = attack_speed
+		self.resource_type = resource_type
+		self.resource_amount = resource_amount
 		
 	func execute(target: Vector2 = Vector2(0,0)) -> void:
 		#print_template("executing " + name)
