@@ -88,7 +88,6 @@ radius = 13.0
 height = 34.0
 
 [node name="Skeleton" instance=ExtResource("1_mhxew")]
-id = "Skeleton"
 base_id = "skeleton"
 attack_frame = 5
 has_attack = true

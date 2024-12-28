@@ -101,7 +101,7 @@ var movement: Vector2 = Vector2()
 var original_position: Vector2 = Vector2()
 
 const FPS: float = 12.0
-const average_delta: float = 0.01666666666667
+
 
 
 signal ready_to_attack_again_signal
@@ -598,7 +598,7 @@ func handle_movement(delta: float) -> void:
 				#if body.get_script().get_global_name() == "Enemy":
 					#print_template("offset!")
 					#offset = true
-		var new_velocity: Vector2 = (calculate_movement_velocity(offset) + move_offset) * delta / average_delta
+		var new_velocity: Vector2 = (calculate_movement_velocity(offset) + move_offset) * delta / Utility.average_delta
 		#if offset:
 		ray_axis.rotation = position.angle_to_point(destination)
 		if check_if_in_navigation_map(global_position + new_velocity):
@@ -607,7 +607,7 @@ func handle_movement(delta: float) -> void:
 			var moving_to: Vector2 = (global_position + new_velocity)
 			var close: Vector2 = NavigationServer2D.map_get_closest_point(get_world_2d().navigation_map,moving_to)
 			print_template("trying to move outside navigation map. moving to:" + str(moving_to) + "closest: " + str(close) + "their distance: " + str(moving_to.distance_to(close)))
-			velocity = calculate_movement_velocity(0) * delta / average_delta
+			velocity = calculate_movement_velocity(0) * delta / Utility.average_delta
 
 func ray_coliisions() -> float:
 	var direction_angle: int = 0

@@ -50,8 +50,6 @@ Technical stuff that bothers me:
 	WORKFLOW:		sort out the stupid ordering. both logic and execution
 
 Things that are very missing:
-	GAMEPLAY:	higher priority highlighting for scarier enemies. make the switch by distance higher if current enemy in focus is more scary, and vice versa. maybe take enemy size into account. LOW PRIORITY
-	GAMEPLAY:	decouple projectile speed from framerate using delta
 	GAMEPLAY:	consuming mana the very moment you press to cast the spell feels weird. maybe because it takes a while to shoot.
 	GAMEPLAY:	Can't block ranged attacks
 	BUG:		Weird parry/counter rings behaviour
@@ -67,20 +65,19 @@ Things that are very missing:
 	GAMEPLAY:	Ranged enemies have no target prediction, they shoot in a stupid manner. (not working)
 	GAMEPLAY:	no abilities in combat other than basic attack, parry, counter, dodge, shoot projectile
 	GAMEPLAY:	parry / counter is not optimized for multiple enemies
-	GAMEPLAY:	certain conditions can have an array of different "sources", and remove themselves from it later, so only when all sources are removed the condition stops. (for example invul and dodge)
 	ANIMATION:	no counter and parry animations (maybe in the meantime - knockback? reverse step?)
 	ANIMATION:	no ranged attack animation
 	ART:		Artstyle is lacking
 	MUSIC:		no music
 	GAMEPLAY:	counter is immediate (maybe good?) and doesn't provide invulnerability (?)
+	MENUS: Pause
+	MENUS: SETTINGS
+	GAMEPLAY:	higher priority highlighting for scarier enemies. make the switch by distance higher if current enemy in focus is more scary, and vice versa. maybe take enemy size into account. LOW PRIORITY
 	ANIMATION:	enemy retaliation animations (lower priority)
 	GAMEPLAY:	no movement accelaration (low priority)
 	GAMEPLAY:	no decals like blood and bones flying in the air (very very low priority)
 	ANIMATION:	movement could be smoother using root motion, or better more consistent animations (very very low priority)
 	UI:	no indication for lack of stamina to parry on the highlight circles (very low priority, if parry actually uses atmina)
-	MENUS: Pause
-	MENUS: SETTINGS
-	BUG: strange dodge behaviour at high speeds (low priority)
 
 Pathfinding:
 	GAMEPLAY:	Pathfinding: Set angle of offset based on angle from the collision point instead of just a random number times collisions

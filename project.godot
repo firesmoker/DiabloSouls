@@ -17,7 +17,6 @@ markdown_book/docs_folder="res://docs/"
 config/name="DiabloSouls"
 run/main_scene="res://scenes/game.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
-run/max_fps=60
 config/icon="res://icon.svg"
 
 [audio]

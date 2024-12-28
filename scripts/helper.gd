@@ -66,6 +66,34 @@ static func print_custom(color: int, bold: bool, title_only: bool, message: Stri
 	else:
 		print_rich("[color=" + color_string + "]" + message + "[/color]") # Prints out "Hello world!" in green with a bold font
 
+static func dir_contents_filter(path: String, extension: String, print: bool = false) -> Array[String]:
+	var dir: = DirAccess.open(path)
+	var fixed_path: String
+	var file_list: Array[String] = []
+	if dir:
+		dir.list_dir_begin()
+		fixed_path = dir.get_current_dir()
+		#print_debug("fixed path is " + fixed_path)
+		var file_name: String = dir.get_next()
+		while file_name != "":
+			if not dir.current_is_dir():
+				if file_name.ends_with(extension):
+					#print_debug("Found a " + extension + " file: " + file_name)
+					var file_name_path: String = fixed_path + "/" + file_name
+					file_list.append(file_name_path)
+					if print:
+						print_debug("added to file list: " + file_name_path)
+					
+				#print_debug("Found directory: " + file_name)
+			#else:
+				#print_debug("Found file: " + file_name)
+				
+			file_name = dir.get_next()
+		dir.list_dir_end()
+	else:
+		print_debug("An error occurred when trying to access the path: " + path)
+	return file_list
+
 
 class CustomMessageTemplate:
 	var color: String = "yellow"

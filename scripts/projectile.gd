@@ -26,7 +26,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	visible = true
-	position += velocity
+	position += velocity * delta / Utility.average_delta
 
 func _on_self_destruct_timer_timeout() -> void:
 	explode()

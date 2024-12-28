@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://lr15cpqcai72"]
+[gd_scene load_steps=20 format=3 uid="uid://lr15cpqcai72"]
 
 [ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_h602i"]
 [ext_resource type="Script" path="res://scripts/TileMap.gd" id="2_orhwb"]
@@ -8,10 +8,11 @@
 [ext_resource type="PackedScene" uid="uid://brlvroq1a2p0i" path="res://scenes/skeleton.tscn" id="7_fmbge"]
 [ext_resource type="PackedScene" uid="uid://crbwettm152r0" path="res://scenes/hud.tscn" id="7_luld2"]
 [ext_resource type="PackedScene" uid="uid://cxhnyk8un34t3" path="res://scenes/obstacle.tscn" id="9_dwwik"]
-[ext_resource type="PackedScene" uid="uid://ch1let232ajbg" path="res://scenes/demonlord.tscn" id="9_upit6"]
+[ext_resource type="PackedScene" uid="uid://ch1let232ajbg" path="res://scenes/demonlord.tscn" id="10_e03ye"]
 [ext_resource type="Shader" path="res://shaders/darkness.gdshader" id="10_lpngp"]
 [ext_resource type="Script" path="res://scripts/spawn_point.gd" id="13_btwwx"]
 [ext_resource type="PackedScene" uid="uid://dxfa0xmqhcorr" path="res://scenes/skeleton_fast.tscn" id="13_vhtj6"]
+[ext_resource type="Script" path="res://scripts/animation_manager.gd" id="14_qwy2r"]
 [ext_resource type="PackedScene" uid="uid://b4qsmsjjcorlc" path="res://scenes/light.tscn" id="19_6rjls"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pec2l"]
@@ -314,7 +315,7 @@ light_radius = 3.135
 moving_speed_modifier = 0.75
 dodge_speed_bonus = 5.0
 max_hitpoints = 150.0
-max_stamina = 10.0
+max_stamina = 900.0
 re_attack_frame = 2
 
 [node name="Darkness" parent="." instance=ExtResource("19_6rjls")]
@@ -372,9 +373,7 @@ position = Vector2(396, -61)
 y_sort_enabled = true
 metadata/_edit_lock_ = true
 
-[node name="Demonlord" parent="Enemies" instance=ExtResource("9_upit6")]
-position = Vector2(-195, 197)
-freeze_mode = 0
+[node name="Demonlord" parent="Enemies" instance=ExtResource("10_e03ye")]
 
 [node name="Skeleton" parent="Enemies" instance=ExtResource("7_fmbge")]
 position = Vector2(50, 194)
@@ -434,6 +433,10 @@ position = Vector2(572, -382)
 script = ExtResource("13_btwwx")
 
 [node name="Skeleton" parent="SpawnPoint" instance=ExtResource("7_fmbge")]
+
+[node name="AnimationManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("14_qwy2r")
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
 [connection signal="parry_success" from="Player" to="GameManager" method="_on_player_parry_success"]

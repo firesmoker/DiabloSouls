@@ -118,7 +118,7 @@ func update_enemy_label() -> void:
 		enemy_in_focus.highlight()
 		enemy_label.visible = true
 		enemy_health.visible = true
-		enemy_label.text = enemy_in_focus.id
+		enemy_label.text = enemy_in_focus.display_name
 		enemy_health.max_value = enemy_in_focus.hitpoints_max
 		enemy_health.value = enemy_in_focus.hitpoints
 	else:
@@ -255,20 +255,20 @@ func freeze_display(duration := 0.2 / 12.0, delay := 0.05) -> void:
 	#RenderingServer.set_render_loop_enabled(true)
 
 
-func dir_contents(path: String) -> void:
-	var dir: = DirAccess.open(path)
-	if dir:
-		dir.list_dir_begin()
-		var file_name: String = dir.get_next()
-		while file_name != "":
-			if dir.current_is_dir():
-				print_debug("Found directory: " + file_name)
-			else:
-				print_debug("Found file: " + file_name)
-			file_name = dir.get_next()
-		dir.list_dir_end()
-	else:
-		print_debug("An error occurred when trying to access the path.")
+#func dir_contents(path: String) -> void:
+	#var dir: = DirAccess.open(path)
+	#if dir:
+		#dir.list_dir_begin()
+		#var file_name: String = dir.get_next()
+		#while file_name != "":
+			#if dir.current_is_dir():
+				#print_debug("Found directory: " + file_name)
+			#else:
+				#print_debug("Found file: " + file_name)
+			#file_name = dir.get_next()
+		#dir.list_dir_end()
+	#else:
+		#print_debug("An error occurred when trying to access the path.")
 
 func dir_contents_filter(path: String, extension: String, print: bool = false) -> Array[String]:
 	var dir: = DirAccess.open(path)

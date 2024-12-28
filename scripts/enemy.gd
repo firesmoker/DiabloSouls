@@ -14,6 +14,7 @@ class_name Enemy extends RigidBody2D
 @onready var attack_zone: Area2D = $AttackAxis/AttackZone
 @onready var attack_collider: CollisionShape2D = $AttackAxis/AttackZone/AttackCollider
 @onready var health_bar: ProgressBar = $HealthBar
+@onready var animation_manager: AnimationManager = %AnimationManager
 
 @export var get_hit_sound: AudioStream
 @export var death_sound: AudioStream
@@ -21,7 +22,7 @@ class_name Enemy extends RigidBody2D
 @export var attack_cooldown_duration: float =1.3
 @export var attack_damage: float = 1
 @export var body_color: Color = Color.WHITE
-@export var id: String = "Enemy"
+@export var display_name: String = "Enemy"
 @export var base_id: String
 @export_enum("skeleton_default", "slime", "demonlord") var model: String = "skeleton_default"
 @export_enum("normal", "boss") var category: String = "normal"
@@ -55,7 +56,6 @@ var in_player_melee_zone: bool = false
 var perry_subdued: bool = false
 
 const FPS: float = 12.0
-const average_delta: float = 0.01666666666667
 
 var sprite_material: Material
 var player: Player
@@ -113,19 +113,42 @@ func _ready() -> void:
 	switch_animation_timer = Timer.new()
 	self.add_child(switch_animation_timer)
 	gravity_scale = 0
-	animation_library = animation_player.get_animation_library("")
-	construct_animation_library()
-	add_animation_method_calls()
+	load_animations()
 	sprite_material = animated_sprite_2d.material
 	if game_manager != null:
 		player = game_manager.player
 		under_mouse_hover.connect(game_manager.enemy_mouse_hover)
 		stopped_mouse_hover.connect(game_manager.enemy_mouse_hover_stopped)
 
+func load_animations() -> void:
+	animation_library = animation_player.get_animation_library("")
+	#construct_animation_library()
+	#add_animation_method_calls()
+	
+	var animation_dictionary: Dictionary = animation_manager.get_animations_for_enemy(self)
+	animations = animation_dictionary["Animations"]
+	animated_sprite_2d.sprite_frames = animation_dictionary["SpriteFrames"]
+	#animation_player.add_animation_library("",animation_dictionary["AnimationLibrary"])
+	#var new_animation_library: AnimationLibrary = animation_dictionary["AnimationLibrary"]
+	#print(animation_dictionary["AnimationLibrary"].get_animation_list())
+	for anim_name: String in animation_dictionary["AnimationLibrary"].get_animation_list():
+		var animation: Animation = animation_dictionary["AnimationLibrary"].get_animation(anim_name)
+		if animation:
+			animation_library.add_animation(anim_name,animation)
+			#print(animation_library.get_animation(anim_name))
+		else:
+			print("couldn't find " + str(animation))
+
 
 #func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	#state.linear_velocity = Vector2.ZERO
 	#state.angular_velocity = 0
+
+func populate_animation_player(animation_library: AnimationLibrary) -> void:
+	for anim_name: String in animation_library.animations.keys():
+		var animation := animation_library.get_animation(anim_name)
+		if animation:
+			animation_player.add_animation(anim_name, animation)
 
 
 func _process(delta: float) -> void:
@@ -421,6 +444,7 @@ func die() -> void:
 	highlight_circle.modulate = Color.TRANSPARENT
 	$HoverZone.process_mode = Node.PROCESS_MODE_DISABLED
 	$MeleeZone.process_mode = Node.PROCESS_MODE_DISABLED
+	$GetHitZone.process_mode = Node.PROCESS_MODE_DISABLED
 	attack_zone.process_mode = Node.PROCESS_MODE_DISABLED
 	under_mouse_hover.disconnect(game_manager.enemy_mouse_hover)
 	stopped_mouse_hover.disconnect(game_manager.enemy_mouse_hover_stopped)
@@ -507,40 +531,19 @@ func ready_to_be_countered() -> void:
 
 func construct_animation_library() -> void:
 	animations.clear()
+	var frames: SpriteFrames = animated_sprite_2d.sprite_frames
 	for key: int in direction_name:
 		var animation_dictionary_for_key: Dictionary = {}
 		for type: String in animation_types:
 			animation_dictionary_for_key[type] = model + "_" + type + "_" + direction_name[key]
 		animations[key] = animation_dictionary_for_key
 		for type: String in animation_types:
-			create_animated2d_animations_from_assets(animations[key][type], key)
+			create_animated2d_animations_from_assets(frames,animations[key][type], key)
 	print_template("Finished constructing animation library")
 	
 
-func add_animation_method_calls() -> void:
-	var animation_list: Array[StringName] = animation_library.get_animation_list()
-	for animation: StringName in animation_list:
-		var animation_to_modify: Animation = animation_library.get_animation(animation)
-		var track: int = animation_to_modify.add_track(Animation.TYPE_METHOD)
-		animation_to_modify.track_set_path(track, ".")
-		if "attack" in animation:
-			var time: float = attack_frame/FPS
-			var parried_time: float = 0.5/FPS
-			var countered_time: float = 3/FPS
-			#print_debug("adding method calls for animation " + str(animation))
-			animation_to_modify.track_insert_key(track, parried_time, {"method" : "ready_to_be_parried" , "args" : []}, 1)
-			animation_to_modify.track_insert_key(track, countered_time, {"method" : "ready_to_be_countered" , "args" : []}, 1)
-			if has_ranged_attack:
-				animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : [false]}, 1)
-				#print_debug(str(self) + "added RANGED effects to " + str(animation_to_modify))
-			else:
-				#print_debug(str(self) + "added MELEE effects to " + str(animation_to_modify) + "because has_ranged attack = " + str(has_ranged_attack))
-				animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : []}, 1)
-	print_template("Finished adding animation method calls")
-
-
-func create_animated2d_animations_from_assets(animation_name: String, direction: int = directions.N) -> void:
-	var frames: SpriteFrames = animated_sprite_2d.sprite_frames
+func create_animated2d_animations_from_assets(frames: SpriteFrames,animation_name: String, direction: int = directions.N) -> void:
+	#var frames: SpriteFrames = animated_sprite_2d.sprite_frames
 	var action_type: String
 	for type: String in animation_types:
 		if type in animation_name:
@@ -580,6 +583,31 @@ func create_animated2d_animations_from_assets(animation_name: String, direction:
 		new_animation.track_insert_key(frames_track,frame_number/FPS, frame_number)
 		frame_number += 1
 	animation_library.add_animation(animation_name, new_animation)
+
+
+func add_animation_method_calls() -> void:
+	var animation_list: Array[StringName] = animation_library.get_animation_list()
+	for animation: StringName in animation_list:
+		var animation_to_modify: Animation = animation_library.get_animation(animation)
+		var track: int = animation_to_modify.add_track(Animation.TYPE_METHOD)
+		animation_to_modify.track_set_path(track, ".")
+		if "attack" in animation:
+			var time: float = attack_frame/FPS
+			var parried_time: float = 0.5/FPS
+			var countered_time: float = 3/FPS
+			#print_debug("adding method calls for animation " + str(animation))
+			animation_to_modify.track_insert_key(track, parried_time, {"method" : "ready_to_be_parried" , "args" : []}, 1)
+			animation_to_modify.track_insert_key(track, countered_time, {"method" : "ready_to_be_countered" , "args" : []}, 1)
+			if has_ranged_attack:
+				animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : [false]}, 1)
+				#print_debug(str(self) + "added RANGED effects to " + str(animation_to_modify))
+			else:
+				#print_debug(str(self) + "added MELEE effects to " + str(animation_to_modify) + "because has_ranged attack = " + str(has_ranged_attack))
+				animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : []}, 1)
+	print_template("Finished adding animation method calls")
+
+
+
 
 class Ability:
 	@export var name: String
