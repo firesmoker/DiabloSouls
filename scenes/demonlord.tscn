@@ -100,6 +100,7 @@ death_sound = ExtResource("3_a5c1j")
 interruptable = false
 attack_cooldown_duration = 1.8
 attack_damage = 3.0
+display_name = "Demon Lord"
 base_id = "demonlord"
 model = "demonlord"
 category = "boss"

@@ -424,6 +424,7 @@ position = Vector2(-35, 115)
 
 [node name="Skeleton_Fast" parent="Enemies" instance=ExtResource("13_vhtj6")]
 position = Vector2(576, -190)
+display_name = "Enemy"
 hitpoints_max = 50
 hitpoints = 50
 

@@ -96,6 +96,7 @@ height = 34.0
 freeze_mode = 0
 custom_integrator = false
 body_color = Color(1, 1, 0, 1)
+display_name = "Skeleton Fast"
 move_speed_modifier = 1.8
 attack_speed_modifier = 0.8
 hitpoints_max = 1

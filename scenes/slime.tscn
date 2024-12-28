@@ -89,6 +89,7 @@ radius = 13.0
 height = 34.0
 
 [node name="Slime" instance=ExtResource("1_h6qdv")]
+display_name = "Slime"
 base_id = "slime"
 model = "slime"
 speed_fps_ratio = 30.0
