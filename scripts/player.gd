@@ -158,46 +158,49 @@ var parry_ability: Ability = Ability.new("parry", "melee")
 var ranged_ability: Ability = Ability.new("ranged_attack", "ranged", true, 1.4)
 
 func _ready() -> void:
-
 	motion_mode = 1
-	hitpoints = max_hitpoints
-	stamina = max_stamina
-	mana = max_mana
 	destination = position
+	set_resources()
 	construct_animation_library()
 	add_animation_method_calls()
-	if game_manager != null:
-		pass
 
 
 func _physics_process(delta: float) -> void:	
 	light.material.set_shader_parameter("radius", light_radius)
 	handle_locked()
 	handle_invulnerability()
-	mana_regen(delta)
-	stamina_regen(delta)
-	health_regen(delta)
+	regenerate_mana(delta)
+	regenerate_stamina(delta)
+	regenerate_health(delta)
 	
 	if not is_dying:
 		handle_movement(delta)
-		launch_qeued_attack()
+		launch_queued_attack()
 		handle_block(delta)
 		
 		if not is_locked:
 			stop_on_destination()
 			
 			if velocity:
-				running_state()
+				run()
 			else:
-				standing_state()
+				stand()
 		move_and_slide()
 	elif not dead:
-		animation_player.play(animations[current_direction]["death"])
-		audio_player.play("Death")
-		dead = true
-		print_template("Died", true)
+		die()
 
-func launch_qeued_attack() -> void:
+func set_resources() -> void:
+	hitpoints = max_hitpoints
+	stamina = max_stamina
+	mana = max_mana
+
+func die() -> void:
+	animation_player.play(animations[current_direction]["death"])
+	audio_player.play("Death")
+	dead = true
+	print_template("Died", true)
+
+func launch_queued_attack() -> void:
 	#print("launch queed but attack_on_next is " + str(attack_on_next_opportunity))
 	if attack_on_next_opportunity:
 		print_template("trying to attack on next opportunity")
@@ -230,7 +233,7 @@ func handle_dodge(delta_time: float) -> void:
 			is_dodging = false
 
 
-func mana_regen(delta_time: float) -> void:
+func regenerate_mana(delta_time: float) -> void:
 	if mana < max_mana and not is_dying:
 		mana_regen_time += delta_time
 		if mana_regen_time >= mana_regen_rate:
@@ -243,7 +246,7 @@ func mana_regen(delta_time: float) -> void:
 		mana_regen_time = 0
 
 
-func stamina_regen(delta_time: float) -> void:
+func regenerate_stamina(delta_time: float) -> void:
 	if stamina < max_stamina and not is_dying:
 		stamina_regen_time += delta_time
 		if stamina_regen_time >= stamina_regen_rate:
@@ -255,7 +258,7 @@ func stamina_regen(delta_time: float) -> void:
 		stamina = max_stamina
 		stamina_regen_time = 0
 
-func health_regen(delta_time: float) -> void:
+func regenerate_health(delta_time: float) -> void:
 	if hitpoints < max_hitpoints and not is_dying:
 		health_regen_time += delta_time
 		if health_regen_time >= health_regen_rate:
@@ -307,9 +310,7 @@ func dodge(dodge_destination: Vector2) -> void:
 			#destination = position
 	
 
-
-func _unhandled_input(event: InputEvent) -> void:
-	
+func handle_cheat_inputs(event: InputEvent) -> void:
 	if event.is_action_pressed("test_button"): # TEMPORARY
 		animation_player.play(animations[current_direction]["walk"]) # TEMPORARY
 	
@@ -322,38 +323,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		print_template("less speed") # TEMPORARY
 		var speed_change:float = 100.0 / 115.0 # TEMPORARY
 		moving_speed_modifier *= speed_change # TEMPORARY
-		
-		
-	if not is_dying:
-		if event.is_action_pressed("dodge") and not is_dodging:
-			var face_destination: Vector2 = get_global_mouse_position()
-			dodge(face_destination)
-		
-		if event.is_action_pressed("attack_in_place"):
-			var face_destination: Vector2 = get_global_mouse_position()
-			attack(face_destination)
-		
-		if event.is_action_pressed("ability_1"):
-			var face_destination: Vector2
-			if game_manager.enemy_in_focus != null:
-				face_destination = game_manager.enemy_in_focus.position
-				target_for_ranged = game_manager.enemy_in_focus.position
-			else:
-				face_destination = get_global_mouse_position()
-				target_for_ranged = get_global_mouse_position()
-			var used_mana: bool = consume_mana(1, true)
-			if used_mana:
-				attack(face_destination, ranged_ability)
-			else:
-				print_template("not enough stamina")
-			#if mana - 1 < 0:
-				#print_template("not enough stamina")
-			#else:
-				#mana -= 1
-				#if mana < 0:
-					#mana = 0
-				#attack(face_destination, ranged_ability)
-		
+
+func handle_defend_inputs(event: InputEvent) -> void:
 		if event.is_action_pressed("defend"):
 			if not is_locked and not is_defending:
 				var face_destination: Vector2 = get_global_mouse_position()
@@ -375,22 +346,55 @@ func _unhandled_input(event: InputEvent) -> void:
 				if locked_sources.has("defending"):
 					locked_sources.erase("defending")
 				print_template("doesn't accept parry action on release because: is_locked = " + str(is_locked) + " and is_defeneding = " + str(is_defending))
+
+func handle_left_click_inputs(event: InputEvent) -> void:
+	if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place") and not event.is_action_pressed("defend"):
+		if game_manager.enemy_in_focus != null:
+			targeted_enemy = game_manager.enemy_in_focus
+			handle_targeted_enemy()
+		else:
+			#print_template("unhandled input")
+			attack_on_next_opportunity = false
+			is_attacking = false
+			original_position = position
+			destination = get_global_mouse_position()
+	elif event.is_action_released("mouse_move"):
+		last_movement_offset = 0
+		var closest_point: Vector2 = NavigationServer2D.map_get_closest_point(get_world_2d().navigation_map, get_global_mouse_position())
+		#destination = closest_point - (closest_point - global_position).normalized() * 5
+		destination = closest_point
+
+func handle_abilities_inputs(event: InputEvent) -> void:
+	if event.is_action_pressed("ability_1"):
+		var face_destination: Vector2
+		if game_manager.enemy_in_focus != null:
+			face_destination = game_manager.enemy_in_focus.position
+			target_for_ranged = game_manager.enemy_in_focus.position
+		else:
+			face_destination = get_global_mouse_position()
+			target_for_ranged = get_global_mouse_position()
+		var used_mana: bool = consume_mana(1, true)
+		if used_mana:
+			attack(face_destination, ranged_ability)
+		else:
+			print_template("not enough stamina")
+
+func _unhandled_input(event: InputEvent) -> void:
+	handle_cheat_inputs(event)
+	
+	if not is_dying:
+		if event.is_action_pressed("dodge") and not is_dodging:
+			var face_destination: Vector2 = get_global_mouse_position()
+			dodge(face_destination)
 		
-		if event.is_action_pressed("mouse_move") and not event.is_action_pressed("attack_in_place") and not event.is_action_pressed("defend"):
-			if game_manager.enemy_in_focus != null:
-				targeted_enemy = game_manager.enemy_in_focus
-				handle_targeted_enemy()
-			else:
-				#print_template("unhandled input")
-				attack_on_next_opportunity = false
-				is_attacking = false
-				original_position = position
-				destination = get_global_mouse_position()
-		elif event.is_action_released("mouse_move"):
-			last_movement_offset = 0
-			var closest_point: Vector2 = NavigationServer2D.map_get_closest_point(get_world_2d().navigation_map, get_global_mouse_position())
-			#destination = closest_point - (closest_point - global_position).normalized() * 5
-			destination = closest_point
+		if event.is_action_pressed("attack_in_place"):
+			var face_destination: Vector2 = get_global_mouse_position()
+			attack(face_destination)
+		
+		handle_abilities_inputs(event)
+		handle_defend_inputs(event)
+		handle_left_click_inputs(event)
+		
 
 func handle_targeted_enemy(attack_null: bool = false) -> void:
 	if targeted_enemy != null:
@@ -521,7 +525,7 @@ func stop_on_destination() -> void:
 				#is_attacking = false
 
 
-func running_state() -> void:
+func run() -> void:
 	attack_on_next_opportunity = false
 	if not is_moving_with_offset:
 		set_direction_by_destination(nav.get_next_path_position())
@@ -543,7 +547,7 @@ func running_state() -> void:
 		animation_player.play(animations[current_direction]["walk"])
 
 
-func standing_state() -> void:
+func stand() -> void:
 	if "attack" in animation_player.current_animation or "parry" in animation_player.current_animation:
 		#await animation_player.animation_finished
 		pass

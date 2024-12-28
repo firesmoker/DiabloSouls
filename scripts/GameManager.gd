@@ -28,14 +28,19 @@ var fps_time_elapsed: float = 0
 func _ready() -> void:
 	time_game_started = Time.get_ticks_msec()/1000.0
 	print_template("Game starts at: " + str(time_game_started))
-	hud.visible = true
-	enemy_label.visible = false
-	enemy_label.visible = true
+	set_default_visibility()
+	set_resource_bars_values()
+
+func set_resource_bars_values() -> void:
 	player_health.max_value = player.max_hitpoints
 	player_stamina.max_value = player.max_stamina
 	player_mana.max_value = player.max_mana
 
-func _unhandled_input(event: InputEvent) -> void:
+func set_default_visibility() -> void:
+	hud.visible = true
+	enemy_label.visible = true
+
+func handle_cheat_inputs(event: InputEvent) -> void:
 	if event.is_action_pressed("restart"):
 		print_template("Restarting")
 		AutoloadManager.first_run = false
@@ -46,14 +51,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		var zoom_in_amount:float = 115.0 / 100.0
 		camera.zoom.x *= zoom_in_amount
 		camera.zoom.y *= zoom_in_amount
-		pass
 		
 	elif event.is_action_pressed("zoom_in"):
 		print_debug("zoom in")
 		var zoom_out_amount:float = 100.0 / 115.0
 		camera.zoom.x *= zoom_out_amount
 		camera.zoom.y *= zoom_out_amount
-		pass
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	handle_cheat_inputs(event)
 
 func _process(delta: float) -> void:
 	current_delta = delta
