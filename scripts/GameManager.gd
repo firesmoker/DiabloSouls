@@ -125,13 +125,6 @@ func update_enemy_label() -> void:
 		enemy_label.visible = false
 		enemy_health.visible = false
 
-		
-func create_enemies_timed(delay: float = 3.0) -> void:
-	var enemy_type: PackedScene = load("res://scenes/skeleton_fast.tscn")
-	while true:
-		print_debug("creating enemy")
-		await get_tree().create_timer(delay).timeout
-		var new_enemy:  = enemy_type.instantiate()
 	
 		
 func enemy_in_player_melee_zone(enemy: Enemy, in_zone: bool = true) -> void:
