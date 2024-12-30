@@ -67,5 +67,8 @@ sprite_frames = SubResource("SpriteFrames_uw5ym")
 autoplay = "default"
 frame_progress = 0.120862
 
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
 [connection signal="timeout" from="SelfDestructTimer" to="." method="_on_self_destruct_timer_timeout"]
 [connection signal="body_entered" from="ImpactZone" to="." method="_on_impact_zone_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

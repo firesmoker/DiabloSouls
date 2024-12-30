@@ -16,7 +16,7 @@ Project Milestones:
 		objects and walls - in progress
 		enemies and player pathfind their way - in progress
 		enemies scattered around, non agressive until player in radius - done!
-		main SFX exists
+		main SFX exists, even if placeholders
 	2) Improved basic level:
 		obastacles transparency when player behind them
 		more abilities
@@ -40,21 +40,23 @@ Game Design stuff to do:
 Technical stuff that bothers me:
 	BUG:			NavigationServer player tries to use nav map before it's initizalized
 	WORLD:			Convert TileMap2 to the new system
+	REFACTOR:		Player - use AnimationManager for its animation stuff?
 	REFACTOR:		Switch Player and Enemy layers
 	REFACTOR:		abilities should probably become scenes
 	REFACTOR:		maybe i can get rid of the "is_locked" for enemies?
 	PERFORMANCE:	sound dictionaries are calculated for each enemy instance instead of each unique enemy
-	PERFORMANCE:	animations: dictionaries, arrays, animations, etc. are calculated for each enemy instance instead of each basic enemy model
 	WORKFLOW:		debugging could be easier if I could toggle some types of messages
 	WORKFLOW:		debugging could be easier if I put a debugging CanvasItem that shows me everything I need
 	WORKFLOW:		sort out the stupid ordering. both logic and execution
 
 Things that are very missing:
+	GAMEPLAY:	no abilities in combat other than basic attack, parry, counter, dodge, shoot projectile
+	WORLD:		arena is not an actual, interesting level
+	WORLD:		arena has no walls, objects, etc.
+	WORLD:		enemy variety
 	GAMEPLAY:	consuming mana the very moment you press to cast the spell feels weird. maybe because it takes a while to shoot.
 	GAMEPLAY:	Can't block ranged attacks
 	BUG:		Weird parry/counter rings behaviour
-	WORLD:		arena has no walls, objects, etc.
-	WORLD:		arena is not an actual, interesting level
 	SOUND:		Play projectile sounds
 	SOUND:		Play animation sounds for attack
 	SOUND:		Play Get hit SFX by material (flesh, metallic, etc.), probably played from enemy
@@ -63,7 +65,6 @@ Things that are very missing:
 	VISUAL:		No red overlay when dead
 	VISUAL:		No normal-map lightning
 	GAMEPLAY:	Ranged enemies have no target prediction, they shoot in a stupid manner. (not working)
-	GAMEPLAY:	no abilities in combat other than basic attack, parry, counter, dodge, shoot projectile
 	GAMEPLAY:	parry / counter is not optimized for multiple enemies
 	ANIMATION:	no counter and parry animations (maybe in the meantime - knockback? reverse step?)
 	ANIMATION:	no ranged attack animation

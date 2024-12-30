@@ -110,6 +110,7 @@ hitpoints_max = 20
 hitpoints = 20
 has_attack = true
 animation_types = Array[String](["idle", "walk", "death", "attack"])
+dead_body_collision = true
 
 [node name="AudioPlayer" parent="." index="0"]
 sounds = {

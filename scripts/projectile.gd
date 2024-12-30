@@ -14,8 +14,8 @@ var targets_player: bool = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	self_destruct_timer.wait_time = time_to_self_destruct
-	self_destruct_timer.start()
+	#self_destruct_timer.wait_time = time_to_self_destruct
+	#self_destruct_timer.start()
 	visible = false
 	collision_shape.scale *= 1
 	#if game_manager != null:
@@ -54,4 +54,9 @@ func explode() -> void:
 	var impact_explosion: Node2D = explosion.instantiate() as Node2D
 	get_tree().root.add_child(impact_explosion)
 	impact_explosion.global_position = global_position
+	queue_free()
+
+
+
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	queue_free()
