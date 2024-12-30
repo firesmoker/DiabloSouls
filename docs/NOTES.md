@@ -50,6 +50,9 @@ Technical stuff that bothers me:
 	WORKFLOW:		sort out the stupid ordering. both logic and execution
 
 Things that are very missing:
+	GAMEPLAY:	improve cant_be_countered behaviour. make it so the enemy doesn't have to be in melee range
+	GAMEPLAY:	improve telegraphed attacks. should I show an impact warning on the ground?
+	GAMEPLAY:	parry on release sucks. revert this.
 	GAMEPLAY:	no abilities in combat other than basic attack, parry, counter, dodge, shoot projectile
 	WORLD:		arena is not an actual, interesting level
 	WORLD:		arena has no walls, objects, etc.

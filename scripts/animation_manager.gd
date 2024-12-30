@@ -15,11 +15,11 @@ func _process(delta: float) -> void:
 
 func get_animations_for_enemy(enemy: Enemy) -> Dictionary:
 	if not enemies_animations.has(enemy.base_id):
-		print("STARTING constructing animations for enemy base model: " + enemy.base_id)
+		print_template("STARTING constructing animations for enemy base model: " + enemy.base_id)
 		var enemy_animation_list: Dictionary = {}
 		enemies_animations[enemy.base_id] = construct_animation_dictionary(enemy,enemy_animation_list)
 		add_animation_method_calls(enemies_animations[enemy.base_id]["AnimationLibrary"], enemy)
-		print("FINISHED constructing animations for enemy base model: " + enemy.base_id)
+		print_template("FINISHED constructing animations for enemy base model: " + enemy.base_id)
 		#print("created: " + str(enemies_animations[enemy.base_id]))
 	else:
 		#print("found: " + str(enemies_animations[enemy.base_id]))
@@ -110,3 +110,6 @@ func add_animation_method_calls(animation_library: AnimationLibrary, enemy: Enem
 				#print_debug(str(self) + "added MELEE effects to " + str(animation_to_modify) + "because has_ranged attack = " + str(has_ranged_attack))
 				animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : []}, 1)
 	#print_template("Finished adding animation method calls")
+
+func print_template(message: String) -> void:
+	Helper.print_template("animation_manager", message, "#Main")
