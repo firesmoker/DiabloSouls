@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://cbc7srdprkpgm"]
 
 [ext_resource type="Texture2D" uid="uid://dac8382jhj3yf" path="res://assets/art/vfx/blood1/Blood_Batch_1_SpriteSheetRows.png" id="1_js7no"]
-[ext_resource type="Script" path="res://scripts/effect.gd" id="2_l0x61"]
+[ext_resource type="Script" path="res://scripts/visual_effect.gd" id="2_l0x61"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wcbuy"]
 atlas = ExtResource("1_js7no")

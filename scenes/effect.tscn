@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://d0530fnn7y15i"]
+
+[ext_resource type="Script" path="res://scripts/effect.gd" id="1_bi8mq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vhdvw"]
+radius = 105.81
+
+[node name="Effect" type="Node2D"]
+script = ExtResource("1_bi8mq")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_vhdvw")
+debug_color = Color(0.996871, 0, 0.178035, 0.42)
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

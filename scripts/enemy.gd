@@ -37,6 +37,7 @@ class_name Enemy extends RigidBody2D
 @export var animation_types: Array[String] = ["idle", "walk"]
 @export var rotating_collider: bool = true
 @export var dead_body_collision: bool = false
+@export var cant_be_countered: bool = false
 
 var original_spawn_position: Vector2 = Vector2(0,0)
 var agression_enabled: bool = false
@@ -520,15 +521,21 @@ func disable_attack_zone() -> void:
 func ready_to_be_parried() -> void:
 	#print_debug("ready to be parried")
 	if not stunned:
-		if in_melee:
-			highlight_circle.modulate = Color.WHITE
-		can_be_parried = true
+		if cant_be_countered:
+			highlight_circle.modulate = Color.RED
+		else:
+			if in_melee:
+				highlight_circle.modulate = Color.WHITE
+			can_be_parried = true
 
 func ready_to_be_countered() -> void:
 	#print_debug("ready to be countered")
 	if not stunned:
-		highlight_circle.modulate = Color.BLUE
-		can_be_countered = true
+		if cant_be_countered:
+			highlight_circle.modulate = Color.RED
+		else:
+			highlight_circle.modulate = Color.BLUE
+			can_be_countered = true
 		
 #
 #func construct_animation_library() -> void:
