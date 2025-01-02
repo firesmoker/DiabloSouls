@@ -66,7 +66,7 @@ var player_in_range: bool = false
 
 @export var attack_range: float = 35
 @export var projectile: PackedScene
-#@export var abilities: Array[Ability]
+#@export var abilities: Array[PlayerAbility]
 var ready_to_switch_direction: bool = true
 
 var animations: Dictionary = {}
@@ -382,7 +382,7 @@ func get_hit(damage: int = randi_range(1,3)) -> bool:
 	can_be_countered = false
 	highlight_circle.modulate = Color.TRANSPARENT
 	hitpoints -= damage
-	if hitpoints <= 0:
+	if hitpoints <= 0 and not dying:
 		health_bar.visible = false
 		#died = true
 		die()
@@ -618,7 +618,7 @@ func ready_to_be_countered() -> void:
 
 
 
-class Ability:
+class PlayerAbility:
 	@export var name: String
 	@export var range_type: String
 	@export var standing: bool

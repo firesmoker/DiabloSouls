@@ -87,7 +87,7 @@ var targeted_enemy: Enemy = null
 var enemies_in_melee: Array[Enemy]
 var enemies_in_defense_zone: Array[Enemy]
 var projectiles_in_defense_zone: Array[Projectile]
-#var abilities_queue: Array[Ability]
+#var abilities_queue: Array[PlayerAbility]
 var is_dying: bool = false
 var dead: bool = false
 var target_for_ranged: Vector2
@@ -153,9 +153,9 @@ var radian_direction: Dictionary = {
 	-2.5/4 * PI: directions.NNW, #
 }
 
-var attack_ability: Ability = Ability.new("attack", "melee")
-var parry_ability: Ability = Ability.new("parry", "melee")
-var ranged_ability: Ability = Ability.new("ranged_attack", "ranged", true, 1.4, "mana", 1)
+var attack_ability: PlayerAbility = PlayerAbility.new("attack", "melee")
+var parry_ability: PlayerAbility = PlayerAbility.new("parry", "melee")
+var ranged_ability: PlayerAbility = PlayerAbility.new("ranged_attack", "ranged", true, 1.4, "mana", 1)
 
 func _ready() -> void:
 	motion_mode = 1
@@ -722,7 +722,7 @@ func block() -> void:
 	velocity = Vector2(0, 0)
 	animation_player.play(animations[current_direction]["defend"])
 
-func attack(attack_destination: Vector2, ability: Ability = attack_ability, speed: float = 1) -> bool:
+func attack(attack_destination: Vector2, ability: PlayerAbility = attack_ability, speed: float = 1) -> bool:
 	var attacked: bool = false
 	#abilities_queue.append(attack_ability)
 	is_chasing_enemy = false
@@ -1037,7 +1037,7 @@ func _on_timer_timeout() -> void:
 	pass
 
 
-func execute(ability: Ability, speed: float = ability.attack_speed) -> void:
+func execute(ability: PlayerAbility, speed: float = ability.attack_speed) -> void:
 	animation_player.speed_scale = speed * attack_speed_modifier
 	animation_player.play(animations[current_direction][ability.animation_name])
 	#ability.execute(target)
@@ -1048,7 +1048,7 @@ func print_template(message: String, bold: bool = false) -> void:
 	else:
 		Helper.print_template("player", message)
 
-class Ability:
+class PlayerAbility:
 	var name: String
 	var range_type: String
 	var standing: bool

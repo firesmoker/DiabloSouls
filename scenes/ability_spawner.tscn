@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmdeca8dwpyg4"]
+
+[ext_resource type="Script" path="res://scripts/ability_spawner.gd" id="1_4pebh"]
+[ext_resource type="PackedScene" uid="uid://d0530fnn7y15i" path="res://scenes/effect.tscn" id="2_em3rs"]
+
+[node name="AbilitySpawner" type="Node2D"]
+script = ExtResource("1_4pebh")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Effect" parent="." instance=ExtResource("2_em3rs")]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dairvpwmh06mg"]
+
+[ext_resource type="PackedScene" uid="uid://ejqv0ht78sdx" path="res://scenes/ability.tscn" id="1_e7t3b"]
+
+[node name="Explosion" instance=ExtResource("1_e7t3b")]
+ability_name = "explosion"
+display_name = "Explosion"
+range_type = "personal"
+description = "boom"
+effect_names = Array[String](["explosion_1"])

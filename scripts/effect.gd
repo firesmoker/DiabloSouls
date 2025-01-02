@@ -3,9 +3,13 @@ class_name Effect extends Node2D
 @onready var timer: Timer = $Timer
 var effect1: EffectType = EffectType.new()
 
+signal effect_finished
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	timer.start(effect1.duration)
+	if get_parent() is Ability:
+		connect("effect_finished",get_parent().update_effects_finished)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -13,6 +17,7 @@ func _process(delta: float) -> void:
 	pass
 
 func _on_timer_timeout() -> void:
+	emit_signal("effect_finished")
 	queue_free()
 	#pass
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://lr15cpqcai72"]
+[gd_scene load_steps=23 format=3 uid="uid://lr15cpqcai72"]
 
 [ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_h602i"]
 [ext_resource type="Script" path="res://scripts/TileMap.gd" id="2_orhwb"]
@@ -14,6 +14,8 @@
 [ext_resource type="PackedScene" uid="uid://dxfa0xmqhcorr" path="res://scenes/skeleton_fast.tscn" id="13_vhtj6"]
 [ext_resource type="Script" path="res://scripts/animation_manager.gd" id="14_qwy2r"]
 [ext_resource type="PackedScene" uid="uid://cjpv7vr3mtnvl" path="res://scenes/effect_spawner.tscn" id="15_mol4s"]
+[ext_resource type="Script" path="res://scripts/ability_manager.gd" id="16_3kmyc"]
+[ext_resource type="PackedScene" uid="uid://dmdeca8dwpyg4" path="res://scenes/ability_spawner.tscn" id="16_66uj3"]
 [ext_resource type="PackedScene" uid="uid://b4qsmsjjcorlc" path="res://scenes/light.tscn" id="19_6rjls"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pec2l"]
@@ -442,6 +444,13 @@ script = ExtResource("14_qwy2r")
 
 [node name="EffectSpawner" parent="." instance=ExtResource("15_mol4s")]
 position = Vector2(421, 100)
+
+[node name="AbilitySpawner" parent="." instance=ExtResource("16_66uj3")]
+position = Vector2(678, 121)
+ability_name = "explosion"
+
+[node name="AbilityManager" type="Node2D" parent="."]
+script = ExtResource("16_3kmyc")
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
 [connection signal="parry_success" from="Player" to="GameManager" method="_on_player_parry_success"]
