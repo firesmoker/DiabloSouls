@@ -14,6 +14,19 @@ _data = {
 "default": SubResource("Animation_qn4kt")
 }
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ury82"]
+resource_local_to_scene = true
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ujkq1"]
+resource_local_to_scene = true
+radius = 32.0
+height = 64.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lrxak"]
+resource_local_to_scene = true
+radius = 13.0
+height = 34.0
+
 [sub_resource type="Shader" id="Shader_skvic"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
@@ -74,19 +87,6 @@ animations = [{
 "speed": 12.0
 }]
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ury82"]
-resource_local_to_scene = true
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ujkq1"]
-resource_local_to_scene = true
-radius = 32.0
-height = 64.0
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lrxak"]
-resource_local_to_scene = true
-radius = 13.0
-height = 34.0
-
 [node name="Skeleton" instance=ExtResource("1_mhxew")]
 display_name = "Skeleton"
 base_id = "skeleton"
@@ -99,17 +99,11 @@ libraries = {
 "": SubResource("AnimationLibrary_hfmj2")
 }
 
-[node name="AnimatedSprite2D" parent="." index="4"]
-material = SubResource("ShaderMaterial_0w58q")
-sprite_frames = SubResource("SpriteFrames_ckd27")
-
-[node name="PhysicalCollider" parent="." index="5"]
-z_index = 1
-z_as_relative = true
+[node name="PhysicalCollider" parent="." index="4"]
 rotation = 0.0
 shape = ExtResource("3_12a1b")
 
-[node name="HighlightCircle" parent="." index="6"]
+[node name="HighlightCircle" parent="." index="5"]
 material = SubResource("CanvasItemMaterial_ury82")
 
 [node name="CollisionShape2D" parent="ClumpZone" index="0"]
@@ -124,5 +118,9 @@ shape = SubResource("CapsuleShape2D_ujkq1")
 [node name="AttackCollider" parent="AttackAxis/AttackZone" index="0"]
 shape = SubResource("CapsuleShape2D_lrxak")
 
-[node name="Attack_Cooldown" parent="." index="12"]
+[node name="Attack_Cooldown" parent="." index="11"]
 wait_time = 5.0
+
+[node name="AnimatedSprite2D" parent="." index="12"]
+material = SubResource("ShaderMaterial_0w58q")
+sprite_frames = SubResource("SpriteFrames_ckd27")

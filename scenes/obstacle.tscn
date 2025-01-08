@@ -1,10 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://cxhnyk8un34t3"]
+[gd_scene load_steps=6 format=3 uid="uid://cxhnyk8un34t3"]
 
 [ext_resource type="Texture2D" uid="uid://cpxgnvstr8nna" path="res://assets/art/prop/column1/E/column1_E_0.0_0.png" id="1_udwvx"]
+[ext_resource type="Script" path="res://scripts/obstacle.gd" id="2_pubvf"]
 [ext_resource type="Shape2D" uid="uid://d0hus0v2lk50r" path="res://scene_resources/column_collider.tres" id="2_vwqog"]
+[ext_resource type="PackedScene" uid="uid://briwv2nnv6hfx" path="res://scenes/player_exposer.tscn" id="4_va25g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_abohw"]
+resource_local_to_scene = true
+size = Vector2(24, 94)
 
 [node name="Obstacle" type="Sprite2D"]
+z_index = 1
+z_as_relative = false
+y_sort_enabled = true
 texture = ExtResource("1_udwvx")
+script = ExtResource("2_pubvf")
 metadata/_edit_lock_ = true
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
@@ -21,3 +31,10 @@ shape = ExtResource("2_vwqog")
 radius = 17.0
 affect_navigation_mesh = true
 metadata/_edit_lock_ = true
+
+[node name="PlayerExposer" parent="." instance=ExtResource("4_va25g")]
+
+[node name="CollisionShape2D" parent="PlayerExposer/PlayerDetectorArea" index="0"]
+shape = SubResource("RectangleShape2D_abohw")
+
+[editable path="PlayerExposer"]

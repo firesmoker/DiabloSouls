@@ -18,6 +18,7 @@ class_name Enemy extends RigidBody2D
 
 @export var get_hit_sound: AudioStream
 @export var death_sound: AudioStream
+@export var maintain_visibility_on_death: bool = false
 @export var interruptable: bool = true
 @export var attack_cooldown_duration: float =1.3
 @export var attack_damage: float = 1
@@ -451,8 +452,9 @@ func die() -> void:
 	attack_zone.process_mode = Node.PROCESS_MODE_DISABLED
 	under_mouse_hover.disconnect(game_manager.enemy_mouse_hover)
 	stopped_mouse_hover.disconnect(game_manager.enemy_mouse_hover_stopped)
-	z_index = 4
-	y_sort_enabled = false
+	if not maintain_visibility_on_death:
+		z_index = 0
+	#y_sort_enabled = false
 	print_template("Died")
 
 func highlight() -> void:
@@ -642,7 +644,7 @@ class PlayerAbility:
 			pass
 			#print_debug("ZBANG MELEE")
 		
-func print_template(message: String) -> void:
+func print_template(message: Variant) -> void:
 	Helper.print_template("enemy",str(self.name) + ": " + message)
 
 func _on_attack_cooldown_timeout() -> void:

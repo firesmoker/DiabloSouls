@@ -18,6 +18,19 @@ _data = {
 "default": SubResource("Animation_qn4kt")
 }
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_dm3a0"]
+resource_local_to_scene = true
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rvte0"]
+resource_local_to_scene = true
+radius = 24.0
+height = 48.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_03g7x"]
+resource_local_to_scene = true
+radius = 9.0
+height = 52.0
+
 [sub_resource type="Shader" id="Shader_73ldh"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
@@ -81,22 +94,10 @@ animations = [{
 "speed": 12.0
 }]
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_dm3a0"]
-resource_local_to_scene = true
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rvte0"]
-resource_local_to_scene = true
-radius = 24.0
-height = 48.0
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_03g7x"]
-resource_local_to_scene = true
-radius = 9.0
-height = 52.0
-
 [node name="Demonlord" instance=ExtResource("1_exfay")]
 get_hit_sound = ExtResource("2_6wj71")
 death_sound = ExtResource("3_a5c1j")
+maintain_visibility_on_death = true
 interruptable = false
 attack_cooldown_duration = 1.8
 attack_damage = 3.0
@@ -130,16 +131,12 @@ libraries = {
 "": SubResource("AnimationLibrary_hfmj2")
 }
 
-[node name="AnimatedSprite2D" parent="." index="4"]
-material = SubResource("ShaderMaterial_1031v")
-sprite_frames = SubResource("SpriteFrames_kkpv2")
-
-[node name="PhysicalCollider" parent="." index="5"]
+[node name="PhysicalCollider" parent="." index="4"]
 z_index = 50
 rotation = 0.0
 shape = ExtResource("7_jsx3q")
 
-[node name="HighlightCircle" parent="." index="6"]
+[node name="HighlightCircle" parent="." index="5"]
 z_index = -1
 material = SubResource("CanvasItemMaterial_dm3a0")
 scale = Vector2(3.46, 3.46)
@@ -150,7 +147,7 @@ shape = SubResource("CapsuleShape2D_rvte0")
 [node name="CollisionShape2D" parent="GetHitZone" index="0"]
 shape = ExtResource("8_t04i8")
 
-[node name="MeleeZone" parent="." index="9"]
+[node name="MeleeZone" parent="." index="8"]
 scale = Vector2(2.31, 2.31)
 
 [node name="CollisionShape2D" parent="MeleeZone" index="0"]
@@ -164,3 +161,7 @@ shape = SubResource("CapsuleShape2D_rvte0")
 [node name="AttackCollider" parent="AttackAxis/AttackZone" index="0"]
 position = Vector2(-6.87798e-05, -19)
 shape = SubResource("CapsuleShape2D_03g7x")
+
+[node name="AnimatedSprite2D" parent="." index="12"]
+material = SubResource("ShaderMaterial_1031v")
+sprite_frames = SubResource("SpriteFrames_kkpv2")

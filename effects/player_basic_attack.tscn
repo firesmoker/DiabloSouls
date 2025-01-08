@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://by3b3ba7ufjia"]
+
+[ext_resource type="PackedScene" uid="uid://d0530fnn7y15i" path="res://scenes/effect.tscn" id="1_0ngbe"]
+[ext_resource type="Shape2D" uid="uid://cbd5x1gwskvvf" path="res://scene_resources/player_attack_collider.tres" id="2_p4ix8"]
+
+[node name="PlayerBasicAttack" instance=ExtResource("1_0ngbe")]
+
+[node name="Area2D" parent="." index="0"]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="Area2D" index="0"]
+shape = ExtResource("2_p4ix8")

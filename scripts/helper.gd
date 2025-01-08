@@ -36,7 +36,8 @@ static func print_success(message: String) -> void:
 static func print_warning(message: String) -> void:
 	print_rich("[color=yellow][b]WARNING: " + message + "[/b][/color]") # Prints out "Hello world!" in green with a bold font
 
-static func print_template(template_name: String, message: String, tag: String = "") -> void:
+static func print_template(template_name: String, message: Variant, tag: String = "") -> void:
+	var message_to_print: String = str(message)
 	var template: CustomMessageTemplate = templates[template_name]
 	var bold_starter: String = "[b]"
 	var bold_ender: String = "[/b]"
@@ -54,7 +55,7 @@ static func print_template(template_name: String, message: String, tag: String =
 		color_ender = ""
 	if tag != "":
 		formatted_tag = "[" + tag + "] "
-	print_rich(str(Time.get_ticks_msec()/1000.0) + " " + formatted_title + formatted_tag + color_starter + bold_starter + message + bold_ender + color_ender) # Prints out "Hello world!" in green w
+	print_rich(str(Time.get_ticks_msec()/1000.0) + " " + formatted_title + formatted_tag + color_starter + bold_starter + message_to_print + bold_ender + color_ender) # Prints out "Hello world!" in green w
 
 static func print_custom(color: int, bold: bool, title_only: bool, message: String) -> void:
 	var bold_string: String = ""

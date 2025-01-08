@@ -5,11 +5,16 @@ class_name Ability extends Node2D
 @export var mana_cost: float
 @export var stamina_cost: float
 @export var range_type: String # personal, melee, ranged
+@export var standing: bool
+@export var animation_name: String
+@export var attack_speed: float = 1
 @export var friendly_fire: bool
 @export var display_image: Image
 @export var description: String
 @export var effect_names: Array[String]
 @export var effects: Dictionary
+
+
 var effects_num: int = 0
 var effects_finished: int = 0
 var activated: bool = false
@@ -18,7 +23,7 @@ signal ablility_constructed
 func _init() -> void:
 	#connect("ablility_constructed",AbilityManager.register_ability)
 	#emit_signal("ablility_constructed",self.ability_name)
-	print(ability_name + " initialized")
+	print("ability" + ability_name + " initialized")
 
 #func _init(ability_name: String, 
 	#display_name: String, 
@@ -59,15 +64,22 @@ func load_effects_by_name() -> void:
 		if effects[effect_name]:
 			effects_num += 1
 
-func activate(creator: Node2D, location: Vector2) -> void:
+func activate(creator: Node2D, effects_position: Vector2, effect_rotation: float = 0) -> void:
+	print(ability_name + " under " + str(get_parent()) + " activated")
+	print(effects)
+	if effects.size() <= 0:
+		print("no effects in ability: " + ability_name)
+		return
 	for effect_name: String in effects:
 		activated = true
-		create_effect(creator, location, effects[effect_name])
+		create_effect(creator, effects_position, effects[effect_name], effect_rotation)
 
 
-func create_effect(creator: Node2D, location: Vector2, effect: PackedScene) -> void:
+func create_effect(creator: Node2D, effect_position: Vector2, effect: PackedScene, effect_rotation: float) -> void:
 	var new_effect: Effect = effect.instantiate()
-	add_child(new_effect)
+	new_effect.rotation_degrees = effect_rotation
+	new_effect.position = effect_position
+	creator.add_child(new_effect)
 
 func update_effects_finished() -> void:
 	effects_finished += 1

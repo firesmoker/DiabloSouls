@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://24usiutfogbe"]
+
+[ext_resource type="PackedScene" uid="uid://cfb8yau445y20" path="res://scenes/ability.tscn" id="1_k42fk"]
+
+[node name="PlayerBasicAttack" instance=ExtResource("1_k42fk")]
+ability_name = "player_basic_attack"
+display_name = "Attack"
+range_type = "melee"
+standing = true
+animation_name = "attack"
+effect_names = Array[String](["player_basic_attack"])

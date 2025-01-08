@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://briwv2nnv6hfx"]
+
+[ext_resource type="Script" path="res://scripts/player_exposer.gd" id="1_vwof3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bwjk6"]
+resource_local_to_scene = true
+size = Vector2(24, 94)
+
+[node name="PlayerExposer" type="Node2D"]
+visible = false
+script = ExtResource("1_vwof3")
+
+[node name="PlayerDetectorArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 524288
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetectorArea"]
+position = Vector2(0, -37)
+shape = SubResource("RectangleShape2D_bwjk6")
+
+[connection signal="area_entered" from="PlayerDetectorArea" to="." method="_on_player_detector_area_area_entered"]
+[connection signal="area_exited" from="PlayerDetectorArea" to="." method="_on_player_detector_area_area_exited"]

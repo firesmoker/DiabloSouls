@@ -6,6 +6,7 @@ class_name Player extends CharacterBody2D
 @onready var ray_axis: Node2D = $Rays
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var game_manager: GameManager = %GameManager
+@onready var abilities_container: Node2D = $AbilitiesContainer
 
 @export_group("General")
 @export_enum("warrior_armed", "fighter_armed", "knight_armed") var model: String = "warrior_armed"
@@ -100,6 +101,8 @@ var destination: Vector2 = Vector2()
 var movement: Vector2 = Vector2()
 var original_position: Vector2 = Vector2()
 
+var ability_instances: Dictionary = {}
+
 const FPS: float = 12.0
 
 
@@ -153,9 +156,28 @@ var radian_direction: Dictionary = {
 	-2.5/4 * PI: directions.NNW, #
 }
 
-var attack_ability: PlayerAbility = PlayerAbility.new("attack", "melee")
-var parry_ability: PlayerAbility = PlayerAbility.new("parry", "melee")
-var ranged_ability: PlayerAbility = PlayerAbility.new("ranged_attack", "ranged", true, 1.4, "mana", 1)
+#var attack_ability: PlayerAbility = PlayerAbility.new("attack", "melee")
+#var parry_ability: PlayerAbility = PlayerAbility.new("parry", "melee")
+#var ranged_ability: PlayerAbility = PlayerAbility.new("ranged_attack", "ranged", true, 1.4, "mana", 1)
+
+var attack_ability: Ability
+var parry_ability: Ability
+var ranged_ability: Ability
+
+func load_rays() -> void:
+	rays.clear()
+	rays_left.clear()
+	rays_right.clear()
+	var ray_list: Array = ray_axis.get_children()
+	for ray: RayCast2D in ray_list:
+		if ray.name.begins_with("Forward"):
+			rays.append(ray)
+		elif ray.name.begins_with("Right"):
+			rays_right.append(ray)
+		elif ray.name.begins_with("Left"):
+			rays_left.append(ray)
+			
+
 
 func _ready() -> void:
 	motion_mode = 1
@@ -163,9 +185,14 @@ func _ready() -> void:
 	set_resources()
 	construct_animation_library()
 	add_animation_method_calls()
+	load_rays()
+	print_template(rays)
+	print_template(rays_right)
+	print_template(rays_left)
+	
 
-
-func _physics_process(delta: float) -> void:	
+func _physics_process(delta: float) -> void:
+	get_abilities()	
 	light.material.set_shader_parameter("radius", light_radius)
 	handle_locked()
 	handle_invulnerability()
@@ -188,6 +215,16 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 	elif not dead:
 		die()
+
+
+func get_abilities() -> void:
+	if not attack_ability:
+		attack_ability = AbilityManager.get_ability("player_basic_attack")
+		print_template(attack_ability.ability_name)
+	#if not parry_ability:
+		#parry_ability  = AbilityManager.get_ability("player_basic_parry")
+	#if not ranged_ability:
+		#ranged_ability = AbilityManager.get_ability("player_basic_ranged")
 
 func set_resources() -> void:
 	hitpoints = max_hitpoints
@@ -627,6 +664,9 @@ func ray_coliisions() -> float:
 	var colliding_with_enemy: bool = false
 	var positive_collisions: int = 0
 	var negative_collisions: int = 0
+	#print(rays)
+	if rays.size() < 5:
+		return 0
 	var maximum_collision_distance: float = global_position.distance_to(rays[5].target_position)
 	minimum_collision_distance = maximum_collision_distance
 	for ray in rays:
@@ -722,7 +762,7 @@ func block() -> void:
 	velocity = Vector2(0, 0)
 	animation_player.play(animations[current_direction]["defend"])
 
-func attack(attack_destination: Vector2, ability: PlayerAbility = attack_ability, speed: float = 1) -> bool:
+func attack(attack_destination: Vector2, ability: Ability = attack_ability, speed: float = 1) -> bool:
 	var attacked: bool = false
 	#abilities_queue.append(attack_ability)
 	is_chasing_enemy = false
@@ -837,12 +877,25 @@ func calculate_movement_velocity(offset: float = 0) -> Vector2:
 	#print_template(direction)
 	return direction * speed_fps_ratio * moving_speed_modifier
 
+func spawn_ability(ability: Ability) -> void:
+	if ability_instances.has(ability.ability_name):
+		ability_instances[ability.ability_name].activate(attack_axis,Vector2(17,0),90)
+	else:
+		var new_ability := AbilityManager.create_ability_instance(ability.ability_name)
+		ability_instances[ability.ability_name] = new_ability
+		if ability_instances[ability.ability_name].range_type == "melee":
+			abilities_container.add_child(ability_instances[ability.ability_name])
+			ability_instances[ability.ability_name].activate(attack_axis,Vector2(17,0),90)
+		else:
+			print_template("Failed to spawn ability: " + ability.ability_name)
+
 
 func just_attacked(attack_type: String = "melee") -> void: # THIS
 	if attack_type == "melee":
-		print_template("melee attack")
-		attack_collider.disabled = false
-		disable_attack_zone()
+		spawn_ability(attack_ability)
+		#print_template("melee attack")
+		#attack_collider.disabled = false
+		#disable_attack_zone()
 	elif attack_type == "ranged":
 		if target_for_ranged == null:
 			target_for_ranged = get_global_mouse_position()
@@ -1037,38 +1090,38 @@ func _on_timer_timeout() -> void:
 	pass
 
 
-func execute(ability: PlayerAbility, speed: float = ability.attack_speed) -> void:
+func execute(ability: Ability, speed: float = ability.attack_speed) -> void:
 	animation_player.speed_scale = speed * attack_speed_modifier
 	animation_player.play(animations[current_direction][ability.animation_name])
 	#ability.execute(target)
 
-func print_template(message: String, bold: bool = false) -> void:
+func print_template(message: Variant, bold: bool = false) -> void:
 	if bold:
 		Helper.print_template("player_bold", message, "#Main")
 	else:
 		Helper.print_template("player", message)
 
-class PlayerAbility:
-	var name: String
-	var range_type: String
-	var standing: bool
-	var animation_name: String
-	var attack_speed: float
-	var resource_type: String
-	var resource_amount: float
-	
-	func _init(name: String, range_type: String, standing: bool = true, attack_speed: float = 1, resource_type: String = "", resource_amount: float = 0) -> void:
-		self.name = name
-		self.range_type = range_type
-		self.standing = standing
-		self.animation_name = self.name
-		self.attack_speed = attack_speed
-		self.resource_type = resource_type
-		self.resource_amount = resource_amount
-		
-	func execute(target: Vector2 = Vector2(0,0)) -> void:
-		#print_template("executing " + name)
-		if self.range_type != "self":
-			#print_template("execute on: " + str(target))
-			pass
-		
+#class PlayerAbility:
+	#var name: String
+	#var range_type: String
+	#var standing: bool
+	#var animation_name: String
+	#var attack_speed: float
+	#var resource_type: String
+	#var resource_amount: float
+	#
+	#func _init(name: String, range_type: String, standing: bool = true, attack_speed: float = 1, resource_type: String = "", resource_amount: float = 0) -> void:
+		#self.name = name
+		#self.range_type = range_type
+		#self.standing = standing
+		#self.animation_name = self.name
+		#self.attack_speed = attack_speed
+		#self.resource_type = resource_type
+		#self.resource_amount = resource_amount
+		#
+	#func execute(target: Vector2 = Vector2(0,0)) -> void:
+		##print_template("executing " + name)
+		#if self.range_type != "self":
+			##print_template("execute on: " + str(target))
+			#pass
+		#

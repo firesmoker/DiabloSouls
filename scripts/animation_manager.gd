@@ -111,5 +111,5 @@ func add_animation_method_calls(animation_library: AnimationLibrary, enemy: Enem
 				animation_to_modify.track_insert_key(track, time, {"method" : "attack_effect" , "args" : []}, 1)
 	#print_template("Finished adding animation method calls")
 
-func print_template(message: String) -> void:
+func print_template(message: Variant) -> void:
 	Helper.print_template("animation_manager", message, "#Main")
