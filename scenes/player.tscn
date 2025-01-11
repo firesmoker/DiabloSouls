@@ -1,4 +1,4 @@
-[gd_scene load_steps=185 format=3 uid="uid://cgvpmrxms5e4k"]
+[gd_scene load_steps=194 format=3 uid="uid://cgvpmrxms5e4k"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_3jece"]
 [ext_resource type="PackedScene" uid="uid://cbc7srdprkpgm" path="res://scenes/blood.tscn" id="2_iqh1e"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://d3d8qdbo8f0pf" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/E/fighter_armed_attack_E_0.0_4.png" id="6_ekpfi"]
 [ext_resource type="AudioStream" uid="uid://dmwvlnqwber1b" path="res://assets/audio/hit_2_new.wav" id="7_ab38t"]
 [ext_resource type="Texture2D" uid="uid://bre1rqgq3q538" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/E/fighter_armed_attack_E_0.0_5.png" id="7_siq75"]
+[ext_resource type="AudioStream" uid="uid://tuoye2tvljg0" path="res://assets/audio/sfx_StepB_-003.mp3" id="8_oadeu"]
 [ext_resource type="Texture2D" uid="uid://bsaebh7r871qi" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/E/fighter_armed_attack_E_0.0_6.png" id="8_yikrs"]
 [ext_resource type="Shape2D" uid="uid://bgj2xqf2dgmrm" path="res://scene_resources/player_collider.tres" id="9_07ooa"]
 [ext_resource type="Texture2D" uid="uid://dpj25vd3rxkj4" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/E/fighter_armed_attack_E_0.0_7.png" id="9_f1l3s"]
@@ -24,14 +25,22 @@
 [ext_resource type="Texture2D" uid="uid://b7owt4k8l7kxl" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/N/fighter_armed_attack_N_90.0_3.png" id="13_ra3se"]
 [ext_resource type="Texture2D" uid="uid://clvd1re45ovbh" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/N/fighter_armed_attack_N_90.0_4.png" id="14_r7qym"]
 [ext_resource type="Texture2D" uid="uid://b6bou7ur4ct2h" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/N/fighter_armed_attack_N_90.0_5.png" id="15_2nbtq"]
+[ext_resource type="Texture2D" uid="uid://tnw0kemn4afr" path="res://assets/art/playable character/knight_armed/knight_armed_walk/E/knight_armed_walk_E_0.0_0.png" id="16_3mrb1"]
 [ext_resource type="Texture2D" uid="uid://cnikltc3u2pu4" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/N/fighter_armed_attack_N_90.0_6.png" id="16_g0koh"]
 [ext_resource type="Texture2D" uid="uid://m5vyru8fke2w" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/N/fighter_armed_attack_N_90.0_7.png" id="17_b8red"]
+[ext_resource type="Texture2D" uid="uid://cj8uqtep53icn" path="res://assets/art/playable character/knight_armed/knight_armed_walk/E/knight_armed_walk_E_0.0_1.png" id="17_h5q08"]
 [ext_resource type="Texture2D" uid="uid://cw7fjcang73m7" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/NE/fighter_armed_attack_NE_45.0_0.png" id="18_0j7hy"]
+[ext_resource type="Texture2D" uid="uid://bcrhlj1pqwl25" path="res://assets/art/playable character/knight_armed/knight_armed_walk/E/knight_armed_walk_E_0.0_2.png" id="18_34lnh"]
 [ext_resource type="Texture2D" uid="uid://c3yijsjvd68me" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/NE/fighter_armed_attack_NE_45.0_1.png" id="19_eaoox"]
+[ext_resource type="Texture2D" uid="uid://bau13mo2dikum" path="res://assets/art/playable character/knight_armed/knight_armed_walk/E/knight_armed_walk_E_0.0_3.png" id="19_ld556"]
 [ext_resource type="Texture2D" uid="uid://dictou7euyuun" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/NE/fighter_armed_attack_NE_45.0_2.png" id="20_4lbjc"]
+[ext_resource type="Texture2D" uid="uid://ba88mhp4icc6v" path="res://assets/art/playable character/knight_armed/knight_armed_walk/E/knight_armed_walk_E_0.0_4.png" id="20_7abcs"]
+[ext_resource type="Texture2D" uid="uid://u8d54fmun41h" path="res://assets/art/playable character/knight_armed/knight_armed_walk/E/knight_armed_walk_E_0.0_5.png" id="21_6kauw"]
 [ext_resource type="Texture2D" uid="uid://c67bhg5layjt" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/NE/fighter_armed_attack_NE_45.0_3.png" id="21_mqj0l"]
+[ext_resource type="Texture2D" uid="uid://bwvxocy5o0iht" path="res://assets/art/playable character/knight_armed/knight_armed_walk/E/knight_armed_walk_E_0.0_6.png" id="22_lbadq"]
 [ext_resource type="Texture2D" uid="uid://do68x7wxnokqn" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/NE/fighter_armed_attack_NE_45.0_4.png" id="22_rlxnn"]
 [ext_resource type="Texture2D" uid="uid://csk0p4gq5tec2" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/NE/fighter_armed_attack_NE_45.0_5.png" id="23_el0hu"]
+[ext_resource type="Texture2D" uid="uid://bn2rh7annn7qk" path="res://assets/art/playable character/knight_armed/knight_armed_walk/E/knight_armed_walk_E_0.0_7.png" id="23_weq5p"]
 [ext_resource type="Texture2D" uid="uid://x2m4un31vmt7" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/NE/fighter_armed_attack_NE_45.0_6.png" id="24_atd5b"]
 [ext_resource type="Texture2D" uid="uid://bdjoeoej5h4ou" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/NE/fighter_armed_attack_NE_45.0_7.png" id="25_2pi44"]
 [ext_resource type="Texture2D" uid="uid://bbsqcv2rh8lkh" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/NW/fighter_armed_attack_NW_135.0_0.png" id="26_belyi"]
@@ -890,8 +899,8 @@ height = 66.0
 resource_local_to_scene = true
 shader = ExtResource("144_nyccg")
 shader_parameter/color = Color(1, 1, 1, 1)
-shader_parameter/power = 3.0
-shader_parameter/radius = 2.5
+shader_parameter/power = 4.1
+shader_parameter/radius = 3.5
 shader_parameter/flickering = false
 shader_parameter/flicker_range = 1.0
 
@@ -904,6 +913,35 @@ shader_parameter/quality = 4
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rd8ew"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("16_3mrb1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_h5q08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_34lnh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_ld556")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_7abcs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_6kauw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_lbadq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_weq5p")
+}],
+"loop": true,
+"name": &"knight_running_E",
+"speed": 1.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("2_sf5aj")
@@ -1587,7 +1625,8 @@ debug_path_custom_color = Color(0.672086, 0.990379, 7.70092e-07, 1)
 sounds = {
 "Death": ExtResource("2_s7oww"),
 "Dodge": ExtResource("3_2t8y0"),
-"Hit": ExtResource("7_ab38t")
+"Hit": ExtResource("7_ab38t"),
+"Step": ExtResource("8_oadeu")
 }
 
 [node name="Sounds_Backup" type="Node" parent="."]
@@ -1640,7 +1679,13 @@ disabled = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-1, -1)
-zoom = Vector2(2.9, 2.9)
+zoom = Vector2(3.2, 3.2)
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+drag_left_margin = 0.1
+drag_top_margin = 0.1
+drag_right_margin = 0.1
+drag_bottom_margin = 0.1
 
 [node name="PointLight2D" type="PointLight2D" parent="Camera2D"]
 process_mode = 4
@@ -1669,8 +1714,8 @@ script = ExtResource("150_d173a")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_hcvbx")
 sprite_frames = SubResource("SpriteFrames_rd8ew")
-animation = &"warrior_attack_E"
-frame = 3
+animation = &"warrior_running_E"
+frame_progress = 0.754655
 
 [node name="VisibilityArea" type="Area2D" parent="."]
 visible = false
@@ -1683,9 +1728,18 @@ position = Vector2(0, -18)
 shape = SubResource("CircleShape2D_henes")
 metadata/_edit_lock_ = true
 
+[node name="StepTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="StepSFXTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="body_entered" from="MeleeZone" to="." method="_on_melee_zone_body_entered"]
 [connection signal="body_exited" from="MeleeZone" to="." method="_on_melee_zone_body_exited"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]
 [connection signal="body_entered" from="AttackAxis/AttackZone" to="." method="_on_attack_zone_body_entered"]
 [connection signal="body_entered" from="AttackAxis/ParryZone" to="." method="_on_parry_zone_body_entered"]
 [connection signal="body_exited" from="AttackAxis/ParryZone" to="." method="_on_parry_zone_body_exited"]
+[connection signal="timeout" from="StepTimer" to="." method="_on_step_timer_timeout"]
+[connection signal="timeout" from="StepSFXTimer" to="." method="_on_step_sfx_timer_timeout"]

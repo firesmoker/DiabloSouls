@@ -7,7 +7,6 @@ Ideas:
 	CODE:		CLASSES: It's a good idea to update all "derivative" properties on setters. chain of setters will ensure good architecture
 	UI/UX:		Ingame game guide is awesome (like last Epoch)
 	UI/UX:		Extra helpers for scaling and meaning and examples are awesome (like last epoch)
-	Visual:		LE changes unique art based on of the classes base armors
 	Gameplay:	Charge skill for melee is fun
 	Gameplay:	Try counter window BEFORE parry window. better emphasize quick reaction.
 
@@ -42,12 +41,10 @@ Technical stuff that bothers me:
 	WORLD:			Convert TileMap2 to the new system
 	REFACTOR:		Player - use AnimationManager for its animation stuff?
 	REFACTOR:		Switch Player and Enemy layers
-	REFACTOR:		abilities should probably become scenes
 	REFACTOR:		maybe i can get rid of the "is_locked" for enemies?
 	PERFORMANCE:	sound dictionaries are calculated for each enemy instance instead of each unique enemy
 	WORKFLOW:		debugging could be easier if I could toggle some types of messages
 	WORKFLOW:		debugging could be easier if I put a debugging CanvasItem that shows me everything I need
-	WORKFLOW:		sort out the stupid ordering. both logic and execution
 
 Things that are very missing:
 	GAMEPLAY:	improve cant_be_countered behaviour. make it so the enemy doesn't have to be in melee range
@@ -64,7 +61,6 @@ Things that are very missing:
 	SOUND:		Play animation sounds for attack
 	SOUND:		Play Get hit SFX by material (flesh, metallic, etc.), probably played from enemy
 	SOUND:		Missing SFX all around
-	VISUAL:		Obstacle ordering, currently obstacle has problems
 	VISUAL:		No red overlay when dead
 	VISUAL:		No normal-map lightning
 	GAMEPLAY:	Ranged enemies have no target prediction, they shoot in a stupid manner. (not working)

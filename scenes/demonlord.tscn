@@ -81,10 +81,10 @@ resource_local_to_scene = true
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_hj6x6")
+"texture": ExtResource("3_kiv02")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_kiv02")
+"texture": ExtResource("2_hj6x6")
 }, {
 "duration": 1.0,
 "texture": ExtResource("2_ra36m")
