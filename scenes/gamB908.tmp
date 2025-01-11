@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://lr15cpqcai72"]
+[gd_scene load_steps=22 format=4 uid="uid://lr15cpqcai72"]
 
 [ext_resource type="Script" path="res://scripts/GameManager.gd" id="1_h602i"]
 [ext_resource type="PackedScene" uid="uid://cgvpmrxms5e4k" path="res://scenes/player.tscn" id="3_gcy3d"]
@@ -300,9 +300,6 @@ use_texture_padding = false
 sources/0 = SubResource("TileSetAtlasSource_gos0m")
 sources/1 = SubResource("TileSetAtlasSource_ltl66")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d6rvm"]
-bg_color = Color(0, 0, 0, 1)
-
 [node name="Game" type="Node2D"]
 y_sort_enabled = true
 metadata/_edit_lock_ = true
@@ -468,14 +465,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -439.0
-offset_top = -380.0
-offset_right = 439.0
-offset_bottom = -270.0
+offset_left = -28.5
+offset_top = -11.5
+offset_right = 28.5
+offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 80
-text = "Diablo Souls Prototype"
+theme_override_font_sizes/font_size = 50
+text = "Paused"
 
 [node name="RestartButton" type="Button" parent="MenuUI"]
 anchors_preset = 8
@@ -483,31 +480,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = 62.0
-offset_right = 150.0
-offset_bottom = 132.0
+offset_left = -74.0
+offset_top = 150.0
+offset_right = 74.0
+offset_bottom = 213.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 40
 text = "Restart"
 
-[node name="ResumeButton" type="Button" parent="MenuUI"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -24.0
-offset_right = 150.0
-offset_bottom = 46.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 40
-text = "Resume"
-
-[node name="LoadingPanel" type="Panel" parent="MenuUI"]
+[node name="RestartingPanel" type="Panel" parent="MenuUI"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -519,9 +501,8 @@ offset_right = 445.0
 offset_bottom = 263.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_d6rvm")
 
-[node name="Label" type="Label" parent="MenuUI/LoadingPanel"]
+[node name="Label" type="Label" parent="MenuUI/RestartingPanel"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -535,9 +516,8 @@ offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 50
-text = "Loading..."
+text = "Restarting..."
 
 [connection signal="attack_success" from="Player" to="GameManager" method="_on_player_attack_success"]
 [connection signal="parry_success" from="Player" to="GameManager" method="_on_player_parry_success"]
 [connection signal="button_up" from="MenuUI/RestartButton" to="MenuUI" method="_on_restart_button_up"]
-[connection signal="button_up" from="MenuUI/ResumeButton" to="MenuUI" method="_on_resume_button_up"]

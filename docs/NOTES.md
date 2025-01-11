@@ -38,7 +38,6 @@ Game Design stuff to do:
 
 Technical stuff that bothers me:
 	BUG:			NavigationServer player tries to use nav map before it's initizalized
-	WORLD:			Convert TileMap2 to the new system
 	REFACTOR:		Player - use AnimationManager for its animation stuff?
 	REFACTOR:		Switch Player and Enemy layers
 	REFACTOR:		maybe i can get rid of the "is_locked" for enemies?
@@ -47,37 +46,43 @@ Technical stuff that bothers me:
 	WORKFLOW:		debugging could be easier if I put a debugging CanvasItem that shows me everything I need
 
 Things that are very missing:
+	Small
 	GAMEPLAY:	improve cant_be_countered behaviour. make it so the enemy doesn't have to be in melee range
 	GAMEPLAY:	improve telegraphed attacks. should I show an impact warning on the ground?
 	GAMEPLAY:	parry on release sucks. revert this.
+	GAMEPLAY:	consuming mana the very moment you press to cast the spell feels weird. maybe because it takes a while to shoot.
+	GAMEPLAY:	Can't block ranged attacks
+	BUG:		Weird parry/counter rings behaviour
+	VISUAL:		No red overlay when dead
+	GAMEPLAY:	Ranged enemies have no target prediction, they shoot in a stupid manner. (not working)
+	ANIMATION:	movement could be smoother using root motion, or better more consistent animations (very very low priority)
+	GAMEPLAY:	no movement accelaration (low priority)
+	
+	Medium
 	GAMEPLAY:	no abilities in combat other than basic attack, parry, counter, dodge, shoot projectile
 	WORLD:		arena is not an actual, interesting level
 	WORLD:		arena has no walls, objects, etc.
 	WORLD:		enemy variety
-	GAMEPLAY:	consuming mana the very moment you press to cast the spell feels weird. maybe because it takes a while to shoot.
-	GAMEPLAY:	Can't block ranged attacks
-	BUG:		Weird parry/counter rings behaviour
 	SOUND:		Play projectile sounds
 	SOUND:		Play animation sounds for attack
 	SOUND:		Play Get hit SFX by material (flesh, metallic, etc.), probably played from enemy
-	SOUND:		Missing SFX all around
-	VISUAL:		No red overlay when dead
-	VISUAL:		No normal-map lightning
-	GAMEPLAY:	Ranged enemies have no target prediction, they shoot in a stupid manner. (not working)
 	GAMEPLAY:	parry / counter is not optimized for multiple enemies
 	ANIMATION:	no counter and parry animations (maybe in the meantime - knockback? reverse step?)
+	MENUS: SETTINGS
+	GAMEPLAY:	no decals like blood and bones flying in the air (very very low priority)
+	GAMEPLAY:	higher priority highlighting for scarier enemies. make the switch by distance higher if current enemy in focus is more scary, and vice versa. maybe take enemy size into account. LOW PRIORITY
+	GAMEPLAY:	counter is immediate (maybe good?) and doesn't provide invulnerability (?)
+	UI:	no indication for lack of stamina to parry on the highlight circles (very low priority, if parry actually uses atmina)
+	
+	Large:
+	SOUND:		Missing SFX all around
 	ANIMATION:	no ranged attack animation
+	VISUAL:		No normal-map lightning
+	
+	HUGE
 	ART:		Artstyle is lacking
 	MUSIC:		no music
-	GAMEPLAY:	counter is immediate (maybe good?) and doesn't provide invulnerability (?)
-	MENUS: Pause
-	MENUS: SETTINGS
-	GAMEPLAY:	higher priority highlighting for scarier enemies. make the switch by distance higher if current enemy in focus is more scary, and vice versa. maybe take enemy size into account. LOW PRIORITY
 	ANIMATION:	enemy retaliation animations (lower priority)
-	GAMEPLAY:	no movement accelaration (low priority)
-	GAMEPLAY:	no decals like blood and bones flying in the air (very very low priority)
-	ANIMATION:	movement could be smoother using root motion, or better more consistent animations (very very low priority)
-	UI:	no indication for lack of stamina to parry on the highlight circles (very low priority, if parry actually uses atmina)
 
 Pathfinding:
 	GAMEPLAY:	Pathfinding: Set angle of offset based on angle from the collision point instead of just a random number times collisions

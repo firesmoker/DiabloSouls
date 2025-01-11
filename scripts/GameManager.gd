@@ -36,6 +36,9 @@ func set_resource_bars_values() -> void:
 	player_stamina.max_value = player.max_stamina
 	player_mana.max_value = player.max_mana
 
+func toggle_hud(toggle: bool) -> void:
+	hud.visible = toggle
+
 func set_default_visibility() -> void:
 	hud.visible = true
 	enemy_label.visible = true
@@ -61,6 +64,9 @@ func handle_cheat_inputs(event: InputEvent) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	handle_cheat_inputs(event)
+	#if event.is_action_pressed("menu"):
+		#var pause_status: bool = get_tree().paused
+		#get_tree().paused = !pause_status
 
 func _process(delta: float) -> void:
 	current_delta = delta
