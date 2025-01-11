@@ -24,8 +24,8 @@ void fragment() {
 		random_radius = clamp(sin(TIME * 50.0) * radius, radius * 0.95, radius);
 		random_radius *= (1.0 - 0.2 * abs(cos(TIME * 30.0)));
 	}
-	float new_power = 2.6;
-	random_radius = 2.3;
-	COLOR.rgb = screen_color.rgb * vec3(1.0 + new_power + 1.0 - length(color)) * color;
-	COLOR.a = 1.0 - distance_from_center * (1.0 / (random_radius *  0.1)) + clamp((1.0 - distance_from_center), 0.0, 1.0) / 1.0;
+	float new_power = power;
+	random_radius = radius;
+	COLOR.rgb = screen_color.rgb * vec3(new_power - length(color)) * color;
+	COLOR.a = 1.0 - distance_from_center * (1.0 / (random_radius *  0.1)) + clamp((0.3 - distance_from_center), 0.0, 1.0) / 1.0;
 }
