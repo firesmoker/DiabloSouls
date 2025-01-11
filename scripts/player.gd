@@ -7,6 +7,8 @@ class_name Player extends CharacterBody2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var game_manager: GameManager = %GameManager
 @onready var abilities_container: Node2D = $AbilitiesContainer
+@onready var step_timer: Timer = $StepTimer
+@onready var step_sfx_timer: Timer = $StepSFXTimer
 
 @export_group("General")
 @export_enum("warrior_armed", "fighter_armed", "knight_armed") var model: String = "warrior_armed"
@@ -17,6 +19,8 @@ class_name Player extends CharacterBody2D
 @export var attack_speed_modifier: float = 0.8
 @export var dodge_speed_bonus: float = 3.5
 @export var dodge_delta_timer: float = 0
+@export var stepping_modifier: float = 1
+@export var stepping_deceleration_modifier: float = 0.05
 @export_subgroup("Player Resources")
 @export var max_hitpoints: float = 5
 @export var max_stamina: float = 5
@@ -53,6 +57,11 @@ class_name Player extends CharacterBody2D
 
 
 @onready var animation_library: AnimationLibrary = animation_player.get_animation_library("")
+
+var animation_played_time: float = 0
+var slowing_for_step: bool = false
+var previous_animation_name: String
+var ready_for_step_sfx: bool = true
 
 var invulnerability_sources: Dictionary
 var locked_sources: Dictionary
@@ -192,6 +201,7 @@ func _ready() -> void:
 	
 
 func _physics_process(delta: float) -> void:
+	#measure_animation_time(delta)
 	get_abilities()	
 	light.material.set_shader_parameter("radius", light_radius)
 	handle_locked()
@@ -608,6 +618,7 @@ func stand() -> void:
 
 func handle_movement(delta: float) -> void:
 	handle_dodge(delta)
+	slow_for_step()
 	var offset: float = 0
 	var move_offset: Vector2 = Vector2(0,0)
 	if not is_attacking and not is_locked and not is_defending:
@@ -645,7 +656,7 @@ func handle_movement(delta: float) -> void:
 				#if body.get_script().get_global_name() == "Enemy":
 					#print_template("offset!")
 					#offset = true
-		var new_velocity: Vector2 = (calculate_movement_velocity(offset) + move_offset) * delta / Utility.average_delta
+		var new_velocity: Vector2 = (calculate_movement_velocity(offset) + move_offset) * delta / Utility.average_delta * stepping_modifier
 		#if offset:
 		ray_axis.rotation = position.angle_to_point(destination)
 		if check_if_in_navigation_map(global_position + new_velocity):
@@ -1033,7 +1044,46 @@ func add_animation_method_calls() -> void:
 			animation_to_modify.track_insert_key(track, no_cancel_time, {"method" : "animation_cancel_disabled" , "args" : []})
 			animation_to_modify.track_insert_key(track, time, {"method" : "just_parried" , "args" : []})
 			animation_to_modify.track_insert_key(track, attack_again_time, {"method" : "attack_again_ready" , "args" : []})
+		elif "walk" in animation:
+			animation_to_modify.track_insert_key(track, 2.0 / FPS, {"method" : "start_slow_for_step" , "args" : []})
+			animation_to_modify.track_insert_key(track, 6.0 / FPS, {"method" : "start_slow_for_step" , "args" : []})
+			
 	print_template("Finished adding animation method calls",true)
+
+func measure_animation_time(delta: float) -> void:
+	animation_played_time += delta
+
+func _on_animation_player_animation_started(anim_name: StringName) -> void:
+	if anim_name != previous_animation_name:
+		animation_played_time = 0
+	previous_animation_name = anim_name
+
+func _on_step_sfx_timer_timeout() -> void:
+	ready_for_step_sfx = true
+
+func start_slow_for_step() -> void:
+	print("slowing on step")
+	if step_timer.is_stopped():
+		if ready_for_step_sfx:
+			#audio_player.play("Step",0.95,1.02)
+			ready_for_step_sfx = false
+			step_sfx_timer.start(0.4)
+		stepping_deceleration_modifier = 0.05
+		#slowing_for_step = true
+		step_timer.start(0.7 / FPS)
+		stepping_modifier = 0.75
+
+func slow_for_step() -> void:
+	if slowing_for_step:
+		print("slowing for step process!")
+		stepping_modifier -= stepping_deceleration_modifier
+		clamp(stepping_modifier, 0.7, 1.0)
+		stepping_deceleration_modifier += 0.01
+		stepping_deceleration_modifier = clamp(stepping_deceleration_modifier,0,0.1)
+		
+func _on_step_timer_timeout() -> void:
+	stepping_modifier = 1
+	slowing_for_step = false
 
 func animation_cancel_disabled() -> void:
 	locked_sources["attacking"] = true
