@@ -9,6 +9,8 @@ class_name Player extends CharacterBody2D
 @onready var abilities_container: Node2D = $AbilitiesContainer
 @onready var step_timer: Timer = $StepTimer
 @onready var step_sfx_timer: Timer = $StepSFXTimer
+@onready var vision_rays_container: Node2D = $VisionRays
+var vision_rays: Array[RayCast2D]
 
 @export_group("General")
 @export_enum("warrior_armed", "fighter_armed", "knight_armed") var model: String = "warrior_armed"
@@ -114,7 +116,7 @@ var ability_instances: Dictionary = {}
 
 const FPS: float = 12.0
 
-
+var invisible_enemies: Array[Enemy]
 
 signal ready_to_attack_again_signal
 signal attack_success
@@ -173,6 +175,31 @@ var attack_ability: Ability
 var parry_ability: Ability
 var ranged_ability: Ability
 
+func _initialize_vision_rays() -> void:
+	var ray_rotation: float = 0
+	for i in range(120):
+		var ray: RayCast2D = RayCast2D.new()
+		ray.target_position.y = 200
+		ray.modulate.a = 0.2
+		vision_rays.append(ray)
+		vision_rays_container.add_child(ray)
+		ray.rotation = ray_rotation
+		ray_rotation += 3
+
+func check_enemies_visibility() -> void:
+	for enemy in invisible_enemies:
+		if enemy:
+			enemy.enable_visibility()
+	invisible_enemies.clear()
+	for ray in vision_rays:
+		if ray.is_colliding():
+			var colliding_object: CollisionObject2D = ray.get_collider()
+			if colliding_object is Enemy:
+				colliding_object.enable_visibility()
+				invisible_enemies.append(colliding_object)
+				
+	
+
 func load_rays() -> void:
 	rays.clear()
 	rays_left.clear()
@@ -195,6 +222,7 @@ func _ready() -> void:
 	construct_animation_library()
 	add_animation_method_calls()
 	load_rays()
+	_initialize_vision_rays()
 	print_template(rays)
 	print_template(rays_right)
 	print_template(rays_left)
@@ -202,8 +230,9 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	#measure_animation_time(delta)
+	check_enemies_visibility()
 	get_abilities()	
-	light.material.set_shader_parameter("radius", light_radius)
+	#light.material.set_shader_parameter("radius", light_radius)
 	handle_locked()
 	handle_invulnerability()
 	regenerate_mana(delta)

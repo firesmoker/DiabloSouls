@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://cxhnyk8un34t3"]
+[gd_scene load_steps=7 format=3 uid="uid://cxhnyk8un34t3"]
 
 [ext_resource type="Texture2D" uid="uid://cpxgnvstr8nna" path="res://assets/art/prop/column1/E/column1_E_0.0_0.png" id="1_udwvx"]
 [ext_resource type="Script" path="res://scripts/obstacle.gd" id="2_pubvf"]
@@ -9,7 +9,11 @@
 resource_local_to_scene = true
 size = Vector2(24, 94)
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_ban65"]
+polygon = PackedVector2Array(-11, 9, 12, 9, 12, -10, -11, -10)
+
 [node name="Obstacle" type="Sprite2D"]
+light_mask = 8
 z_index = 1
 z_as_relative = false
 y_sort_enabled = true
@@ -36,5 +40,10 @@ metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" parent="PlayerExposer/PlayerDetectorArea" index="0"]
 shape = SubResource("RectangleShape2D_abohw")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+occluder = SubResource("OccluderPolygon2D_ban65")
+occluder_light_mask = 8
 
 [editable path="PlayerExposer"]

@@ -96,6 +96,9 @@ var radian_direction: Dictionary = {
 	-3.0/4 * PI: directions.NW,
 }
 
+@onready var visibility_timer: Timer = $VisibilityTimer
+
+
 signal under_mouse_hover
 signal stopped_mouse_hover
 
@@ -433,7 +436,36 @@ func set_visual_direction_by_angle(angle: float = position.angle_to_point(destin
 		ready_to_switch_direction = true
 
 
+#func _draw() -> void:
+	## Define vertices
+	#var vertices: Array = [
+		#Vector2(0, 0),
+		#Vector2(100, 0),
+		#Vector2(50, 100)
+	#]
+	#
+	## Draw the filled polygon
+	#draw_polygon(vertices, [Color(0, 0, 1, 0.5)]) # Semi-transparent blue
+	#
+	## Draw the outline
+	#var color: Color = Color(1, 1, 1, 1) # White outline
+	#for i in range(vertices.size()):
+		#draw_line(vertices[i], vertices[(i + 1) % vertices.size()], color, 2)
+	#
+#
+	##	Circle	properties
+	#var	center	:=	Vector2(200,	200)
+	#var	radius	:=	100
+	#var	fill_color	:=	Color(0,	0,	1,	0.5)	#	Semi-transparent	blue
+	#var	outline_color	:=	Color(1,	1,	1,	1)	#	White	outline
+#
+	##	Draw	the	filled	circle
+	#draw_circle(center,	radius,	fill_color)
+	#
+	##	Draw	the	outline
+	#draw_arc(center,	radius,	0,	TAU,	64,	outline_color,	2)
 
+		
 func die() -> void:
 	#audio.stream = death_sound
 	#audio.play()ךך
@@ -650,3 +682,16 @@ func print_template(message: Variant) -> void:
 func _on_attack_cooldown_timeout() -> void:
 	#attack_cooldown.stop()
 	pass # Replace with function body.
+
+func enable_visibility() -> void:
+	visible = true
+	visibility_timer.stop()
+
+func disable_visibility(time: float = 1.2) -> void:
+	if visibility_timer.is_stopped():
+		visibility_timer.wait_time = time
+		visibility_timer.start()
+
+
+func _on_visibility_timer_timeout() -> void:
+	visible = false

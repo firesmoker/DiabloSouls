@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b1hcswr77ft67"]
+[gd_scene load_steps=17 format=3 uid="uid://b1hcswr77ft67"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_vs0td"]
 [ext_resource type="PackedScene" uid="uid://cotuae7xoylm0" path="res://scenes/audio_player.tscn" id="2_6n65l"]
@@ -56,7 +56,11 @@ animations = [{
 "speed": 12.0
 }]
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_55pxs"]
+polygon = PackedVector2Array(-5, -1, 5, -1, 5, 3, -5, 3)
+
 [node name="Enemy" type="RigidBody2D"]
+visible = false
 z_index = 1
 z_as_relative = false
 y_sort_enabled = true
@@ -88,6 +92,7 @@ libraries = {
 }
 
 [node name="PhysicalCollider" type="CollisionShape2D" parent="."]
+visible = false
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_3rv2h")
 metadata/_edit_lock_ = true
@@ -112,6 +117,7 @@ shape = SubResource("CapsuleShape2D_ud6ys")
 metadata/_edit_lock_ = true
 
 [node name="GetHitZone" type="StaticBody2D" parent="."]
+visible = false
 collision_layer = 4
 collision_mask = 0
 
@@ -143,6 +149,7 @@ debug_color = Color(0, 0.595, 0.7, 0)
 metadata/_edit_lock_ = true
 
 [node name="AttackAxis" type="Node2D" parent="."]
+visible = false
 metadata/_edit_lock_ = true
 
 [node name="AttackZone" type="Area2D" parent="AttackAxis"]
@@ -168,6 +175,13 @@ material = SubResource("ShaderMaterial_8ih37")
 sprite_frames = SubResource("SpriteFrames_e0icc")
 metadata/_edit_lock_ = true
 
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+show_behind_parent = true
+occluder = SubResource("OccluderPolygon2D_55pxs")
+occluder_light_mask = 4
+
+[node name="VisibilityTimer" type="Timer" parent="."]
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="ClumpZone" to="." method="_on_clump_zone_body_entered"]
 [connection signal="body_exited" from="ClumpZone" to="." method="_on_clump_zone_body_exited"]
@@ -177,3 +191,4 @@ metadata/_edit_lock_ = true
 [connection signal="mouse_exited" from="HoverZone" to="." method="_on_hover_zone_mouse_exited"]
 [connection signal="body_entered" from="AttackAxis/AttackZone" to="." method="_on_attack_zone_body_entered"]
 [connection signal="timeout" from="Attack_Cooldown" to="." method="_on_attack_cooldown_timeout"]
+[connection signal="timeout" from="VisibilityTimer" to="." method="_on_visibility_timer_timeout"]

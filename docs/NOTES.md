@@ -4,11 +4,23 @@ LEGEND:
 	** means it's in focus right now.
 
 Ideas:
+	Gameplay:	Single target damage abilities, high damage; Small AOE damage abilities; Large AOE damage abilities, low damage. Good against swarms/lots of easier enemies. Cleaning. Large AOE disablers: extremely reduced movmenet speed, knockback, etc. Large AOE high damage abilities: need to be charged somehow, limited.
+	Gameplay:	Extreme specialized trials, such as one that require very high movement speed, one that requires very high health regen, etc. Endgame goals, probably need specialized builds or setups. Can give some "best in slot" items or just extremely powerful items.
+	Gameplay:	Skill based timing on attacks that makes them hard hitting. Like "snipe" in POE2 or curse of the dead god stuff. Create modifiers that makes it so the window is smaller, but the damage is higher, so you get a challenge of skill for better damage.
 	CODE:		CLASSES: It's a good idea to update all "derivative" properties on setters. chain of setters will ensure good architecture
 	UI/UX:		Ingame game guide is awesome (like last Epoch)
 	UI/UX:		Extra helpers for scaling and meaning and examples are awesome (like last epoch)
 	Gameplay:	Charge skill for melee is fun
 	Gameplay:	Try counter window BEFORE parry window. better emphasize quick reaction.
+	Gameplay:	Shrines like Diablo 1.
+		What I like: curiosity, random permanent bonuses, unique effects. ("Trial by fire" idea: creating a sphere that you need to stand on and get burnt very hard. If you survive, you get X.)
+		What I don't like: permanent negative effects. I feel punished and it doesn't add to my fun. Also didn't like it via the "curse" mechanic in curse of the dead gods. Even though some of these curses just made the world stronger, which I like, it's delivered in a sense that feels like my character is permanently cursed.
+	Gameplay:	No XP penalty on death. Boss resets on death + no TP with bosses? POE2 like experience.
+	Gameplay:	Dodge recovery? unlimited dodge like POE2, add deacceleration to its ending so it's not the ultimate way to move, but using dodge recovery reduction will make it so you CAN build a hyper-moving dodge build.
+	Gameplay:	No XP penalty on death.
+	Gameplay:	Elite enemies GLOW!
+	Gameplay:	Stores, that are awesome like in Diablo 1 Devolution, can "reserve" items for you for some kind of fee. So you have tangible asiprations
+	Music:		I like that there is RHYTHM in the music of Diablo I. makes it less of a slog and more exciting
 
 Project Milestones:
 	1) Basic level:

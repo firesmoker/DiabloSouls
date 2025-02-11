@@ -1614,6 +1614,10 @@ position = Vector2(-12, 0)
 rotation = 3.14159
 target_position = Vector2(0, 30)
 
+[node name="VisionRays" type="Node2D" parent="."]
+
+[node name="ShapeCast2D" type="ShapeCast2D" parent="VisionRays"]
+
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 simplify_path = true
 avoidance_enabled = true
@@ -1704,6 +1708,7 @@ texture = ExtResource("138_d4a61")
 texture_scale = 1.2
 
 [node name="Light" parent="." instance=ExtResource("143_a3yxq")]
+visible = false
 material = SubResource("ShaderMaterial_d4q8c")
 
 [node name="DodgeTimer" type="Timer" parent="."]
@@ -1716,6 +1721,7 @@ material = SubResource("ShaderMaterial_hcvbx")
 sprite_frames = SubResource("SpriteFrames_rd8ew")
 animation = &"warrior_running_E"
 frame_progress = 0.754655
+metadata/_edit_lock_ = true
 
 [node name="VisibilityArea" type="Area2D" parent="."]
 visible = false
