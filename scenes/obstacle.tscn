@@ -43,6 +43,7 @@ shape = SubResource("RectangleShape2D_abohw")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 self_modulate = Color(1, 1, 1, 0)
+light_mask = 17
 occluder = SubResource("OccluderPolygon2D_ban65")
 occluder_light_mask = 8
 

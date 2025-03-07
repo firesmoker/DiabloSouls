@@ -1616,8 +1616,6 @@ target_position = Vector2(0, 30)
 
 [node name="VisionRays" type="Node2D" parent="."]
 
-[node name="ShapeCast2D" type="ShapeCast2D" parent="VisionRays"]
-
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 simplify_path = true
 avoidance_enabled = true

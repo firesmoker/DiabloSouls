@@ -175,15 +175,15 @@ var attack_ability: Ability
 var parry_ability: Ability
 var ranged_ability: Ability
 
-func _initialize_vision_rays() -> void:
+func _initialize_vision_shapecast() -> void:
 	var ray_rotation: float = 0
 	for i in range(120):
-		var ray: RayCast2D = RayCast2D.new()
-		ray.target_position.y = 200
-		ray.modulate.a = 0.2
-		vision_rays.append(ray)
-		vision_rays_container.add_child(ray)
-		ray.rotation = ray_rotation
+		var shapecast: ShapeCast2D = ShapeCast2D.new()
+		shapecast.target_position.y = 200
+		shapecast.modulate.a = 0.2
+		vision_rays.append(shapecast)
+		vision_rays_container.add_child(shapecast)
+		shapecast.rotation = ray_rotation
 		ray_rotation += 3
 
 func check_enemies_visibility() -> void:
@@ -222,7 +222,7 @@ func _ready() -> void:
 	construct_animation_library()
 	add_animation_method_calls()
 	load_rays()
-	_initialize_vision_rays()
+	#_initialize_vision_shapecast()
 	print_template(rays)
 	print_template(rays_right)
 	print_template(rays_left)
@@ -230,7 +230,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	#measure_animation_time(delta)
-	check_enemies_visibility()
+	#check_enemies_visibility()
 	get_abilities()	
 	#light.material.set_shader_parameter("radius", light_radius)
 	handle_locked()

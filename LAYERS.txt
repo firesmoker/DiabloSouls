@@ -1,0 +1,47 @@
+Collision Layers:
+	1.
+	2.
+	3.
+	4.
+	5.
+	6.
+
+Visibility Layers:
+	1. Player, Enemy, EnemyOccluder, Obstacle, ObstacleOccluder, TilemapLayers, EnemiesShadowCast, EnviormentShadowCast, ObjectsLight
+	2.
+	3.
+	4.
+	5.
+	6.
+
+Light Masks:
+	1.Player, EnemyOccluder, ObstacleOccluder, EnemiesShadowCast
+	2.TilemapLayers, EnemiesShadowCast
+	3.
+	4.Enemy, Obstacle, ObstacleOccluder
+	5.
+	6.
+
+Shadow Item Cull Masks:
+	1.
+	2.
+	3.EnviormentShadowCast, EnemiesShadowCast
+	4.EnemiesShadowCast
+	5.
+	6.
+
+Glboal Z Index:
+	1.
+	2.
+	3.
+	4.
+	5.
+	6.
+
+Groups:
+	1.
+	2.
+	3.
+	4.
+	5.
+	6.

@@ -39,6 +39,8 @@ class_name Enemy extends RigidBody2D
 @export var rotating_collider: bool = true
 @export var dead_body_collision: bool = false
 @export var cant_be_countered: bool = false
+@onready var visibility_axis: Node2D = $VisibilityAxis
+var visibility_rays: Array
 
 var original_spawn_position: Vector2 = Vector2(0,0)
 var agression_enabled: bool = false
@@ -104,6 +106,7 @@ signal stopped_mouse_hover
 
 
 func _ready() -> void:
+	_initialize_visibility_rays()
 	original_spawn_position = global_position
 	attack_cooldown.stop()
 	#custom_integrator = true
@@ -125,6 +128,21 @@ func _ready() -> void:
 		player = game_manager.player
 		under_mouse_hover.connect(game_manager.enemy_mouse_hover)
 		stopped_mouse_hover.connect(game_manager.enemy_mouse_hover_stopped)
+
+func _initialize_visibility_rays() -> void:
+	for child in visibility_axis.get_children():
+		visibility_rays.append(child)
+
+func check_visibility_by_player() -> void:
+	#visibility_axis.rotation = get_angle_to(player.global_position)
+	self.visible = false
+	for ray: RayCast2D in visibility_rays:
+		ray.target_position = player.global_position - ray.global_position
+		ray.force_raycast_update()
+		if not ray.is_colliding():
+			self.visible = true
+			break
+		
 
 func load_animations() -> void:
 	animation_library = animation_player.get_animation_library("")
@@ -161,7 +179,7 @@ func _process(delta: float) -> void:
 	check_for_agression()
 	handle_parry_visibility()
 	get_destination()
-
+	check_visibility_by_player()
 	
 			
 	if not dying and not stunned:
@@ -486,6 +504,7 @@ func die() -> void:
 	stopped_mouse_hover.disconnect(game_manager.enemy_mouse_hover_stopped)
 	if not maintain_visibility_on_death:
 		z_index = 0
+		find_child("LightOccluder2D").visible = false
 	#y_sort_enabled = false
 	print_template("Died")
 

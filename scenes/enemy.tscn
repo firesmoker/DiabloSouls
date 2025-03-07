@@ -60,7 +60,7 @@ animations = [{
 polygon = PackedVector2Array(-5, -1, 5, -1, 5, 3, -5, 3)
 
 [node name="Enemy" type="RigidBody2D"]
-visible = false
+light_mask = 16
 z_index = 1
 z_as_relative = false
 y_sort_enabled = true
@@ -181,6 +181,22 @@ occluder = SubResource("OccluderPolygon2D_55pxs")
 occluder_light_mask = 4
 
 [node name="VisibilityTimer" type="Timer" parent="."]
+
+[node name="VisibilityAxis" type="Node2D" parent="."]
+
+[node name="Middle" type="RayCast2D" parent="VisibilityAxis"]
+collision_mask = 16
+collide_with_areas = true
+
+[node name="Right" type="RayCast2D" parent="VisibilityAxis"]
+position = Vector2(6.245, 0)
+collision_mask = 16
+collide_with_areas = true
+
+[node name="Left" type="RayCast2D" parent="VisibilityAxis"]
+position = Vector2(-6.245, 0)
+collision_mask = 16
+collide_with_areas = true
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="ClumpZone" to="." method="_on_clump_zone_body_entered"]
