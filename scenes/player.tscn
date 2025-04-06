@@ -1,8 +1,8 @@
 [gd_scene load_steps=194 format=3 uid="uid://cgvpmrxms5e4k"]
 
-[ext_resource type="Script" path="res://scripts/player.gd" id="1_3jece"]
+[ext_resource type="Script" uid="uid://kxxaht0bb5ip" path="res://scripts/player.gd" id="1_3jece"]
 [ext_resource type="PackedScene" uid="uid://cbc7srdprkpgm" path="res://scenes/blood.tscn" id="2_iqh1e"]
-[ext_resource type="Shader" path="res://shaders/player.gdshader" id="2_ktb63"]
+[ext_resource type="Shader" uid="uid://cjguasllatumc" path="res://shaders/player.gdshader" id="2_ktb63"]
 [ext_resource type="AudioStream" uid="uid://cvrd2xhlvliao" path="res://assets/audio/man_screams1.wav" id="2_s7oww"]
 [ext_resource type="Texture2D" uid="uid://nrok3hqdeyws" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/E/fighter_armed_attack_E_0.0_0.png" id="2_sf5aj"]
 [ext_resource type="PackedScene" uid="uid://brcjsn57c8n5p" path="res://scenes/projectile.tscn" id="2_yccfu"]
@@ -10,7 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://b24v20bl0oy1a" path="res://assets/audio/dodge1.wav" id="3_2t8y0"]
 [ext_resource type="PackedScene" uid="uid://cotuae7xoylm0" path="res://scenes/audio_player.tscn" id="3_mleu6"]
 [ext_resource type="Texture2D" uid="uid://mlaia5l72058" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/E/fighter_armed_attack_E_0.0_2.png" id="4_l3cr6"]
-[ext_resource type="Script" path="res://scripts/audioPlayer.gd" id="5_xygtc"]
+[ext_resource type="Script" uid="uid://daaue0ax3j2v0" path="res://scripts/audioPlayer.gd" id="5_xygtc"]
 [ext_resource type="Texture2D" uid="uid://eubva2wkhqsx" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/E/fighter_armed_attack_E_0.0_3.png" id="5_yuwcg"]
 [ext_resource type="Texture2D" uid="uid://d3d8qdbo8f0pf" path="res://assets/art/playable character/fighter_armed/fighter_armed_attack/E/fighter_armed_attack_E_0.0_4.png" id="6_ekpfi"]
 [ext_resource type="AudioStream" uid="uid://dmwvlnqwber1b" path="res://assets/audio/hit_2_new.wav" id="7_ab38t"]
@@ -158,8 +158,8 @@
 [ext_resource type="Texture2D" uid="uid://1rke6kppqr3a" path="res://assets/art/environment/light3.png" id="138_d4a61"]
 [ext_resource type="Texture2D" uid="uid://cvdypdgmkr770" path="res://assets/art/environment/light2.png" id="139_ftsq4"]
 [ext_resource type="PackedScene" uid="uid://b4qsmsjjcorlc" path="res://scenes/light.tscn" id="143_a3yxq"]
-[ext_resource type="Shader" path="res://shaders/light.gdshader" id="144_nyccg"]
-[ext_resource type="Script" path="res://scenes/dodge_timer.gd" id="150_d173a"]
+[ext_resource type="Shader" uid="uid://5bwg5vv52w7v" path="res://shaders/light.gdshader" id="144_nyccg"]
+[ext_resource type="Script" uid="uid://ccvlxe5o41l4f" path="res://scenes/dodge_timer.gd" id="150_d173a"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ysxni"]
 radius = 29.0172
@@ -860,31 +860,31 @@ tracks/1/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_17pca"]
 resource_local_to_scene = true
 _data = {
-"warrior_armed_parry_E": SubResource("Animation_fmkf4"),
-"warrior_attack_E": SubResource("Animation_uj4dm"),
-"warrior_attack_N": SubResource("Animation_64tpm"),
-"warrior_attack_NE": SubResource("Animation_dqdkg"),
-"warrior_attack_NW": SubResource("Animation_eoymy"),
-"warrior_attack_S": SubResource("Animation_4um6j"),
-"warrior_attack_SE": SubResource("Animation_rf8s2"),
-"warrior_attack_SW": SubResource("Animation_tfyhp"),
-"warrior_attack_W": SubResource("Animation_6avmq"),
-"warrior_idle_E": SubResource("Animation_73gqf"),
-"warrior_idle_N": SubResource("Animation_be666"),
-"warrior_idle_NE": SubResource("Animation_8hi3r"),
-"warrior_idle_NW": SubResource("Animation_gxlag"),
-"warrior_idle_S": SubResource("Animation_hwwlo"),
-"warrior_idle_SE": SubResource("Animation_c8vij"),
-"warrior_idle_SW": SubResource("Animation_j2il0"),
-"warrior_idle_W": SubResource("Animation_gd46x"),
-"warrior_running_E": SubResource("Animation_qi4c1"),
-"warrior_running_N": SubResource("Animation_ff7ji"),
-"warrior_running_NE": SubResource("Animation_uf5p4"),
-"warrior_running_NW": SubResource("Animation_5e1to"),
-"warrior_running_S": SubResource("Animation_0t1ex"),
-"warrior_running_SE": SubResource("Animation_1fqn8"),
-"warrior_running_SW": SubResource("Animation_ixs4k"),
-"warrior_running_W": SubResource("Animation_ay7bx")
+&"warrior_armed_parry_E": SubResource("Animation_fmkf4"),
+&"warrior_attack_E": SubResource("Animation_uj4dm"),
+&"warrior_attack_N": SubResource("Animation_64tpm"),
+&"warrior_attack_NE": SubResource("Animation_dqdkg"),
+&"warrior_attack_NW": SubResource("Animation_eoymy"),
+&"warrior_attack_S": SubResource("Animation_4um6j"),
+&"warrior_attack_SE": SubResource("Animation_rf8s2"),
+&"warrior_attack_SW": SubResource("Animation_tfyhp"),
+&"warrior_attack_W": SubResource("Animation_6avmq"),
+&"warrior_idle_E": SubResource("Animation_73gqf"),
+&"warrior_idle_N": SubResource("Animation_be666"),
+&"warrior_idle_NE": SubResource("Animation_8hi3r"),
+&"warrior_idle_NW": SubResource("Animation_gxlag"),
+&"warrior_idle_S": SubResource("Animation_hwwlo"),
+&"warrior_idle_SE": SubResource("Animation_c8vij"),
+&"warrior_idle_SW": SubResource("Animation_j2il0"),
+&"warrior_idle_W": SubResource("Animation_gd46x"),
+&"warrior_running_E": SubResource("Animation_qi4c1"),
+&"warrior_running_N": SubResource("Animation_ff7ji"),
+&"warrior_running_NE": SubResource("Animation_uf5p4"),
+&"warrior_running_NW": SubResource("Animation_5e1to"),
+&"warrior_running_S": SubResource("Animation_0t1ex"),
+&"warrior_running_SE": SubResource("Animation_1fqn8"),
+&"warrior_running_SW": SubResource("Animation_ixs4k"),
+&"warrior_running_W": SubResource("Animation_ay7bx")
 }
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2gqxe"]
@@ -907,8 +907,8 @@ shader_parameter/flicker_range = 1.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hcvbx"]
 resource_local_to_scene = true
 shader = ExtResource("2_ktb63")
-shader_parameter/dir_x = null
-shader_parameter/dir_y = null
+shader_parameter/dir_x = 0.0
+shader_parameter/dir_y = 0.0
 shader_parameter/quality = 4
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rd8ew"]

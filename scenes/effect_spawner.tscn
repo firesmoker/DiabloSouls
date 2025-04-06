@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cjpv7vr3mtnvl"]
 
-[ext_resource type="Script" path="res://scripts/effect_spawner.gd" id="1_4kaws"]
+[ext_resource type="Script" uid="uid://bjtdmlhqmxo3o" path="res://scripts/effect_spawner.gd" id="1_4kaws"]
 [ext_resource type="PackedScene" uid="uid://d0530fnn7y15i" path="res://scenes/effect.tscn" id="2_6220h"]
 
 [node name="EffectSpawner" type="Node2D"]

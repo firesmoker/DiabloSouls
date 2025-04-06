@@ -1,14 +1,14 @@
 [gd_scene load_steps=17 format=3 uid="uid://b2v3ob8hjjvcd"]
 
-[ext_resource type="Script" path="res://addons/markdown_book/markdown_book.gd" id="1_7immt"]
-[ext_resource type="Script" path="res://addons/markdown_book/markdown_tree.gd" id="2_pfst2"]
-[ext_resource type="Script" path="res://addons/markdownlabel/markdownlabel.gd" id="3_0ha0o"]
-[ext_resource type="Script" path="res://addons/markdownlabel/header_formats/h1_format.gd" id="4_3ak75"]
-[ext_resource type="Script" path="res://addons/markdownlabel/header_formats/h2_format.gd" id="5_4vubc"]
-[ext_resource type="Script" path="res://addons/markdownlabel/header_formats/h3_format.gd" id="6_i2jfb"]
-[ext_resource type="Script" path="res://addons/markdownlabel/header_formats/h4_format.gd" id="7_jwa2b"]
-[ext_resource type="Script" path="res://addons/markdownlabel/header_formats/h5_format.gd" id="8_d26e1"]
-[ext_resource type="Script" path="res://addons/markdownlabel/header_formats/h6_format.gd" id="9_cicmv"]
+[ext_resource type="Script" uid="uid://clidhsjjfltpx" path="res://addons/markdown_book/markdown_book.gd" id="1_7immt"]
+[ext_resource type="Script" uid="uid://u7oiptiq3dd2" path="res://addons/markdown_book/markdown_tree.gd" id="2_pfst2"]
+[ext_resource type="Script" uid="uid://5kpr1l2cawdg" path="res://addons/markdownlabel/markdownlabel.gd" id="3_0ha0o"]
+[ext_resource type="Script" uid="uid://gsx75fuvxa1k" path="res://addons/markdownlabel/header_formats/h1_format.gd" id="4_3ak75"]
+[ext_resource type="Script" uid="uid://vcg1hb4c2s3p" path="res://addons/markdownlabel/header_formats/h2_format.gd" id="5_4vubc"]
+[ext_resource type="Script" uid="uid://bqn20n8ar7wif" path="res://addons/markdownlabel/header_formats/h3_format.gd" id="6_i2jfb"]
+[ext_resource type="Script" uid="uid://daujw57pg1x8o" path="res://addons/markdownlabel/header_formats/h4_format.gd" id="7_jwa2b"]
+[ext_resource type="Script" uid="uid://dnhhd4uu2upd8" path="res://addons/markdownlabel/header_formats/h5_format.gd" id="8_d26e1"]
+[ext_resource type="Script" uid="uid://b6yjd3of8s4pu" path="res://addons/markdownlabel/header_formats/h6_format.gd" id="9_cicmv"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dl7tr"]
 content_margin_left = 5.0
@@ -23,6 +23,8 @@ font_size = 2.285
 is_bold = false
 is_italic = false
 is_underlined = false
+override_font_color = false
+font_color = Color(1, 1, 1, 1)
 
 [sub_resource type="Resource" id="Resource_1hc8u"]
 resource_local_to_scene = true
@@ -31,6 +33,8 @@ font_size = 1.714
 is_bold = false
 is_italic = false
 is_underlined = false
+override_font_color = false
+font_color = Color(1, 1, 1, 1)
 
 [sub_resource type="Resource" id="Resource_ub2gb"]
 resource_local_to_scene = true
@@ -39,6 +43,8 @@ font_size = 1.428
 is_bold = false
 is_italic = false
 is_underlined = false
+override_font_color = false
+font_color = Color(1, 1, 1, 1)
 
 [sub_resource type="Resource" id="Resource_qi205"]
 resource_local_to_scene = true
@@ -47,6 +53,8 @@ font_size = 1.142
 is_bold = false
 is_italic = false
 is_underlined = false
+override_font_color = false
+font_color = Color(1, 1, 1, 1)
 
 [sub_resource type="Resource" id="Resource_0v8em"]
 resource_local_to_scene = true
@@ -55,6 +63,8 @@ font_size = 1.0
 is_bold = false
 is_italic = false
 is_underlined = false
+override_font_color = false
+font_color = Color(1, 1, 1, 1)
 
 [sub_resource type="Resource" id="Resource_jsubp"]
 resource_local_to_scene = true
@@ -63,6 +73,8 @@ font_size = 0.857
 is_bold = false
 is_italic = false
 is_underlined = false
+override_font_color = false
+font_color = Color(1, 1, 1, 1)
 
 [node name="PanelContainer" type="PanelContainer"]
 anchors_preset = 15

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://vk17hc7mnyda"]
 
-[ext_resource type="Script" path="res://scripts/ability_manager.gd" id="1_78gsc"]
+[ext_resource type="Script" uid="uid://m0c05u2bv5wo" path="res://scripts/ability_manager.gd" id="1_78gsc"]
 
 [node name="AbilityManager" type="Node2D"]
 script = ExtResource("1_78gsc")

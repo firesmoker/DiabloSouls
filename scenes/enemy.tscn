@@ -1,10 +1,10 @@
 [gd_scene load_steps=17 format=3 uid="uid://b1hcswr77ft67"]
 
-[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_vs0td"]
+[ext_resource type="Script" uid="uid://cjk484g3sr01w" path="res://scripts/enemy.gd" id="1_vs0td"]
 [ext_resource type="PackedScene" uid="uid://cotuae7xoylm0" path="res://scenes/audio_player.tscn" id="2_6n65l"]
 [ext_resource type="Texture2D" uid="uid://dih8qcag7ojye" path="res://assets/art/enemy/skeleton_default/skeleton_default_idle/S/skeleton_default_idle_S_270.0_0.png" id="2_qaf1f"]
 [ext_resource type="Texture2D" uid="uid://bqp4tcluyjuh8" path="res://assets/art/user interface/highlight/highlight_white.png" id="3_n1wcj"]
-[ext_resource type="Shader" path="res://shaders/enemy.gdshader" id="3_xi7ay"]
+[ext_resource type="Shader" uid="uid://4qtkl6py465" path="res://shaders/enemy.gdshader" id="3_xi7ay"]
 [ext_resource type="PackedScene" uid="uid://d1iryj60bywy" path="res://scenes/health_bar.tscn" id="4_5wg2b"]
 
 [sub_resource type="Animation" id="Animation_qn4kt"]
@@ -13,7 +13,7 @@ resource_name = "default"
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hfmj2"]
 resource_local_to_scene = true
 _data = {
-"default": SubResource("Animation_qn4kt")
+&"default": SubResource("Animation_qn4kt")
 }
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3rv2h"]

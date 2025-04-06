@@ -11,7 +11,7 @@ resource_name = "default"
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hfmj2"]
 resource_local_to_scene = true
 _data = {
-"default": SubResource("Animation_qn4kt")
+&"default": SubResource("Animation_qn4kt")
 }
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ury82"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://cxhnyk8un34t3"]
 
 [ext_resource type="Texture2D" uid="uid://cpxgnvstr8nna" path="res://assets/art/prop/column1/E/column1_E_0.0_0.png" id="1_udwvx"]
-[ext_resource type="Script" path="res://scripts/obstacle.gd" id="2_pubvf"]
+[ext_resource type="Script" uid="uid://dq4b4cbh3ffn2" path="res://scripts/obstacle.gd" id="2_pubvf"]
 [ext_resource type="Shape2D" uid="uid://d0hus0v2lk50r" path="res://scene_resources/column_collider.tres" id="2_vwqog"]
 [ext_resource type="PackedScene" uid="uid://briwv2nnv6hfx" path="res://scenes/player_exposer.tscn" id="4_va25g"]
 
